@@ -80,13 +80,14 @@ const NO_DOC_TOOL_BAR = ["quote-block", "ordered-list", "unordered-list"];
 const OFFSET_MAP: Record<string, number> = {
   "quote-block-item": 12,
 };
-export const DocToolBarPlugin = (editor: Editor): Plugin => {
+export const DocToolBarPlugin = (editor: Editor, isRender: boolean): Plugin => {
   return {
     key: "doc-toolbar",
     priority: 13,
     type: EDITOR_ELEMENT_TYPE.BLOCK,
     match: () => true,
     renderLine: context => {
+      if (isRender) return context.children;
       for (const item of NO_DOC_TOOL_BAR) {
         if (context.element[item]) return context.children;
       }

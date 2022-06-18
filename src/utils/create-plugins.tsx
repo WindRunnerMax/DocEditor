@@ -45,6 +45,7 @@ type RenderPlugins = {
   onKeyDown: (event: React.KeyboardEvent<HTMLDivElement>) => unknown;
   withVoidElements: (editor: Editor) => Editor;
 };
+
 export const createPlugins = (...plugins: Plugin[]): RenderPlugins => {
   const elementPlugins: ElementPlugin[] = [];
   const leafPlugins: LeafPlugin[] = [];

@@ -1,5 +1,5 @@
 import { FC, useMemo, useRef } from "react";
-import { createEditor, Descendant, Editor } from "slate";
+import { createEditor, Descendant } from "slate";
 import { Slate, Editable, withReact } from "slate-react";
 import { useMemoizedFn } from "ahooks";
 import { withHistory } from "slate-history";
@@ -38,7 +38,7 @@ const SlateDocEditor: FC<{
     () =>
       createPlugins(
         ParagraphPlugin(),
-        DocToolBarPlugin(editor),
+        DocToolBarPlugin(editor, props.isRender),
         HeadingPlugin(editor),
         BoldPlugin(),
         QuoteBlockPlugin(editor),
@@ -60,7 +60,7 @@ const SlateDocEditor: FC<{
   return (
     <div ref={slateRef} onClick={e => e.stopPropagation()}>
       <Slate editor={withVoidEditor} value={initText} onChange={updateText}>
-        <MenuToolBar slateRef={slateRef} editor={editor}></MenuToolBar>
+        <MenuToolBar slateRef={slateRef} editor={editor} isRender={props.isRender}></MenuToolBar>
         <Editable
           renderElement={renderElement}
           renderLeaf={renderLeaf}

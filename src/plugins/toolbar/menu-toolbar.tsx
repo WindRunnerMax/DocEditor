@@ -25,6 +25,7 @@ export const Portal: React.FC = ({ children }) => {
 export const MenuToolBar: FC<{
   editor: Editor;
   slateRef: React.RefObject<HTMLDivElement>;
+  isRender: boolean;
 }> = props => {
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -116,7 +117,7 @@ export const MenuToolBar: FC<{
     };
   }, [props.editor, props.slateRef]);
 
-  return (
+  return props.isRender ? null : (
     <Portal>
       <div ref={menuRef} className="hover-menu-container">
         {HoverMenu}

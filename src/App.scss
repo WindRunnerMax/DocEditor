@@ -1,0 +1,44 @@
+@import '@arco-design/web-react/dist/css/arco.css';
+
+.doc-editor-container {
+
+  $height: 50px;
+
+  align-items: center;
+  background-color: var(--color-fill-2);
+  min-height: 100vh;
+
+  .header {
+    align-items: center;
+    background-color: var(--color-bg-white);
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    height: $height;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 999;
+
+    span {
+      font-size: 18px;
+      margin-left: 10px;
+    }
+  }
+
+  .gap {
+    height: $height;
+  }
+
+  .editor {
+    background-color: var(--color-bg-white);
+    margin: 0 auto;
+    margin-top: 10px;
+    max-width: 800px;
+    padding: 10px 10px 10px 25px;
+
+    &.render {
+      padding: 10px;
+    }
+  }
+}
