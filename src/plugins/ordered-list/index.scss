@@ -1,0 +1,35 @@
+li {
+  list-style-type: none;
+}
+
+.slate-ordered-list {
+  list-style-type: none;
+  margin: 0;
+  padding-left: 0;
+
+  /* stylelint-disable-next-line selector-no-qualifying-type */
+  span[data-slate-placeholder] {
+    display: inline-block !important;
+  }
+
+  h1,
+  h2,
+  h3 {
+    display: inline-block !important;
+  }
+
+  .slate-ordered-item {
+    list-style: inside;
+  }
+
+  .slate-ordered-item::marker {
+    color: rgb(var(--blue-7));
+  }
+
+  @each $index, $item, $type in 1 0 decimal, 2 20 lower-alpha, 3 40 lower-roman {
+    .ordered-li-#{$index} {
+      list-style-type: $type;
+      margin-left: $item + px;
+    }
+  }
+}

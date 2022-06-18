@@ -1,0 +1,9 @@
+.dividing-line {
+  background-color: var(--color-border-3);
+  height: 1px;
+  width: 100%;
+
+  &.selected {
+    box-shadow: 0 0 0 1.5px rgb(var(--arcoblue-3));
+  }
+}

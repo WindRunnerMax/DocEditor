@@ -1,0 +1,70 @@
+/* section --- 文本行数限制 --- section */
+.a-line-1 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.a-line-2 {
+  -webkit-line-clamp: 2;
+}
+
+.a-line-3 {
+  -webkit-line-clamp: 3;
+}
+
+.a-line-4 {
+  -webkit-line-clamp: 4;
+}
+
+.a-line-5 {
+  -webkit-line-clamp: 5;
+}
+
+.a-line-2,
+.a-line-3,
+.a-line-4,
+.a-line-5 {
+  -webkit-box-orient: vertical; // 设置伸缩盒子元素排列方式
+  display: flex;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+}
+
+/* section --- 文本行数限制 --- section */
+
+/* section --- 文字大小 --- section */
+@for $i from 10 to 27 {
+  .a-fontsize-#{$i} {
+    font-size: $i + px !important;
+  }
+}
+
+/* section --- 文字大小 --- section */
+
+/* section --- 内外边距 --- section */
+$size-list: 3,5,6,8,10,15,20;
+
+@each $item in $size-list {
+  @each $short, $long in l left, t top, r right, b bottom {
+    .a-m#{$short}-#{$item} {
+      margin-#{$long}: $item + px !important;
+    }
+    .a-p#{$short}-#{$item} {
+      padding-#{$long}: $item + px !important;
+    }
+  }
+}
+
+/* section --- 内外边距 --- section */
+
+/* section --- 间隙大小 --- section */
+@for $i from 5 to 16 {
+  .a-gap-#{$i} {
+    height: $i + px;
+    width: 100%;
+  }
+}
+
+/* section --- 间隙大小 --- section */

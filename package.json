@@ -1,0 +1,80 @@
+{
+  "name": "doc-editor-light",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "lint-es": "eslint --fix --ext .js,.jsx,.ts,.tsx --ignore-path .gitignore .",
+    "lint-style": "stylelint \"**/*.{css,scss,sass}\" --fix --ignore-path .gitignore",
+    "lint": "npm run lint-es && npm run lint-style"
+  },
+  "dependencies": {
+    "@arco-design/web-react": "^2.32.2",
+    "@babel/core": "^7.13.0",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "@types/jest": "^26.0.15",
+    "@types/lodash": "^4.14.182",
+    "@types/node": "^12.0.0",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "@types/uuid": "^8.3.4",
+    "ahooks": "^3.3.13",
+    "lodash": "^4.17.21",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "^4.0.3",
+    "slate": "^0.80.0",
+    "slate-history": "^0.66.0",
+    "slate-react": "^0.80.0",
+    "typescript": "^4.1.2",
+    "uuid": "^8.3.2",
+    "web-vitals": "^1.0.1"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "^8.11.1",
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.4.0",
+    "babel-plugin-import": "^1.13.3",
+    "cross-env": "^7.0.3",
+    "customize-cra": "^1.0.0",
+    "eslint": "7.11.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-prettier": "3.3.1",
+    "eslint-plugin-react": "^7.27.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.0.2",
+    "postcss": "^8.3.3",
+    "prettier": "^2.4.1",
+    "react-app-rewired": "^2.1.8",
+    "sass": "^1.52.3",
+    "stylelint": "^14.8.5",
+    "stylelint-config-sass-guidelines": "^9.0.1",
+    "stylelint-config-standard": "^25.0.0",
+    "uglifyjs-webpack-plugin": "^2.2.0"
+  },
+  "lint-staged": {
+    "*.{js,ts,jsx,tsx}": [
+      "eslint --fix"
+    ],
+    "*.{css,scss,less}": [
+      "stylelint --fix"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

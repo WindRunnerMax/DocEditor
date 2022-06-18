@@ -1,0 +1,12 @@
+.slate-quote-block {
+  border-left: 2px solid var(--color-border-3);
+  box-sizing: border-box;
+  display: flow-root;
+  margin: 0;
+  padding-left: 10px;
+
+  .doc-line {
+    color: var(--color-text-3);
+    margin: 0;
+  }
+}

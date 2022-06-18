@@ -1,0 +1,60 @@
+.doc-icon-plus {
+  align-items: center;
+  color: var(--color-text-2);
+  cursor: pointer;
+  display: flex;
+  font-size: 23px;
+}
+
+.doc-menu-popup,
+.hover-menu-container {
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.3);
+
+  .arco-icon {
+    color: var(--color-text-2) !important;
+  }
+
+  .cut-line {
+    background-color: var(--color-border-2);
+    margin: 4px 0;
+    width: 1px;
+  }
+}
+
+.menu-toolbar-menu-container {
+  .arco-menu-inner {
+    display: flex;
+    padding: 0;
+  }
+
+  .arco-menu-item {
+    align-items: center;
+    display: flex;
+    height: 32px;
+    justify-content: center;
+    line-height: unset;
+    margin: 0;
+    padding: 0;
+    width: 32px;
+
+    .arco-icon {
+      margin: 0;
+    }
+  }
+}
+
+.hover-menu-container {
+  background-color: #fff;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+  left: -10000px;
+  opacity: 0;
+  padding: 3px 5px;
+  position: absolute;
+  top: -10000px;
+  transition: opacity 0.3s;
+  z-index: 100;
+
+  button {
+    color: #000 !important;
+  }
+}
