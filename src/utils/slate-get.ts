@@ -1,9 +1,9 @@
 import { Editor, Location, Path, Node } from "slate";
-import { BaseElement, ExtendAncestor } from "../types/types";
+import { BlockElement } from "../types/types";
 import { isSlateElement } from "./slate-is";
 
 export const getBlockNode = (editor: Editor, location?: Location, key = "", above = false) => {
-  const match = Editor.above<ExtendAncestor>(editor, {
+  const match = Editor.above<BlockElement>(editor, {
     match: n => Editor.isBlock(editor, n) && (key ? existKey(n, key) : true),
     at: location,
     mode: above ? "highest" : "lowest",
@@ -14,7 +14,7 @@ export const getBlockNode = (editor: Editor, location?: Location, key = "", abov
 };
 
 export const getNextBlockNode = (editor: Editor, location?: Location, key = "", above = false) => {
-  const match = Editor.next<BaseElement>(editor, {
+  const match = Editor.next<BlockElement>(editor, {
     match: n => Editor.isBlock(editor, n) && (key ? existKey(n, key) : true),
     at: location,
     mode: above ? "highest" : "lowest",
@@ -25,7 +25,7 @@ export const getNextBlockNode = (editor: Editor, location?: Location, key = "", 
 };
 
 export const getBlockAttributes = (
-  node?: ExtendAncestor,
+  node?: BlockElement,
   emit?: string[]
 ): Record<string, unknown> => {
   if (!node) return {};

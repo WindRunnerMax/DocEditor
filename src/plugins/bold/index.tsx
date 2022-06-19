@@ -1,6 +1,12 @@
 import { EDITOR_ELEMENT_TYPE, Plugin } from "../../utils/slate-plugins";
 import { Transforms, Text } from "slate";
 
+declare module "slate" {
+  interface TextElement {
+    bold?: boolean;
+  }
+}
+
 export const boldPluginKey = "bold";
 
 export const BoldPlugin = (): Plugin => {

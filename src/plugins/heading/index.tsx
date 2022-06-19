@@ -20,12 +20,18 @@ import {
 
 export const headingPluginKey = "heading";
 
+declare module "slate" {
+  interface BlockElement {
+    heading?: { id: string; type: string };
+  }
+}
+
 const headingCommand: CommandFn = (editor, key, data) => {
   if (isObject(data) && data.path) {
     if (!isMatchedAttributeNode(editor, headingPluginKey, data.extraKey)) {
-      setBlockNode(editor, { [key]: data.extraKey, id: uuid().slice(0, 8) }, data.path);
+      setBlockNode(editor, { [key]: { type: data.extraKey, id: uuid().slice(0, 8) } }, data.path);
     } else {
-      setBlockNode(editor, getOmitAttributes(["id", headingPluginKey]), data.path);
+      setBlockNode(editor, getOmitAttributes([headingPluginKey]), data.path);
     }
   }
 };
@@ -37,9 +43,10 @@ export const HeadingPlugin = (editor: Editor): Plugin => {
     command: headingCommand,
     match: props => !!props.element[headingPluginKey],
     renderLine: context => {
-      const id = context.props.element["id"] as string;
       const heading = context.props.element[headingPluginKey];
-      switch (heading) {
+      if (!heading) return context.children;
+      const id = heading.id;
+      switch (heading.type) {
         case "h1":
           return <h1 id={id}>{context.children}</h1>;
         case "h2":
@@ -63,12 +70,12 @@ export const HeadingPlugin = (editor: Editor): Plugin => {
 
           if (isSlateElement(block)) {
             if (event.key === KEYBOARD.BACKSPACE && isFocusLineStart(editor, path)) {
-              const properties = getOmitAttributes(["id", headingPluginKey]);
+              const properties = getOmitAttributes([headingPluginKey]);
               Transforms.setNodes(editor, properties, { at: path });
               event.preventDefault();
             }
             if (event.key === KEYBOARD.ENTER && isFocusLineEnd(editor, path)) {
-              const attributes = getBlockAttributes(block, ["id", headingPluginKey]);
+              const attributes = getBlockAttributes(block, [headingPluginKey]);
               if (isWrappedNode(editor)) {
                 // 在`wrap`的情况下插入节点会出现问题 先多插入一个空格再删除
                 Transforms.insertNodes(

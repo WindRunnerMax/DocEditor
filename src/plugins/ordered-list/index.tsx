@@ -15,16 +15,24 @@ import {
   isMatchedAttributeNode,
   existKey,
   isFocusLineStart,
-  getBlockAttributes,
   isWrappedNode,
   isWrappedEdgeNode,
 } from "../../utils/slate-utils";
 import { calcNextOrderListLevels, calcOrderListLevels } from "./utils";
+import { assertValue } from "src/utils/common";
+
+declare module "slate" {
+  interface BlockElement {
+    "ordered-list"?: boolean;
+    "ordered-list-item"?: OrderListItemConfig;
+  }
+}
 
 export type OrderListItemConfig = {
   start: number;
   level: number;
 };
+
 export const orderedListKey = "ordered-list";
 export const orderedListItemKey = "ordered-list-item";
 const orderListCommand: CommandFn = (editor, key, data) => {
@@ -51,7 +59,7 @@ export const orderedListPlugin = (editor: Editor): Plugin => {
       if (existKey(context.element, orderedListKey)) {
         return <ol className="slate-ordered-list">{context.children}</ol>;
       } else {
-        const config = context.element[orderedListItemKey] as OrderListItemConfig;
+        const config = assertValue(context.element[orderedListItemKey]);
         return (
           <li className={`slate-ordered-item ordered-li-${config.level}`} value={config.start}>
             {context.children}
@@ -72,9 +80,7 @@ export const orderedListPlugin = (editor: Editor): Plugin => {
           setBlockNode(editor, getOmitAttributes([orderedListItemKey]));
         }
         if (!orderListItemMatch || !orderListMatch) return void 0;
-        const { level, start } = getBlockAttributes(orderListItemMatch.block)[
-          orderedListItemKey
-        ] as OrderListItemConfig;
+        const { level, start } = assertValue(orderListItemMatch.block[orderedListItemKey]);
 
         if (event.key === KEYBOARD.TAB) {
           if (level < 3) {

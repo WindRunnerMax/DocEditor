@@ -1,6 +1,12 @@
 import { EDITOR_ELEMENT_TYPE, Plugin } from "../../utils/slate-plugins";
 import { setTextNode } from "../../utils/slate-utils";
 
+declare module "slate" {
+  interface TextElement {
+    "italic"?: boolean;
+  }
+}
+
 export const italicPluginKey = "italic";
 
 export const ItalicPlugin = (): Plugin => {

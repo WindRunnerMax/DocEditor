@@ -15,10 +15,17 @@ import {
   isMatchedAttributeNode,
   existKey,
   isFocusLineStart,
-  getBlockAttributes,
   isWrappedNode,
   isWrappedEdgeNode,
 } from "../../utils/slate-utils";
+import { assertValue } from "src/utils/common";
+
+declare module "slate" {
+  interface BlockElement {
+    "unordered-list"?: boolean;
+    "unordered-list-item"?: UnOrderListItemConfig;
+  }
+}
 
 export type UnOrderListItemConfig = {
   level: number;
@@ -48,7 +55,7 @@ export const unorderedListPlugin = (editor: Editor): Plugin => {
       if (existKey(context.element, unorderedListKey)) {
         return <ul className="slate-unordered-list">{context.children}</ul>;
       } else {
-        const config = context.element[unorderedListItemKey] as UnOrderListItemConfig;
+        const config = assertValue(context.element[unorderedListItemKey]);
         return (
           <li className={`slate-unordered-item unordered-li-${config.level}`}>
             {context.children}
@@ -69,9 +76,7 @@ export const unorderedListPlugin = (editor: Editor): Plugin => {
           setBlockNode(editor, getOmitAttributes([unorderedListItemKey]));
         }
         if (!orderListItemMatch || !orderListMatch) return void 0;
-        const { level } = getBlockAttributes(orderListItemMatch.block)[
-          unorderedListItemKey
-        ] as UnOrderListItemConfig;
+        const { level } = assertValue(orderListItemMatch.block[unorderedListItemKey]);
 
         if (event.key === KEYBOARD.TAB) {
           if (level < 3) {

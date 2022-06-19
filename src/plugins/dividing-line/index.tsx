@@ -5,6 +5,12 @@ import { Transforms } from "slate";
 import { useFocused, useSelected } from "slate-react";
 import { cs } from "src/utils/classnames";
 
+declare module "slate" {
+  interface BlockElement {
+    "dividing-line"?: boolean;
+  }
+}
+
 export const dividingLineKey = "dividing-line";
 
 const DividingLine: React.FC = () => {

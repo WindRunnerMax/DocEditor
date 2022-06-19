@@ -2,6 +2,12 @@ import "./index.scss";
 import { EDITOR_ELEMENT_TYPE, Plugin } from "../../utils/slate-plugins";
 import { setTextNode } from "../../utils/slate-utils";
 
+declare module "slate" {
+  interface TextElement {
+    "inline-code"?: boolean;
+  }
+}
+
 export const inlineCodePluginKey = "inline-code";
 
 export const InlineCodePlugin = (): Plugin => {

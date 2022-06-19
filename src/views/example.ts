@@ -3,18 +3,15 @@ import { BaseNode } from "src/types/types";
 export const example: BaseNode[] = [
   {
     children: [{ text: "一级标题" }],
-    heading: "h1",
-    id: "01f0de8f",
+    heading: { id: "01f0de8f", type: "h1" },
   },
   {
     children: [{ text: "二级标题" }],
-    id: "4644b757",
-    heading: "h2",
+    heading: { id: "4644b757", type: "h2" },
   },
   {
     children: [{ text: "三级标题" }],
-    id: "394504e0",
-    heading: "h3",
+    heading: { id: "394504e0", type: "h3" },
   },
   {
     children: [

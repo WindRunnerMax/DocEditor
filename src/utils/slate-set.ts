@@ -1,6 +1,6 @@
 import { Editor, Location, Path, Transforms } from "slate";
 import { ReactEditor } from "slate-react";
-import { BaseElement } from "../types/types";
+import { BlockElement } from "../types/types";
 import { existKey } from "./slate-get";
 import { isBlock, isText } from "./slate-is";
 
@@ -35,7 +35,7 @@ export const setWrapNodes = (
   config: Record<string, unknown>,
   location?: Location
 ) => {
-  const wrapConfig: BaseElement = { ...config, children: [] };
+  const wrapConfig: BlockElement = { ...config, children: [] };
   Transforms.wrapNodes(editor, wrapConfig, { at: location });
 };
 

@@ -18,6 +18,13 @@ import {
   isFocusLineStart,
 } from "../../utils/slate-utils";
 
+declare module "slate" {
+  interface BlockElement {
+    "quote-block"?: boolean;
+    "quote-block-item"?: boolean;
+  }
+}
+
 export const quoteBlockKey = "quote-block";
 export const quoteBlockItemKey = "quote-block-item";
 const quoteCommand: CommandFn = (editor, key, data) => {

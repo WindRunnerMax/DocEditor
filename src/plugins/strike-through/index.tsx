@@ -1,6 +1,12 @@
 import { EDITOR_ELEMENT_TYPE, Plugin } from "../../utils/slate-plugins";
 import { setTextNode } from "../../utils/slate-utils";
 
+declare module "slate" {
+  interface TextElement {
+    "strike-through"?: boolean;
+  }
+}
+
 export const strikeThroughPluginKey = "strike-through";
 
 export const StrikeThroughPlugin = (): Plugin => {

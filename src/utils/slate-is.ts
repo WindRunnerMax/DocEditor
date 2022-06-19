@@ -8,6 +8,8 @@ import {
   Node,
   BaseRange,
   Location,
+  BlockElement,
+  TextElement,
 } from "slate";
 import { BaseNode } from "../types/types";
 import { getBlockNode } from "./slate-get";
@@ -56,9 +58,10 @@ export const isMatchedEvent = (event: React.KeyboardEvent<HTMLDivElement>, ...ar
   return args.indexOf(key) > -1;
 };
 
-export const isBlock = (editor: Editor, node: Node) => Editor.isBlock(editor, node);
+export const isBlock = (editor: Editor, node: Node): node is BlockElement =>
+  Editor.isBlock(editor, node);
 
-export const isText = (node: Node) => Text.isText(node);
+export const isText = (node: Node): node is TextElement => Text.isText(node);
 
 export const isWrappedEdgeNode = (
   editor: Editor,

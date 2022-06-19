@@ -4,20 +4,26 @@ import { setTextNode } from "../../utils/slate-utils";
 import { Trigger } from "@arco-design/web-react";
 import React, { useState } from "react";
 import { Editor } from "slate";
-import { BaseText } from "../../types/types";
+import { TextElement } from "../../types/types";
 import HyperLinkMenu from "./menu";
 import { ReactEditor, useSlateStatic } from "slate-react";
+import { assertValue } from "src/utils/common";
 
-export const hyperLinkPluginKey = "link";
+declare module "slate" {
+  interface TextElement {
+    "link"?: HyperLinkConfig;
+  }
+}
 
 export type HyperLinkConfig = {
   href: string;
   blank: boolean;
 };
+export const hyperLinkPluginKey = "link";
 
 const HyperLinkEditor: React.FC<{
   config: HyperLinkConfig;
-  element: BaseText;
+  element: TextElement;
 }> = props => {
   const { config } = props;
   const editor = useSlateStatic();
@@ -78,7 +84,7 @@ export const HyperLinkPlugin = (editor: Editor, isRender: boolean): Plugin => {
       }
     },
     render: context => {
-      const config = context.props.leaf[hyperLinkPluginKey] as HyperLinkConfig;
+      const config = assertValue(context.props.leaf[hyperLinkPluginKey]);
       if (!isRender) {
         return (
           <HyperLinkEditor config={config} element={context.element}>

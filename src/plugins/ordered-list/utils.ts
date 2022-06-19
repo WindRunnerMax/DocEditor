@@ -1,21 +1,22 @@
-import { Editor, Path } from "slate";
-import { orderedListItemKey, orderedListKey, OrderListItemConfig } from ".";
-import { ExtendAncestor } from "../../types/types";
+import { BlockElement, Editor, Path } from "slate";
+import { orderedListItemKey, orderedListKey } from ".";
 import {
   existKey,
   getBlockNode,
   getNextBlockNode,
+  isBlock,
   isCollapsed,
   isSlateElement,
   setBlockNode,
 } from "../../utils/slate-utils";
 
-const applyNewOrderList = (editor: Editor, block: ExtendAncestor, path: Path) => {
+const applyNewOrderList = (editor: Editor, block: BlockElement, path: Path) => {
   const batchFn: (() => void)[] = [];
   const levelCounter: Record<number, number> = {};
   if (!existKey(block, orderedListKey)) return void 0;
   block.children.forEach((item, index) => {
-    const attributes = item[orderedListItemKey] as OrderListItemConfig;
+    if (!isBlock(editor, item)) return void 0;
+    const attributes = item[orderedListItemKey];
     if (!attributes) return void 0;
     const { level, start } = attributes;
     levelCounter[level] = (levelCounter[level] || 0) + 1;

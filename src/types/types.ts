@@ -1,15 +1,20 @@
-import { Ancestor, BaseEditor } from "slate";
+import { BaseEditor, BlockElement, TextElement } from "slate";
 import { ReactEditor } from "slate-react";
+export type { BlockElement, TextElement } from "slate";
 
-export type BaseElement = { children: BaseNode[] } & Record<string, unknown>;
-export type BaseText = { text: string } & Record<string, unknown>;
-export type BaseNode = BaseElement | BaseText;
+export type BaseNode = BlockElement | TextElement;
 declare module "slate" {
+  interface BlockElement {
+    children: BaseNode[];
+    [key: string]: unknown;
+  }
+  interface TextElement {
+    text: string;
+    [key: string]: unknown;
+  }
   interface CustomTypes {
     Editor: BaseEditor & ReactEditor;
-    Element: BaseElement;
-    Text: BaseText;
+    Element: BlockElement;
+    Text: TextElement;
   }
 }
-
-export type ExtendAncestor = Ancestor & Record<string, unknown>;
