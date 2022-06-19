@@ -4,7 +4,7 @@ import { Slate, Editable, withReact } from "slate-react";
 import { useMemoizedFn } from "ahooks";
 import { withHistory } from "slate-history";
 import { debounce } from "lodash";
-import { createPlugins } from "src/utils/create-plugins";
+import { SlatePlugins } from "src/utils/slate-plugins";
 import { ParagraphPlugin } from "src/plugins/paragraph";
 import { DocToolBarPlugin } from "src/plugins/toolbar/doc-toolbar";
 import { HeadingPlugin } from "src/plugins/heading";
@@ -34,33 +34,42 @@ const SlateDocEditor: FC<{
     }, 500)
   );
 
-  const { renderElement, renderLeaf, onKeyDown, withVoidElements } = useMemo(
-    () =>
-      createPlugins(
-        ParagraphPlugin(),
-        DocToolBarPlugin(editor, props.isRender),
-        HeadingPlugin(editor),
-        BoldPlugin(),
-        QuoteBlockPlugin(editor),
-        HyperLinkPlugin(editor, props.isRender),
-        UnderLinePlugin(),
-        StrikeThroughPlugin(),
-        ItalicPlugin(),
-        InlineCodePlugin(),
-        ShortCutPlugin(editor),
-        orderedListPlugin(editor),
-        unorderedListPlugin(editor),
-        DividingLinePlugin()
-      ),
-    [editor, props.isRender]
-  );
+  const { renderElement, renderLeaf, onKeyDown, withVoidElements, commands } = useMemo(() => {
+    const register = new SlatePlugins(
+      ParagraphPlugin(),
+      HeadingPlugin(editor),
+      BoldPlugin(),
+      QuoteBlockPlugin(editor),
+      HyperLinkPlugin(editor, props.isRender),
+      UnderLinePlugin(),
+      StrikeThroughPlugin(),
+      ItalicPlugin(),
+      InlineCodePlugin(),
+      orderedListPlugin(editor),
+      unorderedListPlugin(editor),
+      DividingLinePlugin()
+    );
+
+    const commands = register.getCommands();
+    register.add(
+      DocToolBarPlugin(editor, props.isRender, commands),
+      ShortCutPlugin(editor, commands)
+    );
+
+    return register.apply();
+  }, [editor, props.isRender]);
 
   const withVoidEditor = useMemo(() => withVoidElements(editor), [editor, withVoidElements]);
 
   return (
     <div ref={slateRef} onClick={e => e.stopPropagation()}>
       <Slate editor={withVoidEditor} value={initText} onChange={updateText}>
-        <MenuToolBar slateRef={slateRef} editor={editor} isRender={props.isRender}></MenuToolBar>
+        <MenuToolBar
+          slateRef={slateRef}
+          editor={editor}
+          isRender={props.isRender}
+          commands={commands}
+        ></MenuToolBar>
         <Editable
           renderElement={renderElement}
           renderLeaf={renderLeaf}

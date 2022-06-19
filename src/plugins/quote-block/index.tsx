@@ -1,6 +1,6 @@
 import "./index.scss";
-import { EDITOR_ELEMENT_TYPE, Plugin } from "../../utils/create-plugins";
-import { CommandFn } from "../../utils/commands";
+import { EDITOR_ELEMENT_TYPE, Plugin } from "../../utils/slate-plugins";
+import { CommandFn } from "../../utils/slate-commands";
 import { Editor } from "slate";
 import { isObject } from "src/utils/is";
 import { KEYBOARD } from "../../utils/constant";

@@ -1,5 +1,5 @@
 import "./index.scss";
-import { EDITOR_ELEMENT_TYPE, Plugin } from "../../utils/create-plugins";
+import { EDITOR_ELEMENT_TYPE, Plugin } from "../../utils/slate-plugins";
 import { setTextNode } from "../../utils/slate-utils";
 
 export const inlineCodePluginKey = "inline-code";

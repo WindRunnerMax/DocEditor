@@ -1,5 +1,5 @@
 import "./index.scss";
-import { EDITOR_ELEMENT_TYPE, Plugin } from "../../utils/create-plugins";
+import { EDITOR_ELEMENT_TYPE, Plugin } from "../../utils/slate-plugins";
 import { Editor } from "slate";
 import {
   IconEdit,
@@ -12,7 +12,7 @@ import {
   IconUnorderedList,
 } from "@arco-design/web-react/icon";
 import { Menu, Trigger } from "@arco-design/web-react";
-import { execCommand } from "../../utils/commands";
+import { execCommand, SlateCommands } from "../../utils/slate-commands";
 import { ReactEditor, RenderElementProps } from "slate-react";
 import { useState } from "react";
 import { focusSelection } from "../../utils/slate-utils";
@@ -20,6 +20,7 @@ import { focusSelection } from "../../utils/slate-utils";
 const DocMenu: React.FC<{
   editor: Editor;
   element: RenderElementProps["element"];
+  commands: SlateCommands;
 }> = props => {
   const [visible, setVisible] = useState(false);
 
@@ -28,7 +29,7 @@ const DocMenu: React.FC<{
     const [key, data] = param.split(".");
     const path = ReactEditor.findPath(props.editor, props.element);
     focusSelection(props.editor, path);
-    execCommand(props.editor, key, { extraKey: data, path });
+    execCommand(props.editor, props.commands, key, { extraKey: data, path });
   };
   const MenuPopup = (
     <Menu onClickMenuItem={affixStyles} className="doc-menu-popup">
@@ -80,7 +81,11 @@ const NO_DOC_TOOL_BAR = ["quote-block", "ordered-list", "unordered-list"];
 const OFFSET_MAP: Record<string, number> = {
   "quote-block-item": 12,
 };
-export const DocToolBarPlugin = (editor: Editor, isRender: boolean): Plugin => {
+export const DocToolBarPlugin = (
+  editor: Editor,
+  isRender: boolean,
+  commands: SlateCommands
+): Plugin => {
   return {
     key: "doc-toolbar",
     priority: 13,
@@ -100,7 +105,7 @@ export const DocToolBarPlugin = (editor: Editor, isRender: boolean): Plugin => {
       }
       return (
         <Trigger
-          popup={() => <DocMenu editor={editor} element={context.element} />}
+          popup={() => <DocMenu editor={editor} commands={commands} element={context.element} />}
           position="left"
           popupAlign={{ left: offset }}
           mouseLeaveDelay={200}

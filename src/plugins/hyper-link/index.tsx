@@ -1,4 +1,4 @@
-import { EDITOR_ELEMENT_TYPE, Plugin } from "../../utils/create-plugins";
+import { EDITOR_ELEMENT_TYPE, Plugin } from "../../utils/slate-plugins";
 import { Popup } from "src/components/popup";
 import { setTextNode } from "../../utils/slate-utils";
 import { Trigger } from "@arco-design/web-react";

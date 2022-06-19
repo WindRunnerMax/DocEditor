@@ -1,8 +1,8 @@
-import { EDITOR_ELEMENT_TYPE, Plugin } from "../../utils/create-plugins";
+import { EDITOR_ELEMENT_TYPE, Plugin } from "../../utils/slate-plugins";
 import { Editor, Transforms } from "slate";
 import { getBlockNode, isCollapsed, isMatchedEvent } from "../../utils/slate-utils";
 import { KEYBOARD } from "../../utils/constant";
-import { execCommand } from "../../utils/commands";
+import { execCommand, SlateCommands } from "../../utils/slate-commands";
 
 const SHORTCUTS: Record<string, string> = {
   "1.": "ordered-list",
@@ -15,7 +15,7 @@ const SHORTCUTS: Record<string, string> = {
   "---": "dividing-line",
 };
 
-export const ShortCutPlugin = (editor: Editor): Plugin => {
+export const ShortCutPlugin = (editor: Editor, commands: SlateCommands): Plugin => {
   return {
     key: "shortcut",
     type: EDITOR_ELEMENT_TYPE.BLOCK,
@@ -34,7 +34,7 @@ export const ShortCutPlugin = (editor: Editor): Plugin => {
             Transforms.select(editor, range);
             Transforms.delete(editor);
             const [key, data] = param.split(".");
-            execCommand(editor, key, { extraKey: data, path });
+            execCommand(editor, commands, key, { extraKey: data, path });
             event.preventDefault();
           }
         }

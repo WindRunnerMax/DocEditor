@@ -13,7 +13,7 @@ import {
   IconUnderline,
 } from "@arco-design/web-react/icon";
 import { useMemoizedFn } from "ahooks";
-import { execCommand } from "../../utils/commands";
+import { execCommand, SlateCommands } from "../../utils/slate-commands";
 import { debounce } from "lodash";
 import { focusSelection, isCollapsed } from "../../utils/slate-utils";
 import { getSelectionRect, maskMenuToolBar, toNormalText } from "./utils";
@@ -26,6 +26,7 @@ export const MenuToolBar: FC<{
   editor: Editor;
   slateRef: React.RefObject<HTMLDivElement>;
   isRender: boolean;
+  commands: SlateCommands;
 }> = props => {
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -45,7 +46,11 @@ export const MenuToolBar: FC<{
           position.top = menuRef.current.offsetTop + menuRef.current.offsetHeight / 2;
           position.left = menuRef.current.offsetLeft + menuRef.current.offsetWidth / 2;
         }
-        const result = execCommand(props.editor, key, { extraKey: data, event, position });
+        const result = execCommand(props.editor, props.commands, key, {
+          extraKey: data,
+          event,
+          position,
+        });
         if (result) result.then(hideToolBarAndFocusEditor);
         else hideToolBarAndFocusEditor();
       }

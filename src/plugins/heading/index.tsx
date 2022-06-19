@@ -1,6 +1,6 @@
 import { Editor, Transforms } from "slate";
-import { CommandFn } from "../../utils/commands";
-import { EDITOR_ELEMENT_TYPE, Plugin } from "../../utils/create-plugins";
+import { CommandFn } from "../../utils/slate-commands";
+import { EDITOR_ELEMENT_TYPE, Plugin } from "../../utils/slate-plugins";
 import { v4 as uuid } from "uuid";
 import { KEYBOARD } from "../../utils/constant";
 import { isObject } from "src/utils/is";

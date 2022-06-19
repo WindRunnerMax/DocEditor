@@ -1,4 +1,4 @@
-import { EDITOR_ELEMENT_TYPE, Plugin } from "../../utils/create-plugins";
+import { EDITOR_ELEMENT_TYPE, Plugin } from "../../utils/slate-plugins";
 import { Transforms, Text } from "slate";
 
 export const boldPluginKey = "bold";
