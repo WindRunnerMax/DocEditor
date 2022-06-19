@@ -117,7 +117,7 @@ export const example: BaseNode[] = [
   {
     children: [
       { text: "打开" },
-      { "text": "http://localhost:3000/render", "inline-code": true },
+      { "text": "http://localhost:3000/#render", "inline-code": true },
       { text: "查看预览效果。" },
     ],
   },

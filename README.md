@@ -1,6 +1,6 @@
 # DocEditor
 基于`slate.js`完成的文档编辑器，`slate.js`是一个完全可定制的框架，用于构建富文本编辑器，简单来说他本身并不提供各种富文本编辑功能，所有的富文本功能都需要自己来通过其提供的`API`来实现，甚至他的插件机制也需要通过自己来拓展，所以文档组件方面就有了一些自己制定的策略。  
-交互与`ui`方面对于飞书文档的参考比较多，整体来说坑也是比较多的，尤其是在做交互策略方面，不过做好兜底以后实现基本的文档编辑器功能是没有问题的。编辑器在线`DEMO` [Editor DEMO](https://windrunnermax.github.io/doceditor)，文档预览在线`DEMO` [Render DEMO](https://windrunnermax.github.io/doceditor/render)。  
+交互与`ui`方面对于飞书文档的参考比较多，整体来说坑也是比较多的，尤其是在做交互策略方面，不过做好兜底以后实现基本的文档编辑器功能是没有问题的。编辑器在线`DEMO` [Editor DEMO](https://windrunnermax.github.io/DocEditor/)，文档预览在线`DEMO` [Render DEMO](https://windrunnermax.github.io/DocEditor/#render)。  
   
 
 ```bash
@@ -8,6 +8,8 @@ $ pnpm install
 $ npx husky install && chmod 755 .husky/pre-commit
 ```
 
+## 类型拓展
+通过`declare module "slate"`来拓展`Element`的类型，使实现插件的`attributes`有较为严格的类型校验。
 ## 插件注册
 插件注册时通过`create-plugins.tsx`来实现，具体来说，每个插件都是一个必须返回一个`Plugin`类型的函数，当然直接定义一个对象也是没问题的，函数的好处是可以在注册的时候传递参数，所以一般都是直接用函数定义的。
 
@@ -96,3 +98,4 @@ type LeafPlugin = BasePlugin & {
     * 使用`tab`键进入下一级有序列表，删除键恢复上一级有序列表。
     * 行空且该行为`wrapped`首行或尾行，且此时列表级别为`1`时，回车和删除会取消该行有序列表格式。
     * 光标置于行最前点击删除，且该行为`wrapped`首行或尾行，且此时列表级别为`1`时，则会取消该行有序列表格式。
+

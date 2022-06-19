@@ -6,7 +6,7 @@ import { cs } from "./utils/classnames";
 export const App: React.FC = () => {
   const isRender = useRef(false);
 
-  if (/render\/?$/.test(location.pathname)) isRender.current = true;
+  if (/render/.test(location.hash)) isRender.current = true;
 
   return (
     <div className="doc-editor-container">
