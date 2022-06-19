@@ -23,7 +23,7 @@ export const headingPluginKey = "heading";
 const headingCommand: CommandFn = (editor, key, data) => {
   if (isObject(data) && data.path) {
     if (!isMatchedAttributeNode(editor, headingPluginKey, data.extraKey)) {
-      setBlockNode(editor, { [key]: data.extraKey, id: uuid() }, data.path);
+      setBlockNode(editor, { [key]: data.extraKey, id: uuid().slice(0, 8) }, data.path);
     } else {
       setBlockNode(editor, getOmitAttributes(["id", headingPluginKey]), data.path);
     }

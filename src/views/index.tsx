@@ -20,16 +20,18 @@ import { ShortCutPlugin } from "src/plugins/shortcut";
 import { orderedListPlugin } from "src/plugins/ordered-list";
 import { unorderedListPlugin } from "src/plugins/unordered-list";
 import { DividingLinePlugin } from "src/plugins/dividing-line";
+import { example } from "./example";
 
 const SlateDocEditor: FC<{
   isRender: boolean;
 }> = props => {
   const slateRef = useRef<HTMLDivElement>(null);
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
-  const initText = [{ children: [{ text: "" }] }];
+  const initText = example;
 
   const updateText = useMemoizedFn(
     debounce((text: Descendant[]) => {
+      // console.log("Text changes", JSON.stringify(text));
       console.log("Text changes", text);
     }, 500)
   );

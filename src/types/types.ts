@@ -1,7 +1,7 @@
 import { Ancestor, BaseEditor } from "slate";
 import { ReactEditor } from "slate-react";
 
-export type BaseElement = { children: BaseText[] } & Record<string, unknown>;
+export type BaseElement = { children: BaseNode[] } & Record<string, unknown>;
 export type BaseText = { text: string } & Record<string, unknown>;
 export type BaseNode = BaseElement | BaseText;
 declare module "slate" {
