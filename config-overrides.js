@@ -1,4 +1,4 @@
-const { override, fixBabelImports, disableEsLint } = require("customize-cra");
+const { override, fixBabelImports, disableEsLint, addLessLoader } = require("customize-cra");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 // const { paths: rewiredPaths } = require("react-app-rewired");
 // const { scriptVersion } = rewiredPaths;
@@ -44,6 +44,11 @@ module.exports = {
     fixBabelImports("@arco-design/web-react/icon", {
       libraryDirectory: "react-icon",
       camel2DashComponentName: false,
+    }),
+    addLessLoader({
+      javascriptEnabled: true,
+      importLoaders: true,
+      localIdentName: "[name]__[hash:base64:5]",
     }),
     disableEsLint(),
     configWebpackPlugins()
