@@ -1,5 +1,9 @@
 @import '@arco-design/web-react/dist/css/arco.css';
 
+body {
+  background-color: var(--color-bg-1);
+}
+
 .doc-editor-container {
 
   $height: 50px;
@@ -10,19 +14,32 @@
 
   .header {
     align-items: center;
-    background-color: var(--color-bg-white);
+    background-color: var(--color-bg-2);
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+    color: var(--color-text-1);
     display: flex;
     height: $height;
+    justify-content: space-between;
     left: 0;
+    padding: 0 20px;
     position: fixed;
     right: 0;
     top: 0;
     z-index: 999;
 
-    span {
+    .left {
       font-size: 18px;
-      margin-left: 20px;
+    }
+
+    .right {
+      align-items: center;
+      display: flex;
+    }
+
+    .arco-icon {
+      cursor: pointer;
+      font-size: 19px;
+      margin: 7px;
     }
   }
 
@@ -31,14 +48,10 @@
   }
 
   .editor {
-    background-color: var(--color-bg-white);
+    background-color: var(--color-bg-2);
     margin: 0 auto;
     margin-top: 10px;
     max-width: 800px;
-    padding: 10px 10px 10px 25px;
-
-    &.render {
-      padding: 10px;
-    }
+    padding: 10px 25px;
   }
 }
