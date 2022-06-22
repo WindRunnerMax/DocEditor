@@ -115,11 +115,7 @@ export const example: BaseNode[] = [
   { children: [{ text: "支持分割线。" }] },
   { "dividing-line": true, "children": [{ text: "" }] },
   {
-    children: [
-      { text: "打开" },
-      { "text": "http://localhost:3000/#render", "inline-code": true },
-      { text: "查看预览效果。" },
-    ],
+    children: [{ text: "右上角图标可以切换编辑与预览模式，以及亮色与暗色模式。" }],
   },
   { children: [{ text: "后续支持完善中..." }] },
 ];

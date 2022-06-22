@@ -1,6 +1,6 @@
 # DocEditor
 基于`slate.js`完成的文档编辑器，`slate.js`是一个完全可定制的框架，用于构建富文本编辑器，简单来说他本身并不提供各种富文本编辑功能，所有的富文本功能都需要自己来通过其提供的`API`来实现，甚至他的插件机制也需要通过自己来拓展，所以文档组件方面就有了一些自己制定的策略。  
-交互与`ui`方面对于飞书文档的参考比较多，整体来说坑也是比较多的，尤其是在做交互策略方面，不过做好兜底以后实现基本的文档编辑器功能是没有问题的。编辑器在线`DEMO` [Editor DEMO](https://windrunnermax.github.io/DocEditor/)，文档预览在线`DEMO` [Render DEMO](https://windrunnermax.github.io/DocEditor/#render)。  
+交互与`ui`方面对于飞书文档的参考比较多，整体来说坑也是比较多的，尤其是在做交互策略方面，不过做好兜底以后实现基本的文档编辑器功能是没有问题的。编辑器在线`DEMO` [Editor DEMO](https://windrunnermax.github.io/DocEditor/)，可在右上角图标切换编辑模式与预览模式，以及亮色模式与暗色模式。  
   
 
 ```bash
