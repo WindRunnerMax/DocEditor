@@ -13,7 +13,7 @@ body {
   .header {
     align-items: center;
     background-color: var(--color-bg-2);
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 4px var(--color-border-2);
     color: var(--color-text-1);
     display: flex;
     height: $height;

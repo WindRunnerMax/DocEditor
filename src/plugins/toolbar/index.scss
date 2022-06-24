@@ -8,10 +8,10 @@
 
 .doc-menu-popup,
 .hover-menu-container {
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 0 var(--color-border-2);
 
   .arco-icon {
-    color: var(--color-text-2) !important;
+    color: var(--color-text-1) !important;
   }
 
   .cut-line {
@@ -58,8 +58,8 @@
 }
 
 .hover-menu-container {
-  background-color: #fff;
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+  background-color: var(--color-bg-2);
+  box-shadow: 0 0 4px var(--color-border-2);
   left: -10000px;
   opacity: 0;
   padding: 3px 5px;
