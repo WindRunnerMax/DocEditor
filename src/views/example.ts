@@ -1,18 +1,9 @@
 import { BaseNode } from "src/types/types";
 
 export const example: BaseNode[] = [
-  {
-    children: [{ text: "一级标题" }],
-    heading: { id: "01f0de8f", type: "h1" },
-  },
-  {
-    children: [{ text: "二级标题" }],
-    heading: { id: "4644b757", type: "h2" },
-  },
-  {
-    children: [{ text: "三级标题" }],
-    heading: { id: "394504e0", type: "h3" },
-  },
+  { children: [{ text: "一级标题" }], heading: { id: "01f0de8f", type: "h1" } },
+  { children: [{ text: "二级标题" }], heading: { id: "4644b757", type: "h2" } },
+  { children: [{ text: "三级标题" }], heading: { id: "394504e0", type: "h3" } },
   {
     children: [
       { text: "支持" },
@@ -26,9 +17,13 @@ export const example: BaseNode[] = [
       { text: "、" },
       { "text": "行内代码块", "inline-code": true },
       { text: "、" },
-      { text: "超链接", link: { href: "https://github.com/WindrunnerMax/DocEditor", blank: true } },
-      { text: "。" },
+      {
+        text: "超链接",
+        link: { href: "https://github.com/WindrunnerMax/DocEditor", blank: true },
+      },
+      { text: "、文字对齐。" },
     ],
+    align: "center",
   },
   {
     "quote-block": true,
@@ -114,8 +109,6 @@ export const example: BaseNode[] = [
   },
   { children: [{ text: "支持分割线。" }] },
   { "dividing-line": true, "children": [{ text: "" }] },
-  {
-    children: [{ text: "右上角图标可以切换编辑与预览模式，以及亮色与暗色模式。" }],
-  },
+  { children: [{ text: "右上角图标可以切换编辑与预览模式，以及亮色与暗色模式。" }] },
   { children: [{ text: "后续支持完善中..." }] },
 ];
