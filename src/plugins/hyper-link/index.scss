@@ -1,6 +1,6 @@
 .hyper-link-menu {
   background-color: var(--color-bg-1);
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 4px var(--color-border-2);
   padding: 10px;
   width: 300px;
 
@@ -23,4 +23,9 @@
     display: flex;
     justify-content: flex-end;
   }
+}
+
+.hyper-link {
+  color: rgb(var(--link-6));
+  text-decoration: none;
 }

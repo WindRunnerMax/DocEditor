@@ -48,9 +48,9 @@ const HyperLinkEditor: React.FC<{
       popupVisible={visible}
       onVisibleChange={setVisible}
     >
-      <a href={config.href} target={config.blank ? "_blank" : void 0} onClick={clickHref}>
+      <span className="hyper-link" onClick={clickHref}>
         {props.children}
-      </a>
+      </span>
     </Trigger>
   );
 };
@@ -93,7 +93,7 @@ export const HyperLinkPlugin = (editor: Editor, isRender: boolean): Plugin => {
         );
       } else {
         return (
-          <a href={config.href} target={config.blank ? "_blank" : void 0}>
+          <a className="hyper-link" href={config.href} target={config.blank ? "_blank" : void 0}>
             {context.children}
           </a>
         );
