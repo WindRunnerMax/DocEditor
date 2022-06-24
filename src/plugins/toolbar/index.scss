@@ -8,7 +8,7 @@
 
 .doc-menu-popup,
 .hover-menu-container {
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
 
   .arco-icon {
     color: var(--color-text-2) !important;
@@ -16,7 +16,7 @@
 
   .cut-line {
     background-color: var(--color-border-2);
-    margin: 4px 0;
+    margin: 4px 6px;
     width: 1px;
   }
 }
@@ -27,7 +27,8 @@
     padding: 0;
   }
 
-  .arco-menu-item {
+  .arco-menu-item,
+  .arco-menu-pop {
     align-items: center;
     display: flex;
     height: 32px;
@@ -39,6 +40,19 @@
 
     .arco-icon {
       margin: 0;
+    }
+  }
+
+  .arco-menu-pop {
+    padding-right: 18px;
+    width: 50px;
+
+    .arco-menu-icon-suffix {
+      left: 28px;
+
+      svg {
+        transform: rotate(90deg);
+      }
     }
   }
 }
@@ -57,4 +71,11 @@
   button {
     color: #000 !important;
   }
+}
+
+.align-menu-center {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  justify-content: center;
 }

@@ -15,6 +15,7 @@ module.exports = {
     "color-function-notation": null,
     "alpha-value-notation": null,
     "no-empty-source": null,
-    "max-nesting-depth": 2
+    "max-nesting-depth": 6,
+    "selector-max-compound-selectors": 6
   }
 }

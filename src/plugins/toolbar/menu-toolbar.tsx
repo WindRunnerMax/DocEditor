@@ -4,11 +4,15 @@ import { Editor } from "slate";
 import { Menu } from "@arco-design/web-react";
 import ReactDOM from "react-dom";
 import {
+  IconAlignCenter,
+  IconAlignLeft,
+  IconAlignRight,
   IconBold,
   IconCode,
   IconFontColors,
   IconItalic,
   IconLink,
+  IconMenu,
   IconStrikethrough,
   IconUnderline,
 } from "@arco-design/web-react/icon";
@@ -16,7 +20,7 @@ import { useMemoizedFn } from "ahooks";
 import { execCommand, SlateCommands } from "../../utils/slate-commands";
 import { debounce } from "lodash";
 import { focusSelection, isCollapsed } from "../../utils/slate-utils";
-import { getSelectionRect, maskMenuToolBar, toNormalText } from "./utils";
+import { getSelectionRect, maskMenuToolBar } from "./utils";
 
 export const Portal: React.FC = ({ children }) => {
   return typeof document === "object" ? ReactDOM.createPortal(children, document.body) : null;
@@ -37,23 +41,19 @@ export const MenuToolBar: FC<{
         menuRef.current && maskMenuToolBar(menuRef.current);
         focusSelection(props.editor);
       };
-      if (key === "normal") {
-        toNormalText(props.editor);
-        hideToolBarAndFocusEditor();
-      } else {
-        const position = { left: 0, top: 0 };
-        if (menuRef.current) {
-          position.top = menuRef.current.offsetTop + menuRef.current.offsetHeight / 2;
-          position.left = menuRef.current.offsetLeft + menuRef.current.offsetWidth / 2;
-        }
-        const result = execCommand(props.editor, props.commands, key, {
-          extraKey: data,
-          event,
-          position,
-        });
-        if (result) result.then(hideToolBarAndFocusEditor);
-        else hideToolBarAndFocusEditor();
+
+      const position = { left: 0, top: 0 };
+      if (menuRef.current) {
+        position.top = menuRef.current.offsetTop + menuRef.current.offsetHeight / 2;
+        position.left = menuRef.current.offsetLeft + menuRef.current.offsetWidth / 2;
       }
+      const result = execCommand(props.editor, props.commands, key, {
+        extraKey: data,
+        event,
+        position,
+      });
+      if (result) result.then(hideToolBarAndFocusEditor);
+      else hideToolBarAndFocusEditor();
     }
   );
 
@@ -63,8 +63,9 @@ export const MenuToolBar: FC<{
         className="menu-toolbar-menu-container"
         onClickMenuItem={affixStyles}
         selectable={false}
+        mode="vertical"
       >
-        <Menu.Item key="normal">
+        <Menu.Item key="paragraph">
           <IconFontColors />
         </Menu.Item>
         <Menu.Item key="bold">
@@ -79,13 +80,39 @@ export const MenuToolBar: FC<{
         <Menu.Item key="strike-through">
           <IconStrikethrough />
         </Menu.Item>
-        <div className="cut-line"></div>
         <Menu.Item key="inline-code">
           <IconCode />
         </Menu.Item>
         <Menu.Item key="link">
           <IconLink />
         </Menu.Item>
+        <Menu.SubMenu
+          key="align"
+          title={<IconAlignLeft />}
+          popup
+          triggerProps={{ trigger: "click", position: "bottom" }}
+        >
+          <Menu.Item key="align.left">
+            <div className="align-menu-center">
+              <IconAlignLeft />
+            </div>
+          </Menu.Item>
+          <Menu.Item key="align.center">
+            <div className="align-menu-center">
+              <IconAlignCenter />
+            </div>
+          </Menu.Item>
+          <Menu.Item key="align.right">
+            <div className="align-menu-center">
+              <IconAlignRight />
+            </div>
+          </Menu.Item>
+          <Menu.Item key="align.justify">
+            <div className="align-menu-center">
+              <IconMenu />
+            </div>
+          </Menu.Item>
+        </Menu.SubMenu>
       </Menu>
     ),
     [affixStyles]
