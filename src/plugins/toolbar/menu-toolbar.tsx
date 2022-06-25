@@ -142,7 +142,7 @@ export const MenuToolBar: FC<{
       };
       maskMenuToolBar(toolbar);
       document.addEventListener("mouseup", mouseUpHandler);
-    }, 50);
+    }, 100);
 
     element.addEventListener("mousedown", mouseDownHandler);
     return () => {

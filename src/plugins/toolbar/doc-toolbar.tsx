@@ -80,7 +80,7 @@ const DocMenu: React.FC<{
   );
 };
 
-const NO_DOC_TOOL_BAR = ["quote-block", "ordered-list", "unordered-list", "dividing-lines"];
+const NO_DOC_TOOL_BAR = ["quote-block", "ordered-list", "unordered-list", "dividing-line"];
 const OFFSET_MAP: Record<string, number> = {
   "quote-block-item": 12,
 };
@@ -114,7 +114,7 @@ export const DocToolBarPlugin = (
           mouseLeaveDelay={200}
           mouseEnterDelay={200}
         >
-          <div className="doc-menu-line">{context.children}</div>
+          <div>{context.children}</div>
         </Trigger>
       );
     },
