@@ -70,7 +70,10 @@ const DocMenu: React.FC<{
       popupVisible={visible}
       onVisibleChange={setVisible}
     >
-      <span className="doc-icon-plus">
+      <span
+        className="doc-icon-plus"
+        onMouseDown={e => e.preventDefault()} // prevent toolbar from taking focus away from editor
+      >
         <IconPlusCircle />
       </span>
     </Trigger>

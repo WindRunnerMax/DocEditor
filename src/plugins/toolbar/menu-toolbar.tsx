@@ -63,6 +63,7 @@ export const MenuToolBar: FC<{
         className="menu-toolbar-menu-container"
         onClickMenuItem={exec}
         selectable={false}
+        onMouseDown={e => e.preventDefault()} // prevent toolbar from taking focus away from editor
         mode="vertical"
       >
         <Menu.Item key="paragraph">
