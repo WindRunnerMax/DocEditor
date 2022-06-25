@@ -49,7 +49,7 @@ export const isSlateElement = (block: Node): block is BaseNode => {
 };
 
 export const isCollapsed = (editor: Editor, at = editor.selection): at is BaseRange => {
-  return !!(at && Range.isCollapsed(at));
+  return !at || Range.isCollapsed(at);
 };
 
 export const isFocusLineStart = (editor: Editor, path: Path) => {

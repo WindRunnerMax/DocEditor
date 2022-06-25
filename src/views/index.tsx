@@ -1,4 +1,4 @@
-import { FC, useMemo, useRef } from "react";
+import { FC, useMemo } from "react";
 import { createEditor, Descendant } from "slate";
 import { Slate, Editable, withReact } from "slate-react";
 import { useMemoizedFn } from "ahooks";
@@ -26,7 +26,6 @@ import { AlignPlugin } from "src/plugins/align";
 const SlateDocEditor: FC<{
   isRender: boolean;
 }> = props => {
-  const slateRef = useRef<HTMLDivElement>(null);
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
   const initText = example;
 
@@ -66,23 +65,16 @@ const SlateDocEditor: FC<{
   const withVoidEditor = useMemo(() => withVoidElements(editor), [editor, withVoidElements]);
 
   return (
-    <div ref={slateRef} onClick={e => e.stopPropagation()}>
-      <Slate editor={withVoidEditor} value={initText} onChange={updateText}>
-        <MenuToolBar
-          slateRef={slateRef}
-          editor={editor}
-          isRender={props.isRender}
-          commands={commands}
-        ></MenuToolBar>
-        <Editable
-          renderElement={renderElement}
-          renderLeaf={renderLeaf}
-          readOnly={props.isRender}
-          placeholder="Enter text ..."
-          onKeyDown={onKeyDown}
-        />
-      </Slate>
-    </div>
+    <Slate editor={withVoidEditor} value={initText} onChange={updateText}>
+      <MenuToolBar isRender={props.isRender} commands={commands}></MenuToolBar>
+      <Editable
+        renderElement={renderElement}
+        renderLeaf={renderLeaf}
+        readOnly={props.isRender}
+        placeholder="Enter text ..."
+        onKeyDown={onKeyDown}
+      />
+    </Slate>
   );
 };
 
