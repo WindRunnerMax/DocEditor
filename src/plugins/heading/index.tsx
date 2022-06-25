@@ -1,3 +1,4 @@
+import "./index.scss";
 import { Editor, Transforms } from "slate";
 import { CommandFn } from "../../utils/slate-commands";
 import { EDITOR_ELEMENT_TYPE, Plugin } from "../../utils/slate-plugins";
@@ -48,11 +49,23 @@ export const HeadingPlugin = (editor: Editor): Plugin => {
       const id = heading.id;
       switch (heading.type) {
         case "h1":
-          return <h1 id={id}>{context.children}</h1>;
+          return (
+            <h1 className="doc-heading" id={id}>
+              {context.children}
+            </h1>
+          );
         case "h2":
-          return <h2 id={id}>{context.children}</h2>;
+          return (
+            <h2 className="doc-heading" id={id}>
+              {context.children}
+            </h2>
+          );
         case "h3":
-          return <h3 id={id}>{context.children}</h3>;
+          return (
+            <h3 className="doc-heading" id={id}>
+              {context.children}
+            </h3>
+          );
         default:
           return context.children;
       }
