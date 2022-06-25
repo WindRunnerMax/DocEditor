@@ -28,7 +28,7 @@ declare module "slate" {
 
 const headingCommand: CommandFn = (editor, key, data) => {
   if (isObject(data) && data.path) {
-    if (!isMatchedAttributeNode(editor, headingPluginKey, data.extraKey)) {
+    if (!isMatchedAttributeNode(editor, `${headingPluginKey}.type`, data.extraKey)) {
       setBlockNode(editor, { [key]: { type: data.extraKey, id: uuid().slice(0, 8) } }, data.path);
     } else {
       setBlockNode(editor, getOmitAttributes([headingPluginKey]), data.path);

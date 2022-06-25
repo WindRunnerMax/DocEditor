@@ -34,7 +34,7 @@ export const MenuToolBar: FC<{
 }> = props => {
   const menuRef = useRef<HTMLDivElement>(null);
 
-  const affixStyles = useMemoizedFn(
+  const exec = useMemoizedFn(
     (param: string, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       const [key, data] = param.split(".");
       const hideToolBarAndFocusEditor = () => {
@@ -61,7 +61,7 @@ export const MenuToolBar: FC<{
     () => (
       <Menu
         className="menu-toolbar-menu-container"
-        onClickMenuItem={affixStyles}
+        onClickMenuItem={exec}
         selectable={false}
         mode="vertical"
       >
@@ -115,7 +115,7 @@ export const MenuToolBar: FC<{
         </Menu.SubMenu>
       </Menu>
     ),
-    [affixStyles]
+    [exec]
   );
 
   useEffect(() => {
@@ -147,7 +147,7 @@ export const MenuToolBar: FC<{
     return () => {
       element.removeEventListener("mousedown", mouseDownHandler);
     };
-  }, [props.editor, props.slateRef]);
+  }, [props.editor, props.slateRef, props.isRender]);
 
   return props.isRender ? null : (
     <Portal>
