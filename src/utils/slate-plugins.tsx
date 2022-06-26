@@ -47,6 +47,9 @@ type RenderPlugins = {
   commands: SlateCommands;
 };
 
+export const KEY_EVENT = {
+  STOP: true,
+};
 export class SlatePlugins {
   private plugins: Plugin[];
   private commands: SlateCommands;
@@ -128,7 +131,7 @@ export class SlatePlugins {
       onKeyDown: event => {
         if (event.nativeEvent.isComposing) return void 0;
         for (const item of this.plugins) {
-          if (item.onKeyDown && item.onKeyDown(event)) break; // 返回`true`则停止继续执行
+          if (item.onKeyDown && item.onKeyDown(event) === KEY_EVENT.STOP) break; // 返回`STOP`则停止继续执行
         }
       },
       withVoidElements: editor => {

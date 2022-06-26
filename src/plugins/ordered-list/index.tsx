@@ -1,5 +1,5 @@
 import "./index.scss";
-import { EDITOR_ELEMENT_TYPE, Plugin } from "../../utils/slate-plugins";
+import { EDITOR_ELEMENT_TYPE, KEY_EVENT, Plugin } from "../../utils/slate-plugins";
 import { CommandFn } from "../../utils/slate-commands";
 import { Editor, Transforms } from "slate";
 import { isObject } from "src/utils/is";
@@ -98,7 +98,7 @@ export const orderedListPlugin = (editor: Editor): Plugin => {
           }
           calcOrderListLevels(editor);
           event.preventDefault();
-          return void 0;
+          return KEY_EVENT.STOP;
         }
 
         if (isFocusLineStart(editor, itemMatch.path)) {
@@ -110,28 +110,20 @@ export const orderedListPlugin = (editor: Editor): Plugin => {
             );
             calcOrderListLevels(editor);
             event.preventDefault();
-            return void 0;
+            return KEY_EVENT.STOP;
           } else {
-            if (
-              !isWrappedEdgeNode(editor, "or", {
-                wrapNode: wrapMatch,
-                itemNode: itemMatch,
-              })
-            ) {
+            if (!isWrappedEdgeNode(editor, "or", { wrapNode: wrapMatch, itemNode: itemMatch })) {
               if (isMatchedEvent(event, KEYBOARD.BACKSPACE)) {
                 editor.deleteBackward("block");
                 calcOrderListLevels(editor);
                 event.preventDefault();
-                return void 0;
+                return KEY_EVENT.STOP;
               }
             } else {
-              setUnWrapNodes(editor, {
-                wrapKey: orderedListKey,
-                itemKey: orderedListItemKey,
-              });
+              setUnWrapNodes(editor, { wrapKey: orderedListKey, itemKey: orderedListItemKey });
               calcNextOrderListLevels(editor);
               event.preventDefault();
-              return void 0;
+              return KEY_EVENT.STOP;
             }
           }
         }
@@ -141,6 +133,7 @@ export const orderedListPlugin = (editor: Editor): Plugin => {
           calcOrderListLevels(editor);
           event.preventDefault();
         }
+        return KEY_EVENT.STOP;
       }
     },
   };

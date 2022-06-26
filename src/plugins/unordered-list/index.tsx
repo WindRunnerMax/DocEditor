@@ -1,5 +1,5 @@
 import "./index.scss";
-import { EDITOR_ELEMENT_TYPE, Plugin } from "../../utils/slate-plugins";
+import { EDITOR_ELEMENT_TYPE, KEY_EVENT, Plugin } from "../../utils/slate-plugins";
 import { CommandFn } from "../../utils/slate-commands";
 import { Editor } from "slate";
 import { isObject } from "src/utils/is";
@@ -98,25 +98,13 @@ export const unorderedListPlugin = (editor: Editor): Plugin => {
             );
             event.preventDefault();
           } else {
-            if (
-              !isWrappedEdgeNode(editor, "or", {
-                wrapNode: wrapMatch,
-                itemNode: itemMatch,
-              })
-            ) {
-              if (isMatchedEvent(event, KEYBOARD.BACKSPACE)) {
-                editor.deleteBackward("block");
-                event.preventDefault();
-              }
-            } else {
-              setUnWrapNodes(editor, {
-                wrapKey: unorderedListKey,
-                itemKey: unorderedListItemKey,
-              });
+            if (isWrappedEdgeNode(editor, "or", { wrapNode: wrapMatch, itemNode: itemMatch })) {
+              setUnWrapNodes(editor, { wrapKey: unorderedListKey, itemKey: unorderedListItemKey });
               event.preventDefault();
             }
           }
         }
+        return KEY_EVENT.STOP;
       }
     },
   };

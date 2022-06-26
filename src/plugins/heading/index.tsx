@@ -1,7 +1,7 @@
 import "./index.scss";
 import { Editor, Transforms } from "slate";
 import { CommandFn } from "../../utils/slate-commands";
-import { EDITOR_ELEMENT_TYPE, Plugin } from "../../utils/slate-plugins";
+import { EDITOR_ELEMENT_TYPE, KEY_EVENT, Plugin } from "../../utils/slate-plugins";
 import { v4 as uuid } from "uuid";
 import { KEYBOARD } from "../../utils/constant";
 import { isObject } from "src/utils/is";
@@ -108,6 +108,7 @@ export const HeadingPlugin = (editor: Editor): Plugin => {
             }
           }
         }
+        return KEY_EVENT.STOP;
       }
     },
   };

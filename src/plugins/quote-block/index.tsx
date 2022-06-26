@@ -1,5 +1,5 @@
 import "./index.scss";
-import { EDITOR_ELEMENT_TYPE, Plugin } from "../../utils/slate-plugins";
+import { EDITOR_ELEMENT_TYPE, KEY_EVENT, Plugin } from "../../utils/slate-plugins";
 import { CommandFn } from "../../utils/slate-commands";
 import { Editor } from "slate";
 import { isObject } from "src/utils/is";
@@ -15,6 +15,7 @@ import {
   isFocusLineStart,
   setWrapStructure,
   isWrappedAdjoinNode,
+  isWrappedNode,
 } from "../../utils/slate-utils";
 
 declare module "slate" {
@@ -29,7 +30,9 @@ export const quoteBlockItemKey = "quote-block-item";
 const quoteCommand: CommandFn = (editor, key, data) => {
   if (isObject(data) && data.path) {
     if (!isMatchedAttributeNode(editor, quoteBlockKey, true, data.path)) {
-      setWrapNodes(editor, { [quoteBlockKey]: true }, { [quoteBlockItemKey]: true });
+      if (!isWrappedNode(editor)) {
+        setWrapNodes(editor, { [quoteBlockKey]: true }, { [quoteBlockItemKey]: true });
+      }
     } else {
       setUnWrapNodes(editor, {
         wrapKey: quoteBlockKey,
@@ -61,21 +64,15 @@ export const QuoteBlockPlugin = (editor: Editor): Plugin => {
           return void 0;
         }
 
-        if (isFocusLineStart(editor, itemMatch.path)) {
-          if (!isWrappedEdgeNode(editor, "or", { wrapNode: wrapMatch, itemNode: itemMatch })) {
-            if (isMatchedEvent(event, KEYBOARD.BACKSPACE)) {
-              editor.deleteBackward("block");
-              event.preventDefault();
-            }
-          } else {
-            setUnWrapNodes(editor, {
-              wrapKey: quoteBlockKey,
-              itemKey: quoteBlockItemKey,
-            });
-            event.preventDefault();
-          }
+        if (
+          isFocusLineStart(editor, itemMatch.path) &&
+          isWrappedEdgeNode(editor, "or", { wrapNode: wrapMatch, itemNode: itemMatch })
+        ) {
+          setUnWrapNodes(editor, { wrapKey: quoteBlockKey, itemKey: quoteBlockItemKey });
+          event.preventDefault();
         }
       }
+      return KEY_EVENT.STOP;
     },
   };
 };

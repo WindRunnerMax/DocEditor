@@ -19,6 +19,7 @@ export const ShortCutPlugin = (editor: Editor, commands: SlateCommands): Plugin 
   return {
     key: "shortcut",
     type: EDITOR_ELEMENT_TYPE.BLOCK,
+    priority: 50,
     match: () => false,
     onKeyDown: event => {
       if (isMatchedEvent(event, KEYBOARD.SPACE) && isCollapsed(editor, editor.selection)) {

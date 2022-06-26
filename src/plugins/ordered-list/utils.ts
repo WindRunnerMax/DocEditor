@@ -6,7 +6,6 @@ import {
   getNextBlockNode,
   isBlock,
   isCollapsed,
-  isSlateElement,
   setBlockNode,
 } from "../../utils/slate-utils";
 
@@ -25,12 +24,8 @@ const applyNewOrderList = (editor: Editor, block: BlockElement, path: Path) => {
     batchFn.push(() => {
       setBlockNode(
         editor,
-        {
-          [orderedListItemKey]: { level, start: newStart },
-        },
-        {
-          at: [...path, index],
-        }
+        { [orderedListItemKey]: { level, start: newStart } },
+        { at: [...path, index] }
       );
     });
   });
@@ -40,7 +35,7 @@ const applyNewOrderList = (editor: Editor, block: BlockElement, path: Path) => {
 export const calcOrderListLevels = (editor: Editor, at = editor.selection) => {
   if (isCollapsed(editor, at)) {
     const match = getBlockNode(editor, { key: orderedListKey });
-    if (match && isSlateElement(match.block)) {
+    if (match) {
       const { block, path } = match;
       applyNewOrderList(editor, block, path);
     }
@@ -51,7 +46,7 @@ export const calcOrderListLevels = (editor: Editor, at = editor.selection) => {
 export const calcNextOrderListLevels = (editor: Editor) => {
   if (isCollapsed(editor, editor.selection)) {
     const match = getBlockNode(editor, { at: editor.selection });
-    if (match && isSlateElement(match.block)) {
+    if (match) {
       const nextBLockNode = getNextBlockNode(editor, { at: match.path, key: orderedListKey });
       if (nextBLockNode) applyNewOrderList(editor, nextBLockNode.block, nextBLockNode.path);
     }
