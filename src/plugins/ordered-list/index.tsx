@@ -11,12 +11,12 @@ import {
   setBlockNode,
   setUnWrapNodes,
   setWrapNodes,
-  getOmitAttributes,
   isMatchedAttributeNode,
   existKey,
   isFocusLineStart,
-  isWrappedNode,
   isWrappedEdgeNode,
+  setWrapStructure,
+  isWrappedAdjoinNode,
 } from "../../utils/slate-utils";
 import { calcNextOrderListLevels, calcOrderListLevels } from "./utils";
 import { assertValue } from "src/utils/common";
@@ -38,13 +38,16 @@ export const orderedListItemKey = "ordered-list-item";
 const orderListCommand: CommandFn = (editor, key, data) => {
   if (isObject(data) && data.path) {
     if (!isMatchedAttributeNode(editor, orderedListKey, true, data.path)) {
-      if (!isWrappedNode(editor)) {
-        setWrapNodes(editor, { [key]: true }, data.path);
-        setBlockNode(editor, { [orderedListItemKey]: { start: 1, level: 1 } });
-      }
+      setWrapNodes(
+        editor,
+        { [orderedListKey]: true },
+        { [orderedListItemKey]: { start: 1, level: 1 } }
+      );
     } else {
-      setUnWrapNodes(editor, orderedListKey);
-      setBlockNode(editor, getOmitAttributes([orderedListItemKey, orderedListKey]));
+      setUnWrapNodes(editor, {
+        wrapKey: orderedListKey,
+        itemKey: orderedListItemKey,
+      });
       calcNextOrderListLevels(editor);
     }
   }
@@ -57,11 +60,11 @@ export const orderedListPlugin = (editor: Editor): Plugin => {
       existKey(props.element, orderedListKey) || existKey(props.element, orderedListItemKey),
     renderLine: context => {
       if (existKey(context.element, orderedListKey)) {
-        return <ol className="slate-ordered-list">{context.children}</ol>;
+        return <ol className="doc-ordered-list">{context.children}</ol>;
       } else {
         const config = assertValue(context.element[orderedListItemKey]);
         return (
-          <li className={`slate-ordered-item ordered-li-${config.level}`} value={config.start}>
+          <li className={`doc-ordered-item ordered-li-${config.level}`} value={config.start}>
             {context.children}
           </li>
         );
@@ -73,33 +76,47 @@ export const orderedListPlugin = (editor: Editor): Plugin => {
         isMatchedEvent(event, KEYBOARD.BACKSPACE, KEYBOARD.ENTER, KEYBOARD.TAB) &&
         isCollapsed(editor, editor.selection)
       ) {
-        const orderListMatch = getBlockNode(editor, editor.selection, orderedListKey);
-        const orderListItemMatch = getBlockNode(editor, editor.selection, orderedListItemKey);
-        if (orderListMatch && !orderListItemMatch) setUnWrapNodes(editor, orderedListKey);
-        if (!orderListMatch && orderListItemMatch) {
-          setBlockNode(editor, getOmitAttributes([orderedListItemKey]));
+        const wrapMatch = getBlockNode(editor, { key: orderedListKey });
+        const itemMatch = getBlockNode(editor, { key: orderedListItemKey });
+        setWrapStructure(editor, wrapMatch, itemMatch, orderedListItemKey);
+        if (
+          !itemMatch ||
+          !wrapMatch ||
+          !isWrappedAdjoinNode(editor, { wrapNode: wrapMatch, itemNode: itemMatch })
+        ) {
+          return void 0;
         }
-        if (!orderListItemMatch || !orderListMatch) return void 0;
-        const { level, start } = assertValue(orderListItemMatch.block[orderedListItemKey]);
+        const { level, start } = assertValue(itemMatch.block[orderedListItemKey]);
 
         if (event.key === KEYBOARD.TAB) {
           if (level < 3) {
-            setBlockNode(editor, { [orderedListItemKey]: { start, level: level + 1 } });
+            setBlockNode(
+              editor,
+              { [orderedListItemKey]: { start, level: level + 1 } },
+              { node: itemMatch.block }
+            );
           }
           calcOrderListLevels(editor);
           event.preventDefault();
           return void 0;
         }
 
-        if (isFocusLineStart(editor, orderListItemMatch.path)) {
+        if (isFocusLineStart(editor, itemMatch.path)) {
           if (level > 1) {
-            setBlockNode(editor, { [orderedListItemKey]: { start, level: level - 1 } });
+            setBlockNode(
+              editor,
+              { [orderedListItemKey]: { start, level: level - 1 } },
+              { node: itemMatch.block }
+            );
             calcOrderListLevels(editor);
             event.preventDefault();
             return void 0;
           } else {
             if (
-              !isWrappedEdgeNode(editor, editor.selection, orderedListKey, orderedListItemKey, "or")
+              !isWrappedEdgeNode(editor, "or", {
+                wrapNode: wrapMatch,
+                itemNode: itemMatch,
+              })
             ) {
               if (isMatchedEvent(event, KEYBOARD.BACKSPACE)) {
                 editor.deleteBackward("block");
@@ -108,8 +125,10 @@ export const orderedListPlugin = (editor: Editor): Plugin => {
                 return void 0;
               }
             } else {
-              setUnWrapNodes(editor, orderedListKey);
-              setBlockNode(editor, getOmitAttributes([orderedListItemKey, orderedListKey]));
+              setUnWrapNodes(editor, {
+                wrapKey: orderedListKey,
+                itemKey: orderedListItemKey,
+              });
               calcNextOrderListLevels(editor);
               event.preventDefault();
               return void 0;

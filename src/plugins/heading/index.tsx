@@ -13,10 +13,10 @@ import {
   isCollapsed,
   isSlateElement,
   getBlockAttributes,
-  getOmitAttributes,
   isWrappedNode,
   isMatchedAttributeNode,
   setBlockNode,
+  setUnBlockNode,
 } from "../../utils/slate-utils";
 
 export const headingPluginKey = "heading";
@@ -30,9 +30,13 @@ declare module "slate" {
 const headingCommand: CommandFn = (editor, key, data) => {
   if (isObject(data) && data.path) {
     if (!isMatchedAttributeNode(editor, `${headingPluginKey}.type`, data.extraKey)) {
-      setBlockNode(editor, { [key]: { type: data.extraKey, id: uuid().slice(0, 8) } }, data.path);
+      setBlockNode(
+        editor,
+        { [key]: { type: data.extraKey, id: uuid().slice(0, 8) } },
+        { at: data.path }
+      );
     } else {
-      setBlockNode(editor, getOmitAttributes([headingPluginKey]), data.path);
+      setUnBlockNode(editor, [headingPluginKey], { at: data.path });
     }
   }
 };
@@ -75,7 +79,7 @@ export const HeadingPlugin = (editor: Editor): Plugin => {
         isMatchedEvent(event, KEYBOARD.BACKSPACE, KEYBOARD.ENTER) &&
         isCollapsed(editor, editor.selection)
       ) {
-        const match = getBlockNode(editor, editor.selection);
+        const match = getBlockNode(editor);
 
         if (match) {
           const { block, path } = match;
@@ -83,8 +87,7 @@ export const HeadingPlugin = (editor: Editor): Plugin => {
 
           if (isSlateElement(block)) {
             if (event.key === KEYBOARD.BACKSPACE && isFocusLineStart(editor, path)) {
-              const properties = getOmitAttributes([headingPluginKey]);
-              Transforms.setNodes(editor, properties, { at: path });
+              setUnBlockNode(editor, [headingPluginKey], { at: path });
               event.preventDefault();
             }
             if (event.key === KEYBOARD.ENTER && isFocusLineEnd(editor, path)) {

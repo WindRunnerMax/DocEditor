@@ -2,7 +2,15 @@ import { Editor, Location, Path, Node } from "slate";
 import { BlockElement } from "../types/types";
 import { isSlateElement } from "./slate-is";
 
-export const getBlockNode = (editor: Editor, location?: Location, key = "", above = false) => {
+export const getBlockNode = (
+  editor: Editor,
+  options: {
+    at?: Location;
+    key?: string;
+    above?: boolean;
+  } = {}
+) => {
+  const { at: location, key, above } = options;
   const match = Editor.above<BlockElement>(editor, {
     match: n => Editor.isBlock(editor, n) && (key ? existKey(n, key) : true),
     at: location,
@@ -13,7 +21,15 @@ export const getBlockNode = (editor: Editor, location?: Location, key = "", abov
   return { block, path };
 };
 
-export const getNextBlockNode = (editor: Editor, location?: Location, key = "", above = false) => {
+export const getNextBlockNode = (
+  editor: Editor,
+  options: {
+    at?: Location;
+    key?: string;
+    above?: boolean;
+  } = {}
+) => {
+  const { at: location, key, above } = options;
   const match = Editor.next<BlockElement>(editor, {
     match: n => Editor.isBlock(editor, n) && (key ? existKey(n, key) : true),
     at: location,
@@ -38,10 +54,13 @@ export const getBlockAttributes = (
   return result;
 };
 
-export const getOmitAttributes = (keys: string[], exclude: string[] = []): Record<string, void> => {
+export const getOmitAttributes = (
+  keys: string[],
+  exclude: string[] = []
+): { list: string[]; record: Record<string, void> } => {
   const result: Record<string, void> = {};
   keys.forEach(item => exclude.indexOf(item) === -1 && (result[item] = void 0));
-  return result;
+  return { record: result, list: Object.keys(result) };
 };
 
 export const getLineIndex = (editor: Editor, path: Path) => {

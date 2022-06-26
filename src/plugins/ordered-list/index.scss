@@ -2,7 +2,7 @@ li {
   list-style-type: none;
 }
 
-.slate-ordered-list {
+.doc-ordered-list {
   list-style-type: none;
   margin: 0;
   padding-left: 0;
@@ -18,11 +18,11 @@ li {
     display: inline-block !important;
   }
 
-  .slate-ordered-item {
+  .doc-ordered-item {
     list-style: inside;
   }
 
-  .slate-ordered-item::marker {
+  .doc-ordered-item::marker {
     color: rgb(var(--blue-7));
   }
 

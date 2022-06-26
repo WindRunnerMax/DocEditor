@@ -1,0 +1,5 @@
+$header-z-index: 100000;
+
+body {
+  --header-z-index: $header-z-index;
+}

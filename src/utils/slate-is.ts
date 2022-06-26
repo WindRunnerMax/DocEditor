@@ -27,7 +27,7 @@ export const isMatchedAttributeNode = (
   path?: Path
 ) => {
   const [firstKey, ...keys] = key.split(".");
-  const match = getBlockNode(editor, path, firstKey);
+  const match = getBlockNode(editor, { at: path, key: firstKey });
   if (!match) return false;
   const matchedValue = match.block[firstKey];
   let preKeyData: unknown = matchedValue;
@@ -72,15 +72,31 @@ export const isBlock = (editor: Editor, node: Node): node is BlockElement =>
 
 export const isText = (node: Node): node is TextElement => Text.isText(node);
 
-export const isWrappedEdgeNode = (
+type MatchNode = { block: BlockElement; path: Path } | null;
+export function isWrappedEdgeNode(
   editor: Editor,
-  at: Location,
-  wrapKey: string,
-  itemKey: string,
-  mode: "first" | "last" | "or" = "last"
-) => {
-  const wrapNode = getBlockNode(editor, at, wrapKey);
-  const itemNode = getBlockNode(editor, at, itemKey);
+  mode: "first" | "last" | "or",
+  options: { at?: Location; wrapKey: string; itemKey: string }
+): boolean;
+export function isWrappedEdgeNode(
+  editor: Editor,
+  mode: "first" | "last" | "or",
+  options: { at?: Location; wrapNode: MatchNode; itemNode: MatchNode }
+): boolean;
+export function isWrappedEdgeNode(
+  editor: Editor,
+  mode: "first" | "last" | "or" = "last",
+  options: {
+    at?: Location;
+    wrapKey?: string;
+    itemKey?: string;
+    wrapNode?: MatchNode;
+    itemNode?: MatchNode;
+  }
+): boolean {
+  const { at, wrapKey, itemKey } = options;
+  const wrapNode = options.wrapNode || getBlockNode(editor, { at, key: wrapKey });
+  const itemNode = options.itemNode || getBlockNode(editor, { at, key: itemKey });
   if (wrapNode && itemNode && wrapNode.block.children.length) {
     const children = wrapNode.block.children;
     if (mode === "last") {
@@ -92,4 +108,32 @@ export const isWrappedEdgeNode = (
     }
   }
   return false;
-};
+}
+
+export function isWrappedAdjoinNode(
+  editor: Editor,
+  options: { at?: Location; wrapKey: string; itemKey: string }
+): boolean;
+export function isWrappedAdjoinNode(
+  editor: Editor,
+  options: { at?: Location; wrapNode: MatchNode; itemNode: MatchNode }
+): boolean;
+export function isWrappedAdjoinNode(
+  editor: Editor,
+  options: {
+    at?: Location;
+    wrapKey?: string;
+    itemKey?: string;
+    wrapNode?: MatchNode;
+    itemNode?: MatchNode;
+  }
+): boolean {
+  const { at, wrapKey, itemKey } = options;
+  const wrapNode = options.wrapNode || getBlockNode(editor, { at, key: wrapKey });
+  const itemNode = options.itemNode || getBlockNode(editor, { at, key: itemKey });
+  if (wrapNode && itemNode && wrapNode.block.children.length) {
+    const children = wrapNode.block.children;
+    return children.indexOf(itemNode.block) > -1;
+  }
+  return false;
+}

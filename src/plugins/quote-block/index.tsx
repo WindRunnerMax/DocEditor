@@ -8,14 +8,13 @@ import {
   getBlockNode,
   isMatchedEvent,
   isCollapsed,
-  setBlockNode,
   setUnWrapNodes,
   setWrapNodes,
-  getOmitAttributes,
   isMatchedAttributeNode,
-  isWrappedNode,
   isWrappedEdgeNode,
   isFocusLineStart,
+  setWrapStructure,
+  isWrappedAdjoinNode,
 } from "../../utils/slate-utils";
 
 declare module "slate" {
@@ -30,13 +29,12 @@ export const quoteBlockItemKey = "quote-block-item";
 const quoteCommand: CommandFn = (editor, key, data) => {
   if (isObject(data) && data.path) {
     if (!isMatchedAttributeNode(editor, quoteBlockKey, true, data.path)) {
-      if (!isWrappedNode(editor)) {
-        setWrapNodes(editor, { [key]: true }, data.path);
-        setBlockNode(editor, { [quoteBlockItemKey]: true });
-      }
+      setWrapNodes(editor, { [quoteBlockKey]: true }, { [quoteBlockItemKey]: true });
     } else {
-      setUnWrapNodes(editor, quoteBlockKey);
-      setBlockNode(editor, getOmitAttributes([quoteBlockItemKey, quoteBlockKey]));
+      setUnWrapNodes(editor, {
+        wrapKey: quoteBlockKey,
+        itemKey: quoteBlockItemKey,
+      });
     }
   }
 };
@@ -45,34 +43,35 @@ export const QuoteBlockPlugin = (editor: Editor): Plugin => {
     key: quoteBlockKey,
     type: EDITOR_ELEMENT_TYPE.BLOCK,
     match: props => !!props.element[quoteBlockKey],
-    renderLine: context => (
-      <blockquote className="slate-quote-block">{context.children}</blockquote>
-    ),
+    renderLine: context => <blockquote className="doc-quote-block">{context.children}</blockquote>,
     command: quoteCommand,
     onKeyDown: event => {
       if (
         isMatchedEvent(event, KEYBOARD.BACKSPACE, KEYBOARD.ENTER) &&
         isCollapsed(editor, editor.selection)
       ) {
-        const quoteMatch = getBlockNode(editor, editor.selection, quoteBlockKey);
-        const quoteItemMatch = getBlockNode(editor, editor.selection, quoteBlockItemKey);
-        if (quoteMatch && !quoteItemMatch) setUnWrapNodes(editor, quoteBlockKey);
-        if (!quoteMatch && quoteItemMatch) {
-          setBlockNode(editor, getOmitAttributes([quoteBlockItemKey]));
+        const wrapMatch = getBlockNode(editor, { key: quoteBlockKey });
+        const itemMatch = getBlockNode(editor, { key: quoteBlockItemKey });
+        setWrapStructure(editor, wrapMatch, itemMatch, quoteBlockItemKey);
+        if (
+          !itemMatch ||
+          !wrapMatch ||
+          !isWrappedAdjoinNode(editor, { wrapNode: wrapMatch, itemNode: itemMatch })
+        ) {
+          return void 0;
         }
-        if (!quoteMatch || !quoteItemMatch) return void 0;
 
-        if (isFocusLineStart(editor, quoteItemMatch.path)) {
-          if (
-            !isWrappedEdgeNode(editor, editor.selection, quoteBlockKey, quoteBlockItemKey, "or")
-          ) {
+        if (isFocusLineStart(editor, itemMatch.path)) {
+          if (!isWrappedEdgeNode(editor, "or", { wrapNode: wrapMatch, itemNode: itemMatch })) {
             if (isMatchedEvent(event, KEYBOARD.BACKSPACE)) {
               editor.deleteBackward("block");
               event.preventDefault();
             }
           } else {
-            setUnWrapNodes(editor, quoteBlockKey);
-            setBlockNode(editor, getOmitAttributes([quoteBlockItemKey, quoteBlockKey]));
+            setUnWrapNodes(editor, {
+              wrapKey: quoteBlockKey,
+              itemKey: quoteBlockItemKey,
+            });
             event.preventDefault();
           }
         }

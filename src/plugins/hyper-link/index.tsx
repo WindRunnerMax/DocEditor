@@ -37,7 +37,7 @@ const HyperLinkEditor: React.FC<{
     const config = value;
     setVisible(false);
     const path = ReactEditor.findPath(editor, props.element);
-    setTextNode(editor, { [hyperLinkPluginKey]: config }, path);
+    setTextNode(editor, { [hyperLinkPluginKey]: config }, { at: path });
   };
 
   return (

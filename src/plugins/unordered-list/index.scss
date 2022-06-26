@@ -2,7 +2,7 @@ li {
   list-style-type: none;
 }
 
-.slate-unordered-list {
+.doc-unordered-list {
   list-style-type: none;
   margin: 0;
   padding-left: 0;
@@ -18,7 +18,7 @@ li {
     display: inline-block !important;
   }
 
-  .slate-unordered-item::marker {
+  .doc-unordered-item::marker {
     color: rgb(var(--blue-7));
   }
 

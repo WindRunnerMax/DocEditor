@@ -11,12 +11,12 @@ import {
   setBlockNode,
   setUnWrapNodes,
   setWrapNodes,
-  getOmitAttributes,
   isMatchedAttributeNode,
   existKey,
   isFocusLineStart,
-  isWrappedNode,
   isWrappedEdgeNode,
+  setWrapStructure,
+  isWrappedAdjoinNode,
 } from "../../utils/slate-utils";
 import { assertValue } from "src/utils/common";
 
@@ -35,13 +35,12 @@ export const unorderedListItemKey = "unordered-list-item";
 const orderListCommand: CommandFn = (editor, key, data) => {
   if (isObject(data) && data.path) {
     if (!isMatchedAttributeNode(editor, unorderedListKey, true, data.path)) {
-      if (!isWrappedNode(editor)) {
-        setWrapNodes(editor, { [key]: true }, data.path);
-        setBlockNode(editor, { [unorderedListItemKey]: { level: 1 } });
-      }
+      setWrapNodes(editor, { [unorderedListKey]: true }, { [unorderedListItemKey]: { level: 1 } });
     } else {
-      setUnWrapNodes(editor, unorderedListKey);
-      setBlockNode(editor, getOmitAttributes([unorderedListItemKey, unorderedListKey]));
+      setUnWrapNodes(editor, {
+        wrapKey: unorderedListKey,
+        itemKey: unorderedListItemKey,
+      });
     }
   }
 };
@@ -53,13 +52,11 @@ export const unorderedListPlugin = (editor: Editor): Plugin => {
       existKey(props.element, unorderedListKey) || existKey(props.element, unorderedListItemKey),
     renderLine: context => {
       if (existKey(context.element, unorderedListKey)) {
-        return <ul className="slate-unordered-list">{context.children}</ul>;
+        return <ul className="doc-unordered-list">{context.children}</ul>;
       } else {
         const config = assertValue(context.element[unorderedListItemKey]);
         return (
-          <li className={`slate-unordered-item unordered-li-${config.level}`}>
-            {context.children}
-          </li>
+          <li className={`doc-unordered-item unordered-li-${config.level}`}>{context.children}</li>
         );
       }
     },
@@ -69,41 +66,53 @@ export const unorderedListPlugin = (editor: Editor): Plugin => {
         isMatchedEvent(event, KEYBOARD.BACKSPACE, KEYBOARD.ENTER, KEYBOARD.TAB) &&
         isCollapsed(editor, editor.selection)
       ) {
-        const orderListMatch = getBlockNode(editor, editor.selection, unorderedListKey);
-        const orderListItemMatch = getBlockNode(editor, editor.selection, unorderedListItemKey);
-        if (orderListMatch && !orderListItemMatch) setUnWrapNodes(editor, unorderedListKey);
-        if (!orderListMatch && orderListItemMatch) {
-          setBlockNode(editor, getOmitAttributes([unorderedListItemKey]));
+        const wrapMatch = getBlockNode(editor, { key: unorderedListKey });
+        const itemMatch = getBlockNode(editor, { key: unorderedListItemKey });
+        setWrapStructure(editor, wrapMatch, itemMatch, unorderedListItemKey);
+
+        if (
+          !itemMatch ||
+          !wrapMatch ||
+          !isWrappedAdjoinNode(editor, { wrapNode: wrapMatch, itemNode: itemMatch })
+        ) {
+          return void 0;
         }
-        if (!orderListItemMatch || !orderListMatch) return void 0;
-        const { level } = assertValue(orderListItemMatch.block[unorderedListItemKey]);
+
+        const { level } = assertValue(itemMatch.block[unorderedListItemKey]);
 
         if (event.key === KEYBOARD.TAB) {
           if (level < 3) {
-            setBlockNode(editor, { [unorderedListItemKey]: { level: level + 1 } });
+            setBlockNode(
+              editor,
+              { [unorderedListItemKey]: { level: level + 1 } },
+              { node: itemMatch.block }
+            );
           }
           event.preventDefault();
-        } else if (isFocusLineStart(editor, orderListItemMatch.path)) {
+        } else if (isFocusLineStart(editor, itemMatch.path)) {
           if (level > 1) {
-            setBlockNode(editor, { [unorderedListItemKey]: { level: level - 1 } });
+            setBlockNode(
+              editor,
+              { [unorderedListItemKey]: { level: level - 1 } },
+              { node: itemMatch.block }
+            );
             event.preventDefault();
           } else {
             if (
-              !isWrappedEdgeNode(
-                editor,
-                editor.selection,
-                unorderedListKey,
-                unorderedListItemKey,
-                "or"
-              )
+              !isWrappedEdgeNode(editor, "or", {
+                wrapNode: wrapMatch,
+                itemNode: itemMatch,
+              })
             ) {
               if (isMatchedEvent(event, KEYBOARD.BACKSPACE)) {
                 editor.deleteBackward("block");
                 event.preventDefault();
               }
             } else {
-              setUnWrapNodes(editor, unorderedListKey);
-              setBlockNode(editor, getOmitAttributes([unorderedListItemKey, unorderedListKey]));
+              setUnWrapNodes(editor, {
+                wrapKey: unorderedListKey,
+                itemKey: unorderedListItemKey,
+              });
               event.preventDefault();
             }
           }

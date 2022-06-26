@@ -28,7 +28,9 @@ const applyNewOrderList = (editor: Editor, block: BlockElement, path: Path) => {
         {
           [orderedListItemKey]: { level, start: newStart },
         },
-        [...path, index]
+        {
+          at: [...path, index],
+        }
       );
     });
   });
@@ -37,7 +39,7 @@ const applyNewOrderList = (editor: Editor, block: BlockElement, path: Path) => {
 
 export const calcOrderListLevels = (editor: Editor, at = editor.selection) => {
   if (isCollapsed(editor, at)) {
-    const match = getBlockNode(editor, at, orderedListKey);
+    const match = getBlockNode(editor, { key: orderedListKey });
     if (match && isSlateElement(match.block)) {
       const { block, path } = match;
       applyNewOrderList(editor, block, path);
@@ -48,9 +50,9 @@ export const calcOrderListLevels = (editor: Editor, at = editor.selection) => {
 
 export const calcNextOrderListLevels = (editor: Editor) => {
   if (isCollapsed(editor, editor.selection)) {
-    const match = getBlockNode(editor, editor.selection);
+    const match = getBlockNode(editor, { at: editor.selection });
     if (match && isSlateElement(match.block)) {
-      const nextBLockNode = getNextBlockNode(editor, match.path, orderedListKey);
+      const nextBLockNode = getNextBlockNode(editor, { at: match.path, key: orderedListKey });
       if (nextBLockNode) applyNewOrderList(editor, nextBLockNode.block, nextBLockNode.path);
     }
   }

@@ -1,3 +1,5 @@
+@import './styles/global';
+
 body {
   background-color: var(--color-bg-1);
 }
@@ -23,7 +25,7 @@ body {
     position: fixed;
     right: 0;
     top: 0;
-    z-index: 999;
+    z-index: $header-z-index;
 
     .left {
       font-size: 18px;
