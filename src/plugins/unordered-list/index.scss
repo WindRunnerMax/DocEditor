@@ -7,15 +7,10 @@ li {
   margin: 0;
   padding-left: 0;
 
-  /* stylelint-disable-next-line selector-no-qualifying-type */
-  span[data-slate-placeholder] {
-    display: inline-block !important;
-  }
-
-  h1,
-  h2,
-  h3 {
-    display: inline-block !important;
+  .doc-ordered-item {
+    > * {
+      display: inline-block !important;
+    }
   }
 
   .doc-unordered-item::marker {
