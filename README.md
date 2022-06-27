@@ -1,7 +1,7 @@
 # DocEditor
  [Github](https://github.com/WindrunnerMax/DocEditor) ｜ [Editor DEMO](https://windrunnermax.github.io/DocEditor/) ｜ [BLOG](https://github.com/WindrunnerMax/EveryDay/blob/master/Plugin/%E5%9F%BA%E4%BA%8Eslate%E6%9E%84%E5%BB%BA%E6%96%87%E6%A1%A3%E7%BC%96%E8%BE%91%E5%99%A8.md)
 
-`slate.js`是一个完全可定制的框架，用于构建富文本编辑器。在这里基于`slate.js`实现了简单的文档编辑器，`slate`提供了富文本的`controller`，简单来说他本身并不提供各种富文本编辑功能，所有的富文本功能都需要自己来通过其提供的`API`来实现，甚至他的插件机制也需要通过自己来拓展，所以在插件的实现方面就需要自己制定一些策略。在交互与`ui`方面对于飞书文档的参考比较多，整体来说坑也是比较多的，尤其是在做交互策略方面，不过做好兜底以后实现基本的文档编辑器功能是没有问题的。
+基于`slate.js`构建的文档编辑器，`slate`提供了控制富文本的`core`，简单来说他本身并不提供各种富文本编辑功能，所有的富文本功能都需要自己来通过其提供的`API`来实现，甚至他的插件机制也需要通过自己来拓展，所以在插件的实现方面就需要自己制定一些策略。在交互与`ui`方面对于飞书文档的参考比较多，整体来说坑也是比较多的，尤其是在做交互策略方面，不过做好兜底以后实现基本的文档编辑器功能是没有问题的。
 
 ```bash
 $ pnpm install

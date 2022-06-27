@@ -1,7 +1,7 @@
 import { BaseNode } from "src/types/types";
 
 export const example: BaseNode[] = [
-  { children: [{ text: "文档编辑器" }], heading: { id: "01f0de8f", type: "h1" } },
+  { children: [{ text: "文档编辑器" }], heading: { id: "01f0de8f", type: "h1" }, align: "center" },
   {
     children: [
       {
@@ -153,9 +153,7 @@ export const example: BaseNode[] = [
       {
         "children": [
           { text: "快捷键唤起有序列表" },
-          { "text": "* ", "inline-code": true },
-          { text: "、" },
-          { "text": "- ", "inline-code": true },
+          { "text": "1. ", "inline-code": true },
           { text: "，下一级有序列表" },
           { "text": "tab", "inline-code": true },
           { text: "。" },
@@ -225,6 +223,16 @@ export const example: BaseNode[] = [
       {
         "unordered-list-item": { level: 1 },
         "children": [{ text: "分割线" }, { "text": "--- ", "inline-code": true }, { text: "。" }],
+      },
+      {
+        "unordered-list-item": { level: 1 },
+        "children": [
+          { text: "撤销" },
+          { "text": "Ctrl + Z", "inline-code": true },
+          { text: "，前进" },
+          { "text": "Ctrl + Shift + Z", "inline-code": true },
+          { text: "。" },
+        ],
       },
     ],
   },
