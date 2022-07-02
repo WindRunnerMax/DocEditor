@@ -1,7 +1,11 @@
 import { BaseNode } from "src/types/types";
 
 export const example: BaseNode[] = [
-  { children: [{ text: "文档编辑器" }], heading: { id: "01f0de8f", type: "h1" }, align: "center" },
+  {
+    children: [{ text: "文档编辑器" }],
+    heading: { id: "01f0de8f", type: "h1" },
+    align: "center",
+  },
   {
     children: [
       {
@@ -98,7 +102,17 @@ export const example: BaseNode[] = [
   },
   { children: [{ text: "无序列表" }], heading: { type: "h3", id: "a764a9a0" } },
   {
-    children: [{ text: "支持" }, { "text": "3", "inline-code": true }, { text: "级无序列表。" }],
+    children: [
+      { text: "支持" },
+      { "text": "3", "inline-code": true },
+      { text: "级无序列表，快捷键唤起无序列表" },
+      { "text": "* ", "inline-code": true },
+      { text: "、" },
+      { "text": "- ", "inline-code": true },
+      { text: "，下一级无序列表" },
+      { "text": "tab", "inline-code": true },
+      { text: "。" },
+    ],
   },
   {
     "unordered-list": true,
@@ -106,30 +120,19 @@ export const example: BaseNode[] = [
       { "children": [{ text: "一级无序列表。" }], "unordered-list-item": { level: 1 } },
       { "unordered-list-item": { level: 2 }, "children": [{ text: "二级无序列表。" }] },
       { "unordered-list-item": { level: 3 }, "children": [{ text: "三级无序列表。" }] },
-      { "unordered-list-item": { level: 2 }, "children": [{ text: "二级无序列表。" }] },
-      { "unordered-list-item": { level: 1 }, "children": [{ text: "一级无序列表。" }] },
-      {
-        "unordered-list": true,
-        "children": [
-          {
-            "unordered-list-item": { level: 1 },
-            "children": [
-              { text: "快捷键唤起无序列表" },
-              { "text": "* ", "inline-code": true },
-              { text: "、" },
-              { "text": "- ", "inline-code": true },
-              { text: "，下一级无序列表" },
-              { "text": "tab", "inline-code": true },
-              { text: "。" },
-            ],
-          },
-        ],
-      },
     ],
   },
   { children: [{ text: "有序列表" }], heading: { type: "h3", id: "400aa7e1" } },
   {
-    children: [{ text: "支持" }, { "text": "3", "inline-code": true }, { text: "级有序列表。" }],
+    children: [
+      { text: "支持" },
+      { "text": "3", "inline-code": true },
+      { text: "级有序列表，有序列表各级单独计数，快捷键唤起有序列表" },
+      { "text": "1. ", "inline-code": true },
+      { text: "，下一级有序列表" },
+      { "text": "tab", "inline-code": true },
+      { text: "。" },
+    ],
   },
   {
     "ordered-list": true,
@@ -146,20 +149,6 @@ export const example: BaseNode[] = [
         "ordered-list-item": { level: 3, start: 1 },
         "children": [{ text: "三级有序列表。" }],
       },
-      {
-        "ordered-list-item": { start: 2, level: 2 },
-        "children": [{ text: "二级有序列表，有序列表各级单独计数。" }],
-      },
-      {
-        "children": [
-          { text: "快捷键唤起有序列表" },
-          { "text": "1. ", "inline-code": true },
-          { text: "，下一级有序列表" },
-          { "text": "tab", "inline-code": true },
-          { text: "。" },
-        ],
-        "ordered-list-item": { level: 1, start: 2 },
-      },
     ],
   },
   { children: [{ text: "分割线" }], heading: { type: "h3", id: "5ab77ffb" } },
@@ -171,7 +160,27 @@ export const example: BaseNode[] = [
     ],
   },
   { "dividing-line": true, "children": [{ text: "" }] },
-  { children: [{ text: "快捷功能" }], heading: { type: "h2", id: "82651426" } },
+  { children: [{ text: "高亮块" }], heading: { type: "h3", id: "af869b51" } },
+  {
+    "highlight-block": { border: "var(--blue-6)", background: "var(--blue-3)" },
+    "children": [
+      {
+        "children": [{ text: "🌰 " }, { text: "举个栗子", bold: true }],
+        "highlight-block-item": true,
+      },
+      {
+        "highlight-block-item": true,
+        "children": [{ text: "支持高亮块 可以用于提示文档中的重要内容" }],
+      },
+    ],
+  },
+  {
+    "highlight-block": { background: "var(--green-3)", border: "var(--green-6)" },
+    "children": [
+      { "children": [{ text: "🏝 可以为高亮块更换主题" }], "highlight-block-item": true },
+    ],
+  },
+  { heading: { type: "h2", id: "82651426" }, children: [{ text: "快捷功能" }] },
   { children: [{ text: "快捷键" }], heading: { type: "h3", id: "614d6a4c" } },
   { children: [{ text: "支持快捷键: " }] },
   {
