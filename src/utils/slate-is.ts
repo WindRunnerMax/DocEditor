@@ -12,7 +12,7 @@ import {
   TextElement,
 } from "slate";
 import { BaseNode } from "../types/types";
-import { isObject } from "./is";
+import { isEmptyValue, isObject } from "./is";
 import { getBlockNode } from "./slate-get";
 
 export const isWrappedNode = (editor: Editor) => {
@@ -23,7 +23,7 @@ export const isWrappedNode = (editor: Editor) => {
 export const isMatchedAttributeNode = (
   editor: Editor,
   key: string,
-  value: unknown,
+  value: unknown | null,
   path?: Path
 ) => {
   const [firstKey, ...keys] = key.split(".");
@@ -35,6 +35,7 @@ export const isMatchedAttributeNode = (
     if (isObject(preKeyData)) preKeyData = preKeyData[keys[i]];
     else return false;
   }
+  if (isEmptyValue(value)) return true;
   return preKeyData === value;
 };
 

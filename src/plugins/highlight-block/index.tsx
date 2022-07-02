@@ -33,7 +33,7 @@ export const highlightBlockItemKey = "highlight-block-item";
 export const HighlightBlockPlugin = (editor: Editor, isRender: boolean): Plugin => {
   const quoteCommand: CommandFn = (editor, key, data) => {
     if (isObject(data) && data.path) {
-      if (!isMatchedAttributeNode(editor, highlightBlockKey, true, data.path)) {
+      if (!isMatchedAttributeNode(editor, highlightBlockKey, null, data.path)) {
         if (!isWrappedNode(editor)) {
           setWrapNodes(
             editor,
