@@ -16,7 +16,7 @@ jobs:
 
       - name: install and build
         run: |
-          npm install -g pnpm
+          npm install -g pnpm@6.24.3
           pnpm install
           pnpm run build
       - name: deploy
