@@ -71,8 +71,8 @@ export const QuoteBlockPlugin = (editor: Editor): Plugin => {
           setUnWrapNodes(editor, { wrapKey: quoteBlockKey, itemKey: quoteBlockItemKey });
           event.preventDefault();
         }
+        return KEY_EVENT.STOP;
       }
-      return KEY_EVENT.STOP;
     },
   };
 };

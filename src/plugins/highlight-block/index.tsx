@@ -96,8 +96,8 @@ export const HighlightBlockPlugin = (editor: Editor, isRender: boolean): Plugin 
           setUnWrapNodes(editor, { wrapKey: highlightBlockKey, itemKey: highlightBlockItemKey });
           event.preventDefault();
         }
+        return KEY_EVENT.STOP;
       }
-      return KEY_EVENT.STOP;
     },
   };
 };

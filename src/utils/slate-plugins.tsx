@@ -71,12 +71,14 @@ export class SlatePlugins {
     const elementPlugins: ElementPlugin[] = [];
     const leafPlugins: LeafPlugin[] = [];
     const voidKeys: string[] = [];
+    const keyDownPlugins: Plugin[] = [];
     this.plugins.sort((a, b) => (b.priority || 0) - (a.priority || 0));
     this.plugins.forEach(item => {
       if (item.type === EDITOR_ELEMENT_TYPE.BLOCK) elementPlugins.push(item);
       else if (item.type === EDITOR_ELEMENT_TYPE.INLINE) leafPlugins.push(item);
       item.command && registerCommand(item.key, item.command, this.commands);
-      if (item.isVoid) voidKeys.push(item.key);
+      item.isVoid && voidKeys.push(item.key);
+      item.onKeyDown && keyDownPlugins.push(item);
     });
 
     return {
@@ -130,7 +132,7 @@ export class SlatePlugins {
       },
       onKeyDown: event => {
         if (event.nativeEvent.isComposing) return void 0;
-        for (const item of this.plugins) {
+        for (const item of keyDownPlugins) {
           if (item.onKeyDown && item.onKeyDown(event) === KEY_EVENT.STOP) break; // 返回`STOP`则停止继续执行
         }
       },
