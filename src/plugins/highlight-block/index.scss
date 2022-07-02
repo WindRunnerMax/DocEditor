@@ -8,6 +8,8 @@
   background-color: var(--color-bg-2);
   box-shadow: 0 0 4px var(--color-border-2);
   display: flex;
+  flex-wrap: wrap;
+  max-width: calc(100vw - 20px);
 
   .selector-item {
     border: 1px solid;
