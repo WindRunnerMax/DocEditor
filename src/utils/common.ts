@@ -5,3 +5,5 @@ export function assertValue<T>(value: T) {
   type AssertT = Exclude<T, null | undefined>;
   return value as AssertT;
 }
+
+export type AssertT<T> = Exclude<T, null | undefined>;

@@ -7,6 +7,7 @@ import {
   IconH2,
   IconH3,
   IconOrderedList,
+  IconPaste,
   IconPlusCircle,
   IconQuote,
   IconUnorderedList,
@@ -49,6 +50,10 @@ const DocMenu: React.FC<{
         <IconQuote />
         块级引用
       </Menu.Item>
+      <Menu.Item key="highlight-block">
+        <IconPaste />
+        高亮块
+      </Menu.Item>
       <Menu.Item key="ordered-list">
         <IconOrderedList />
         有序列表
@@ -80,9 +85,16 @@ const DocMenu: React.FC<{
   );
 };
 
-const NO_DOC_TOOL_BAR = ["quote-block", "ordered-list", "unordered-list", "dividing-line"];
+const NO_DOC_TOOL_BAR = [
+  "quote-block",
+  "ordered-list",
+  "unordered-list",
+  "dividing-line",
+  "highlight-block",
+];
 const OFFSET_MAP: Record<string, number> = {
   "quote-block-item": 12,
+  "highlight-block-item": 8,
 };
 export const DocToolBarPlugin = (
   editor: Editor,
