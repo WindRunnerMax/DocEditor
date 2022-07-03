@@ -1,5 +1,10 @@
 module.exports = {
   extends: ["eslint:recommended", "plugin:prettier/recommended"],
+  parserOptions: {
+    requireConfigFile: false,
+    ecmaVersion: 2020,
+    sourceType: "module",
+  },
   overrides: [
     {
       files: ["*.ts"],

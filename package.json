@@ -1,10 +1,17 @@
 {
   "name": "doc-editor-light",
   "version": "0.1.0",
-  "private": true,
+  "files": ["dist", "pnpm-lock.yaml"],
+  "main": "dist/index.js",
+  "types": "dist/plugins/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/WindrunnerMax/DocEditor"
+  },
   "scripts": {
     "dev": "react-app-rewired start",
-    "build": "react-app-rewired build",
+    "build": "rm -rf ./build && react-app-rewired build",
+    "build:packages": "rm -rf ./dist && rollup -c",
     "lint-es": "eslint --fix --ext .js,.jsx,.ts,.tsx --ignore-path .gitignore .",
     "lint-style": "stylelint \"**/*.{css,scss,sass}\" --fix --ignore-path .gitignore",
     "lint": "npm run lint-es && npm run lint-style"
@@ -34,6 +41,9 @@
     "web-vitals": "^1.0.1"
   },
   "devDependencies": {
+    "@rollup/plugin-babel": "^5.3.1",
+    "@rollup/plugin-commonjs": "^22.0.1",
+    "@rollup/plugin-node-resolve": "^13.3.0",
     "@testing-library/dom": "^8.11.1",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
@@ -53,10 +63,15 @@
     "postcss": "^8.3.3",
     "prettier": "^2.4.1",
     "react-app-rewired": "^2.1.8",
+    "rollup": "^2.75.7",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript2": "^0.32.1",
     "sass": "^1.52.3",
     "stylelint": "^14.8.5",
     "stylelint-config-sass-guidelines": "^9.0.1",
     "stylelint-config-standard": "^25.0.0",
+    "tslib": "^2.4.0",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "webpack": "^4.0.0"
   },
