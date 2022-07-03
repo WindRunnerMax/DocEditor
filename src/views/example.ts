@@ -170,14 +170,14 @@ export const example: BaseNode[] = [
       },
       {
         "highlight-block-item": true,
-        "children": [{ text: "支持高亮块 可以用于提示文档中的重要内容" }],
+        "children": [{ text: "支持高亮块 可以用于提示文档中的重要内容。" }],
       },
     ],
   },
   {
     "highlight-block": { background: "var(--green-3)", border: "var(--green-6)" },
     "children": [
-      { "children": [{ text: "🏝 可以为高亮块更换主题" }], "highlight-block-item": true },
+      { "children": [{ text: "🏝 可以为高亮块更换主题。" }], "highlight-block-item": true },
     ],
   },
   { heading: { type: "h2", id: "82651426" }, children: [{ text: "快捷功能" }] },
