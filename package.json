@@ -5,7 +5,7 @@
     "dist",
     "pnpm-lock.yaml"
   ],
-  "main": "dist/index.js",
+  "main": "dist/plugins/index.js",
   "types": "dist/plugins/index.d.ts",
   "repository": {
     "type": "git",

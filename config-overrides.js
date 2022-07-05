@@ -1,4 +1,4 @@
-const { override, fixBabelImports, disableEsLint, addLessLoader } = require("customize-cra");
+const { override, disableEsLint, addLessLoader } = require("customize-cra");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 // const { paths: rewiredPaths } = require("react-app-rewired");
 // const { scriptVersion } = rewiredPaths;
@@ -36,15 +36,16 @@ const configWebpackPlugins = () => config => {
 
 module.exports = {
   webpack: override(
-    fixBabelImports("@arco-design/web-react", {
-      libraryDirectory: "es",
-      camel2DashComponentName: false,
-      style: true,
-    }),
-    fixBabelImports("@arco-design/web-react/icon", {
-      libraryDirectory: "react-icon",
-      camel2DashComponentName: false,
-    }),
+    // 不主动处理样式按需加载 主动维护依赖项 作为`npm`包使用
+    // fixBabelImports("@arco-design/web-react", {
+    //   libraryDirectory: "es",
+    //   camel2DashComponentName: false,
+    //   style: true,
+    // }),
+    // fixBabelImports("@arco-design/web-react/icon", {
+    //   libraryDirectory: "react-icon",
+    //   camel2DashComponentName: false,
+    // }),
     addLessLoader({
       javascriptEnabled: true,
       importLoaders: true,

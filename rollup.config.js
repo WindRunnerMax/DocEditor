@@ -4,39 +4,61 @@ import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import path from "path";
 import { terser } from "rollup-plugin-terser";
-import fs from "fs";
 import postcss from "rollup-plugin-postcss";
+import { fileExist, fsStat, readDir } from "./config/fs-utils";
 
-const basePath = "src/plugins";
-const dirsMap = fs
-  .readdirSync(basePath)
-  .map(item => [
-    fs.existsSync(basePath + "/" + item + "/index.tsx")
-      ? basePath + "/" + item + "/index.tsx"
-      : basePath + "/" + item,
-    item.split(".")[0],
-  ])
-  .reduce((res, [pre, cur]) => {
-    res[cur] = pre;
-    return res;
-  }, {});
+const basePath = ["src/plugins", "src/utils", "src/components"];
 
-module.exports = {
-  input: dirsMap,
-  output: {
-    dir: "./dist",
-    format: "es",
-  },
-  plugins: [
-    resolve(),
-    postcss({ minimize: true, extensions: [".css", ".scss"] }),
-    commonjs({ include: "node_modules/**" }),
-    babel({ babelrc: true, exclude: "node_modules/**" }),
-    ts({
-      tsconfig: path.resolve(__dirname, "./tsconfig.dist.json"),
-      extensions: [".ts", ".tsx"],
-    }),
-    terser(),
-  ],
-  external: Object.keys(require("./package.json").dependencies || {}),
+export default async () => {
+  const dirsMap = await Promise.all(
+    basePath.map(async item => await readDir(item).then(files => files.map(it => item + "/" + it)))
+  )
+    .then(res => res.reduce((pre, cur) => [...pre, ...cur], []))
+    .then(dirs => {
+      return Promise.all(
+        dirs.map(async fullPath => {
+          const isDir = await (await fsStat(fullPath)).isDirectory();
+          if (isDir) {
+            const isTsx = await fileExist(fullPath + "/index.tsx");
+            return [
+              fullPath + "/index.ts" + (isTsx ? "x" : ""),
+              fullPath.replace("src/", "") + "/index",
+            ];
+          }
+          return [fullPath, fullPath.replace(/\.tsx?$/, "").replace("src/", "")];
+        })
+      );
+    })
+    .then(arr => {
+      return arr.reduce((res, [pre, cur]) => {
+        res[cur] = pre;
+        return res;
+      }, {});
+    });
+
+  const external = Object.keys(require("./package.json").dependencies || {});
+  external.push(/@arco-design\/web-react\/.*/);
+
+  return {
+    input: dirsMap,
+    output: {
+      dir: "./dist",
+      format: "es",
+    },
+    plugins: [
+      resolve(),
+      postcss({ minimize: true, extensions: [".css", ".scss"] }),
+      commonjs({ include: "node_modules/**" }),
+      babel({
+        exclude: "node_modules/**",
+        presets: [["@babel/preset-env", { module: false, targets: { chrome: ">= 70" } }]],
+      }),
+      ts({
+        tsconfig: path.resolve(__dirname, "./tsconfig.dist.json"),
+        extensions: [".ts", ".tsx"],
+      }),
+      terser(),
+    ],
+    external: external,
+  };
 };
