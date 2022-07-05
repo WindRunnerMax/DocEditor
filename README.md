@@ -96,6 +96,86 @@ type LeafPlugin = BasePlugin & {
 `shortcut`类型的插件是属于自定义的一类单独的插件，同样也是用于快捷键执行命令，这也是使用命令驱动的一种实现。在`shortcut`插件的[实现](https://github.com/WindrunnerMax/DocEditor/blob/master/src/plugins/shortcut/index.tsx)中，我们可以看到如何处理快捷键的输入以及命令的执行等。
 
 
+## NPM包
+由于仓库本身就是实现了插件，可以直接通过引入`doc-editor-light`这个包来实现快速构建富文本编辑器，可以参考 [Github](https://github.com/WindrunnerMax/ResumeEditor/blob/master/src/components/text/main.tsx) ｜ [Resume DEMO](https://windrunnermax.github.io/ResumeEditor/) 的引用方式，简单构建一个富文本编辑器可以直接使用如下的方案。
 
+```typescript
+import "doc-editor-light/dist/plugins/styles"; // 注意引用样式
+import { FC, useMemo } from "react";
+import { withHistory } from "slate-history";
+import { Editable, Slate, withReact } from "slate-react";
+import { createEditor, Descendant } from "slate";
+import {
+  AlignPlugin,
+  BoldPlugin,
+  DividingLinePlugin,
+  HeadingPlugin,
+  HighlightBlockPlugin,
+  HyperLinkPlugin,
+  InlineCodePlugin,
+  ItalicPlugin,
+  MenuToolBar,
+  orderedListPlugin,
+  ParagraphPlugin,
+  QuoteBlockPlugin,
+  ShortCutPlugin,
+  StrikeThroughPlugin,
+  UnderLinePlugin,
+  unorderedListPlugin,
+  SlatePlugins,
+  DocToolBarPlugin,
+} from "doc-editor-light";
+
+export const App: FC<{
+  className?: string;
+}> = props => {
+  const editor = useMemo(() => withHistory(withReact(createEditor())), []);
+
+  const initText: Descendant[] = [{ children: [{ text: "Example" }] }];
+
+  const { renderElement, renderLeaf, onKeyDown, withVoidElements, commands } = useMemo(() => {
+    const register = new SlatePlugins(
+      ParagraphPlugin(),
+      HeadingPlugin(editor),
+      BoldPlugin(),
+      QuoteBlockPlugin(editor),
+      HyperLinkPlugin(editor, false),
+      UnderLinePlugin(),
+      StrikeThroughPlugin(),
+      ItalicPlugin(),
+      InlineCodePlugin(),
+      orderedListPlugin(editor),
+      unorderedListPlugin(editor),
+      DividingLinePlugin(),
+      AlignPlugin(),
+      HighlightBlockPlugin(editor, false)
+    );
+
+    const commands = register.getCommands();
+    register.add(
+      DocToolBarPlugin(editor, props.isRender, commands),
+      ShortCutPlugin(editor, commands)
+    );
+
+    return register.apply();
+  }, [editor]);
+
+  const withVoidEditor = useMemo(() => withVoidElements(editor), [editor, withVoidElements]);
+  return (
+    <div>
+      <Slate editor={withVoidEditor} value={initText}>
+        <MenuToolBar isRender={false} commands={commands}></MenuToolBar>
+        <Editable
+          renderElement={renderElement}
+          renderLeaf={renderLeaf}
+          readOnly={false}
+          placeholder="Enter text ..."
+          onKeyDown={onKeyDown}
+        />
+      </Slate>
+    </div>
+  );
+};
+```
 
 
