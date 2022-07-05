@@ -1,5 +1,4 @@
 import { BlockElement, Editor, Path } from "slate";
-import { orderedListItemKey, orderedListKey } from ".";
 import {
   existKey,
   getBlockNode,
@@ -9,6 +8,8 @@ import {
   setBlockNode,
 } from "../../utils/slate-utils";
 
+const orderedListKey = "ordered-list";
+const orderedListItemKey = "ordered-list-item";
 const applyNewOrderList = (editor: Editor, block: BlockElement, path: Path) => {
   const batchFn: (() => void)[] = [];
   const levelCounter: Record<number, number> = {};

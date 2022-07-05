@@ -11,11 +11,7 @@ export const ParagraphPlugin = (): Plugin => {
     type: EDITOR_ELEMENT_TYPE.BLOCK,
     priority: 11,
     match: () => true,
-    renderLine: context => (
-      <div className="doc-line" onClick={e => e.stopPropagation()}>
-        {context.children}
-      </div>
-    ),
+    renderLine: context => <div className="doc-line">{context.children}</div>,
     command: (editor: Editor) => {
       if (editor.selection) {
         const marks: string[] = [];

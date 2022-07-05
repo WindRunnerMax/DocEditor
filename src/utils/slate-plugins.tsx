@@ -9,13 +9,13 @@ type BasePlugin = {
   command?: CommandFn;
   onKeyDown?: (event: React.KeyboardEvent<HTMLDivElement>) => boolean | void;
 };
-type ElementPlugin = BasePlugin & {
+export type ElementPlugin = BasePlugin & {
   type: typeof EDITOR_ELEMENT_TYPE.BLOCK;
   match: (props: RenderElementProps) => boolean;
   renderLine?: (context: ElementContext) => JSX.Element;
   render?: (context: ElementContext) => JSX.Element;
 };
-type LeafPlugin = BasePlugin & {
+export type LeafPlugin = BasePlugin & {
   type: typeof EDITOR_ELEMENT_TYPE.INLINE;
   match: (props: RenderLeafProps) => boolean;
   render?: (context: LeafContext) => JSX.Element;
