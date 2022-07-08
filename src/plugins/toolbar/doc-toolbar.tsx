@@ -17,11 +17,13 @@ import { execCommand, SlateCommands } from "../../utils/slate-commands";
 import { ReactEditor, RenderElementProps } from "slate-react";
 import { useState } from "react";
 import { focusSelection } from "../../utils/slate-utils";
+import { cs } from "src/utils/classnames";
 
 const DocMenu: React.FC<{
   editor: Editor;
   element: RenderElementProps["element"];
   commands: SlateCommands;
+  offset: number;
 }> = props => {
   const [visible, setVisible] = useState(false);
 
@@ -70,17 +72,28 @@ const DocMenu: React.FC<{
   );
   return (
     <Trigger
-      popup={() => MenuPopup}
-      position="bottom"
-      popupVisible={visible}
-      onVisibleChange={setVisible}
+      popup={() => (
+        <Trigger
+          popup={() => MenuPopup}
+          position="left"
+          popupVisible={visible}
+          onVisibleChange={setVisible}
+        >
+          <span
+            className="doc-icon-plus"
+            // prevent toolbar from taking focus away from editor
+            onMouseDown={e => e.preventDefault()}
+          >
+            <IconPlusCircle />
+          </span>
+        </Trigger>
+      )}
+      position="left"
+      popupAlign={{ left: props.offset }}
+      mouseLeaveDelay={200}
+      mouseEnterDelay={200}
     >
-      <span
-        className="doc-icon-plus"
-        onMouseDown={e => e.preventDefault()} // prevent toolbar from taking focus away from editor
-      >
-        <IconPlusCircle />
-      </span>
+      <div className={cs(visible && "doc-line-hover")}>{props.children}</div>
     </Trigger>
   );
 };
@@ -119,15 +132,9 @@ export const DocToolBarPlugin = (
         }
       }
       return (
-        <Trigger
-          popup={() => <DocMenu editor={editor} commands={commands} element={context.element} />}
-          position="left"
-          popupAlign={{ left: offset }}
-          mouseLeaveDelay={200}
-          mouseEnterDelay={200}
-        >
-          <div>{context.children}</div>
-        </Trigger>
+        <DocMenu editor={editor} commands={commands} element={context.element} offset={offset}>
+          {context.children}
+        </DocMenu>
       );
     },
   };
