@@ -44,7 +44,7 @@ const orderListCommand: CommandFn = (editor, key, data) => {
     }
   }
 };
-export const unorderedListPlugin = (editor: Editor): Plugin => {
+export const UnorderedListPlugin = (editor: Editor): Plugin => {
   return {
     key: unorderedListKey,
     type: EDITOR_ELEMENT_TYPE.BLOCK,

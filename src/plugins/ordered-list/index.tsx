@@ -52,7 +52,7 @@ const orderListCommand: CommandFn = (editor, key, data) => {
     }
   }
 };
-export const orderedListPlugin = (editor: Editor): Plugin => {
+export const OrderedListPlugin = (editor: Editor): Plugin => {
   return {
     key: orderedListKey,
     type: EDITOR_ELEMENT_TYPE.BLOCK,

@@ -17,8 +17,8 @@ import { StrikeThroughPlugin } from "src/plugins/strike-through";
 import { ItalicPlugin } from "src/plugins/italic";
 import { InlineCodePlugin } from "src/plugins/inline-code";
 import { ShortCutPlugin } from "src/plugins/shortcut";
-import { orderedListPlugin } from "src/plugins/ordered-list";
-import { unorderedListPlugin } from "src/plugins/unordered-list";
+import { OrderedListPlugin } from "src/plugins/ordered-list";
+import { UnorderedListPlugin } from "src/plugins/unordered-list";
 import { DividingLinePlugin } from "src/plugins/dividing-line";
 import { example } from "./example";
 import { AlignPlugin } from "src/plugins/align";
@@ -48,8 +48,8 @@ const SlateDocEditor: FC<{
       StrikeThroughPlugin(),
       ItalicPlugin(),
       InlineCodePlugin(),
-      orderedListPlugin(editor),
-      unorderedListPlugin(editor),
+      OrderedListPlugin(editor),
+      UnorderedListPlugin(editor),
       DividingLinePlugin(),
       AlignPlugin(),
       HighlightBlockPlugin(editor, props.isRender)
