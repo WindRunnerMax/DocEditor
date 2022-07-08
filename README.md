@@ -99,6 +99,10 @@ type LeafPlugin = BasePlugin & {
 ## NPM包
 由于仓库本身就是实现了插件，可以直接通过引入`doc-editor-light`这个包来实现快速构建富文本编辑器，可以参考 [Github](https://github.com/WindrunnerMax/ResumeEditor/blob/master/src/components/text/main.tsx) ｜ [Resume DEMO](https://windrunnermax.github.io/ResumeEditor/) 的引用方式，简单构建一个富文本编辑器可以直接使用如下的方案。
 
+```bash
+$ npm install doc-editor-light
+```
+
 ```typescript
 import "doc-editor-light/dist/plugins/styles"; // 注意引用样式
 import { FC, useMemo } from "react";
@@ -115,13 +119,13 @@ import {
   InlineCodePlugin,
   ItalicPlugin,
   MenuToolBar,
-  orderedListPlugin,
+  OrderedListPlugin,
   ParagraphPlugin,
   QuoteBlockPlugin,
   ShortCutPlugin,
   StrikeThroughPlugin,
   UnderLinePlugin,
-  unorderedListPlugin,
+  UnorderedListPlugin,
   SlatePlugins,
   DocToolBarPlugin,
 } from "doc-editor-light";
@@ -144,8 +148,8 @@ export const App: FC<{
       StrikeThroughPlugin(),
       ItalicPlugin(),
       InlineCodePlugin(),
-      orderedListPlugin(editor),
-      unorderedListPlugin(editor),
+      OrderedListPlugin(editor),
+      UnorderedListPlugin(editor),
       DividingLinePlugin(),
       AlignPlugin(),
       HighlightBlockPlugin(editor, false)

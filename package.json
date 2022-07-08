@@ -1,6 +1,6 @@
 {
   "name": "doc-editor-light",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "files": [
     "dist",
     "pnpm-lock.yaml"
