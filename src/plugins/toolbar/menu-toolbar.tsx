@@ -20,7 +20,7 @@ import { useMemoizedFn } from "ahooks";
 import { execCommand, SlateCommands } from "../../utils/slate-commands";
 import { focusSelection, isCollapsed } from "../../utils/slate-utils";
 import { getSelectionRect, maskMenuToolBar } from "./utils";
-import { useSlate } from "slate-react";
+import { useFocused, useSlate } from "slate-react";
 
 export const Portal: React.FC = ({ children }) => {
   return typeof document === "object" ? ReactDOM.createPortal(children, document.body) : null;
@@ -84,6 +84,7 @@ export const MenuToolBar: FC<{
   commands: SlateCommands;
 }> = props => {
   const editor = useSlate();
+  const inFocus = useFocused();
   const keepToolBar = useRef(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const [isKeyDown, setIsKeyDown] = useState(false);
@@ -128,6 +129,7 @@ export const MenuToolBar: FC<{
   useEffect(() => {
     if (
       !editor.selection ||
+      !inFocus ||
       isCollapsed(editor) ||
       Editor.string(editor, editor.selection) === ""
     ) {
@@ -135,7 +137,7 @@ export const MenuToolBar: FC<{
     } else {
       setIsSelected(true);
     }
-  }, [editor, editor.selection]);
+  }, [editor, editor.selection, inFocus]);
 
   const exec = useMemoizedFn(
     (param: string, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {

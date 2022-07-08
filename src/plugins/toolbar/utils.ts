@@ -6,7 +6,7 @@ export const maskMenuToolBar = (element: HTMLDivElement) => {
 
 export const getSelectionRect = () => {
   const domSelection = window.getSelection();
-  if (domSelection) {
+  if (domSelection && domSelection.rangeCount > 0) {
     const domRange = domSelection.getRangeAt(0);
     const rect = domRange.getBoundingClientRect();
     return rect;

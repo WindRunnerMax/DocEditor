@@ -30,10 +30,7 @@ export default async () => {
       );
     })
     .then(arr => {
-      return arr.reduce((res, [pre, cur]) => {
-        res[cur] = pre;
-        return res;
-      }, {});
+      return arr.reduce((res, [pre, cur]) => ({ ...res, [cur]: pre }), {});
     });
 
   const external = Object.keys(require("./package.json").dependencies || {});
