@@ -35,6 +35,11 @@ export const FontBaseMenu: FC<Props> = props => {
     }
   );
 
+  const resetDefault = useMemoizedFn(() => {
+    props.onChange({});
+    changedConfig = {};
+  });
+
   const generatePicker = useMemo(
     () => (list: string[] | (string | undefined)[], type: keyof FontBaseConfig) => {
       return (
@@ -78,7 +83,7 @@ export const FontBaseMenu: FC<Props> = props => {
         {generatePicker(FONT_COLOR_LIST, "background")}
       </div>
       <div className="menu-line reset-default">
-        <Button type="outline" size="mini" onClick={() => props.onChange({})}>
+        <Button type="outline" size="mini" onClick={resetDefault}>
           恢复默认
         </Button>
       </div>
