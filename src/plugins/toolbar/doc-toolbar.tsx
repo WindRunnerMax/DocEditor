@@ -35,7 +35,7 @@ const DocMenu: React.FC<{
     execCommand(props.editor, props.commands, key, { extraKey: data, path });
   };
   const MenuPopup = (
-    <Menu onClickMenuItem={affixStyles} className="doc-menu-popup">
+    <Menu onClickMenuItem={affixStyles}>
       <Menu.Item key="heading.h1">
         <IconH1 />
         一级标题
@@ -74,6 +74,7 @@ const DocMenu: React.FC<{
     <Trigger
       popup={() => (
         <Trigger
+          className="doc-menu-popup"
           popup={() => MenuPopup}
           position="left"
           popupVisible={visible}
