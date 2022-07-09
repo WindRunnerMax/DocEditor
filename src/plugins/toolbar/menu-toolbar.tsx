@@ -11,6 +11,7 @@ import {
   IconCode,
   IconFontColors,
   IconItalic,
+  IconLineHeight,
   IconLink,
   IconMenu,
   IconStrikethrough,
@@ -21,7 +22,6 @@ import { execCommand, SlateCommands } from "../../utils/slate-commands";
 import { focusSelection, isCollapsed } from "../../utils/slate-utils";
 import { getSelectionRect, maskMenuToolBar } from "./utils";
 import { useFocused, useSlate } from "slate-react";
-import TextIcon from "./icon/text.svg";
 
 export const Portal: React.FC = ({ children }) => {
   return typeof document === "object" ? ReactDOM.createPortal(children, document.body) : null;
@@ -30,7 +30,7 @@ export const Portal: React.FC = ({ children }) => {
 const MenuItems = (
   <>
     <Menu.Item key="paragraph">
-      <TextIcon className="arco-icon" />
+      <i className="iconfont icon-text arco-icon" />
     </Menu.Item>
     <Menu.Item key="bold">
       <IconBold />
@@ -52,6 +52,9 @@ const MenuItems = (
     </Menu.Item>
     <Menu.Item key="font-base">
       <IconFontColors />
+    </Menu.Item>
+    <Menu.Item key="line-height">
+      <IconLineHeight />
     </Menu.Item>
     <Menu.SubMenu
       key="align"

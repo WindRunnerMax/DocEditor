@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/triple-slash-reference
+/// <reference path="../global.d.ts" />
+
 export * from "./align";
 export * from "./bold";
 export * from "./dividing-line";
@@ -15,6 +18,7 @@ export * from "./toolbar";
 export * from "./under-line";
 export * from "./unordered-list";
 export * from "./font-base";
+export * from "./line-height";
 export * from "../utils/slate-plugins";
 export * from "../utils/slate-utils";
 export * from "../types/types";

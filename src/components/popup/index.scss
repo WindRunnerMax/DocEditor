@@ -1,5 +1,10 @@
 .popup-container {
-  position: relative;
+  color: #000;
+  height: 1px;
+  left: -1px;
+  position: absolute;
+  top: -1px;
+  width: 1px;
   z-index: 1000000;
 }
 
@@ -13,7 +18,9 @@
 }
 
 .popup-container-node {
-  left: 0;
-  position: fixed;
-  top: 0;
+  height: 1px;
+  left: -1px;
+  position: absolute;
+  top: -1px;
+  width: 1px;
 }

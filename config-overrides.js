@@ -1,4 +1,4 @@
-const { override, disableEsLint, addLessLoader, addWebpackModuleRule } = require("customize-cra");
+const { override, disableEsLint, addLessLoader } = require("customize-cra");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 // const { paths: rewiredPaths } = require("react-app-rewired");
 // const { scriptVersion } = rewiredPaths;
@@ -51,7 +51,6 @@ module.exports = {
       importLoaders: true,
       localIdentName: "[name]__[hash:base64:5]",
     }),
-    addWebpackModuleRule({ test: /\.svg$/, use: ["@svgr/webpack"] }),
     disableEsLint(),
     configWebpackPlugins()
   ),

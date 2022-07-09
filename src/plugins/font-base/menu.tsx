@@ -57,25 +57,15 @@ export const FontBaseMenu: FC<Props> = props => {
     <div className="font-base-menu" style={{ left, top }}>
       <div className="menu-line">
         <div>
-          <span className="label">字号</span>
+          <span className="label" style={{ marginRight: 8 }}>
+            字号
+          </span>
           <InputNumber
             size="mini"
             defaultValue={props.config.fontSize || 14}
             mode="button"
             min={10}
             onChange={v => onChange("fontSize", v)}
-          />
-        </div>
-        <div style={{ marginLeft: 8 }}>
-          <span className="label">行高</span>
-          <InputNumber
-            size="mini"
-            mode="button"
-            defaultValue={props.config.fontSize || 1.8}
-            step={0.1}
-            precision={1}
-            min={0.5}
-            onChange={v => onChange("lineHeight", v)}
           />
         </div>
       </div>

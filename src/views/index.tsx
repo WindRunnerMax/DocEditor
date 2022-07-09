@@ -24,6 +24,7 @@ import { example } from "./example";
 import { AlignPlugin } from "src/plugins/align";
 import { HighlightBlockPlugin } from "src/plugins/highlight-block";
 import { FontBasePlugin } from "src/plugins/font-base";
+import { LineHeightPlugin } from "src/plugins/line-height";
 
 const SlateDocEditor: FC<{
   isRender: boolean;
@@ -54,7 +55,8 @@ const SlateDocEditor: FC<{
       DividingLinePlugin(),
       AlignPlugin(),
       HighlightBlockPlugin(editor, props.isRender),
-      FontBasePlugin()
+      FontBasePlugin(),
+      LineHeightPlugin()
     );
 
     const commands = register.getCommands();

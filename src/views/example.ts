@@ -58,8 +58,6 @@ export const example: BaseNode[] = [
       { text: "、文字对齐、" },
       { "text": "字号", "font-base": { fontSize: 13 } },
       { text: "、" },
-      { "text": "行高", "font-base": { lineHeight: 1.7 } },
-      { text: "、" },
       { "text": "颜色", "font-base": { color: "rgb(var(--green-6))" } },
       { text: "、" },
       {
@@ -191,6 +189,8 @@ export const example: BaseNode[] = [
       { "children": [{ text: "🏝 可以为高亮块更换主题。" }], "highlight-block-item": true },
     ],
   },
+  { children: [{ text: "行高" }], heading: { type: "h3", id: "5ab77ffb" } },
+  { "children": [{ text: "支持独立设置行高。" }], "line-height": 2 },
   { heading: { type: "h2", id: "82651426" }, children: [{ text: "快捷功能" }] },
   { children: [{ text: "快捷键" }], heading: { type: "h3", id: "614d6a4c" } },
   { children: [{ text: "支持快捷键: " }] },

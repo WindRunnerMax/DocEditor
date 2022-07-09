@@ -12,7 +12,6 @@ declare module "slate" {
 
 export type FontBaseConfig = {
   fontSize?: number;
-  lineHeight?: number;
   color?: string;
   background?: string;
 };

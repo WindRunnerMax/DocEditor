@@ -43,6 +43,12 @@
     color: var(--color-text-1) !important;
   }
 
+  .iconfont {
+    align-items: center;
+    display: flex;
+    font-size: 14px;
+  }
+
   .cut-line {
     background-color: var(--color-border-2);
     margin: 4px 6px;
