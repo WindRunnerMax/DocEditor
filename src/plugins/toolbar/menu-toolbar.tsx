@@ -21,6 +21,7 @@ import { execCommand, SlateCommands } from "../../utils/slate-commands";
 import { focusSelection, isCollapsed } from "../../utils/slate-utils";
 import { getSelectionRect, maskMenuToolBar } from "./utils";
 import { useFocused, useSlate } from "slate-react";
+import TextIcon from "./icon/text.svg";
 
 export const Portal: React.FC = ({ children }) => {
   return typeof document === "object" ? ReactDOM.createPortal(children, document.body) : null;
@@ -29,7 +30,7 @@ export const Portal: React.FC = ({ children }) => {
 const MenuItems = (
   <>
     <Menu.Item key="paragraph">
-      <IconFontColors />
+      <TextIcon className="arco-icon" />
     </Menu.Item>
     <Menu.Item key="bold">
       <IconBold />
@@ -48,6 +49,9 @@ const MenuItems = (
     </Menu.Item>
     <Menu.Item key="link">
       <IconLink />
+    </Menu.Item>
+    <Menu.Item key="font-base">
+      <IconFontColors />
     </Menu.Item>
     <Menu.SubMenu
       key="align"
@@ -133,7 +137,7 @@ export const MenuToolBar: FC<{
       isCollapsed(editor) ||
       Editor.string(editor, editor.selection) === ""
     ) {
-      setIsSelected(false);
+      !keepToolBar.current && setIsSelected(false);
     } else {
       setIsSelected(true);
     }
@@ -147,6 +151,7 @@ export const MenuToolBar: FC<{
         focusSelection(editor);
       };
 
+      const marks = Editor.marks(editor);
       const position = { left: 0, top: 0 };
       if (menuRef.current) {
         position.top = menuRef.current.offsetTop + menuRef.current.offsetHeight / 2;
@@ -156,6 +161,7 @@ export const MenuToolBar: FC<{
         extraKey: data,
         event,
         position,
+        marks,
       });
       if (result) {
         keepToolBar.current = true;

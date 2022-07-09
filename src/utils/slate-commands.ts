@@ -1,4 +1,4 @@
-import { Editor, Path, Location } from "slate";
+import { Editor, Path, Location, TextElement } from "slate";
 
 export type CommandFn = (
   editor: Editor,
@@ -7,6 +7,7 @@ export type CommandFn = (
     path?: Path;
     event?: React.MouseEvent<HTMLDivElement, MouseEvent>;
     position?: { left: number; top: number };
+    marks?: TextElement | null;
     [key: string]: unknown;
   }
 ) => void | Promise<void>;

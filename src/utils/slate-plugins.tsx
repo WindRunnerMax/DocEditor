@@ -26,15 +26,17 @@ export const EDITOR_ELEMENT_TYPE = {
   BLOCK: "BLOCK" as const,
   INLINE: "INLINE" as const,
 };
-export type ElementContext = {
+
+type BaseContext = {
   classList: string[];
-  element: RenderElementProps["element"];
   children: JSX.Element;
+  style: React.CSSProperties;
+};
+export type ElementContext = BaseContext & {
+  element: RenderElementProps["element"];
   props: RenderElementProps;
 };
-export type LeafContext = {
-  classList: string[];
-  children: JSX.Element;
+export type LeafContext = BaseContext & {
   element: RenderLeafProps["text"];
   props: RenderLeafProps;
 };
@@ -85,6 +87,7 @@ export class SlatePlugins {
       renderElement: props => {
         const context: ElementContext = {
           props,
+          style: {},
           classList: [],
           element: props.element,
           children: props.children,
@@ -107,7 +110,7 @@ export class SlatePlugins {
           }
         }
         return (
-          <div {...props.attributes} className={context.classList.join(" ")}>
+          <div {...props.attributes} className={context.classList.join(" ")} style={context.style}>
             {context.children}
           </div>
         );
@@ -115,6 +118,7 @@ export class SlatePlugins {
       renderLeaf: props => {
         const context: LeafContext = {
           props,
+          style: {},
           element: props.text,
           classList: [],
           children: props.children,
@@ -125,7 +129,7 @@ export class SlatePlugins {
           }
         }
         return (
-          <span {...props.attributes} className={context.classList.join(" ")}>
+          <span {...props.attributes} className={context.classList.join(" ")} style={context.style}>
             {context.children}
           </span>
         );

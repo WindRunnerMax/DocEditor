@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import { Editor } from "slate";
 import { TextElement } from "../../types/types";
 import HyperLinkMenu from "./menu";
-import { ReactEditor, useSlateStatic } from "slate-react";
+import { ReactEditor } from "slate-react";
 import { assertValue } from "src/utils/common";
 
 declare module "slate" {
@@ -24,9 +24,10 @@ export const hyperLinkPluginKey = "link";
 const HyperLinkEditor: React.FC<{
   config: HyperLinkConfig;
   element: TextElement;
+  editor: Editor;
 }> = props => {
   const { config } = props;
-  const editor = useSlateStatic();
+  const editor = props.editor;
   const [visible, setVisible] = useState(false);
 
   const clickHref = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -87,7 +88,7 @@ export const HyperLinkPlugin = (editor: Editor, isRender: boolean): Plugin => {
       const config = assertValue(context.props.leaf[hyperLinkPluginKey]);
       if (!isRender) {
         return (
-          <HyperLinkEditor config={config} element={context.element}>
+          <HyperLinkEditor config={config} element={context.element} editor={editor}>
             {context.children}
           </HyperLinkEditor>
         );

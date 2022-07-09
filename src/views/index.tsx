@@ -23,6 +23,7 @@ import { DividingLinePlugin } from "src/plugins/dividing-line";
 import { example } from "./example";
 import { AlignPlugin } from "src/plugins/align";
 import { HighlightBlockPlugin } from "src/plugins/highlight-block";
+import { FontBasePlugin } from "src/plugins/font-base";
 
 const SlateDocEditor: FC<{
   isRender: boolean;
@@ -52,7 +53,8 @@ const SlateDocEditor: FC<{
       UnorderedListPlugin(editor),
       DividingLinePlugin(),
       AlignPlugin(),
-      HighlightBlockPlugin(editor, props.isRender)
+      HighlightBlockPlugin(editor, props.isRender),
+      FontBasePlugin()
     );
 
     const commands = register.getCommands();
