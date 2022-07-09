@@ -1,6 +1,6 @@
 import "./index.scss";
 import { FC, useMemo } from "react";
-import { InputNumber } from "@arco-design/web-react";
+import { Button, InputNumber } from "@arco-design/web-react";
 import { FontBaseConfig } from "./index";
 import { useMemoizedFn } from "ahooks";
 
@@ -12,8 +12,8 @@ interface Props {
 }
 
 export const FONT_COLOR_LIST = [
-  "var(--color-text-1)",
-  "rgb(var(--gray-6))",
+  "var(--color-white)",
+  "var(--color-black)",
   "rgb(var(--red-6))",
   "rgb(var(--blue-6))",
   "rgb(var(--green-6))",
@@ -26,11 +26,12 @@ export const FONT_COLOR_LIST = [
 export const FontBaseMenu: FC<Props> = props => {
   const top = props.top + 50;
   const left = props.left - 180;
+  let changedConfig: FontBaseConfig = props.config;
 
   const onChange = useMemoizedFn(
     (key: keyof FontBaseConfig, value: string | number | undefined) => {
-      console.log(key, value);
-      props.onChange({ ...props.config, [key]: value });
+      changedConfig = { ...changedConfig, [key]: value };
+      props.onChange(changedConfig);
     }
   );
 
@@ -85,6 +86,11 @@ export const FontBaseMenu: FC<Props> = props => {
       <div className="menu-line">
         <span className="label">背景</span>
         {generatePicker(FONT_COLOR_LIST, "background")}
+      </div>
+      <div className="menu-line reset-default">
+        <Button type="outline" size="mini" onClick={() => props.onChange({})}>
+          恢复默认
+        </Button>
       </div>
     </div>
   );
