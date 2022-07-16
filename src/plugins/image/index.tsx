@@ -6,7 +6,6 @@ import { useFocused, useSelected } from "slate-react";
 import { cs } from "src/utils/classnames";
 import { CommandFn } from "src/utils/slate-commands";
 import { Image as ArcoImage } from "@arco-design/web-react";
-
 declare module "slate" {
   interface BlockElement {
     "image"?: {
@@ -20,17 +19,20 @@ declare module "slate" {
 export const imageKey = "image";
 const DocImage: React.FC<{
   element: BlockElement;
+  isRender: boolean;
 }> = props => {
   const selected = useSelected();
   const focused = useFocused();
   const src = props.element.image && props.element.image.src;
+
   return (
     <div className={cs("doc-image", focused && selected && "selected")}>
-      <ArcoImage src={src || void 0}></ArcoImage>
+      <ArcoImage src={src || void 0} preview={props.isRender}></ArcoImage>
     </div>
   );
 };
-export const ImagePlugin = (editor: Editor): Plugin => {
+
+export const ImagePlugin = (editor: Editor, isRender: boolean): Plugin => {
   const IMAGE_INPUT_DOM_ID = "doc-image-upload-input";
 
   const command: CommandFn = (editor, key) => {
@@ -60,6 +62,6 @@ export const ImagePlugin = (editor: Editor): Plugin => {
     type: EDITOR_ELEMENT_TYPE.BLOCK,
     command,
     match: props => existKey(props.element, imageKey),
-    render: context => <DocImage element={context.element}></DocImage>,
+    render: context => <DocImage element={context.element} isRender={isRender}></DocImage>,
   };
 };

@@ -58,7 +58,7 @@ const SlateDocEditor: FC<{
       HighlightBlockPlugin(editor, props.isRender),
       FontBasePlugin(),
       LineHeightPlugin(),
-      ImagePlugin(editor)
+      ImagePlugin(editor, props.isRender)
     );
 
     const commands = register.getCommands();
