@@ -1,0 +1,11 @@
+.doc-image {
+  &.selected {
+    box-shadow: 0 0 0 1.5px rgb(var(--blue-3));
+  }
+}
+
+.doc-image-upload-input {
+  left: -1000px;
+  position: fixed;
+  top: -1000px;
+}

@@ -3,6 +3,7 @@ import { EDITOR_ELEMENT_TYPE, Plugin } from "../../utils/slate-plugins";
 import { Editor } from "slate";
 import {
   IconEdit,
+  IconFileImage,
   IconH1,
   IconH2,
   IconH3,
@@ -63,6 +64,10 @@ const DocMenu: React.FC<{
       <Menu.Item key="unordered-list">
         <IconUnorderedList />
         无序列表
+      </Menu.Item>
+      <Menu.Item key="image">
+        <IconFileImage />
+        图片
       </Menu.Item>
       <Menu.Item key="dividing-line">
         <IconEdit />
