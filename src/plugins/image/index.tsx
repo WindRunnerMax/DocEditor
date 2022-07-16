@@ -1,14 +1,26 @@
 import "./index.scss";
 import { EDITOR_ELEMENT_TYPE, Plugin } from "../../utils/slate-plugins";
-import { existKey } from "../../utils/slate-get";
+import { existKey, getPathByUUID } from "../../utils/slate-get";
+import { setBlockNode } from "../../utils/slate-set";
 import { BlockElement, Editor, Transforms } from "slate";
 import { useFocused, useSelected } from "slate-react";
 import { cs } from "src/utils/classnames";
 import { CommandFn } from "src/utils/slate-commands";
-import { Image as ArcoImage } from "@arco-design/web-react";
+import { Image as ArcoImage, Spin } from "@arco-design/web-react";
+import { v4 } from "uuid";
+import { focusSelection } from "..";
+import { uploadImageHandler } from "./utils";
+
+enum ImageStatus {
+  LOADING = 1,
+  SUCCESS = 2,
+  FAIL = 3,
+}
 declare module "slate" {
   interface BlockElement {
-    "image"?: {
+    uuid?: string;
+    image?: {
+      status: ImageStatus;
       src: string;
       width?: number | string;
       height?: number | string;
@@ -23,19 +35,59 @@ const DocImage: React.FC<{
 }> = props => {
   const selected = useSelected();
   const focused = useFocused();
-  const src = props.element.image && props.element.image.src;
+  if (!props.element.image) return null;
+  const config = props.element.image;
 
   return (
-    <div className={cs("doc-image", focused && selected && "selected")}>
-      <ArcoImage src={src || void 0} preview={props.isRender}></ArcoImage>
-    </div>
+    <Spin loading={config.status === ImageStatus.LOADING}>
+      <div className={cs("doc-image", focused && selected && "selected")}>
+        <ArcoImage src={config.src} preview={props.isRender}></ArcoImage>
+      </div>
+    </Spin>
   );
 };
 
-export const ImagePlugin = (editor: Editor, isRender: boolean): Plugin => {
+export const ImagePlugin = (
+  editor: Editor,
+  isRender: boolean,
+  uploadHandler = uploadImageHandler
+): Plugin => {
   const IMAGE_INPUT_DOM_ID = "doc-image-upload-input";
 
-  const command: CommandFn = (editor, key) => {
+  const uploadImage = (files: FileList) => {
+    Array.from(files).forEach(file => {
+      const blobSRC = window.URL.createObjectURL(file);
+      const uuid = v4();
+      Transforms.insertNodes(editor, {
+        uuid,
+        [imageKey]: { src: blobSRC, status: ImageStatus.LOADING },
+        children: [{ text: "" }],
+      });
+      uploadHandler(file)
+        .then(res => {
+          const path = getPathByUUID(editor, uuid);
+          if (path) {
+            setBlockNode(
+              editor,
+              { [imageKey]: { src: res.src, status: ImageStatus.SUCCESS } },
+              { at: path, key: imageKey }
+            );
+          }
+        })
+        .catch(() => {
+          const path = getPathByUUID(editor, uuid);
+          if (path) {
+            setBlockNode(
+              editor,
+              { [imageKey]: { src: "", status: ImageStatus.FAIL } },
+              { at: path, key: imageKey }
+            );
+          }
+        });
+    });
+  };
+
+  const command: CommandFn = editor => {
     let imageInput = document.getElementById(IMAGE_INPUT_DOM_ID);
     if (!imageInput) {
       imageInput = document.createElement("input");
@@ -47,11 +99,8 @@ export const ImagePlugin = (editor: Editor, isRender: boolean): Plugin => {
     imageInput.onchange = e => {
       const target = e.target as HTMLInputElement;
       const files = target.files;
-      files &&
-        Array.from(files).forEach(file => {
-          const blobSRC = window.URL.createObjectURL(file);
-          Transforms.insertNodes(editor, { [key]: { src: blobSRC }, children: [{ text: "" }] });
-        });
+      focusSelection(editor);
+      files && uploadImage(files);
       Transforms.insertNodes(editor, { children: [{ text: "" }] });
     };
     imageInput.click();

@@ -7,3 +7,4 @@ import "@arco-design/web-react/es/Input/style";
 import "@arco-design/web-react/es/Switch/style";
 import "@arco-design/web-react/es/InputNumber/style";
 import "@arco-design/web-react/es/Image/style";
+import "@arco-design/web-react/es/Spin/style";

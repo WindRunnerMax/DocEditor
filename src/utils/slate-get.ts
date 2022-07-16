@@ -1,5 +1,6 @@
-import { Editor, Location, Path, Node } from "slate";
+import { Editor, Location, Path, Node, BaseNode } from "slate";
 import { BlockElement } from "../types/types";
+import { isObject } from "./is";
 import { isSlateElement } from "./slate-is";
 
 export const getBlockNode = (
@@ -76,3 +77,17 @@ export const getLineIndex = (editor: Editor, path: Path) => {
 };
 
 export const existKey = (node: Node, key: string) => isSlateElement(node) && !!node[key];
+
+export const getPathByUUID = (editor: Editor, uuid: string): Path | null => {
+  type QueueNode = { path: number[]; node: BaseNode };
+  const queue: QueueNode[] = [{ path: [], node: editor }];
+  while (queue.length) {
+    const curNode = queue.pop();
+    if (!curNode || !curNode.node || !Array.isArray(curNode.node.children)) continue;
+    for (const [index, node] of (curNode.node.children as BaseNode[]).entries()) {
+      if (isObject(node) && node.uuid === uuid) return [...curNode.path, index];
+      queue.push({ path: [...curNode.path, index], node });
+    }
+  }
+  return null;
+};
