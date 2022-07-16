@@ -2,14 +2,15 @@ import "./index.scss";
 import { EDITOR_ELEMENT_TYPE, Plugin } from "../../utils/slate-plugins";
 import { existKey, getPathByUUID } from "../../utils/slate-get";
 import { setBlockNode } from "../../utils/slate-set";
-import { BlockElement, Editor, Transforms } from "slate";
-import { useFocused, useSelected } from "slate-react";
+import { BaseEditor, BlockElement, Transforms } from "slate";
+import { ReactEditor, useFocused, useSelected } from "slate-react";
 import { cs } from "src/utils/classnames";
 import { CommandFn } from "src/utils/slate-commands";
 import { Image as ArcoImage, Spin } from "@arco-design/web-react";
 import { v4 } from "uuid";
 import { focusSelection } from "..";
 import { uploadImageHandler } from "./utils";
+import { HistoryEditor } from "slate-history";
 
 enum ImageStatus {
   LOADING = 1,
@@ -48,7 +49,7 @@ const DocImage: React.FC<{
 };
 
 export const ImagePlugin = (
-  editor: Editor,
+  editor: BaseEditor & ReactEditor & HistoryEditor,
   isRender: boolean,
   uploadHandler = uploadImageHandler
 ): Plugin => {
@@ -67,21 +68,25 @@ export const ImagePlugin = (
         .then(res => {
           const path = getPathByUUID(editor, uuid);
           if (path) {
-            setBlockNode(
-              editor,
-              { [imageKey]: { src: res.src, status: ImageStatus.SUCCESS } },
-              { at: path, key: imageKey }
-            );
+            HistoryEditor.withoutSaving(editor, () => {
+              setBlockNode(
+                editor,
+                { [imageKey]: { src: res.src, status: ImageStatus.SUCCESS } },
+                { at: path, key: imageKey }
+              );
+            });
           }
         })
         .catch(() => {
           const path = getPathByUUID(editor, uuid);
           if (path) {
-            setBlockNode(
-              editor,
-              { [imageKey]: { src: "", status: ImageStatus.FAIL } },
-              { at: path, key: imageKey }
-            );
+            HistoryEditor.withoutSaving(editor, () => {
+              setBlockNode(
+                editor,
+                { [imageKey]: { src: void 0, status: ImageStatus.FAIL } },
+                { at: path, key: imageKey }
+              );
+            });
           }
         });
     });
