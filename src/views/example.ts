@@ -193,7 +193,11 @@ export const example: BaseNode[] = [
   { "children": [{ text: "支持独立设置行高。" }], "line-height": 2 },
   { children: [{ text: "图片" }], heading: { type: "h3", id: "aab55qq1" } },
   { children: [{ text: "支持图片上传。" }] },
-  { children: [{ text: "" }], image: { src: "./favicon.ico" } },
+  {
+    children: [{ text: "" }],
+    image: { src: "./favicon.ico", status: 2 },
+    uuid: "5ab77ffb-aab55qq1",
+  },
   { heading: { type: "h2", id: "82651426" }, children: [{ text: "快捷功能" }] },
   { children: [{ text: "快捷键" }], heading: { type: "h3", id: "614d6a4c" } },
   { children: [{ text: "支持快捷键: " }] },
