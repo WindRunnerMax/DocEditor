@@ -3,16 +3,21 @@ import { Editor, Transforms } from "slate";
 import { getBlockNode, isCollapsed, isMatchedEvent } from "../../utils/slate-utils";
 import { KEYBOARD } from "../../utils/constant";
 import { execCommand, SlateCommands } from "../../utils/slate-commands";
+import { orderedListKey } from "../ordered-list";
+import { unorderedListKey } from "../unordered-list";
+import { quoteBlockKey } from "../quote-block";
+import { headingPluginKey } from "../heading";
+import { dividingLineKey } from "../dividing-line";
 
 const SHORTCUTS: Record<string, string> = {
-  "1.": "ordered-list",
-  "-": "unordered-list",
-  "*": "unordered-list",
-  ">": "quote-block",
-  "#": "heading.h1",
-  "##": "heading.h2",
-  "###": "heading.h3",
-  "---": "dividing-line",
+  "1.": orderedListKey,
+  "-": unorderedListKey,
+  "*": unorderedListKey,
+  ">": quoteBlockKey,
+  "#": `${headingPluginKey}.h1`,
+  "##": `${headingPluginKey}.h2`,
+  "###": `${headingPluginKey}.h3`,
+  "---": dividingLineKey,
 };
 
 export const ShortCutPlugin = (editor: Editor, commands: SlateCommands): Plugin => {

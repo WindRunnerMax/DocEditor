@@ -19,6 +19,13 @@ import { ReactEditor, RenderElementProps } from "slate-react";
 import { useState } from "react";
 import { focusSelection } from "../../utils/slate-utils";
 import { cs } from "src/utils/classnames";
+import { headingPluginKey } from "../heading";
+import { quoteBlockItemKey, quoteBlockKey } from "../quote-block";
+import { highlightBlockItemKey, highlightBlockKey } from "../highlight-block";
+import { orderedListKey } from "../ordered-list";
+import { unorderedListKey } from "../unordered-list";
+import { imageKey } from "../image";
+import { dividingLineKey } from "../dividing-line";
 
 const DocMenu: React.FC<{
   editor: Editor;
@@ -37,39 +44,39 @@ const DocMenu: React.FC<{
   };
   const MenuPopup = (
     <Menu onClickMenuItem={affixStyles}>
-      <Menu.Item key="heading.h1">
+      <Menu.Item key={`${headingPluginKey}.h1`}>
         <IconH1 />
         一级标题
       </Menu.Item>
-      <Menu.Item key="heading.h2">
+      <Menu.Item key={`${headingPluginKey}.h2`}>
         <IconH2 />
         二级标题
       </Menu.Item>
-      <Menu.Item key="heading.h3">
+      <Menu.Item key={`${headingPluginKey}.h3`}>
         <IconH3 />
         三级标题
       </Menu.Item>
-      <Menu.Item key="quote-block">
+      <Menu.Item key={quoteBlockKey}>
         <IconQuote />
         块级引用
       </Menu.Item>
-      <Menu.Item key="highlight-block">
+      <Menu.Item key={highlightBlockKey}>
         <IconPaste />
         高亮块
       </Menu.Item>
-      <Menu.Item key="ordered-list">
+      <Menu.Item key={orderedListKey}>
         <IconOrderedList />
         有序列表
       </Menu.Item>
-      <Menu.Item key="unordered-list">
+      <Menu.Item key={unorderedListKey}>
         <IconUnorderedList />
         无序列表
       </Menu.Item>
-      <Menu.Item key="image">
+      <Menu.Item key={imageKey}>
         <IconFileImage />
         图片
       </Menu.Item>
-      <Menu.Item key="dividing-line">
+      <Menu.Item key={dividingLineKey}>
         <IconEdit />
         分割线
       </Menu.Item>
@@ -105,16 +112,16 @@ const DocMenu: React.FC<{
 };
 
 const NO_DOC_TOOL_BAR = [
-  "quote-block",
-  "ordered-list",
-  "unordered-list",
-  "dividing-line",
-  "highlight-block",
-  "image",
+  quoteBlockKey,
+  orderedListKey,
+  unorderedListKey,
+  dividingLineKey,
+  highlightBlockKey,
+  imageKey,
 ];
 const OFFSET_MAP: Record<string, number> = {
-  "quote-block-item": 12,
-  "highlight-block-item": 8,
+  [quoteBlockItemKey]: 12,
+  [highlightBlockItemKey]: 8,
 };
 export const DocToolBarPlugin = (
   editor: Editor,

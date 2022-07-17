@@ -22,6 +22,16 @@ import { execCommand, SlateCommands } from "../../utils/slate-commands";
 import { focusSelection, isCollapsed } from "../../utils/slate-utils";
 import { getSelectionRect, maskMenuToolBar } from "./utils";
 import { useFocused, useSlate } from "slate-react";
+import { paragraphKey } from "../paragraph";
+import { boldPluginKey } from "../bold";
+import { italicPluginKey } from "../italic";
+import { underLinePluginKey } from "../under-line";
+import { strikeThroughPluginKey } from "../strike-through";
+import { inlineCodePluginKey } from "../inline-code";
+import { hyperLinkPluginKey } from "../hyper-link";
+import { fontBasePluginKey } from "../font-base";
+import { lineHeightPluginKey } from "../line-height";
+import { alignKey } from "../align";
 
 export const Portal: React.FC = ({ children }) => {
   return typeof document === "object" ? ReactDOM.createPortal(children, document.body) : null;
@@ -29,55 +39,55 @@ export const Portal: React.FC = ({ children }) => {
 
 const MenuItems = (
   <>
-    <Menu.Item key="paragraph">
+    <Menu.Item key={paragraphKey}>
       <i className="iconfont icon-text arco-icon" />
     </Menu.Item>
-    <Menu.Item key="bold">
+    <Menu.Item key={boldPluginKey}>
       <IconBold />
     </Menu.Item>
-    <Menu.Item key="italic">
+    <Menu.Item key={italicPluginKey}>
       <IconItalic />
     </Menu.Item>
-    <Menu.Item key="under-line">
+    <Menu.Item key={underLinePluginKey}>
       <IconUnderline />
     </Menu.Item>
-    <Menu.Item key="strike-through">
+    <Menu.Item key={strikeThroughPluginKey}>
       <IconStrikethrough />
     </Menu.Item>
-    <Menu.Item key="inline-code">
+    <Menu.Item key={inlineCodePluginKey}>
       <IconCode />
     </Menu.Item>
-    <Menu.Item key="link">
+    <Menu.Item key={hyperLinkPluginKey}>
       <IconLink />
     </Menu.Item>
-    <Menu.Item key="font-base">
+    <Menu.Item key={fontBasePluginKey}>
       <IconFontColors />
     </Menu.Item>
-    <Menu.Item key="line-height">
+    <Menu.Item key={lineHeightPluginKey}>
       <IconLineHeight />
     </Menu.Item>
     <Menu.SubMenu
-      key="align"
+      key={alignKey}
       title={<IconAlignLeft />}
       popup
       triggerProps={{ trigger: "click", position: "bottom" }}
     >
-      <Menu.Item key="align.left">
+      <Menu.Item key={`${alignKey}.left`}>
         <div className="align-menu-center">
           <IconAlignLeft />
         </div>
       </Menu.Item>
-      <Menu.Item key="align.center">
+      <Menu.Item key={`${alignKey}.center`}>
         <div className="align-menu-center">
           <IconAlignCenter />
         </div>
       </Menu.Item>
-      <Menu.Item key="align.right">
+      <Menu.Item key={`${alignKey}.right`}>
         <div className="align-menu-center">
           <IconAlignRight />
         </div>
       </Menu.Item>
-      <Menu.Item key="align.justify">
+      <Menu.Item key={`${alignKey}.justify`}>
         <div className="align-menu-center">
           <IconMenu />
         </div>

@@ -5,9 +5,10 @@ import { isArray } from "src/utils/is";
 import { getOmitAttributes } from "src/utils/slate-get";
 import { setUnTextNode } from "src/utils/slate-set";
 
+export const paragraphKey = "paragraph";
 export const ParagraphPlugin = (): Plugin => {
   return {
-    key: "paragraph",
+    key: paragraphKey,
     type: EDITOR_ELEMENT_TYPE.BLOCK,
     priority: 11,
     match: () => true,
