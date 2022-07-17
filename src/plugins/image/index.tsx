@@ -91,7 +91,7 @@ export const ImagePlugin = (
     });
   };
 
-  const command: CommandFn = editor => {
+  const command: CommandFn = (editor, _, data) => {
     let imageInput = document.getElementById(IMAGE_INPUT_DOM_ID);
     if (!imageInput) {
       imageInput = document.createElement("input");
@@ -103,7 +103,7 @@ export const ImagePlugin = (
     imageInput.onchange = e => {
       const target = e.target as HTMLInputElement;
       const files = target.files;
-      focusSelection(editor);
+      focusSelection(editor, data?.path);
       files && uploadImage(files);
       Transforms.insertNodes(editor, { children: [{ text: "" }] });
     };
