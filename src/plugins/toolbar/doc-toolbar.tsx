@@ -110,6 +110,7 @@ const NO_DOC_TOOL_BAR = [
   "unordered-list",
   "dividing-line",
   "highlight-block",
+  "image",
 ];
 const OFFSET_MAP: Record<string, number> = {
   "quote-block-item": 12,

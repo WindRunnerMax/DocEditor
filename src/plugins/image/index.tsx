@@ -1,14 +1,13 @@
 import "./index.scss";
 import { EDITOR_ELEMENT_TYPE, Plugin } from "../../utils/slate-plugins";
 import { existKey, getPathByUUID } from "../../utils/slate-get";
-import { setBlockNode } from "../../utils/slate-set";
+import { setBlockNode, focusSelection } from "../../utils/slate-set";
 import { BaseEditor, BlockElement, Transforms } from "slate";
 import { ReactEditor, useFocused, useSelected } from "slate-react";
 import { cs } from "src/utils/classnames";
 import { CommandFn } from "src/utils/slate-commands";
 import { Image as ArcoImage, Spin } from "@arco-design/web-react";
 import { v4 } from "uuid";
-import { focusSelection } from "..";
 import { uploadImageHandler } from "./utils";
 import { HistoryEditor } from "slate-history";
 
