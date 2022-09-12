@@ -1,4 +1,4 @@
-import { Editor } from "slate";
+import { Editor, Node } from "slate";
 import { RenderElementProps, RenderLeafProps } from "slate-react";
 import { CommandFn, registerCommand, SlateCommands } from "./slate-commands";
 
@@ -47,6 +47,7 @@ type RenderPlugins = {
   onKeyDown: (event: React.KeyboardEvent<HTMLDivElement>) => unknown;
   withVoidElements: (editor: Editor) => Editor;
   commands: SlateCommands;
+  onCopy: (event: React.ClipboardEvent<HTMLDivElement>, editor: Editor) => void;
 };
 
 export const KEY_EVENT = {
@@ -150,6 +151,14 @@ export class SlatePlugins {
         return editor;
       },
       commands: this.commands,
+      onCopy: (event, editor) => {
+        const fragment = editor.getFragment();
+        const text = Array.from(fragment)
+          .map(n => Node.string(n))
+          .join("\n");
+        event.clipboardData.setData("text/plain", text);
+        event.preventDefault();
+      },
     };
   };
 }

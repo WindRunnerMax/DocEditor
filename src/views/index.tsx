@@ -40,35 +40,36 @@ const SlateDocEditor: FC<{
     }, 500)
   );
 
-  const { renderElement, renderLeaf, onKeyDown, withVoidElements, commands } = useMemo(() => {
-    const register = new SlatePlugins(
-      ParagraphPlugin(),
-      HeadingPlugin(editor),
-      BoldPlugin(),
-      QuoteBlockPlugin(editor),
-      HyperLinkPlugin(editor, props.isRender),
-      UnderLinePlugin(),
-      StrikeThroughPlugin(),
-      ItalicPlugin(),
-      InlineCodePlugin(),
-      OrderedListPlugin(editor),
-      UnorderedListPlugin(editor),
-      DividingLinePlugin(),
-      AlignPlugin(),
-      HighlightBlockPlugin(editor, props.isRender),
-      FontBasePlugin(),
-      LineHeightPlugin(),
-      ImagePlugin(editor, props.isRender)
-    );
+  const { renderElement, renderLeaf, onKeyDown, withVoidElements, commands, onCopy } =
+    useMemo(() => {
+      const register = new SlatePlugins(
+        ParagraphPlugin(),
+        HeadingPlugin(editor),
+        BoldPlugin(),
+        QuoteBlockPlugin(editor),
+        HyperLinkPlugin(editor, props.isRender),
+        UnderLinePlugin(),
+        StrikeThroughPlugin(),
+        ItalicPlugin(),
+        InlineCodePlugin(),
+        OrderedListPlugin(editor),
+        UnorderedListPlugin(editor),
+        DividingLinePlugin(),
+        AlignPlugin(),
+        HighlightBlockPlugin(editor, props.isRender),
+        FontBasePlugin(),
+        LineHeightPlugin(),
+        ImagePlugin(editor, props.isRender)
+      );
 
-    const commands = register.getCommands();
-    register.add(
-      DocToolBarPlugin(editor, props.isRender, commands),
-      ShortCutPlugin(editor, commands)
-    );
+      const commands = register.getCommands();
+      register.add(
+        DocToolBarPlugin(editor, props.isRender, commands),
+        ShortCutPlugin(editor, commands)
+      );
 
-    return register.apply();
-  }, [editor, props.isRender]);
+      return register.apply();
+    }, [editor, props.isRender]);
 
   const withVoidEditor = useMemo(() => withVoidElements(editor), [editor, withVoidElements]);
 
@@ -81,6 +82,7 @@ const SlateDocEditor: FC<{
         readOnly={props.isRender}
         placeholder="Enter text ..."
         onKeyDown={onKeyDown}
+        onCopy={e => onCopy(e, editor)}
       />
     </Slate>
   );
