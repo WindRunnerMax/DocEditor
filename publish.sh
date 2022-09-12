@@ -1,6 +1,3 @@
-git stash
-npm version patch
+npm version patch --no-git-tag-version
 npm run build:packages
 npm publish --registry=https://registry.npmjs.org/ 
-git reset HEAD^ 
-git stash pop
