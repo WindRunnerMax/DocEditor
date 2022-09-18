@@ -1,9 +1,11 @@
 $icon-plus-z-index: 1000;
 $header-z-index: 1001;
 $doc-menu-z-index: 1002;
+$box-shadow: 0 0 4px var(--color-border-2);
 
 body {
   --header-z-index: $header-z-index;
   --doc-menu-z-index: $doc-menu-z-index;
   --icon-plus-z-index: $icon-plus-z-index;
+  --box-shadow: $box-shadow;
 }

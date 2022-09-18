@@ -1,0 +1,29 @@
+@import 'src/styles/global';
+
+.doc-icon-plus {
+  align-items: center;
+  color: var(--color-text-2);
+  cursor: pointer;
+  display: flex;
+  font-size: 23px;
+}
+
+.doc-line-hover {
+  background-color: rgb(var(--blue-6), 0.3);
+  border-radius: 3px;
+}
+
+.doc-menu-popup {
+  box-shadow: $box-shadow;
+  z-index: $doc-menu-z-index;
+
+  .arco-icon {
+    color: var(--color-text-1) !important;
+  }
+
+  .iconfont {
+    align-items: center;
+    display: flex;
+    font-size: 14px;
+  }
+}

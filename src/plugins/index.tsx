@@ -14,7 +14,7 @@ export * from "./paragraph";
 export * from "./quote-block";
 export * from "./shortcut";
 export * from "./strike-through";
-export * from "./toolbar";
+export * from "./menu-toolbar";
 export * from "./under-line";
 export * from "./unordered-list";
 export * from "./font-base";
