@@ -1,11 +1,21 @@
 @import 'src/styles/global';
 
-.doc-icon-plus {
+.doc-icon-container {
   align-items: center;
-  color: var(--color-text-2);
+  background-color: var(--color-bg-1);
+  border-radius: 3px;
+  box-shadow: $box-shadow;
+  color: rgb(var(--blue-7), 0.9);
   cursor: pointer;
   display: flex;
-  font-size: 23px;
+  font-size: 15px;
+  justify-content: space-between;
+  margin-right: 5px;
+  padding: 5px 1px 5px 7px;
+
+  .arco-icon-more-vertical {
+    color: var(--color-text-3);
+  }
 }
 
 .doc-line-hover {

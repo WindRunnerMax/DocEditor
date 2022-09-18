@@ -1,115 +1,26 @@
 import "./index.scss";
 import { EDITOR_ELEMENT_TYPE, Plugin } from "../../utils/slate-plugins";
 import { Editor } from "slate";
+import { quoteBlockItemKey, quoteBlockKey } from "../quote-block";
+import { highlightBlockItemKey, highlightBlockKey } from "../highlight-block";
+import { orderedListItemKey, orderedListKey } from "../ordered-list";
+import { unorderedListItemKey, unorderedListKey } from "../unordered-list";
+import { imageKey } from "../image";
+import { dividingLineKey } from "../dividing-line";
+import { DocMenu } from "./doc-menu";
+import { SlateCommands } from "src/utils/slate-commands";
 import {
-  IconEdit,
-  IconFileImage,
   IconH1,
   IconH2,
   IconH3,
   IconOrderedList,
   IconPaste,
-  IconPlusCircle,
   IconQuote,
   IconUnorderedList,
 } from "@arco-design/web-react/icon";
-import { Menu, Trigger } from "@arco-design/web-react";
-import { execCommand, SlateCommands } from "../../utils/slate-commands";
-import { ReactEditor, RenderElementProps } from "slate-react";
-import { useState } from "react";
-import { focusSelection } from "../../utils/slate-utils";
-import { cs } from "src/utils/classnames";
 import { headingPluginKey } from "../heading";
-import { quoteBlockItemKey, quoteBlockKey } from "../quote-block";
-import { highlightBlockItemKey, highlightBlockKey } from "../highlight-block";
-import { orderedListKey } from "../ordered-list";
-import { unorderedListKey } from "../unordered-list";
-import { imageKey } from "../image";
-import { dividingLineKey } from "../dividing-line";
-
-const DocMenu: React.FC<{
-  editor: Editor;
-  element: RenderElementProps["element"];
-  commands: SlateCommands;
-  offset: number;
-}> = props => {
-  const [visible, setVisible] = useState(false);
-
-  const affixStyles = (param: string) => {
-    setVisible(false);
-    const [key, data] = param.split(".");
-    const path = ReactEditor.findPath(props.editor, props.element);
-    focusSelection(props.editor, path);
-    execCommand(props.editor, props.commands, key, { extraKey: data, path });
-  };
-  const MenuPopup = (
-    <Menu onClickMenuItem={affixStyles}>
-      <Menu.Item key={`${headingPluginKey}.h1`}>
-        <IconH1 />
-        一级标题
-      </Menu.Item>
-      <Menu.Item key={`${headingPluginKey}.h2`}>
-        <IconH2 />
-        二级标题
-      </Menu.Item>
-      <Menu.Item key={`${headingPluginKey}.h3`}>
-        <IconH3 />
-        三级标题
-      </Menu.Item>
-      <Menu.Item key={quoteBlockKey}>
-        <IconQuote />
-        块级引用
-      </Menu.Item>
-      <Menu.Item key={highlightBlockKey}>
-        <IconPaste />
-        高亮块
-      </Menu.Item>
-      <Menu.Item key={orderedListKey}>
-        <IconOrderedList />
-        有序列表
-      </Menu.Item>
-      <Menu.Item key={unorderedListKey}>
-        <IconUnorderedList />
-        无序列表
-      </Menu.Item>
-      <Menu.Item key={imageKey}>
-        <IconFileImage />
-        图片
-      </Menu.Item>
-      <Menu.Item key={dividingLineKey}>
-        <IconEdit />
-        分割线
-      </Menu.Item>
-    </Menu>
-  );
-  return (
-    <Trigger
-      popup={() => (
-        <Trigger
-          className="doc-menu-popup"
-          popup={() => MenuPopup}
-          position="left"
-          popupVisible={visible}
-          onVisibleChange={setVisible}
-        >
-          <span
-            className="doc-icon-plus"
-            // prevent toolbar from taking focus away from editor
-            onMouseDown={e => e.preventDefault()}
-          >
-            <IconPlusCircle />
-          </span>
-        </Trigger>
-      )}
-      position="left"
-      popupAlign={{ left: props.offset }}
-      mouseLeaveDelay={200}
-      mouseEnterDelay={200}
-    >
-      <div className={cs(visible && "doc-line-hover")}>{props.children}</div>
-    </Trigger>
-  );
-};
+import { get } from "lodash";
+import { isValidElement } from "react";
 
 const NO_DOC_TOOL_BAR = [
   quoteBlockKey,
@@ -122,6 +33,17 @@ const NO_DOC_TOOL_BAR = [
 const OFFSET_MAP: Record<string, number> = {
   [quoteBlockItemKey]: 12,
   [highlightBlockItemKey]: 8,
+};
+const DYNAMIC_ICON: Record<string, JSX.Element | Record<string, JSX.Element>> = {
+  [`${headingPluginKey}.type`]: {
+    h1: <IconH1 />,
+    h2: <IconH2 />,
+    h3: <IconH3 />,
+  },
+  [quoteBlockItemKey]: <IconQuote style={{ fontSize: 13 }} />,
+  [highlightBlockItemKey]: <IconPaste />,
+  [orderedListItemKey]: <IconOrderedList />,
+  [unorderedListItemKey]: <IconUnorderedList />,
 };
 export const DocToolBarPlugin = (
   editor: Editor,
@@ -138,15 +60,36 @@ export const DocToolBarPlugin = (
       for (const item of NO_DOC_TOOL_BAR) {
         if (context.element[item]) return context.children;
       }
+      let icon;
       let offset = 0;
-      for (const item of Object.keys(OFFSET_MAP)) {
-        if (context.element[item]) {
-          offset = OFFSET_MAP[item] || 0;
+      const attrs = Object.keys(context.element);
+      for (const key of attrs) {
+        if (OFFSET_MAP[key]) {
+          offset = OFFSET_MAP[key] || 0;
           break;
         }
       }
+      for (const key of Object.keys(DYNAMIC_ICON)) {
+        const value = get(context.element, key) as string | undefined;
+        if (value) {
+          const iconConfig = DYNAMIC_ICON[key];
+          if (isValidElement(iconConfig)) {
+            icon = iconConfig as JSX.Element;
+          } else {
+            icon = (iconConfig as Record<string, JSX.Element>)[value];
+          }
+          break;
+        }
+      }
+
       return (
-        <DocMenu editor={editor} commands={commands} element={context.element} offset={offset}>
+        <DocMenu
+          editor={editor}
+          commands={commands}
+          element={context.element}
+          offset={offset}
+          icon={icon}
+        >
           {context.children}
         </DocMenu>
       );
