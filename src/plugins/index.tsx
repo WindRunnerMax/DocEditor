@@ -15,6 +15,7 @@ export * from "./quote-block";
 export * from "./shortcut";
 export * from "./strike-through";
 export * from "./menu-toolbar";
+export * from "./doc-toolbar";
 export * from "./under-line";
 export * from "./unordered-list";
 export * from "./font-base";
