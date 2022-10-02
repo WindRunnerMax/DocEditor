@@ -191,7 +191,7 @@ export const MenuToolBar: FC<{
   const HoverMenu = useMemo(
     () => (
       <Menu
-        className="menu-toolbar-menu-container"
+        className="menu-toolbar-container"
         onClickMenuItem={exec}
         selectable={false}
         onMouseDown={e => {
