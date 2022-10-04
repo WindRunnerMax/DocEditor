@@ -73,6 +73,13 @@ export const isBlock = (editor: Editor, node: Node): node is BlockElement =>
 
 export const isText = (node: Node): node is TextElement => Text.isText(node);
 
+export const isTextBlock = (editor: Editor, node: Node): boolean => {
+  if (isBlock(editor, node)) {
+    return node.children.every(child => isText(child));
+  }
+  return false;
+};
+
 type MatchNode = { block: BlockElement; path: Path } | null;
 export function isWrappedEdgeNode(
   editor: Editor,

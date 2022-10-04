@@ -1,6 +1,7 @@
-import { Editor, Node } from "slate";
+import { Descendant, Editor, Node } from "slate";
 import { RenderElementProps, RenderLeafProps } from "slate-react";
 import { CommandFn, registerCommand, SlateCommands } from "./slate-commands";
+import { isBlock, isText, isTextBlock } from "./slate-is";
 
 type BasePlugin = {
   key: string;
@@ -152,10 +153,18 @@ export class SlatePlugins {
       },
       commands: this.commands,
       onCopy: (event, editor) => {
-        const fragment = editor.getFragment();
-        const text = Array.from(fragment)
-          .map(n => Node.string(n))
-          .join("\n");
+        const fragments = editor.getFragment();
+        const parseText = (fragment: Descendant[]): string => {
+          return fragment
+            .map(item => {
+              if (isText(item)) return Node.string(item);
+              else if (isTextBlock(editor, item)) return parseText(item.children) + "\n";
+              else if (isBlock(editor, item)) return parseText(item.children);
+              else return "";
+            })
+            .join("");
+        };
+        const text = parseText(fragments).replace(/\n$/, "");
         event.clipboardData.setData("text/plain", text);
         event.preventDefault();
       },
