@@ -14,11 +14,14 @@ const applyNewOrderList = (editor: Editor, block: BlockElement, path: Path) => {
   const batchFn: (() => void)[] = [];
   const levelCounter: Record<number, number> = {};
   if (!existKey(block, orderedListKey)) return void 0;
+  let preLevel = -1;
   block.children.forEach((item, index) => {
     if (!isBlock(editor, item)) return void 0;
     const attributes = item[orderedListItemKey];
     if (!attributes) return void 0;
     const { level, start } = attributes;
+    if (level > preLevel) levelCounter[level] = 0;
+    preLevel = level;
     levelCounter[level] = (levelCounter[level] || 0) + 1;
     const newStart = levelCounter[level];
     if (newStart === start) return void 0;
