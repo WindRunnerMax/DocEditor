@@ -19,7 +19,7 @@ import {
   IconUnorderedList,
 } from "@arco-design/web-react/icon";
 import { headingPluginKey } from "../heading";
-import { get } from "lodash";
+import get from "lodash/get";
 import { isValidElement } from "react";
 
 const NO_DOC_TOOL_BAR = [

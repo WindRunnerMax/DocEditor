@@ -35,6 +35,7 @@ export default async () => {
 
   const external = Object.keys(require("./package.json").dependencies || {});
   external.push(/@arco-design\/web-react\/.*/);
+  external.push(/lodash\/.*/);
 
   return {
     input: dirsMap,
