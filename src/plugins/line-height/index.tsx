@@ -13,19 +13,25 @@ declare module "slate" {
 export const lineHeightPluginKey = "line-height";
 
 export const LineHeightPlugin = (): Plugin => {
+  let popupModel: Popup | null = null;
+
   return {
     key: lineHeightPluginKey,
     type: EDITOR_ELEMENT_TYPE.BLOCK,
     match: props => !!props.element[lineHeightPluginKey],
     command: (editor, key, data) => {
-      if (data && data.position) {
+      if (data && data.position && !popupModel) {
         let config = 1.8;
         const match = getBlockNode(editor, { key: lineHeightPluginKey });
         if (match) config = assertValue(match.block["line-height"]);
         const position = data.position;
         return new Promise<void>(resolve => {
           const model = new Popup();
-          model.onMaskClick(() => resolve());
+          popupModel = model;
+          model.onBeforeClose(() => {
+            popupModel = null;
+            resolve();
+          });
           model.mount(
             <LineHeightMenu
               config={config}
@@ -37,6 +43,9 @@ export const LineHeightPlugin = (): Plugin => {
             />
           );
         }).catch(() => void 0);
+      } else if (popupModel) {
+        popupModel.destroy();
+        popupModel = null;
       }
     },
     renderLine: context => {

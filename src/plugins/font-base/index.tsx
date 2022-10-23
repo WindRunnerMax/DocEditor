@@ -18,17 +18,23 @@ export type FontBaseConfig = {
 export const fontBasePluginKey = "font-base";
 
 export const FontBasePlugin = (): Plugin => {
+  let popupModel: Popup | null = null;
+
   return {
     key: fontBasePluginKey,
     type: EDITOR_ELEMENT_TYPE.INLINE,
     match: props => !!props.leaf[fontBasePluginKey],
     command: (editor, key, data) => {
-      if (data && data.position && data.marks) {
+      if (data && data.position && data.marks && !popupModel) {
         const config: FontBaseConfig = data.marks[fontBasePluginKey] || {};
         const position = data.position;
         return new Promise<void>(resolve => {
           const model = new Popup();
-          model.onMaskClick(() => resolve());
+          popupModel = model;
+          model.onBeforeClose(() => {
+            popupModel = null;
+            resolve();
+          });
           model.mount(
             <FontBaseMenu
               config={config}
@@ -40,6 +46,9 @@ export const FontBasePlugin = (): Plugin => {
             />
           );
         }).catch(() => void 0);
+      } else if (popupModel) {
+        popupModel.destroy();
+        popupModel = null;
       }
     },
     render: context => {

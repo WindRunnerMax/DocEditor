@@ -19,7 +19,11 @@ const HyperLinkMenu: FC<Props> = props => {
   const left = isEmptyValue(props.left) ? 0 : props.left - 150;
   const position = props.top || props.left ? "absolute" : void 0;
   return (
-    <div className="hyper-link-menu" style={{ left, top, position }}>
+    <div
+      className="hyper-link-menu"
+      style={{ left, top, position }}
+      onMouseDown={e => e.stopPropagation()}
+    >
       <Form
         initialValues={props.config}
         form={form}

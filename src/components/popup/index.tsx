@@ -5,17 +5,12 @@ import ReactDOM from "react-dom";
 export class Popup {
   private id: string;
   private container: HTMLDivElement | null;
-  private mask: HTMLDivElement | null;
   private node: HTMLDivElement | null;
   constructor() {
     this.id = uuid();
     this.container = document.createElement("div");
     this.container.id = this.id;
     this.container.className = "popup-container";
-
-    this.mask = document.createElement("div");
-    this.container.appendChild(this.mask);
-    this.mask.className = "popup-container-mask";
 
     this.node = document.createElement("div");
     this.container.appendChild(this.node);
@@ -29,12 +24,14 @@ export class Popup {
     ReactDOM.render(node, this.node);
   }
 
-  public onMaskClick(fn: () => unknown) {
-    if (!this.mask) return void 0;
-    this.mask.onclick = () => {
+  public onBeforeClose(fn: () => unknown) {
+    const EVENT_NAME = "mousedown";
+    const handler = () => {
       fn();
       this.destroy();
+      document.removeEventListener(EVENT_NAME, handler);
     };
+    document.addEventListener(EVENT_NAME, handler);
   }
 
   public close() {
@@ -44,11 +41,10 @@ export class Popup {
 
   public destroy() {
     this.close();
-    if (this.node && this.container && this.mask) {
-      this.container.removeChild(this.mask);
+    if (this.node && this.container) {
       this.container.removeChild(this.node);
       document.body.removeChild(this.container);
     }
-    this.container = this.mask = this.node = null;
+    this.container = this.node = null;
   }
 }

@@ -1,6 +1,6 @@
 import { EDITOR_ELEMENT_TYPE, Plugin } from "../../utils/slate-plugins";
 import { Popup } from "src/components/popup";
-import { setTextNode } from "../../utils/slate-utils";
+import { setTextNode, setUnTextNode } from "../../utils/slate-utils";
 import { Trigger } from "@arco-design/web-react";
 import React, { useState } from "react";
 import { Editor } from "slate";
@@ -56,32 +56,44 @@ const HyperLinkEditor: React.FC<{
   );
 };
 export const HyperLinkPlugin = (editor: Editor, isRender: boolean): Plugin => {
+  let popupModel: Popup | null = null;
   return {
     key: hyperLinkPluginKey,
     type: EDITOR_ELEMENT_TYPE.INLINE,
     match: props => !!props.leaf[hyperLinkPluginKey],
     command: (editor, key, data) => {
-      const config: HyperLinkConfig = { href: "", blank: true };
-      if (data && data.position) {
-        const position = data.position;
-        return new Promise<void>(resolve => {
-          const model = new Popup();
-          model.onMaskClick(() => resolve());
-          model.mount(
-            <HyperLinkMenu
-              config={config}
-              left={position.left}
-              top={position.top}
-              onConfirm={value => {
-                config.href = value.href;
-                config.blank = value.blank;
-                setTextNode(editor, { [key]: config });
-                model.destroy();
-                resolve();
-              }}
-            />
-          );
-        }).catch(() => void 0);
+      if (data && data.position && data.marks && !data.marks[key]) {
+        if (!popupModel) {
+          const position = data.position;
+          const config: HyperLinkConfig = { href: "", blank: true };
+          return new Promise<void>(resolve => {
+            const model = new Popup();
+            popupModel = model;
+            model.onBeforeClose(() => {
+              popupModel = null;
+              resolve();
+            });
+            model.mount(
+              <HyperLinkMenu
+                config={config}
+                left={position.left}
+                top={position.top}
+                onConfirm={value => {
+                  config.href = value.href;
+                  config.blank = value.blank;
+                  setTextNode(editor, { [key]: config });
+                  model.destroy();
+                  resolve();
+                }}
+              />
+            );
+          }).catch(() => void 0);
+        } else {
+          popupModel.destroy();
+          popupModel = null;
+        }
+      } else {
+        setUnTextNode(editor, [key]);
       }
     },
     render: context => {

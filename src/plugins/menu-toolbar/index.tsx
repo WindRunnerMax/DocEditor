@@ -2,18 +2,15 @@ import "./index.scss";
 import React, { FC, useEffect, useMemo, useRef, useState } from "react";
 import { Editor } from "slate";
 import { Menu } from "@arco-design/web-react";
-import ReactDOM from "react-dom";
 import { useMemoizedFn } from "ahooks";
 import { execCommand, SlateCommands } from "../../utils/slate-commands";
 import { getOmitAttributes, isCollapsed } from "../../utils/slate-utils";
-import { getSelectionRect, maskMenuToolBar } from "./utils";
+import { getSelectionRect, maskMenuToolBar, Portal } from "./utils";
 import { useFocused, useSlate } from "slate-react";
 import { MenuItems } from "./menu";
+import { fontBasePluginKey } from "../font-base";
 
-export const Portal: React.FC = ({ children }) => {
-  return typeof document === "object" ? ReactDOM.createPortal(children, document.body) : null;
-};
-
+const NOT_INIT_SELECT = [fontBasePluginKey];
 export const MenuToolBar: FC<{
   isRender: boolean;
   commands: SlateCommands;
@@ -49,7 +46,9 @@ export const MenuToolBar: FC<{
     const mouseUpHandler = () => {
       if (keepToolBar.current) return void 0;
       setIsKeyDown(false);
-      setSelectedMarks(Object.keys(Editor.marks(editor) || []));
+      setSelectedMarks(
+        getOmitAttributes(Object.keys(Editor.marks(editor) || []), NOT_INIT_SELECT).list
+      );
     };
     const mouseDownHandler = () => {
       if (keepToolBar.current) return void 0;
@@ -81,10 +80,9 @@ export const MenuToolBar: FC<{
     (param: string, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       const [key, data] = param.split(".");
       const marks = Editor.marks(editor);
+      const isInMarks = selectedMarks.indexOf(key) > -1;
       setSelectedMarks(
-        selectedMarks.indexOf(key) > -1
-          ? getOmitAttributes(selectedMarks, [key]).list
-          : [key, ...selectedMarks]
+        isInMarks ? getOmitAttributes(selectedMarks, [key]).list : [key, ...selectedMarks]
       );
       const position = { left: 0, top: 0 };
       if (menuRef.current) {

@@ -59,7 +59,7 @@ export const FontBaseMenu: FC<Props> = props => {
   );
 
   return (
-    <div className="font-base-menu" style={{ left, top }}>
+    <div className="font-base-menu" style={{ left, top }} onMouseDown={e => e.stopPropagation()}>
       <div className="menu-line">
         <div>
           <span className="label" style={{ marginRight: 8 }}>

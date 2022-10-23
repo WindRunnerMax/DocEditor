@@ -1,3 +1,5 @@
+import ReactDOM from "react-dom";
+
 export const maskMenuToolBar = (element: HTMLDivElement) => {
   element.style.opacity = "0";
   element.style.left = "-1000px";
@@ -12,4 +14,8 @@ export const getSelectionRect = () => {
     return rect;
   }
   return null;
+};
+
+export const Portal: React.FC = ({ children }) => {
+  return typeof document === "object" ? ReactDOM.createPortal(children, document.body) : null;
 };
