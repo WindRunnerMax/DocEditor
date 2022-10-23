@@ -1,59 +1,17 @@
-import { Descendant, Editor, Node } from "slate";
-import { RenderElementProps, RenderLeafProps } from "slate-react";
-import { CommandFn, registerCommand, SlateCommands } from "./slate-commands";
-import { isBlock, isText, isTextBlock } from "./slate-is";
+import { Descendant, Node } from "slate";
+import { registerCommand, SlateCommands } from "./commands";
+import { isBlock, isText, isTextBlock } from "../ops/is";
+import {
+  ElementPlugin,
+  LeafPlugin,
+  RenderPlugins,
+  Plugin,
+  ElementContext,
+  LeafContext,
+  EDITOR_ELEMENT_TYPE,
+  KEY_EVENT,
+} from "./interface";
 
-type BasePlugin = {
-  key: string;
-  isVoid?: boolean;
-  priority?: number; // 优先级越高 在越外层
-  command?: CommandFn;
-  onKeyDown?: (event: React.KeyboardEvent<HTMLDivElement>) => boolean | void;
-};
-export type ElementPlugin = BasePlugin & {
-  type: typeof EDITOR_ELEMENT_TYPE.BLOCK;
-  match: (props: RenderElementProps) => boolean;
-  renderLine?: (context: ElementContext) => JSX.Element;
-  render?: (context: ElementContext) => JSX.Element;
-};
-export type LeafPlugin = BasePlugin & {
-  type: typeof EDITOR_ELEMENT_TYPE.INLINE;
-  match: (props: RenderLeafProps) => boolean;
-  render?: (context: LeafContext) => JSX.Element;
-};
-
-export type Plugin = ElementPlugin | LeafPlugin;
-export const EDITOR_ELEMENT_TYPE = {
-  BLOCK: "BLOCK" as const,
-  INLINE: "INLINE" as const,
-};
-
-type BaseContext = {
-  classList: string[];
-  children: JSX.Element;
-  style: React.CSSProperties;
-};
-export type ElementContext = BaseContext & {
-  element: RenderElementProps["element"];
-  props: RenderElementProps;
-};
-export type LeafContext = BaseContext & {
-  element: RenderLeafProps["text"];
-  props: RenderLeafProps;
-};
-
-type RenderPlugins = {
-  renderElement: (props: RenderElementProps) => JSX.Element;
-  renderLeaf: (props: RenderLeafProps) => JSX.Element;
-  onKeyDown: (event: React.KeyboardEvent<HTMLDivElement>) => unknown;
-  withVoidElements: (editor: Editor) => Editor;
-  commands: SlateCommands;
-  onCopy: (event: React.ClipboardEvent<HTMLDivElement>, editor: Editor) => void;
-};
-
-export const KEY_EVENT = {
-  STOP: true,
-};
 export class SlatePlugins {
   private plugins: Plugin[];
   private commands: SlateCommands;

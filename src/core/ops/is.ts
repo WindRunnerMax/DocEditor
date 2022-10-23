@@ -11,9 +11,9 @@ import {
   BlockElement,
   TextElement,
 } from "slate";
-import { BaseNode } from "../types/types";
-import { isEmptyValue, isObject } from "./is";
-import { getBlockNode } from "./slate-get";
+import { BaseNode } from "../../types/types";
+import { isEmptyValue, isObject } from "../../utils/is";
+import { getBlockNode } from "./get";
 
 export const isWrappedNode = (editor: Editor) => {
   const match = getBlockNode(editor);

@@ -1,6 +1,7 @@
-import { EDITOR_ELEMENT_TYPE, Plugin } from "../../utils/slate-plugins";
+import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/define/interface";
 import { Popup } from "src/components/popup";
-import { getBlockNode, setBlockNode } from "../../utils/slate-utils";
+import { getBlockNode } from "../../core/ops/get";
+import { setBlockNode } from "../../core/ops/set";
 import { assertValue } from "src/utils/common";
 import { LineHeightMenu } from "./menu";
 

@@ -1,7 +1,7 @@
 import { Editor, Location, Path, Node, BaseNode } from "slate";
-import { BlockElement } from "../types/types";
-import { isObject } from "./is";
-import { isSlateElement } from "./slate-is";
+import { BlockElement } from "../../types/types";
+import { isObject } from "../../utils/is";
+import { isSlateElement } from "./is";
 
 export const getBlockNode = (
   editor: Editor,

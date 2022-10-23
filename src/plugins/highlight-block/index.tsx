@@ -1,22 +1,20 @@
 import "./index.scss";
-import { EDITOR_ELEMENT_TYPE, KEY_EVENT, Plugin } from "../../utils/slate-plugins";
-import { CommandFn } from "../../utils/slate-commands";
+import { EDITOR_ELEMENT_TYPE, KEY_EVENT, Plugin } from "../../core/define/interface";
+import { CommandFn } from "../../core/define/commands";
 import { Editor } from "slate";
 import { isObject } from "src/utils/is";
 import { KEYBOARD } from "../../utils/constant";
 import {
-  getBlockNode,
+  isFocusLineStart,
   isMatchedEvent,
   isCollapsed,
-  setUnWrapNodes,
-  setWrapNodes,
-  isMatchedAttributeNode,
-  isWrappedEdgeNode,
-  isFocusLineStart,
-  setWrapStructure,
-  isWrappedAdjoinNode,
   isWrappedNode,
-} from "../../utils/slate-utils";
+  isMatchedAttributeNode,
+  isWrappedAdjoinNode,
+  isWrappedEdgeNode,
+} from "../../core/ops/is";
+import { getBlockNode } from "../../core/ops/get";
+import { setUnWrapNodes, setWrapNodes, setWrapStructure } from "../../core/ops/set";
 import { assertValue } from "src/utils/common";
 import { HighlightBlockWrapper, COLOR_MAP } from "./wrapper";
 

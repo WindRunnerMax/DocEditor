@@ -4,7 +4,7 @@ import { BlockElement, Editor } from "slate";
 import { AssertT } from "src/utils/common";
 import { Trigger } from "@arco-design/web-react";
 import { ReactEditor } from "slate-react";
-import { setBlockNode } from "src/utils/slate-set";
+import { setBlockNode } from "src/core/ops/set";
 import { useMemoizedFn } from "ahooks";
 
 const highlightBlockKey = "highlight-block";

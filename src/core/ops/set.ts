@@ -1,8 +1,8 @@
 import { Editor, Location, Path, TextElement, Transforms } from "slate";
 import { ReactEditor } from "slate-react";
-import { BlockElement } from "../types/types";
-import { existKey } from "./slate-get";
-import { isBlock, isText } from "./slate-is";
+import { BlockElement } from "../../types/types";
+import { existKey } from "./get";
+import { isBlock, isText } from "./is";
 
 export const focusSelection = (editor: Editor, path?: Path, edge?: "start" | "end") => {
   ReactEditor.focus(editor);

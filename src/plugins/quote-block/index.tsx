@@ -1,22 +1,20 @@
 import "./index.scss";
-import { EDITOR_ELEMENT_TYPE, KEY_EVENT, Plugin } from "../../utils/slate-plugins";
-import { CommandFn } from "../../utils/slate-commands";
+import { EDITOR_ELEMENT_TYPE, KEY_EVENT, Plugin } from "../../core/define/interface";
+import { CommandFn } from "../../core/define/commands";
 import { Editor } from "slate";
 import { isObject } from "src/utils/is";
 import { KEYBOARD } from "../../utils/constant";
 import {
-  getBlockNode,
   isMatchedEvent,
   isCollapsed,
-  setUnWrapNodes,
-  setWrapNodes,
   isMatchedAttributeNode,
   isWrappedEdgeNode,
   isFocusLineStart,
-  setWrapStructure,
   isWrappedAdjoinNode,
   isWrappedNode,
-} from "../../utils/slate-utils";
+} from "../../core/ops/is";
+import { setWrapStructure, setWrapNodes, setUnWrapNodes } from "../../core/ops/set";
+import { getBlockNode } from "../../core/ops/get";
 
 declare module "slate" {
   interface BlockElement {

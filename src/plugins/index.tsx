@@ -21,6 +21,5 @@ export * from "./unordered-list";
 export * from "./font-base";
 export * from "./line-height";
 export * from "./image";
-export * from "../utils/slate-plugins";
-export * from "../utils/slate-utils";
+export * from "../core/define";
 export * from "../types/types";

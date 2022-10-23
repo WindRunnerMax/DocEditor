@@ -1,23 +1,21 @@
 import "./index.scss";
 import { Editor, Transforms } from "slate";
-import { CommandFn } from "../../utils/slate-commands";
-import { EDITOR_ELEMENT_TYPE, KEY_EVENT, Plugin } from "../../utils/slate-plugins";
+import { CommandFn } from "../../core/define/commands";
+import { EDITOR_ELEMENT_TYPE, KEY_EVENT, Plugin } from "../../core/define/interface";
 import { v4 as uuid } from "uuid";
 import { KEYBOARD } from "../../utils/constant";
 import { isObject } from "src/utils/is";
 import {
-  getBlockNode,
   isFocusLineEnd,
   isFocusLineStart,
   isMatchedEvent,
   isCollapsed,
   isSlateElement,
-  getBlockAttributes,
   isWrappedNode,
   isMatchedAttributeNode,
-  setBlockNode,
-  setUnBlockNode,
-} from "../../utils/slate-utils";
+} from "../../core/ops/is";
+import { getBlockNode, getBlockAttributes } from "../../core/ops/get";
+import { setBlockNode, setUnBlockNode } from "../../core/ops/set";
 
 export const headingPluginKey = "heading";
 

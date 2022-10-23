@@ -1,6 +1,6 @@
 import "./index.scss";
-import { EDITOR_ELEMENT_TYPE, Plugin } from "../../utils/slate-plugins";
-import { existKey } from "../../utils/slate-get";
+import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/define/interface";
+import { existKey } from "../../core/ops/get";
 import { Transforms } from "slate";
 import { useFocused, useSelected } from "slate-react";
 import { cs } from "src/utils/classnames";

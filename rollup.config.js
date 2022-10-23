@@ -7,7 +7,7 @@ import { terser } from "rollup-plugin-terser";
 import postcss from "rollup-plugin-postcss";
 import { fileExist, fsStat, readDir } from "./config/fs-utils";
 
-const basePath = ["src/plugins", "src/utils", "src/components"];
+const basePath = ["src/plugins", "src/core"];
 
 export default async () => {
   const dirsMap = await Promise.all(
@@ -17,7 +17,7 @@ export default async () => {
     .then(dirs => {
       return Promise.all(
         dirs.map(async fullPath => {
-          const isDir = await (await fsStat(fullPath)).isDirectory();
+          const isDir = (await fsStat(fullPath)).isDirectory();
           if (isDir) {
             const isTsx = await fileExist(fullPath + "/index.tsx");
             return [

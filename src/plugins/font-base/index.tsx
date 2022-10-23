@@ -1,6 +1,6 @@
-import { EDITOR_ELEMENT_TYPE, Plugin } from "../../utils/slate-plugins";
+import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/define/interface";
 import { Popup } from "src/components/popup";
-import { setTextNode } from "../../utils/slate-utils";
+import { setTextNode } from "../../core/ops/set";
 import { assertValue } from "src/utils/common";
 import { FontBaseMenu } from "./menu";
 

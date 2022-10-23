@@ -4,7 +4,7 @@ import { Slate, Editable, withReact } from "slate-react";
 import { useMemoizedFn } from "ahooks";
 import { withHistory } from "slate-history";
 import debounce from "lodash/debounce";
-import { SlatePlugins } from "src/utils/slate-plugins";
+import { SlatePlugins } from "src/core/define";
 import { ParagraphPlugin } from "src/plugins/paragraph";
 import { DocToolBarPlugin } from "src/plugins/doc-toolbar";
 import { HeadingPlugin } from "src/plugins/heading";

@@ -3,19 +3,19 @@
 .menu-toolbar-container {
   .arco-menu-inner {
     display: flex;
-    padding: 0;
+    padding: 2px 0;
   }
 
   .arco-menu-item,
   .arco-menu-pop {
     align-items: center;
     display: flex;
-    height: 32px;
+    height: 28px;
     justify-content: center;
     line-height: unset;
-    margin: 0 1px;
+    margin: 0 3px;
     padding: 0;
-    width: 32px;
+    width: 28px;
 
     .arco-icon {
       margin: 0;

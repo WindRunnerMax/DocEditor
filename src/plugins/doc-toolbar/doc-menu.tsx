@@ -14,10 +14,10 @@ import {
   IconUnorderedList,
 } from "@arco-design/web-react/icon";
 import { Menu, Trigger } from "@arco-design/web-react";
-import { execCommand, SlateCommands } from "../../utils/slate-commands";
+import { execCommand, SlateCommands } from "../../core/define/commands";
 import { ReactEditor, RenderElementProps } from "slate-react";
 import { useState } from "react";
-import { focusSelection } from "../../utils/slate-utils";
+import { focusSelection } from "../../core/ops/set";
 import { cs } from "src/utils/classnames";
 import { headingPluginKey } from "../heading";
 import { quoteBlockKey } from "../quote-block";

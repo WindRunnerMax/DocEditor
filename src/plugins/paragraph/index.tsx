@@ -1,9 +1,5 @@
 import "./index.scss";
-import { EDITOR_ELEMENT_TYPE, Plugin } from "../../utils/slate-plugins";
-import { Descendant, Editor } from "slate";
-import { isArray } from "src/utils/is";
-import { getOmitAttributes } from "src/utils/slate-get";
-import { setUnTextNode } from "src/utils/slate-set";
+import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/define/interface";
 
 export const paragraphKey = "paragraph";
 export const ParagraphPlugin = (): Plugin => {

@@ -1,5 +1,5 @@
-import { EDITOR_ELEMENT_TYPE, Plugin } from "../../utils/slate-plugins";
-import { setTextNode, setUnTextNode } from "../../utils/slate-set";
+import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/define/interface";
+import { setTextNode, setUnTextNode } from "../../core/ops/set";
 
 declare module "slate" {
   interface TextElement {
