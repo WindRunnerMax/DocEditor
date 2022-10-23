@@ -3,7 +3,7 @@ import { Editor, Path, Location, TextElement } from "slate";
 export type CommandFn = (
   editor: Editor,
   key: string,
-  data?: {
+  data: {
     path?: Path;
     event?: React.MouseEvent<HTMLDivElement, MouseEvent>;
     position?: { left: number; top: number };
@@ -21,7 +21,7 @@ export const execCommand = (
   editor: Editor,
   commands: SlateCommands,
   key: string,
-  data?: {
+  data: {
     path?: Path;
     selection?: Location;
     [key: string]: unknown;

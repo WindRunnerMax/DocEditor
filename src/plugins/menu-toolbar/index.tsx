@@ -3,98 +3,16 @@ import React, { FC, useEffect, useMemo, useRef, useState } from "react";
 import { Editor } from "slate";
 import { Menu } from "@arco-design/web-react";
 import ReactDOM from "react-dom";
-import {
-  IconAlignCenter,
-  IconAlignLeft,
-  IconAlignRight,
-  IconBold,
-  IconCode,
-  IconFontColors,
-  IconItalic,
-  IconLineHeight,
-  IconLink,
-  IconMenu,
-  IconStrikethrough,
-  IconUnderline,
-} from "@arco-design/web-react/icon";
 import { useMemoizedFn } from "ahooks";
 import { execCommand, SlateCommands } from "../../utils/slate-commands";
-import { focusSelection, isCollapsed } from "../../utils/slate-utils";
+import { getOmitAttributes, isCollapsed } from "../../utils/slate-utils";
 import { getSelectionRect, maskMenuToolBar } from "./utils";
 import { useFocused, useSlate } from "slate-react";
-import { paragraphKey } from "../paragraph";
-import { boldPluginKey } from "../bold";
-import { italicPluginKey } from "../italic";
-import { underLinePluginKey } from "../under-line";
-import { strikeThroughPluginKey } from "../strike-through";
-import { inlineCodePluginKey } from "../inline-code";
-import { hyperLinkPluginKey } from "../hyper-link";
-import { fontBasePluginKey } from "../font-base";
-import { lineHeightPluginKey } from "../line-height";
-import { alignKey } from "../align";
+import { MenuItems } from "./menu";
 
 export const Portal: React.FC = ({ children }) => {
   return typeof document === "object" ? ReactDOM.createPortal(children, document.body) : null;
 };
-
-const MenuItems = (
-  <>
-    <Menu.Item key={paragraphKey}>
-      <i className="iconfont icon-text arco-icon" />
-    </Menu.Item>
-    <Menu.Item key={boldPluginKey}>
-      <IconBold />
-    </Menu.Item>
-    <Menu.Item key={italicPluginKey}>
-      <IconItalic />
-    </Menu.Item>
-    <Menu.Item key={underLinePluginKey}>
-      <IconUnderline />
-    </Menu.Item>
-    <Menu.Item key={strikeThroughPluginKey}>
-      <IconStrikethrough />
-    </Menu.Item>
-    <Menu.Item key={inlineCodePluginKey}>
-      <IconCode />
-    </Menu.Item>
-    <Menu.Item key={hyperLinkPluginKey}>
-      <IconLink />
-    </Menu.Item>
-    <Menu.Item key={fontBasePluginKey}>
-      <IconFontColors />
-    </Menu.Item>
-    <Menu.Item key={lineHeightPluginKey}>
-      <IconLineHeight />
-    </Menu.Item>
-    <Menu.SubMenu
-      key={alignKey}
-      title={<IconAlignLeft />}
-      popup
-      triggerProps={{ trigger: "click", position: "bottom" }}
-    >
-      <Menu.Item key={`${alignKey}.left`}>
-        <div className="align-menu-center">
-          <IconAlignLeft />
-        </div>
-      </Menu.Item>
-      <Menu.Item key={`${alignKey}.center`}>
-        <div className="align-menu-center">
-          <IconAlignCenter />
-        </div>
-      </Menu.Item>
-      <Menu.Item key={`${alignKey}.right`}>
-        <div className="align-menu-center">
-          <IconAlignRight />
-        </div>
-      </Menu.Item>
-      <Menu.Item key={`${alignKey}.justify`}>
-        <div className="align-menu-center">
-          <IconMenu />
-        </div>
-      </Menu.Item>
-    </Menu.SubMenu>
-  </>
-);
 
 export const MenuToolBar: FC<{
   isRender: boolean;
@@ -106,6 +24,7 @@ export const MenuToolBar: FC<{
   const menuRef = useRef<HTMLDivElement>(null);
   const [isKeyDown, setIsKeyDown] = useState(false);
   const [isSelected, setIsSelected] = useState(false);
+  const [selectedMarks, setSelectedMarks] = useState<string[]>([]);
 
   useEffect(() => {
     const toolbar = menuRef.current;
@@ -130,10 +49,12 @@ export const MenuToolBar: FC<{
     const mouseUpHandler = () => {
       if (keepToolBar.current) return void 0;
       setIsKeyDown(false);
+      setSelectedMarks(Object.keys(Editor.marks(editor) || []));
     };
     const mouseDownHandler = () => {
       if (keepToolBar.current) return void 0;
       setIsKeyDown(true);
+      maskMenuToolBar(toolbar);
     };
     document.addEventListener("mouseup", mouseUpHandler);
     document.addEventListener("mousedown", mouseDownHandler);
@@ -141,7 +62,7 @@ export const MenuToolBar: FC<{
       document.removeEventListener("mouseup", mouseUpHandler);
       document.removeEventListener("mousedown", mouseDownHandler);
     };
-  }, []);
+  }, [editor]);
 
   useEffect(() => {
     if (
@@ -159,12 +80,12 @@ export const MenuToolBar: FC<{
   const exec = useMemoizedFn(
     (param: string, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       const [key, data] = param.split(".");
-      const hideToolBarAndFocusEditor = () => {
-        menuRef.current && maskMenuToolBar(menuRef.current);
-        focusSelection(editor);
-      };
-
       const marks = Editor.marks(editor);
+      setSelectedMarks(
+        selectedMarks.indexOf(key) > -1
+          ? getOmitAttributes(selectedMarks, [key]).list
+          : [key, ...selectedMarks]
+      );
       const position = { left: 0, top: 0 };
       if (menuRef.current) {
         position.top = menuRef.current.offsetTop + menuRef.current.offsetHeight / 2;
@@ -178,12 +99,7 @@ export const MenuToolBar: FC<{
       });
       if (result) {
         keepToolBar.current = true;
-        result.then(() => {
-          keepToolBar.current = false;
-          hideToolBarAndFocusEditor();
-        });
-      } else {
-        hideToolBarAndFocusEditor();
+        result.then(() => (keepToolBar.current = false));
       }
     }
   );
@@ -193,17 +109,17 @@ export const MenuToolBar: FC<{
       <Menu
         className="menu-toolbar-container"
         onClickMenuItem={exec}
-        selectable={false}
         onMouseDown={e => {
           e.preventDefault();
           e.stopPropagation();
         }} // prevent toolbar from taking focus away from editor
         mode="vertical"
+        selectedKeys={selectedMarks}
       >
         {MenuItems}
       </Menu>
     ),
-    [exec]
+    [exec, selectedMarks]
   );
 
   return props.isRender ? null : (

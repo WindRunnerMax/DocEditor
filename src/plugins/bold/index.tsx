@@ -1,5 +1,5 @@
 import { EDITOR_ELEMENT_TYPE, Plugin } from "../../utils/slate-plugins";
-import { Transforms, Text } from "slate";
+import { setTextNode, setUnTextNode } from "../../utils/slate-set";
 
 declare module "slate" {
   interface TextElement {
@@ -14,12 +14,13 @@ export const BoldPlugin = (): Plugin => {
     key: boldPluginKey,
     type: EDITOR_ELEMENT_TYPE.INLINE,
     match: props => !!props.leaf[boldPluginKey],
-    command: (editor, key) => {
-      Transforms.setNodes(
-        editor,
-        { [key]: true },
-        { match: node => Text.isText(node), split: true }
-      );
+    command: (editor, key, data) => {
+      const marks = data.marks;
+      if (marks && marks[key]) {
+        setUnTextNode(editor, [key]);
+      } else {
+        setTextNode(editor, { [key]: true });
+      }
     },
     render: context => <strong>{context.children}</strong>,
   };

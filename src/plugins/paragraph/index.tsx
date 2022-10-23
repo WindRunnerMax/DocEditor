@@ -13,22 +13,5 @@ export const ParagraphPlugin = (): Plugin => {
     priority: 11,
     match: () => true,
     renderLine: context => <div className="doc-line">{context.children}</div>,
-    command: (editor: Editor) => {
-      if (editor.selection) {
-        const marks: string[] = [];
-        const [element] = Editor.fragment(editor, editor.selection);
-        const queue: Descendant[] = [element];
-        while (queue.length) {
-          const node = queue.shift();
-          if (!node) continue;
-          if (isArray(node.children)) queue.push(...(node.children as Descendant[]));
-          if (node.text) {
-            const keys = Object.keys(node);
-            marks.push(...getOmitAttributes(keys, ["text"]).list);
-          }
-        }
-        setUnTextNode(editor, marks);
-      }
-    },
   };
 };
