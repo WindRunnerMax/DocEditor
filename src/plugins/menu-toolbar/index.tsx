@@ -108,6 +108,7 @@ export const MenuToolBar: FC<{
       <Menu
         className="menu-toolbar-container"
         onClickMenuItem={exec}
+        onMouseUp={e => e.stopPropagation()}
         onMouseDown={e => {
           e.preventDefault();
           e.stopPropagation();

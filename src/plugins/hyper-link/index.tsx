@@ -69,7 +69,7 @@ export const HyperLinkPlugin = (editor: Editor, isRender: boolean): Plugin => {
           return new Promise<void>(resolve => {
             const model = new Popup();
             popupModel = model;
-            model.onBeforeClose(() => {
+            model.onBeforeDestroy(() => {
               popupModel = null;
               resolve();
             });
@@ -83,7 +83,6 @@ export const HyperLinkPlugin = (editor: Editor, isRender: boolean): Plugin => {
                   config.blank = value.blank;
                   setTextNode(editor, { [key]: config });
                   model.destroy();
-                  resolve();
                 }}
               />
             );

@@ -14,7 +14,7 @@ export const LineHeightMenu: FC<Props> = props => {
   const left = props.left - 100;
 
   return (
-    <div className="line-height-menu" style={{ left, top }} onMouseDown={e => e.stopPropagation()}>
+    <div className="line-height-menu" style={{ left, top }}>
       <div className="menu-line">
         <div>
           <span className="label">行高</span>

@@ -31,7 +31,7 @@ export const FontBasePlugin = (): Plugin => {
         return new Promise<void>(resolve => {
           const model = new Popup();
           popupModel = model;
-          model.onBeforeClose(() => {
+          model.onBeforeDestroy(() => {
             popupModel = null;
             resolve();
           });
