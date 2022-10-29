@@ -4,14 +4,17 @@ import { Editor } from "slate";
 import { Menu } from "@arco-design/web-react";
 import { useMemoizedFn } from "ahooks";
 import { execCommand, SlateCommands } from "../../core/define/commands";
-import { getOmitAttributes } from "../../core/ops/get";
 import { isCollapsed } from "../../core/ops/is";
-import { getSelectionRect, maskMenuToolBar, Portal } from "./utils";
+import { execSelectMarks, getSelectionRect, maskMenuToolBar, Portal } from "./utils";
 import { useFocused, useSlate } from "slate-react";
 import { MenuItems } from "./menu";
 import { fontBasePluginKey } from "../font-base";
+import { hyperLinkPluginKey } from "../hyper-link";
+import { lineHeightPluginKey } from "../line-height";
+import { omit } from "src/utils/filter";
 
-const NOT_INIT_SELECT = [fontBasePluginKey];
+const NOT_INIT_SELECT = [hyperLinkPluginKey, fontBasePluginKey];
+const MUTEX_SELECT = [...NOT_INIT_SELECT, lineHeightPluginKey];
 export const MenuToolBar: FC<{
   isRender: boolean;
   commands: SlateCommands;
@@ -47,9 +50,7 @@ export const MenuToolBar: FC<{
     const mouseUpHandler = () => {
       if (keepToolBar.current) return void 0;
       setIsKeyDown(false);
-      setSelectedMarks(
-        getOmitAttributes(Object.keys(Editor.marks(editor) || []), NOT_INIT_SELECT).list
-      );
+      setSelectedMarks(omit(Object.keys(Editor.marks(editor) || []), NOT_INIT_SELECT));
     };
     const mouseDownHandler = () => {
       if (keepToolBar.current) return void 0;
@@ -81,10 +82,7 @@ export const MenuToolBar: FC<{
     (param: string, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       const [key, data] = param.split(".");
       const marks = Editor.marks(editor);
-      const isInMarks = selectedMarks.indexOf(key) > -1;
-      setSelectedMarks(
-        isInMarks ? getOmitAttributes(selectedMarks, [key]).list : [key, ...selectedMarks]
-      );
+      setSelectedMarks(execSelectMarks(key, selectedMarks, MUTEX_SELECT));
       const position = { left: 0, top: 0 };
       if (menuRef.current) {
         position.top = menuRef.current.offsetTop + menuRef.current.offsetHeight / 2;

@@ -1,4 +1,5 @@
 import ReactDOM from "react-dom";
+import { omit } from "src/utils/filter";
 
 export const maskMenuToolBar = (element: HTMLDivElement) => {
   element.style.opacity = "0";
@@ -18,4 +19,14 @@ export const getSelectionRect = () => {
 
 export const Portal: React.FC = ({ children }) => {
   return typeof document === "object" ? ReactDOM.createPortal(children, document.body) : null;
+};
+
+export const execSelectMarks = (key: string, marks: string[], mutexKeys: string[]): string[] => {
+  const isKeyInMarks = marks.indexOf(key) > -1;
+  const isKeyInMutexKeys = mutexKeys.indexOf(key) > -1;
+  return isKeyInMarks
+    ? omit(marks, [key])
+    : isKeyInMutexKeys
+    ? [...omit(marks, mutexKeys), key]
+    : [...marks, key];
 };

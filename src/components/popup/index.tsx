@@ -2,11 +2,11 @@ import "./index.scss";
 import { v4 as uuid } from "uuid";
 import ReactDOM from "react-dom";
 
-// 抢占式实例
+// 互斥式实例
 let instance: Popup | null = null;
 
 type Options = {
-  seize: boolean;
+  mutex: boolean;
 };
 export class Popup {
   static BIND_EVENT_NAME = "mousedown";
@@ -16,7 +16,7 @@ export class Popup {
   private onBeforeCloseFn: () => unknown;
 
   constructor(options?: Options) {
-    const { seize = false } = options || {};
+    const { mutex = true } = options || {};
 
     this.id = uuid();
     this.container = document.createElement("div");
@@ -28,8 +28,8 @@ export class Popup {
     this.node.className = "popup-container-node";
     document.body.appendChild(this.container);
 
-    // 抢占实例
-    if (seize) {
+    // 互斥实例
+    if (mutex) {
       instance && instance.destroy();
       instance = this;
     }

@@ -38,8 +38,11 @@ const HyperLinkMenu: FC<Props> = props => {
             <Switch defaultChecked={props.config.blank} />
           </Form.Item>
           <Form.Item className="hyper-link-menu-submit">
-            <Button htmlType="submit" type="primary">
+            <Button size="mini" htmlType="submit" type="primary">
               确定
+            </Button>
+            <Button size="mini" type="primary" status="danger" onClick={props.onCancel}>
+              删除
             </Button>
           </Form.Item>
         </Form.Item>
