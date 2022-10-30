@@ -1,6 +1,6 @@
 {
   "name": "doc-editor-light",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "files": [
     "dist",
     "pnpm-lock.yaml"
@@ -42,6 +42,11 @@
     "typescript": "^4.1.2",
     "uuid": "^8.3.2",
     "web-vitals": "^1.0.1"
+  },
+  "peerDependencies": {
+    "slate": "0.80.0",
+    "slate-history": "0.66.0",
+    "slate-react": "0.80.0"
   },
   "devDependencies": {
     "@rollup/plugin-babel": "^5.3.1",
