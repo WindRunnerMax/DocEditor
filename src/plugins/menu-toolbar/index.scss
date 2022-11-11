@@ -45,6 +45,7 @@
 
 .hover-menu-container {
   background-color: var(--color-bg-2);
+  border: 1px solid var(--color-border-1);
   box-shadow: $box-shadow;
   left: -10000px;
   opacity: 0;

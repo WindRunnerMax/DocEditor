@@ -66,12 +66,7 @@ export const MenuToolBar: FC<{
   }, [editor]);
 
   useEffect(() => {
-    if (
-      !editor.selection ||
-      !inFocus ||
-      isCollapsed(editor) ||
-      Editor.string(editor, editor.selection) === ""
-    ) {
+    if (!editor.selection || !inFocus || isCollapsed(editor)) {
       !keepToolBar.current && setIsSelected(false);
     } else {
       setIsSelected(true);
