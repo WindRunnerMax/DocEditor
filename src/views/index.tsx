@@ -9,7 +9,7 @@ import { ParagraphPlugin } from "src/plugins/paragraph";
 import { DocToolBarPlugin } from "src/plugins/doc-toolbar";
 import { HeadingPlugin } from "src/plugins/heading";
 import { BoldPlugin } from "src/plugins/bold";
-import { MenuToolBar } from "src/plugins/menu-toolbar";
+import { MenuToolBar } from "src/plugins/float-toolbar";
 import { QuoteBlockPlugin } from "src/plugins/quote-block";
 import { HyperLinkPlugin } from "src/plugins/hyper-link";
 import { UnderLinePlugin } from "src/plugins/under-line";

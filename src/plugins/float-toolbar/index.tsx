@@ -4,7 +4,6 @@ import { Editor } from "slate";
 import { Menu } from "@arco-design/web-react";
 import { useMemoizedFn } from "ahooks";
 import { execCommand, SlateCommands } from "../../core/define/commands";
-import { isCollapsed } from "../../core/ops/is";
 import { execSelectMarks, getSelectionRect, maskMenuToolBar, Portal } from "./utils";
 import { useFocused } from "slate-react";
 import { MenuItems } from "./menu";
