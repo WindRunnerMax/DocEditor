@@ -75,7 +75,7 @@ const SlateDocEditor: FC<{
 
   return (
     <Slate editor={withVoidEditor} value={initText} onChange={updateText}>
-      <MenuToolBar isRender={props.isRender} commands={commands}></MenuToolBar>
+      <MenuToolBar isRender={props.isRender} commands={commands} editor={editor}></MenuToolBar>
       <Editable
         renderElement={renderElement}
         renderLeaf={renderLeaf}

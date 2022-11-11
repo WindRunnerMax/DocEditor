@@ -6,72 +6,73 @@ import { useMemoizedFn } from "ahooks";
 import { execCommand, SlateCommands } from "../../core/define/commands";
 import { isCollapsed } from "../../core/ops/is";
 import { execSelectMarks, getSelectionRect, maskMenuToolBar, Portal } from "./utils";
-import { useFocused, useSlate } from "slate-react";
+import { useFocused } from "slate-react";
 import { MenuItems } from "./menu";
 import { fontBasePluginKey } from "../font-base";
 import { hyperLinkPluginKey } from "../hyper-link";
 import { lineHeightPluginKey } from "../line-height";
 import { omit } from "src/utils/filter";
+import { EVENT_ENUM } from "src/utils/constant";
+
+const TOOLBAR_OFFSET_HEIGHT = 40;
+const TOOLBAR_OFFSET_WIDTH = 340;
 
 const NOT_INIT_SELECT = [hyperLinkPluginKey, fontBasePluginKey];
 const MUTEX_SELECT = [...NOT_INIT_SELECT, lineHeightPluginKey];
 export const MenuToolBar: FC<{
   isRender: boolean;
+  editor: Editor;
   commands: SlateCommands;
 }> = props => {
-  const editor = useSlate();
+  const editor = props.editor;
   const inFocus = useFocused();
   const keepToolBar = useRef(false);
   const menuRef = useRef<HTMLDivElement>(null);
-  const [isKeyDown, setIsKeyDown] = useState(false);
-  const [isSelected, setIsSelected] = useState(false);
   const [selectedMarks, setSelectedMarks] = useState<string[]>([]);
 
-  useEffect(() => {
+  const wakeUpToolbar = useMemoizedFn((wakeUp: boolean) => {
     const toolbar = menuRef.current;
     if (!toolbar) return void 0;
-    if (isSelected && !isKeyDown) {
+    if (inFocus && wakeUp) {
+      setSelectedMarks(omit(Object.keys(Editor.marks(editor) || []), NOT_INIT_SELECT));
       const rect = getSelectionRect();
       if (rect) {
-        toolbar.style.opacity = "1";
-        toolbar.style.top = `${rect.top + window.pageYOffset - toolbar.offsetHeight - 10}px`;
+        toolbar.style.top = `${rect.top + window.pageYOffset - TOOLBAR_OFFSET_HEIGHT - 10}px`;
         toolbar.style.left = `${
-          rect.left + window.pageXOffset - toolbar.offsetWidth / 2 + rect.width / 2
+          rect.left + window.pageXOffset - TOOLBAR_OFFSET_WIDTH / 2 + rect.width / 2
         }px`;
       }
     } else {
       maskMenuToolBar(toolbar);
     }
-  }, [isKeyDown, isSelected, editor]);
+  });
 
   useEffect(() => {
     const toolbar = menuRef.current;
     if (!toolbar) return void 0;
     const mouseUpHandler = () => {
       if (keepToolBar.current) return void 0;
-      setIsKeyDown(false);
-      setSelectedMarks(omit(Object.keys(Editor.marks(editor) || []), NOT_INIT_SELECT));
+      toolbar.style.display = "";
     };
     const mouseDownHandler = () => {
       if (keepToolBar.current) return void 0;
-      setIsKeyDown(true);
-      maskMenuToolBar(toolbar);
+      toolbar.style.display = "none";
     };
-    document.addEventListener("mouseup", mouseUpHandler);
-    document.addEventListener("mousedown", mouseDownHandler);
+    const selectionChangeHandler = () => {
+      if (keepToolBar.current) return void 0;
+      const sel = window.getSelection();
+      const isWakeUp = sel ? !sel.isCollapsed : false;
+      wakeUpToolbar(isWakeUp);
+    };
+    document.addEventListener(EVENT_ENUM.MOUSE_UP, mouseUpHandler);
+    document.addEventListener(EVENT_ENUM.MOUSE_DOWN, mouseDownHandler);
+    document.addEventListener(EVENT_ENUM.SELECTION_CHANGE, selectionChangeHandler);
     return () => {
-      document.removeEventListener("mouseup", mouseUpHandler);
-      document.removeEventListener("mousedown", mouseDownHandler);
+      document.removeEventListener(EVENT_ENUM.MOUSE_UP, mouseUpHandler);
+      document.removeEventListener(EVENT_ENUM.MOUSE_DOWN, mouseDownHandler);
+      document.addEventListener(EVENT_ENUM.SELECTION_CHANGE, selectionChangeHandler);
     };
-  }, [editor]);
-
-  useEffect(() => {
-    if (!editor.selection || !inFocus || isCollapsed(editor)) {
-      !keepToolBar.current && setIsSelected(false);
-    } else {
-      setIsSelected(true);
-    }
-  }, [editor, editor.selection, inFocus]);
+  }, [editor, wakeUpToolbar]);
 
   const exec = useMemoizedFn(
     (param: string, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {

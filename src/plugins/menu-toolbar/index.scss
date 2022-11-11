@@ -43,16 +43,20 @@
   justify-content: center;
 }
 
+@keyframes fade-out {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 .hover-menu-container {
+  animation: fade-out 0.3s;
   background-color: var(--color-bg-2);
   border: 1px solid var(--color-border-1);
   box-shadow: $box-shadow;
   left: -10000px;
-  opacity: 0;
   padding: 3px 5px;
   position: absolute;
   top: -10000px;
-  transition: opacity 0.3s;
   z-index: $doc-menu-z-index;
 
   button {

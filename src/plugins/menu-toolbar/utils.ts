@@ -2,7 +2,6 @@ import ReactDOM from "react-dom";
 import { omit } from "src/utils/filter";
 
 export const maskMenuToolBar = (element: HTMLDivElement) => {
-  element.style.opacity = "0";
   element.style.left = "-1000px";
   element.style.top = "-1000px";
 };
