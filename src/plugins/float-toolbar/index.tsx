@@ -5,7 +5,7 @@ import { Menu } from "@arco-design/web-react";
 import { useMemoizedFn } from "ahooks";
 import { execCommand, SlateCommands } from "../../core/define/commands";
 import { execSelectMarks, getSelectionRect, maskMenuToolBar, Portal } from "./utils";
-import { useFocused } from "slate-react";
+import { ReactEditor } from "slate-react";
 import { MenuItems } from "./menu";
 import { fontBasePluginKey } from "../font-base";
 import { hyperLinkPluginKey } from "../hyper-link";
@@ -24,15 +24,14 @@ export const MenuToolBar: FC<{
   commands: SlateCommands;
 }> = props => {
   const editor = props.editor;
-  const inFocus = useFocused();
-  const keepToolBar = useRef(false);
-  const menuRef = useRef<HTMLDivElement>(null);
+  const keepStatus = useRef(false);
+  const toolbarRef = useRef<HTMLDivElement>(null);
   const [selectedMarks, setSelectedMarks] = useState<string[]>([]);
 
   const wakeUpToolbar = useMemoizedFn((wakeUp: boolean) => {
-    const toolbar = menuRef.current;
+    const toolbar = toolbarRef.current;
     if (!toolbar) return void 0;
-    if (inFocus && wakeUp) {
+    if (ReactEditor.isFocused(editor) && wakeUp) {
       setSelectedMarks(omit(Object.keys(Editor.marks(editor) || []), NOT_INIT_SELECT));
       const rect = getSelectionRect();
       if (rect) {
@@ -47,18 +46,16 @@ export const MenuToolBar: FC<{
   });
 
   useEffect(() => {
-    const toolbar = menuRef.current;
+    const toolbar = toolbarRef.current;
     if (!toolbar) return void 0;
     const mouseUpHandler = () => {
-      if (keepToolBar.current) return void 0;
-      toolbar.style.display = "";
+      !keepStatus.current && (toolbar.style.display = "");
     };
     const mouseDownHandler = () => {
-      if (keepToolBar.current) return void 0;
-      toolbar.style.display = "none";
+      !keepStatus.current && (toolbar.style.display = "none");
     };
     const selectionChangeHandler = () => {
-      if (keepToolBar.current) return void 0;
+      if (keepStatus.current) return void 0;
       const sel = window.getSelection();
       const isWakeUp = sel ? !sel.isCollapsed : false;
       wakeUpToolbar(isWakeUp);
@@ -75,23 +72,24 @@ export const MenuToolBar: FC<{
 
   const exec = useMemoizedFn(
     (param: string, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-      const [key, data] = param.split(".");
+      const [key, extraKey] = param.split(".");
       const marks = Editor.marks(editor);
-      setSelectedMarks(execSelectMarks(key, selectedMarks, MUTEX_SELECT));
       const position = { left: 0, top: 0 };
-      if (menuRef.current) {
-        position.top = menuRef.current.offsetTop + menuRef.current.offsetHeight / 2;
-        position.left = menuRef.current.offsetLeft + menuRef.current.offsetWidth / 2;
+      const toolbar = toolbarRef.current;
+      setSelectedMarks(execSelectMarks(key, selectedMarks, MUTEX_SELECT));
+      if (toolbar) {
+        position.top = toolbar.offsetTop + toolbar.offsetHeight / 2;
+        position.left = toolbar.offsetLeft + toolbar.offsetWidth / 2;
       }
       const result = execCommand(editor, props.commands, key, {
-        extraKey: data,
+        extraKey,
         event,
         position,
         marks,
       });
       if (result) {
-        keepToolBar.current = true;
-        result.then(() => (keepToolBar.current = false));
+        keepStatus.current = true;
+        result.then(() => (keepStatus.current = false));
       }
     }
   );
@@ -117,7 +115,7 @@ export const MenuToolBar: FC<{
 
   return props.isRender ? null : (
     <Portal>
-      <div ref={menuRef} className="hover-menu-container">
+      <div ref={toolbarRef} className="hover-menu-container">
         {HoverMenu}
       </div>
     </Portal>
