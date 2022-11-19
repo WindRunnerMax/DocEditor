@@ -26,11 +26,13 @@ import { HighlightBlockPlugin } from "src/plugins/highlight-block";
 import { FontBasePlugin } from "src/plugins/font-base";
 import { LineHeightPlugin } from "src/plugins/line-height";
 import { ImagePlugin } from "src/plugins/image";
+import { withSchema } from "src/core/schema";
+import { schema } from "./schema";
 
 const SlateDocEditor: FC<{
   isRender: boolean;
 }> = props => {
-  const editor = useMemo(() => withHistory(withReact(createEditor())), []);
+  const editor = useMemo(() => withSchema(schema, withHistory(withReact(createEditor()))), []);
   const initText = example;
 
   const updateText = useMemoizedFn(
@@ -40,41 +42,38 @@ const SlateDocEditor: FC<{
     }, 500)
   );
 
-  const { renderElement, renderLeaf, onKeyDown, withVoidElements, commands, onCopy } =
-    useMemo(() => {
-      const register = new SlatePlugins(
-        ParagraphPlugin(),
-        HeadingPlugin(editor),
-        BoldPlugin(),
-        QuoteBlockPlugin(editor),
-        HyperLinkPlugin(editor, props.isRender),
-        UnderLinePlugin(),
-        StrikeThroughPlugin(),
-        ItalicPlugin(),
-        InlineCodePlugin(),
-        OrderedListPlugin(editor),
-        UnorderedListPlugin(editor),
-        DividingLinePlugin(),
-        AlignPlugin(),
-        HighlightBlockPlugin(editor, props.isRender),
-        FontBasePlugin(),
-        LineHeightPlugin(),
-        ImagePlugin(editor, props.isRender)
-      );
+  const { renderElement, renderLeaf, onKeyDown, commands, onCopy } = useMemo(() => {
+    const register = new SlatePlugins(
+      ParagraphPlugin(),
+      HeadingPlugin(editor),
+      BoldPlugin(),
+      QuoteBlockPlugin(editor),
+      HyperLinkPlugin(editor, props.isRender),
+      UnderLinePlugin(),
+      StrikeThroughPlugin(),
+      ItalicPlugin(),
+      InlineCodePlugin(),
+      OrderedListPlugin(editor),
+      UnorderedListPlugin(editor),
+      DividingLinePlugin(),
+      AlignPlugin(),
+      HighlightBlockPlugin(editor, props.isRender),
+      FontBasePlugin(),
+      LineHeightPlugin(),
+      ImagePlugin(editor, props.isRender)
+    );
 
-      const commands = register.getCommands();
-      register.add(
-        DocToolBarPlugin(editor, props.isRender, commands),
-        ShortCutPlugin(editor, commands)
-      );
+    const commands = register.getCommands();
+    register.add(
+      DocToolBarPlugin(editor, props.isRender, commands),
+      ShortCutPlugin(editor, commands)
+    );
 
-      return register.apply();
-    }, [editor, props.isRender]);
-
-  const withVoidEditor = useMemo(() => withVoidElements(editor), [editor, withVoidElements]);
+    return register.apply();
+  }, [editor, props.isRender]);
 
   return (
-    <Slate editor={withVoidEditor} value={initText} onChange={updateText}>
+    <Slate editor={editor} value={initText} onChange={updateText}>
       <MenuToolBar isRender={props.isRender} commands={commands} editor={editor}></MenuToolBar>
       <Editable
         renderElement={renderElement}

@@ -12,7 +12,6 @@ export const KEY_EVENT = {
 
 type BasePlugin = {
   key: string;
-  isVoid?: boolean;
   priority?: number; // 优先级越高 在越外层
   command?: CommandFn;
   onKeyDown?: (event: React.KeyboardEvent<HTMLDivElement>) => boolean | void;
@@ -49,7 +48,6 @@ export type RenderPlugins = {
   renderElement: (props: RenderElementProps) => JSX.Element;
   renderLeaf: (props: RenderLeafProps) => JSX.Element;
   onKeyDown: (event: React.KeyboardEvent<HTMLDivElement>) => unknown;
-  withVoidElements: (editor: Editor) => Editor;
   commands: SlateCommands;
   onCopy: (event: React.ClipboardEvent<HTMLDivElement>, editor: Editor) => void;
 };

@@ -22,4 +22,7 @@ export * from "./font-base";
 export * from "./line-height";
 export * from "./image";
 export * from "../core/plugin";
+export * from "../core/command";
+export * from "../core/schema";
+export * from "../core/ops";
 export * from "../types/types";

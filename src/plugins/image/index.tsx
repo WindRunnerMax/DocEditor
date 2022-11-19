@@ -111,7 +111,6 @@ export const ImagePlugin = (
   };
   return {
     key: imageKey,
-    isVoid: true,
     type: EDITOR_ELEMENT_TYPE.BLOCK,
     command,
     match: props => existKey(props.element, imageKey),

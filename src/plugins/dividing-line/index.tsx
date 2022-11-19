@@ -21,7 +21,6 @@ const DividingLine: React.FC = () => {
 export const DividingLinePlugin = (): Plugin => {
   return {
     key: dividingLineKey,
-    isVoid: true,
     type: EDITOR_ELEMENT_TYPE.BLOCK,
     command: (editor, key) => {
       Transforms.insertNodes(editor, { [key]: true, children: [{ text: "" }] });
