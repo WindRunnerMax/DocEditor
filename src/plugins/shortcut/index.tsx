@@ -1,9 +1,9 @@
-import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/define/interface";
+import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/plugin/interface";
 import { Editor, Transforms } from "slate";
 import { getBlockNode } from "../../core/ops/get";
 import { isCollapsed, isMatchedEvent } from "../../core/ops/is";
 import { KEYBOARD } from "../../utils/constant";
-import { execCommand, SlateCommands } from "../../core/define/commands";
+import { execCommand, SlateCommands } from "../../core/command";
 import { orderedListKey } from "../ordered-list";
 import { unorderedListKey } from "../unordered-list";
 import { quoteBlockKey } from "../quote-block";

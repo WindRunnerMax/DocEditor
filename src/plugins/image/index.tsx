@@ -1,11 +1,11 @@
 import "./index.scss";
-import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/define/interface";
+import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/plugin/interface";
 import { existKey, getPathByUUID } from "../../core/ops/get";
 import { setBlockNode, focusSelection } from "../../core/ops/set";
 import { BaseEditor, BlockElement, Transforms } from "slate";
 import { ReactEditor, useFocused, useSelected } from "slate-react";
 import { cs } from "src/utils/classnames";
-import { CommandFn } from "src/core/define/commands";
+import { CommandFn } from "src/core/command";
 import { Image as ArcoImage, Spin } from "@arco-design/web-react";
 import { v4 } from "uuid";
 import { uploadImageHandler } from "./utils";

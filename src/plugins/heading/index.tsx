@@ -1,7 +1,7 @@
 import "./index.scss";
 import { Editor, Transforms } from "slate";
-import { CommandFn } from "../../core/define/commands";
-import { EDITOR_ELEMENT_TYPE, KEY_EVENT, Plugin } from "../../core/define/interface";
+import { CommandFn } from "../../core/command";
+import { EDITOR_ELEMENT_TYPE, KEY_EVENT, Plugin } from "../../core/plugin/interface";
 import { v4 as uuid } from "uuid";
 import { KEYBOARD } from "../../utils/constant";
 import { isObject } from "src/utils/is";

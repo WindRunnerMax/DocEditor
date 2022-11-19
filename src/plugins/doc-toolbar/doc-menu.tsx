@@ -14,7 +14,7 @@ import {
   IconUnorderedList,
 } from "@arco-design/web-react/icon";
 import { Menu, Trigger } from "@arco-design/web-react";
-import { execCommand, SlateCommands } from "../../core/define/commands";
+import { execCommand, SlateCommands } from "../../core/command";
 import { ReactEditor, RenderElementProps } from "slate-react";
 import { useState } from "react";
 import { focusSelection } from "../../core/ops/set";

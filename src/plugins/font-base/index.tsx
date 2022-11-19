@@ -1,4 +1,4 @@
-import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/define/interface";
+import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/plugin/interface";
 import { Popup } from "src/components/popup";
 import { setTextNode } from "../../core/ops/set";
 import { assertValue } from "src/utils/common";

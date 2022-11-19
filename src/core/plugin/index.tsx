@@ -1,5 +1,5 @@
 import { Descendant, Node } from "slate";
-import { registerCommand, SlateCommands } from "./commands";
+import { registerCommand, SlateCommands } from "../command";
 import { isBlock, isText, isTextBlock } from "../ops/is";
 import {
   ElementPlugin,

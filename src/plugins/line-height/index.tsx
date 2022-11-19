@@ -1,4 +1,4 @@
-import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/define/interface";
+import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/plugin/interface";
 import { Popup } from "src/components/popup";
 import { getBlockNode } from "../../core/ops/get";
 import { setBlockNode } from "../../core/ops/set";

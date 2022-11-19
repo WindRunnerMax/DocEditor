@@ -21,5 +21,5 @@ export * from "./unordered-list";
 export * from "./font-base";
 export * from "./line-height";
 export * from "./image";
-export * from "../core/define";
+export * from "../core/plugin";
 export * from "../types/types";

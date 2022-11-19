@@ -1,4 +1,4 @@
-import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/define/interface";
+import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/plugin/interface";
 import { setTextNode, setUnTextNode } from "../../core/ops/set";
 
 declare module "slate" {

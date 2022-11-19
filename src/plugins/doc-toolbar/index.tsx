@@ -1,5 +1,5 @@
 import "./index.scss";
-import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/define/interface";
+import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/plugin/interface";
 import { Editor } from "slate";
 import { quoteBlockItemKey, quoteBlockKey } from "../quote-block";
 import { highlightBlockItemKey, highlightBlockKey } from "../highlight-block";
@@ -8,7 +8,7 @@ import { unorderedListItemKey, unorderedListKey } from "../unordered-list";
 import { imageKey } from "../image";
 import { dividingLineKey } from "../dividing-line";
 import { DocMenu } from "./doc-menu";
-import { SlateCommands } from "src/core/define/commands";
+import { SlateCommands } from "src/core/command";
 import {
   IconH1,
   IconH2,

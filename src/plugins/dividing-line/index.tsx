@@ -1,5 +1,5 @@
 import "./index.scss";
-import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/define/interface";
+import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/plugin/interface";
 import { existKey } from "../../core/ops/get";
 import { Transforms } from "slate";
 import { useFocused, useSelected } from "slate-react";

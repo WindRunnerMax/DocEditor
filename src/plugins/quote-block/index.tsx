@@ -1,6 +1,6 @@
 import "./index.scss";
-import { EDITOR_ELEMENT_TYPE, KEY_EVENT, Plugin } from "../../core/define/interface";
-import { CommandFn } from "../../core/define/commands";
+import { EDITOR_ELEMENT_TYPE, KEY_EVENT, Plugin } from "../../core/plugin/interface";
+import { CommandFn } from "../../core/command";
 import { Editor } from "slate";
 import { isObject } from "src/utils/is";
 import { KEYBOARD } from "../../utils/constant";

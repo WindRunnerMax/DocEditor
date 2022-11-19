@@ -1,6 +1,6 @@
 import { Editor } from "slate";
 import { RenderElementProps, RenderLeafProps } from "slate-react";
-import { CommandFn, SlateCommands } from "./commands";
+import { CommandFn, SlateCommands } from "../command";
 
 export const EDITOR_ELEMENT_TYPE = {
   BLOCK: "BLOCK" as const,
