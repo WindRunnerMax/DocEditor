@@ -13,6 +13,7 @@ specifiers:
   '@types/jest': ^26.0.15
   '@types/lodash': ^4.14.182
   '@types/node': ^12.0.0
+  '@types/prismjs': ^1.26.0
   '@types/react': ^17.0.0
   '@types/react-dom': ^17.0.0
   '@types/uuid': ^8.3.4
@@ -68,6 +69,7 @@ dependencies:
   '@types/jest': registry.npmmirror.com/@types/jest/26.0.24
   '@types/lodash': registry.npmmirror.com/@types/lodash/4.14.182
   '@types/node': registry.npmmirror.com/@types/node/12.20.37
+  '@types/prismjs': registry.npmmirror.com/@types/prismjs/1.26.0
   '@types/react': registry.npmmirror.com/@types/react/17.0.35
   '@types/react-dom': registry.npmmirror.com/@types/react-dom/17.0.11
   '@types/uuid': registry.npmmirror.com/@types/uuid/8.3.4
@@ -10068,6 +10070,12 @@ packages:
     resolution: {integrity: sha512-ekoj4qOQYp7CvjX8ZDBgN86w3MqQhLE1hczEJbEIjgFEumDy+na/4AJAbLXfgEWFNB2pKadM5rPFtuSGMWK7xA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/prettier/download/@types/prettier-2.4.2.tgz}
     name: '@types/prettier'
     version: 2.4.2
+    dev: false
+
+  registry.npmmirror.com/@types/prismjs/1.26.0:
+    resolution: {integrity: sha512-ZTaqn/qSqUuAq1YwvOFQfVW1AR/oQJlLSZVustdjwI+GZ8kr0MSHBj0tsXPW1EqHubx50gtBEjbPGsdZwQwCjQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/prismjs/-/prismjs-1.26.0.tgz}
+    name: '@types/prismjs'
+    version: 1.26.0
     dev: false
 
   registry.npmmirror.com/@types/prop-types/15.7.4:

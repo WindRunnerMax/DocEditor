@@ -1,7 +1,7 @@
 import { registerCommand, SlateCommands } from "../command";
 import { onCopy, onKeyDown } from "./event";
 import { ElementPlugin, LeafPlugin, RenderPlugins, Plugin, EDITOR_ELEMENT_TYPE } from "./interface";
-import { renderElement, renderLeaf } from "./render";
+import { decorate, renderElement, renderLeaf } from "./render";
 
 export class SlatePlugins {
   private plugins: Plugin[];
@@ -24,12 +24,25 @@ export class SlatePlugins {
     const elementPlugins: ElementPlugin[] = [];
     const leafPlugins: LeafPlugin[] = [];
     const keyDownPlugins: Plugin[] = [];
+    const decoratePlugins: Plugin[] = [];
     this.plugins.sort((a, b) => (b.priority || 0) - (a.priority || 0));
     this.plugins.forEach(item => {
-      if (item.type === EDITOR_ELEMENT_TYPE.BLOCK) elementPlugins.push(item);
-      else if (item.type === EDITOR_ELEMENT_TYPE.INLINE) leafPlugins.push(item);
+      if (item.type === EDITOR_ELEMENT_TYPE.BLOCK) {
+        elementPlugins.push(item);
+        if (item.renderLeaf && item.matchLeaf) {
+          leafPlugins.push({
+            type: EDITOR_ELEMENT_TYPE.INLINE,
+            key: item.key,
+            match: item.matchLeaf,
+            render: item.renderLeaf,
+          });
+        }
+      } else if (item.type === EDITOR_ELEMENT_TYPE.INLINE) {
+        leafPlugins.push(item);
+      }
       item.command && registerCommand(item.key, item.command, this.commands);
       item.onKeyDown && keyDownPlugins.push(item);
+      item.decorate && decoratePlugins.push(item);
     });
 
     return {
@@ -41,6 +54,9 @@ export class SlatePlugins {
       },
       onKeyDown: event => {
         return onKeyDown(event, keyDownPlugins);
+      },
+      decorate: entry => {
+        return decorate(entry, decoratePlugins);
       },
       commands: this.commands,
       onCopy: (event, editor) => {

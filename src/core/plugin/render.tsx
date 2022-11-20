@@ -1,5 +1,6 @@
+import { NodeEntry, Range } from "slate";
 import { RenderElementProps, RenderLeafProps } from "slate-react";
-import { ElementContext, ElementPlugin, LeafContext, LeafPlugin } from "./interface";
+import { ElementContext, ElementPlugin, LeafContext, LeafPlugin, Plugin } from "./interface";
 
 export const renderElement = (props: RenderElementProps, elementPlugins: ElementPlugin[]) => {
   const context: ElementContext = {
@@ -37,7 +38,7 @@ export const renderLeaf = (props: RenderLeafProps, leafPlugins: LeafPlugin[]) =>
   const context: LeafContext = {
     props,
     style: {},
-    element: props.text,
+    element: props.leaf,
     classList: [],
     children: props.children,
   };
@@ -51,4 +52,17 @@ export const renderLeaf = (props: RenderLeafProps, leafPlugins: LeafPlugin[]) =>
       {context.children}
     </span>
   );
+};
+
+export const decorate = (entry: NodeEntry, plugins: Plugin[]) => {
+  const ranges: Range[] = [];
+  for (const item of plugins) {
+    if (item.decorate) {
+      const result = item.decorate(entry);
+      if (result) {
+        ranges.push(...result);
+      }
+    }
+  }
+  return ranges;
 };

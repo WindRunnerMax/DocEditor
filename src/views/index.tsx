@@ -43,7 +43,7 @@ const SlateDocEditor: FC<{
     }, 500)
   );
 
-  const { renderElement, renderLeaf, onKeyDown, commands, onCopy } = useMemo(() => {
+  const { renderElement, renderLeaf, onKeyDown, commands, onCopy, decorate } = useMemo(() => {
     const register = new SlatePlugins(
       ParagraphPlugin(),
       HeadingPlugin(editor),
@@ -78,6 +78,7 @@ const SlateDocEditor: FC<{
     <Slate editor={editor} value={initText} onChange={updateText}>
       <MenuToolBar isRender={props.isRender} commands={commands} editor={editor}></MenuToolBar>
       <Editable
+        decorate={decorate}
         renderElement={renderElement}
         renderLeaf={renderLeaf}
         readOnly={props.isRender}

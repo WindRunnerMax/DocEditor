@@ -1,4 +1,4 @@
-import { Editor } from "slate";
+import { Editor, Range, NodeEntry } from "slate";
 import { RenderElementProps, RenderLeafProps } from "slate-react";
 import { CommandFn, SlateCommands } from "../command";
 
@@ -15,12 +15,15 @@ type BasePlugin = {
   priority?: number; // 优先级越高 在越外层
   command?: CommandFn;
   onKeyDown?: (event: React.KeyboardEvent<HTMLDivElement>) => boolean | void;
+  decorate?: (entry: NodeEntry) => Range[];
 };
 export type ElementPlugin = BasePlugin & {
   type: typeof EDITOR_ELEMENT_TYPE.BLOCK;
   match: (props: RenderElementProps) => boolean;
   renderLine?: (context: ElementContext) => JSX.Element;
   render?: (context: ElementContext) => JSX.Element;
+  matchLeaf?: (props: RenderLeafProps) => boolean;
+  renderLeaf?: (context: LeafContext) => JSX.Element;
 };
 export type LeafPlugin = BasePlugin & {
   type: typeof EDITOR_ELEMENT_TYPE.INLINE;
@@ -48,6 +51,7 @@ export type RenderPlugins = {
   renderElement: (props: RenderElementProps) => JSX.Element;
   renderLeaf: (props: RenderLeafProps) => JSX.Element;
   onKeyDown: (event: React.KeyboardEvent<HTMLDivElement>) => unknown;
+  decorate: (entry: NodeEntry) => Range[];
   commands: SlateCommands;
   onCopy: (event: React.ClipboardEvent<HTMLDivElement>, editor: Editor) => void;
 };
