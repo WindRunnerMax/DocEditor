@@ -1,16 +1,7 @@
-import { Descendant, Node } from "slate";
 import { registerCommand, SlateCommands } from "../command";
-import { isBlock, isText, isTextBlock } from "../ops/is";
-import {
-  ElementPlugin,
-  LeafPlugin,
-  RenderPlugins,
-  Plugin,
-  ElementContext,
-  LeafContext,
-  EDITOR_ELEMENT_TYPE,
-  KEY_EVENT,
-} from "./interface";
+import { onCopy, onKeyDown } from "./event";
+import { ElementPlugin, LeafPlugin, RenderPlugins, Plugin, EDITOR_ELEMENT_TYPE } from "./interface";
+import { renderElement, renderLeaf } from "./render";
 
 export class SlatePlugins {
   private plugins: Plugin[];
@@ -43,77 +34,17 @@ export class SlatePlugins {
 
     return {
       renderElement: props => {
-        const context: ElementContext = {
-          props,
-          style: {},
-          classList: [],
-          element: props.element,
-          children: props.children,
-        };
-        for (const item of elementPlugins) {
-          if (item.match(props) && item.render) {
-            context.children = (
-              <>
-                {props.children}
-                <div contentEditable={false}>{item.render(context)}</div>
-              </>
-            );
-            break;
-          }
-        }
-        for (let i = elementPlugins.length - 1; i >= 0; i--) {
-          const item = elementPlugins[i];
-          if (item.match(props) && item.renderLine) {
-            context.children = item.renderLine(context);
-          }
-        }
-        return (
-          <div {...props.attributes} className={context.classList.join(" ")} style={context.style}>
-            {context.children}
-          </div>
-        );
+        return renderElement(props, elementPlugins);
       },
       renderLeaf: props => {
-        const context: LeafContext = {
-          props,
-          style: {},
-          element: props.text,
-          classList: [],
-          children: props.children,
-        };
-        for (const item of leafPlugins) {
-          if (item.match(props) && item.render) {
-            context.children = item.render(context);
-          }
-        }
-        return (
-          <span {...props.attributes} className={context.classList.join(" ")} style={context.style}>
-            {context.children}
-          </span>
-        );
+        return renderLeaf(props, leafPlugins);
       },
       onKeyDown: event => {
-        if (event.nativeEvent.isComposing) return void 0;
-        for (const item of keyDownPlugins) {
-          if (item.onKeyDown && item.onKeyDown(event) === KEY_EVENT.STOP) break; // 返回`STOP`则停止继续执行
-        }
+        return onKeyDown(event, keyDownPlugins);
       },
       commands: this.commands,
       onCopy: (event, editor) => {
-        const fragments = editor.getFragment();
-        const parseText = (fragment: Descendant[]): string => {
-          return fragment
-            .map(item => {
-              if (isText(item)) return Node.string(item);
-              else if (isTextBlock(editor, item)) return parseText(item.children) + "\n";
-              else if (isBlock(editor, item)) return parseText(item.children);
-              else return "";
-            })
-            .join("");
-        };
-        const text = parseText(fragments).replace(/\n$/, "");
-        event.clipboardData.setData("text/plain", text);
-        event.preventDefault();
+        return onCopy(event, editor);
       },
     };
   };
