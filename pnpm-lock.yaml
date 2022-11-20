@@ -35,6 +35,7 @@ specifiers:
   lodash: ^4.17.21
   postcss: ^8.3.3
   prettier: ^2.4.1
+  prismjs: ^1.29.0
   react: ^17.0.2
   react-app-rewired: ^2.1.8
   react-app-rewired-esbuild: ^0.0.11
@@ -72,6 +73,7 @@ dependencies:
   '@types/uuid': registry.npmmirror.com/@types/uuid/8.3.4
   ahooks: registry.npmmirror.com/ahooks/3.3.13_react@17.0.2
   lodash: registry.npmmirror.com/lodash/4.17.21
+  prismjs: registry.npmmirror.com/prismjs/1.29.0
   react: registry.npmmirror.com/react/17.0.2
   react-dom: registry.npmmirror.com/react-dom/17.0.2_react@17.0.2
   react-scripts: registry.npmmirror.com/react-scripts/4.0.3_393c8490290eed9d5436fe514643a4d3
@@ -17411,6 +17413,13 @@ packages:
       ansi-styles: registry.nlark.com/ansi-styles/5.2.0
       react-is: registry.npmmirror.com/react-is/17.0.2
     dev: true
+
+  registry.npmmirror.com/prismjs/1.29.0:
+    resolution: {integrity: sha512-Kx/1w86q/epKcmte75LNrEoT+lX8pBpavuAbvJWRXar7Hz8jrtF+e3vY751p0R8H9HdArwaCTNDDzHg/ScJK1Q==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/prismjs/-/prismjs-1.29.0.tgz}
+    name: prismjs
+    version: 1.29.0
+    engines: {node: '>=6'}
+    dev: false
 
   registry.npmmirror.com/process-nextick-args/2.0.1:
     resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/process-nextick-args/-/process-nextick-args-2.0.1.tgz}

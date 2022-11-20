@@ -1,6 +1,7 @@
 import "./index.scss";
 import { Editor } from "slate";
 import {
+  IconCode,
   IconEdit,
   IconFileImage,
   IconH1,
@@ -26,6 +27,7 @@ import { orderedListKey } from "../ordered-list";
 import { unorderedListKey } from "../unordered-list";
 import { imageKey } from "../image";
 import { dividingLineKey } from "../dividing-line";
+import { CODE_BLOCK_KEY } from "../codeblock";
 
 const DocMenuItems = (
   <>
@@ -60,6 +62,10 @@ const DocMenuItems = (
     <Menu.Item key={imageKey}>
       <IconFileImage />
       图片
+    </Menu.Item>
+    <Menu.Item key={CODE_BLOCK_KEY}>
+      <IconCode />
+      代码块
     </Menu.Item>
     <Menu.Item key={dividingLineKey}>
       <IconEdit />

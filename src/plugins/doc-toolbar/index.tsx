@@ -21,6 +21,7 @@ import {
 import { headingPluginKey } from "../heading";
 import get from "lodash/get";
 import { isValidElement } from "react";
+import { CODE_BLOCK_KEY, CODE_BLOCK_ITEM_KEY } from "../codeblock";
 
 const NO_DOC_TOOL_BAR = [
   quoteBlockKey,
@@ -29,6 +30,8 @@ const NO_DOC_TOOL_BAR = [
   dividingLineKey,
   highlightBlockKey,
   imageKey,
+  CODE_BLOCK_KEY,
+  CODE_BLOCK_ITEM_KEY,
 ];
 const OFFSET_MAP: Record<string, number> = {
   [quoteBlockItemKey]: 12,

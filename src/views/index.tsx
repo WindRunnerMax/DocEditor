@@ -28,6 +28,7 @@ import { LineHeightPlugin } from "src/plugins/line-height";
 import { ImagePlugin } from "src/plugins/image";
 import { withSchema } from "src/core/schema";
 import { schema } from "./schema";
+import { CodeBlockPlugin } from "src/plugins/codeblock";
 
 const SlateDocEditor: FC<{
   isRender: boolean;
@@ -60,7 +61,8 @@ const SlateDocEditor: FC<{
       HighlightBlockPlugin(editor, props.isRender),
       FontBasePlugin(),
       LineHeightPlugin(),
-      ImagePlugin(editor, props.isRender)
+      ImagePlugin(editor, props.isRender),
+      CodeBlockPlugin(editor, props.isRender)
     );
 
     const commands = register.getCommands();
