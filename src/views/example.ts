@@ -198,6 +198,15 @@ export const example: BaseNode[] = [
     image: { src: "./favicon.ico", status: 2 },
     uuid: "5ab77ffb-aab55qq1",
   },
+  { heading: { type: "h2", id: "82651426" }, children: [{ text: "代码块" }] },
+  {
+    "code-block": { language: "JavaScript" },
+    "children": [
+      { "children": [{ text: "// 支持代码块高亮" }], "code-block-item": true },
+      { "code-block-item": true, "children": [{ text: "const a = 1;" }] },
+      { "code-block-item": true, "children": [{ text: "const b = 2;" }] },
+    ],
+  },
   { heading: { type: "h2", id: "82651426" }, children: [{ text: "快捷功能" }] },
   { children: [{ text: "快捷键" }], heading: { type: "h3", id: "614d6a4c" } },
   { children: [{ text: "支持快捷键: " }] },

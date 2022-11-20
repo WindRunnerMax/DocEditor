@@ -9,11 +9,13 @@ import {
   isTextBlock,
   isWrappedNode,
 } from "../../core/ops/is";
-import { setUnWrapNodes, setWrapNodes } from "../../core/ops/set";
-import { Editor, Range, Transforms } from "slate";
+import { setBlockNode, setUnWrapNodes, setWrapNodes } from "../../core/ops/set";
+import { BlockElement, Editor, Range, Transforms } from "slate";
 import { ReactEditor } from "slate-react";
 
-import { codeTokenize, DEFAULT_LANGUAGE } from "./utils";
+import { codeTokenize, DEFAULT_LANGUAGE, getLanguage, SUPPORTED_LANGUAGES } from "./utils";
+import { Select } from "@arco-design/web-react";
+import { getBlockNode } from "src/core/ops/get";
 
 export const CODE_BLOCK_KEY = "code-block";
 export const CODE_BLOCK_TYPE = "code-block-type";
@@ -39,6 +41,11 @@ export const CodeBlockPlugin = (editor: Editor, isRender: boolean): Plugin => {
     );
   };
 
+  const onLanguageChange = (element: BlockElement, language: string) => {
+    const path = ReactEditor.findPath(editor, element);
+    setBlockNode(editor, { [CODE_BLOCK_KEY]: { language } }, { at: path, key: CODE_BLOCK_KEY });
+  };
+
   return {
     key: CODE_BLOCK_KEY,
     type: EDITOR_ELEMENT_TYPE.BLOCK,
@@ -46,7 +53,28 @@ export const CodeBlockPlugin = (editor: Editor, isRender: boolean): Plugin => {
     match: props => !!props.element[CODE_BLOCK_KEY],
     renderLine: context => {
       if (context.element[CODE_BLOCK_ITEM_KEY]) return context.children;
-      return <div className="code-block">{context.children}</div>;
+      const language = getLanguage(context.element);
+      return (
+        <div className="code-block">
+          <div contentEditable={false}>
+            <Select
+              size="mini"
+              style={{ width: 160 }}
+              showSearch
+              defaultValue={language}
+              disabled={isRender}
+              onChange={value => onLanguageChange(context.element, value)}
+            >
+              {SUPPORTED_LANGUAGES.map(item => (
+                <Select.Option key={item} value={item}>
+                  {item}
+                </Select.Option>
+              ))}
+            </Select>
+          </div>
+          {context.children}
+        </div>
+      );
     },
     matchLeaf: props => !!props.leaf[CODE_BLOCK_TYPE],
     renderLeaf: context => {
@@ -59,18 +87,22 @@ export const CodeBlockPlugin = (editor: Editor, isRender: boolean): Plugin => {
       if (isBlock(editor, node) && node[CODE_BLOCK_ITEM_KEY]) {
         const textNode = node.children[0];
         if (isText(textNode)) {
-          const textPath = [...path, 0];
-          const str = Editor.string(editor, path);
-          const codeRange = codeTokenize(str, "javascript");
-          codeRange.forEach(item => {
-            ranges.push({
-              anchor: { path: textPath, offset: item.start },
-              focus: { path: textPath, offset: item.end },
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
-              [CODE_BLOCK_TYPE]: item.type,
+          const codeblockNode = getBlockNode(editor, { at: path, key: CODE_BLOCK_KEY });
+          if (codeblockNode) {
+            const textPath = [...path, 0];
+            const str = Editor.string(editor, path);
+            const language = getLanguage(codeblockNode.block);
+            const codeRange = codeTokenize(str, language);
+            codeRange.forEach(item => {
+              ranges.push({
+                anchor: { path: textPath, offset: item.start },
+                focus: { path: textPath, offset: item.end },
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                [CODE_BLOCK_TYPE]: item.type,
+              });
             });
-          });
+          }
         }
       }
       return ranges;

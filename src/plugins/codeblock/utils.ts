@@ -1,9 +1,12 @@
 import Prism from "prismjs";
 import "prismjs/themes/prism.min.css";
 import "prismjs/components/prism-javascript";
+import "prismjs/components/prism-java";
+import { BlockElement } from "slate";
+import { CODE_BLOCK_KEY } from ".";
 
 export const DEFAULT_LANGUAGE = "Plain Text";
-export const SUPPORTED_LANGUAGES = [DEFAULT_LANGUAGE, "Javascript", "Java"];
+export const SUPPORTED_LANGUAGES = [DEFAULT_LANGUAGE, "JavaScript", "Java"];
 
 type CodeRange = {
   type: string;
@@ -21,7 +24,8 @@ const getLength = (token: Prism.Token | string) => {
 };
 
 export const codeTokenize = (code: string, language: string) => {
-  const tokens = Prism.tokenize(code, Prism.languages[language]);
+  if (language === DEFAULT_LANGUAGE) return [];
+  const tokens = Prism.tokenize(code, Prism.languages[language.toLowerCase()]);
   const ranges: CodeRange[] = [];
   let start = 0;
   for (const token of tokens) {
@@ -33,4 +37,8 @@ export const codeTokenize = (code: string, language: string) => {
     start = end;
   }
   return ranges;
+};
+
+export const getLanguage = (node: BlockElement): string => {
+  return node[CODE_BLOCK_KEY]?.language || DEFAULT_LANGUAGE;
 };
