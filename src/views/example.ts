@@ -270,6 +270,10 @@ export const example: BaseNode[] = [
           { text: "。" },
         ],
       },
+      {
+        "unordered-list-item": { level: 1 },
+        "children": [{ text: "缩进" }, { "text": "Tab", "inline-code": true }, { text: "。" }],
+      },
     ],
   },
   { children: [{ text: "工具栏" }], heading: { type: "h3", id: "0f8a5d9e" } },

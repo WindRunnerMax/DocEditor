@@ -1,15 +1,8 @@
 import "./index.scss";
 import { CommandFn } from "../../core/command";
 import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/plugin/interface";
-import { isObject } from "src/utils/is";
-import {
-  isBlock,
-  isMatchedAttributeNode,
-  isText,
-  isTextBlock,
-  isWrappedNode,
-} from "../../core/ops/is";
-import { setBlockNode, setUnWrapNodes, setWrapNodes } from "../../core/ops/set";
+import { isBlock, isText } from "../../core/ops/is";
+import { setBlockNode, setWrapNodes } from "../../core/ops/set";
 import { BlockElement, Editor, Range, Transforms } from "slate";
 import { ReactEditor } from "slate-react";
 

@@ -29,6 +29,7 @@ import { ImagePlugin } from "src/plugins/image";
 import { withSchema } from "src/core/schema";
 import { schema } from "./schema";
 import { CodeBlockPlugin } from "src/plugins/codeblock";
+import { IndentPlugin } from "src/plugins/indent";
 
 const SlateDocEditor: FC<{
   isRender: boolean;
@@ -62,7 +63,8 @@ const SlateDocEditor: FC<{
       FontBasePlugin(),
       LineHeightPlugin(),
       ImagePlugin(editor, props.isRender),
-      CodeBlockPlugin(editor, props.isRender)
+      CodeBlockPlugin(editor, props.isRender),
+      IndentPlugin(editor)
     );
 
     const commands = register.getCommands();
