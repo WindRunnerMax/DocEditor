@@ -17,36 +17,36 @@ import {
 import { getBlockNode, getBlockAttributes } from "../../core/ops/get";
 import { setBlockNode, setUnBlockNode } from "../../core/ops/set";
 
-export const headingPluginKey = "heading";
-
 declare module "slate" {
   interface BlockElement {
-    heading?: { id: string; type: string };
+    [HEADING_KEY]?: { id: string; type: string };
   }
 }
 
+export const HEADING_KEY = "heading";
+
 const headingCommand: CommandFn = (editor, key, data) => {
   if (isObject(data) && data.path) {
-    if (!isMatchedAttributeNode(editor, `${headingPluginKey}.type`, data.extraKey)) {
+    if (!isMatchedAttributeNode(editor, `${HEADING_KEY}.type`, data.extraKey)) {
       setBlockNode(
         editor,
         { [key]: { type: data.extraKey, id: uuid().slice(0, 8) } },
         { at: data.path }
       );
     } else {
-      setUnBlockNode(editor, [headingPluginKey], { at: data.path });
+      setUnBlockNode(editor, [HEADING_KEY], { at: data.path });
     }
   }
 };
 
 export const HeadingPlugin = (editor: Editor): Plugin => {
   return {
-    key: headingPluginKey,
+    key: HEADING_KEY,
     type: EDITOR_ELEMENT_TYPE.BLOCK,
     command: headingCommand,
-    match: props => !!props.element[headingPluginKey],
+    match: props => !!props.element[HEADING_KEY],
     renderLine: context => {
-      const heading = context.props.element[headingPluginKey];
+      const heading = context.props.element[HEADING_KEY];
       if (!heading) return context.children;
       const id = heading.id;
       switch (heading.type) {
@@ -81,15 +81,15 @@ export const HeadingPlugin = (editor: Editor): Plugin => {
 
         if (match) {
           const { block, path } = match;
-          if (!block[headingPluginKey]) return void 0;
+          if (!block[HEADING_KEY]) return void 0;
 
           if (isSlateElement(block)) {
             if (event.key === KEYBOARD.BACKSPACE && isFocusLineStart(editor, path)) {
-              setUnBlockNode(editor, [headingPluginKey], { at: path });
+              setUnBlockNode(editor, [HEADING_KEY], { at: path });
               event.preventDefault();
             }
             if (event.key === KEYBOARD.ENTER && isFocusLineEnd(editor, path)) {
-              const attributes = getBlockAttributes(block, [headingPluginKey]);
+              const attributes = getBlockAttributes(block, [HEADING_KEY]);
               if (isWrappedNode(editor)) {
                 // 在`wrap`的情况下插入节点会出现问题 先多插入一个空格再删除
                 Transforms.insertNodes(

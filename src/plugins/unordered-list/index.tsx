@@ -22,35 +22,41 @@ declare module "slate" {
     "unordered-list-item"?: UnOrderListItemConfig;
   }
 }
-
 export type UnOrderListItemConfig = {
   level: number;
 };
-export const unorderedListKey = "unordered-list";
-export const unorderedListItemKey = "unordered-list-item";
+
+export const UNORDERED_LIST_KEY = "unordered-list";
+export const UNORDERED_LIST_ITEM_KEY = "unordered-list-item";
+
 const orderListCommand: CommandFn = (editor, key, data) => {
   if (isObject(data) && data.path) {
-    if (!isMatchedAttributeNode(editor, unorderedListKey, true, data.path)) {
-      setWrapNodes(editor, { [unorderedListKey]: true }, { [unorderedListItemKey]: { level: 1 } });
+    if (!isMatchedAttributeNode(editor, UNORDERED_LIST_KEY, true, data.path)) {
+      setWrapNodes(
+        editor,
+        { [UNORDERED_LIST_KEY]: true },
+        { [UNORDERED_LIST_ITEM_KEY]: { level: 1 } }
+      );
     } else {
       setUnWrapNodes(editor, {
-        wrapKey: unorderedListKey,
-        itemKey: unorderedListItemKey,
+        wrapKey: UNORDERED_LIST_KEY,
+        itemKey: UNORDERED_LIST_ITEM_KEY,
       });
     }
   }
 };
 export const UnorderedListPlugin = (editor: Editor): Plugin => {
   return {
-    key: unorderedListKey,
+    key: UNORDERED_LIST_KEY,
     type: EDITOR_ELEMENT_TYPE.BLOCK,
     match: props =>
-      existKey(props.element, unorderedListKey) || existKey(props.element, unorderedListItemKey),
+      existKey(props.element, UNORDERED_LIST_KEY) ||
+      existKey(props.element, UNORDERED_LIST_ITEM_KEY),
     renderLine: context => {
-      if (existKey(context.element, unorderedListKey)) {
+      if (existKey(context.element, UNORDERED_LIST_KEY)) {
         return <ul className="doc-unordered-list">{context.children}</ul>;
       } else {
-        const config = assertValue(context.element[unorderedListItemKey]);
+        const config = assertValue(context.element[UNORDERED_LIST_ITEM_KEY]);
         return (
           <li className={`doc-unordered-item unordered-li-${config.level}`}>{context.children}</li>
         );
@@ -62,9 +68,9 @@ export const UnorderedListPlugin = (editor: Editor): Plugin => {
         isMatchedEvent(event, KEYBOARD.BACKSPACE, KEYBOARD.ENTER, KEYBOARD.TAB) &&
         isCollapsed(editor, editor.selection)
       ) {
-        const wrapMatch = getBlockNode(editor, { key: unorderedListKey });
-        const itemMatch = getBlockNode(editor, { key: unorderedListItemKey });
-        setWrapStructure(editor, wrapMatch, itemMatch, unorderedListItemKey);
+        const wrapMatch = getBlockNode(editor, { key: UNORDERED_LIST_KEY });
+        const itemMatch = getBlockNode(editor, { key: UNORDERED_LIST_ITEM_KEY });
+        setWrapStructure(editor, wrapMatch, itemMatch, UNORDERED_LIST_ITEM_KEY);
 
         if (
           !itemMatch ||
@@ -74,13 +80,13 @@ export const UnorderedListPlugin = (editor: Editor): Plugin => {
           return void 0;
         }
 
-        const { level } = assertValue(itemMatch.block[unorderedListItemKey]);
+        const { level } = assertValue(itemMatch.block[UNORDERED_LIST_ITEM_KEY]);
 
         if (event.key === KEYBOARD.TAB) {
           if (level < 3) {
             setBlockNode(
               editor,
-              { [unorderedListItemKey]: { level: level + 1 } },
+              { [UNORDERED_LIST_ITEM_KEY]: { level: level + 1 } },
               { node: itemMatch.block }
             );
           }
@@ -89,13 +95,16 @@ export const UnorderedListPlugin = (editor: Editor): Plugin => {
           if (level > 1) {
             setBlockNode(
               editor,
-              { [unorderedListItemKey]: { level: level - 1 } },
+              { [UNORDERED_LIST_ITEM_KEY]: { level: level - 1 } },
               { node: itemMatch.block }
             );
             event.preventDefault();
           } else {
             if (isWrappedEdgeNode(editor, "or", { wrapNode: wrapMatch, itemNode: itemMatch })) {
-              setUnWrapNodes(editor, { wrapKey: unorderedListKey, itemKey: unorderedListItemKey });
+              setUnWrapNodes(editor, {
+                wrapKey: UNORDERED_LIST_KEY,
+                itemKey: UNORDERED_LIST_ITEM_KEY,
+              });
               event.preventDefault();
             }
           }

@@ -6,7 +6,7 @@ import { FontBaseMenu } from "./menu";
 
 declare module "slate" {
   interface TextElement {
-    "font-base"?: FontBaseConfig;
+    [FONT_BASE_KEY]?: FontBaseConfig;
   }
 }
 
@@ -15,18 +15,18 @@ export type FontBaseConfig = {
   color?: string;
   background?: string;
 };
-export const fontBasePluginKey = "font-base";
+export const FONT_BASE_KEY = "font-base";
 
 export const FontBasePlugin = (): Plugin => {
   let popupModel: Popup | null = null;
 
   return {
-    key: fontBasePluginKey,
+    key: FONT_BASE_KEY,
     type: EDITOR_ELEMENT_TYPE.INLINE,
-    match: props => !!props.leaf[fontBasePluginKey],
+    match: props => !!props.leaf[FONT_BASE_KEY],
     command: (editor, key, data) => {
       if (data && data.position && data.marks && !popupModel) {
-        const config: FontBaseConfig = data.marks[fontBasePluginKey] || {};
+        const config: FontBaseConfig = data.marks[FONT_BASE_KEY] || {};
         const position = data.position;
         return new Promise<void>(resolve => {
           const model = new Popup();
@@ -52,7 +52,7 @@ export const FontBasePlugin = (): Plugin => {
       }
     },
     render: context => {
-      const config = assertValue(context.props.leaf[fontBasePluginKey]);
+      const config = assertValue(context.props.leaf[FONT_BASE_KEY]);
       context.style = { ...context.style, ...config };
       return context.children;
     },

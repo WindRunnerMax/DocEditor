@@ -3,17 +3,17 @@ import { setTextNode, setUnTextNode } from "../../core/ops/set";
 
 declare module "slate" {
   interface TextElement {
-    bold?: boolean;
+    [BOLD_KEY]?: boolean;
   }
 }
 
-export const boldPluginKey = "bold";
+export const BOLD_KEY = "bold";
 
 export const BoldPlugin = (): Plugin => {
   return {
-    key: boldPluginKey,
+    key: BOLD_KEY,
     type: EDITOR_ELEMENT_TYPE.INLINE,
-    match: props => !!props.leaf[boldPluginKey],
+    match: props => !!props.leaf[BOLD_KEY],
     command: (editor, key, data) => {
       const marks = data.marks;
       if (marks && marks[key]) {

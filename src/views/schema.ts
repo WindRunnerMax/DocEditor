@@ -1,12 +1,12 @@
 import { SlateSchema } from "src/core/schema";
-import { dividingLineKey } from "src/plugins/dividing-line";
-import { imageKey } from "src/plugins/image";
+import { DIVIDING_LINE_KEY } from "src/plugins/dividing-line";
+import { IMAGE_KEY } from "src/plugins/image";
 
 export const schema: SlateSchema = {
-  [imageKey]: {
+  [IMAGE_KEY]: {
     isVoid: true,
   },
-  [dividingLineKey]: {
+  [DIVIDING_LINE_KEY]: {
     isVoid: true,
   },
 };

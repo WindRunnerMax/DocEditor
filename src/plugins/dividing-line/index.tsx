@@ -7,11 +7,11 @@ import { cs } from "src/utils/classnames";
 
 declare module "slate" {
   interface BlockElement {
-    "dividing-line"?: boolean;
+    [DIVIDING_LINE_KEY]?: boolean;
   }
 }
 
-export const dividingLineKey = "dividing-line";
+export const DIVIDING_LINE_KEY = "dividing-line";
 
 const DividingLine: React.FC = () => {
   const selected = useSelected();
@@ -20,13 +20,13 @@ const DividingLine: React.FC = () => {
 };
 export const DividingLinePlugin = (): Plugin => {
   return {
-    key: dividingLineKey,
+    key: DIVIDING_LINE_KEY,
     type: EDITOR_ELEMENT_TYPE.BLOCK,
     command: (editor, key) => {
       Transforms.insertNodes(editor, { [key]: true, children: [{ text: "" }] });
       Transforms.insertNodes(editor, { children: [{ text: "" }] });
     },
-    match: props => existKey(props.element, dividingLineKey),
+    match: props => existKey(props.element, DIVIDING_LINE_KEY),
     render: () => <DividingLine></DividingLine>,
   };
 };

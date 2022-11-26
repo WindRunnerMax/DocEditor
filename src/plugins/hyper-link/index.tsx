@@ -12,15 +12,15 @@ import { isCollapsed } from "src/core/ops";
 
 declare module "slate" {
   interface TextElement {
-    "link"?: HyperLinkConfig;
+    [HYPER_LINK_KEY]?: HyperLinkConfig;
   }
 }
-
 export type HyperLinkConfig = {
   href: string;
   blank: boolean;
 };
-export const hyperLinkPluginKey = "link";
+
+export const HYPER_LINK_KEY = "link";
 
 const HyperLinkEditor: React.FC<{
   config: HyperLinkConfig;
@@ -39,13 +39,13 @@ const HyperLinkEditor: React.FC<{
     const config = value;
     setVisible(false);
     const path = ReactEditor.findPath(editor, props.element);
-    setTextNode(editor, { [hyperLinkPluginKey]: config }, { at: path });
+    setTextNode(editor, { [HYPER_LINK_KEY]: config }, { at: path });
   };
 
   const onCancel = () => {
     setVisible(false);
     const path = ReactEditor.findPath(editor, props.element);
-    setUnTextNode(editor, [hyperLinkPluginKey], { at: path });
+    setUnTextNode(editor, [HYPER_LINK_KEY], { at: path });
   };
 
   const onVisibleChange = (visible: boolean) => {
@@ -71,13 +71,13 @@ const HyperLinkEditor: React.FC<{
 export const HyperLinkPlugin = (editor: Editor, isRender: boolean): Plugin => {
   let popupModel: Popup | null = null;
   return {
-    key: hyperLinkPluginKey,
+    key: HYPER_LINK_KEY,
     type: EDITOR_ELEMENT_TYPE.INLINE,
-    match: props => !!props.leaf[hyperLinkPluginKey],
+    match: props => !!props.leaf[HYPER_LINK_KEY],
     command: (editor, key, data) => {
       if (data && data.position && data.marks && !popupModel) {
         const position = data.position;
-        const config: HyperLinkConfig = data.marks[hyperLinkPluginKey] || { href: "", blank: true };
+        const config: HyperLinkConfig = data.marks[HYPER_LINK_KEY] || { href: "", blank: true };
         return new Promise<void>(resolve => {
           const model = new Popup();
           popupModel = model;
@@ -109,7 +109,7 @@ export const HyperLinkPlugin = (editor: Editor, isRender: boolean): Plugin => {
       }
     },
     render: context => {
-      const config = assertValue(context.props.leaf[hyperLinkPluginKey]);
+      const config = assertValue(context.props.leaf[HYPER_LINK_KEY]);
       if (!isRender) {
         return (
           <HyperLinkEditor config={config} element={context.element} editor={editor}>

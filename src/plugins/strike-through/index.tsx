@@ -3,17 +3,17 @@ import { setTextNode, setUnTextNode } from "../../core/ops/set";
 
 declare module "slate" {
   interface TextElement {
-    "strike-through"?: boolean;
+    [STRIKE_THROUGH_KEY]?: boolean;
   }
 }
 
-export const strikeThroughPluginKey = "strike-through";
+export const STRIKE_THROUGH_KEY = "strike-through";
 
 export const StrikeThroughPlugin = (): Plugin => {
   return {
-    key: strikeThroughPluginKey,
+    key: STRIKE_THROUGH_KEY,
     type: EDITOR_ELEMENT_TYPE.INLINE,
-    match: props => !!props.leaf[strikeThroughPluginKey],
+    match: props => !!props.leaf[STRIKE_THROUGH_KEY],
     command: (editor, key, data) => {
       const marks = data.marks;
       if (marks && marks[key]) {

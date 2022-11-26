@@ -3,17 +3,17 @@ import { setTextNode, setUnTextNode } from "../../core/ops/set";
 
 declare module "slate" {
   interface TextElement {
-    "under-line"?: boolean;
+    [UNDERLINE_KEY]?: boolean;
   }
 }
 
-export const underLinePluginKey = "under-line";
+export const UNDERLINE_KEY = "under-line";
 
 export const UnderLinePlugin = (): Plugin => {
   return {
-    key: underLinePluginKey,
+    key: UNDERLINE_KEY,
     type: EDITOR_ELEMENT_TYPE.INLINE,
-    match: props => !!props.leaf[underLinePluginKey],
+    match: props => !!props.leaf[UNDERLINE_KEY],
     command: (editor, key, data) => {
       const marks = data.marks;
       if (marks && marks[key]) {

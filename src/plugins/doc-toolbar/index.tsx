@@ -1,12 +1,10 @@
 import "./index.scss";
 import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/plugin/interface";
 import { Editor } from "slate";
-import { quoteBlockItemKey, quoteBlockKey } from "../quote-block";
-import { highlightBlockItemKey, highlightBlockKey } from "../highlight-block";
-import { orderedListItemKey, orderedListKey } from "../ordered-list";
-import { unorderedListItemKey, unorderedListKey } from "../unordered-list";
-import { imageKey } from "../image";
-import { dividingLineKey } from "../dividing-line";
+import { QUOTE_BLOCK_ITEM_KEY, QUOTE_BLOCK_KEY } from "../quote-block";
+import { HIGHLIGHT_BLOCK_ITEM_KEY, HIGHLIGHT_BLOCK_KEY } from "../highlight-block";
+import { IMAGE_KEY } from "../image";
+import { DIVIDING_LINE_KEY } from "../dividing-line";
 import { DocMenu } from "./doc-menu";
 import { SlateCommands } from "src/core/command";
 import {
@@ -18,35 +16,37 @@ import {
   IconQuote,
   IconUnorderedList,
 } from "@arco-design/web-react/icon";
-import { headingPluginKey } from "../heading";
+import { HEADING_KEY } from "../heading";
 import get from "lodash/get";
 import { isValidElement } from "react";
 import { CODE_BLOCK_KEY, CODE_BLOCK_ITEM_KEY } from "../codeblock";
+import { ORDERED_LIST_ITEM_KEY, ORDERED_LIST_KEY } from "../ordered-list";
+import { UNORDERED_LIST_ITEM_KEY, UNORDERED_LIST_KEY } from "../unordered-list";
 
 const NO_DOC_TOOL_BAR = [
-  quoteBlockKey,
-  orderedListKey,
-  unorderedListKey,
-  dividingLineKey,
-  highlightBlockKey,
-  imageKey,
+  QUOTE_BLOCK_KEY,
+  ORDERED_LIST_KEY,
+  UNORDERED_LIST_KEY,
+  DIVIDING_LINE_KEY,
+  HIGHLIGHT_BLOCK_KEY,
+  IMAGE_KEY,
   CODE_BLOCK_KEY,
   CODE_BLOCK_ITEM_KEY,
 ];
 const OFFSET_MAP: Record<string, number> = {
-  [quoteBlockItemKey]: 12,
-  [highlightBlockItemKey]: 8,
+  [QUOTE_BLOCK_ITEM_KEY]: 12,
+  [HIGHLIGHT_BLOCK_ITEM_KEY]: 8,
 };
 const DYNAMIC_ICON: Record<string, JSX.Element | Record<string, JSX.Element>> = {
-  [`${headingPluginKey}.type`]: {
+  [`${HEADING_KEY}.type`]: {
     h1: <IconH1 />,
     h2: <IconH2 />,
     h3: <IconH3 />,
   },
-  [quoteBlockItemKey]: <IconQuote style={{ fontSize: 13 }} />,
-  [highlightBlockItemKey]: <IconPaste />,
-  [orderedListItemKey]: <IconOrderedList />,
-  [unorderedListItemKey]: <IconUnorderedList />,
+  [QUOTE_BLOCK_ITEM_KEY]: <IconQuote style={{ fontSize: 13 }} />,
+  [HIGHLIGHT_BLOCK_ITEM_KEY]: <IconPaste />,
+  [ORDERED_LIST_ITEM_KEY]: <IconOrderedList />,
+  [UNORDERED_LIST_ITEM_KEY]: <IconUnorderedList />,
 };
 export const DocToolBarPlugin = (
   editor: Editor,

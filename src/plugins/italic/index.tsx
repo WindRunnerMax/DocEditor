@@ -3,17 +3,17 @@ import { setTextNode, setUnTextNode } from "../../core/ops/set";
 
 declare module "slate" {
   interface TextElement {
-    "italic"?: boolean;
+    [ITALIC_KEY]?: boolean;
   }
 }
 
-export const italicPluginKey = "italic";
+export const ITALIC_KEY = "italic";
 
 export const ItalicPlugin = (): Plugin => {
   return {
-    key: italicPluginKey,
+    key: ITALIC_KEY,
     type: EDITOR_ELEMENT_TYPE.INLINE,
-    match: props => !!props.leaf[italicPluginKey],
+    match: props => !!props.leaf[ITALIC_KEY],
     command: (editor, key, data) => {
       const marks = data.marks;
       if (marks && marks[key]) {

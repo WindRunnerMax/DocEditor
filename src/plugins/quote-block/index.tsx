@@ -18,32 +18,33 @@ import { getBlockNode } from "../../core/ops/get";
 
 declare module "slate" {
   interface BlockElement {
-    "quote-block"?: boolean;
-    "quote-block-item"?: boolean;
+    [QUOTE_BLOCK_KEY]?: boolean;
+    [QUOTE_BLOCK_ITEM_KEY]?: boolean;
   }
 }
 
-export const quoteBlockKey = "quote-block";
-export const quoteBlockItemKey = "quote-block-item";
+export const QUOTE_BLOCK_KEY = "quote-block";
+export const QUOTE_BLOCK_ITEM_KEY = "quote-block-item";
+
 const quoteCommand: CommandFn = (editor, key, data) => {
   if (isObject(data) && data.path) {
-    if (!isMatchedAttributeNode(editor, quoteBlockKey, true, data.path)) {
+    if (!isMatchedAttributeNode(editor, QUOTE_BLOCK_KEY, true, data.path)) {
       if (!isWrappedNode(editor)) {
-        setWrapNodes(editor, { [quoteBlockKey]: true }, { [quoteBlockItemKey]: true });
+        setWrapNodes(editor, { [QUOTE_BLOCK_KEY]: true }, { [QUOTE_BLOCK_ITEM_KEY]: true });
       }
     } else {
       setUnWrapNodes(editor, {
-        wrapKey: quoteBlockKey,
-        itemKey: quoteBlockItemKey,
+        wrapKey: QUOTE_BLOCK_KEY,
+        itemKey: QUOTE_BLOCK_ITEM_KEY,
       });
     }
   }
 };
 export const QuoteBlockPlugin = (editor: Editor): Plugin => {
   return {
-    key: quoteBlockKey,
+    key: QUOTE_BLOCK_KEY,
     type: EDITOR_ELEMENT_TYPE.BLOCK,
-    match: props => !!props.element[quoteBlockKey],
+    match: props => !!props.element[QUOTE_BLOCK_KEY],
     renderLine: context => <blockquote className="doc-quote-block">{context.children}</blockquote>,
     command: quoteCommand,
     onKeyDown: event => {
@@ -51,9 +52,9 @@ export const QuoteBlockPlugin = (editor: Editor): Plugin => {
         isMatchedEvent(event, KEYBOARD.BACKSPACE, KEYBOARD.ENTER) &&
         isCollapsed(editor, editor.selection)
       ) {
-        const wrapMatch = getBlockNode(editor, { key: quoteBlockKey });
-        const itemMatch = getBlockNode(editor, { key: quoteBlockItemKey });
-        setWrapStructure(editor, wrapMatch, itemMatch, quoteBlockItemKey);
+        const wrapMatch = getBlockNode(editor, { key: QUOTE_BLOCK_KEY });
+        const itemMatch = getBlockNode(editor, { key: QUOTE_BLOCK_ITEM_KEY });
+        setWrapStructure(editor, wrapMatch, itemMatch, QUOTE_BLOCK_ITEM_KEY);
         if (
           !itemMatch ||
           !wrapMatch ||
@@ -66,7 +67,7 @@ export const QuoteBlockPlugin = (editor: Editor): Plugin => {
           isFocusLineStart(editor, itemMatch.path) &&
           isWrappedEdgeNode(editor, "or", { wrapNode: wrapMatch, itemNode: itemMatch })
         ) {
-          setUnWrapNodes(editor, { wrapKey: quoteBlockKey, itemKey: quoteBlockItemKey });
+          setUnWrapNodes(editor, { wrapKey: QUOTE_BLOCK_KEY, itemKey: QUOTE_BLOCK_ITEM_KEY });
           event.preventDefault();
         }
         return KEY_EVENT.STOP;

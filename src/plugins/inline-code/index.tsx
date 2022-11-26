@@ -4,17 +4,17 @@ import { setTextNode, setUnTextNode } from "../../core/ops/set";
 
 declare module "slate" {
   interface TextElement {
-    "inline-code"?: boolean;
+    [INLINE_CODE_KEY]?: boolean;
   }
 }
 
-export const inlineCodePluginKey = "inline-code";
+export const INLINE_CODE_KEY = "inline-code";
 
 export const InlineCodePlugin = (): Plugin => {
   return {
-    key: inlineCodePluginKey,
+    key: INLINE_CODE_KEY,
     type: EDITOR_ELEMENT_TYPE.INLINE,
-    match: props => !!props.leaf[inlineCodePluginKey],
+    match: props => !!props.leaf[INLINE_CODE_KEY],
     command: (editor, key, data) => {
       const marks = data.marks;
       if (marks && marks[key]) {

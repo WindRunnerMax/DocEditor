@@ -10,10 +10,6 @@ import { codeTokenize, DEFAULT_LANGUAGE, getLanguage, SUPPORTED_LANGUAGES } from
 import { Select } from "@arco-design/web-react";
 import { getBlockNode } from "src/core/ops/get";
 
-export const CODE_BLOCK_KEY = "code-block";
-export const CODE_BLOCK_TYPE = "code-block-type";
-export const CODE_BLOCK_ITEM_KEY = "code-block-item";
-
 declare module "slate" {
   interface BlockElement {
     [CODE_BLOCK_KEY]?: { language: string };
@@ -23,6 +19,10 @@ declare module "slate" {
     [CODE_BLOCK_TYPE]?: string;
   }
 }
+
+export const CODE_BLOCK_KEY = "code-block";
+export const CODE_BLOCK_TYPE = "code-block-type";
+export const CODE_BLOCK_ITEM_KEY = "code-block-item";
 
 export const CodeBlockPlugin = (editor: Editor, isRender: boolean): Plugin => {
   const codeBlockCommand: CommandFn = editor => {

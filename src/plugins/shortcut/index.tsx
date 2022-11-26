@@ -4,21 +4,21 @@ import { getBlockNode } from "../../core/ops/get";
 import { isCollapsed, isMatchedEvent } from "../../core/ops/is";
 import { KEYBOARD } from "../../utils/constant";
 import { execCommand, SlateCommands } from "../../core/command";
-import { orderedListKey } from "../ordered-list";
-import { unorderedListKey } from "../unordered-list";
-import { quoteBlockKey } from "../quote-block";
-import { headingPluginKey } from "../heading";
-import { dividingLineKey } from "../dividing-line";
+import { ORDERED_LIST_KEY } from "../ordered-list";
+import { UNORDERED_LIST_KEY } from "../unordered-list";
+import { QUOTE_BLOCK_KEY } from "../quote-block";
+import { HEADING_KEY } from "../heading";
+import { DIVIDING_LINE_KEY } from "../dividing-line";
 
 const SHORTCUTS: Record<string, string> = {
-  "1.": orderedListKey,
-  "-": unorderedListKey,
-  "*": unorderedListKey,
-  ">": quoteBlockKey,
-  "#": `${headingPluginKey}.h1`,
-  "##": `${headingPluginKey}.h2`,
-  "###": `${headingPluginKey}.h3`,
-  "---": dividingLineKey,
+  "1.": ORDERED_LIST_KEY,
+  "-": UNORDERED_LIST_KEY,
+  "*": UNORDERED_LIST_KEY,
+  ">": QUOTE_BLOCK_KEY,
+  "#": `${HEADING_KEY}.h1`,
+  "##": `${HEADING_KEY}.h2`,
+  "###": `${HEADING_KEY}.h3`,
+  "---": DIVIDING_LINE_KEY,
 };
 
 export const ShortCutPlugin = (editor: Editor, commands: SlateCommands): Plugin => {

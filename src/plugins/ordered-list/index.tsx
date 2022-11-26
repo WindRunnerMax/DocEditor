@@ -19,8 +19,8 @@ import { assertValue } from "src/utils/common";
 
 declare module "slate" {
   interface BlockElement {
-    "ordered-list"?: boolean;
-    "ordered-list-item"?: OrderListItemConfig;
+    [ORDERED_LIST_KEY]?: boolean;
+    [ORDERED_LIST_ITEM_KEY]?: OrderListItemConfig;
   }
 }
 
@@ -29,20 +29,21 @@ export type OrderListItemConfig = {
   level: number;
 };
 
-export const orderedListKey = "ordered-list";
-export const orderedListItemKey = "ordered-list-item";
+export const ORDERED_LIST_KEY = "ordered-list";
+export const ORDERED_LIST_ITEM_KEY = "ordered-list-item";
+
 const orderListCommand: CommandFn = (editor, key, data) => {
   if (isObject(data) && data.path) {
-    if (!isMatchedAttributeNode(editor, orderedListKey, true, data.path)) {
+    if (!isMatchedAttributeNode(editor, ORDERED_LIST_KEY, true, data.path)) {
       setWrapNodes(
         editor,
-        { [orderedListKey]: true },
-        { [orderedListItemKey]: { start: 1, level: 1 } }
+        { [ORDERED_LIST_KEY]: true },
+        { [ORDERED_LIST_ITEM_KEY]: { start: 1, level: 1 } }
       );
     } else {
       setUnWrapNodes(editor, {
-        wrapKey: orderedListKey,
-        itemKey: orderedListItemKey,
+        wrapKey: ORDERED_LIST_KEY,
+        itemKey: ORDERED_LIST_ITEM_KEY,
       });
       calcNextOrderListLevels(editor);
     }
@@ -50,15 +51,15 @@ const orderListCommand: CommandFn = (editor, key, data) => {
 };
 export const OrderedListPlugin = (editor: Editor): Plugin => {
   return {
-    key: orderedListKey,
+    key: ORDERED_LIST_KEY,
     type: EDITOR_ELEMENT_TYPE.BLOCK,
     match: props =>
-      existKey(props.element, orderedListKey) || existKey(props.element, orderedListItemKey),
+      existKey(props.element, ORDERED_LIST_KEY) || existKey(props.element, ORDERED_LIST_ITEM_KEY),
     renderLine: context => {
-      if (existKey(context.element, orderedListKey)) {
+      if (existKey(context.element, ORDERED_LIST_KEY)) {
         return <ol className="doc-ordered-list">{context.children}</ol>;
       } else {
-        const config = assertValue(context.element[orderedListItemKey]);
+        const config = assertValue(context.element[ORDERED_LIST_ITEM_KEY]);
         return (
           <li className={`doc-ordered-item ordered-li-${config.level}`} value={config.start}>
             {context.children}
@@ -72,9 +73,9 @@ export const OrderedListPlugin = (editor: Editor): Plugin => {
         isMatchedEvent(event, KEYBOARD.BACKSPACE, KEYBOARD.ENTER, KEYBOARD.TAB) &&
         isCollapsed(editor, editor.selection)
       ) {
-        const wrapMatch = getBlockNode(editor, { key: orderedListKey });
-        const itemMatch = getBlockNode(editor, { key: orderedListItemKey });
-        setWrapStructure(editor, wrapMatch, itemMatch, orderedListItemKey);
+        const wrapMatch = getBlockNode(editor, { key: ORDERED_LIST_KEY });
+        const itemMatch = getBlockNode(editor, { key: ORDERED_LIST_ITEM_KEY });
+        setWrapStructure(editor, wrapMatch, itemMatch, ORDERED_LIST_ITEM_KEY);
         if (
           !itemMatch ||
           !wrapMatch ||
@@ -82,13 +83,13 @@ export const OrderedListPlugin = (editor: Editor): Plugin => {
         ) {
           return void 0;
         }
-        const { level, start } = assertValue(itemMatch.block[orderedListItemKey]);
+        const { level, start } = assertValue(itemMatch.block[ORDERED_LIST_ITEM_KEY]);
 
         if (event.key === KEYBOARD.TAB) {
           if (level < 3) {
             setBlockNode(
               editor,
-              { [orderedListItemKey]: { start, level: level + 1 } },
+              { [ORDERED_LIST_ITEM_KEY]: { start, level: level + 1 } },
               { node: itemMatch.block }
             );
           }
@@ -101,7 +102,7 @@ export const OrderedListPlugin = (editor: Editor): Plugin => {
           if (level > 1) {
             setBlockNode(
               editor,
-              { [orderedListItemKey]: { start, level: level - 1 } },
+              { [ORDERED_LIST_ITEM_KEY]: { start, level: level - 1 } },
               { node: itemMatch.block }
             );
             calcOrderListLevels(editor);
@@ -116,7 +117,7 @@ export const OrderedListPlugin = (editor: Editor): Plugin => {
                 return KEY_EVENT.STOP;
               }
             } else {
-              setUnWrapNodes(editor, { wrapKey: orderedListKey, itemKey: orderedListItemKey });
+              setUnWrapNodes(editor, { wrapKey: ORDERED_LIST_KEY, itemKey: ORDERED_LIST_ITEM_KEY });
               calcNextOrderListLevels(editor);
               event.preventDefault();
               return KEY_EVENT.STOP;

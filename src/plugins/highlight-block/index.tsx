@@ -20,45 +20,45 @@ import { HighlightBlockWrapper, COLOR_MAP } from "./wrapper";
 
 declare module "slate" {
   interface BlockElement {
-    "highlight-block"?: { border: string; background: string };
-    "highlight-block-item"?: boolean;
+    [HIGHLIGHT_BLOCK_KEY]?: { border: string; background: string };
+    [HIGHLIGHT_BLOCK_ITEM_KEY]?: boolean;
   }
 }
 
-export const highlightBlockKey = "highlight-block";
-export const highlightBlockItemKey = "highlight-block-item";
+export const HIGHLIGHT_BLOCK_KEY = "highlight-block";
+export const HIGHLIGHT_BLOCK_ITEM_KEY = "highlight-block-item";
 
 export const HighlightBlockPlugin = (editor: Editor, isRender: boolean): Plugin => {
   const quoteCommand: CommandFn = (editor, key, data) => {
     if (isObject(data) && data.path) {
-      if (!isMatchedAttributeNode(editor, highlightBlockKey, null, data.path)) {
+      if (!isMatchedAttributeNode(editor, HIGHLIGHT_BLOCK_KEY, null, data.path)) {
         if (!isWrappedNode(editor)) {
           setWrapNodes(
             editor,
             {
-              [highlightBlockKey]: {
+              [HIGHLIGHT_BLOCK_KEY]: {
                 border: COLOR_MAP[0].border,
                 background: COLOR_MAP[0].background,
               },
             },
-            { [highlightBlockItemKey]: true }
+            { [HIGHLIGHT_BLOCK_ITEM_KEY]: true }
           );
         }
       } else {
         setUnWrapNodes(editor, {
-          wrapKey: highlightBlockKey,
-          itemKey: highlightBlockItemKey,
+          wrapKey: HIGHLIGHT_BLOCK_KEY,
+          itemKey: HIGHLIGHT_BLOCK_ITEM_KEY,
         });
       }
     }
   };
 
   return {
-    key: highlightBlockKey,
+    key: HIGHLIGHT_BLOCK_KEY,
     type: EDITOR_ELEMENT_TYPE.BLOCK,
-    match: props => !!props.element[highlightBlockKey],
+    match: props => !!props.element[HIGHLIGHT_BLOCK_KEY],
     renderLine: context => {
-      const config = assertValue(context.props.element[highlightBlockKey]);
+      const config = assertValue(context.props.element[HIGHLIGHT_BLOCK_KEY]);
       return (
         <HighlightBlockWrapper
           editor={editor}
@@ -76,9 +76,9 @@ export const HighlightBlockPlugin = (editor: Editor, isRender: boolean): Plugin 
         isMatchedEvent(event, KEYBOARD.BACKSPACE, KEYBOARD.ENTER) &&
         isCollapsed(editor, editor.selection)
       ) {
-        const wrapMatch = getBlockNode(editor, { key: highlightBlockKey });
-        const itemMatch = getBlockNode(editor, { key: highlightBlockItemKey });
-        setWrapStructure(editor, wrapMatch, itemMatch, highlightBlockItemKey);
+        const wrapMatch = getBlockNode(editor, { key: HIGHLIGHT_BLOCK_KEY });
+        const itemMatch = getBlockNode(editor, { key: HIGHLIGHT_BLOCK_ITEM_KEY });
+        setWrapStructure(editor, wrapMatch, itemMatch, HIGHLIGHT_BLOCK_ITEM_KEY);
         if (
           !itemMatch ||
           !wrapMatch ||
@@ -91,7 +91,10 @@ export const HighlightBlockPlugin = (editor: Editor, isRender: boolean): Plugin 
           isFocusLineStart(editor, itemMatch.path) &&
           isWrappedEdgeNode(editor, "or", { wrapNode: wrapMatch, itemNode: itemMatch })
         ) {
-          setUnWrapNodes(editor, { wrapKey: highlightBlockKey, itemKey: highlightBlockItemKey });
+          setUnWrapNodes(editor, {
+            wrapKey: HIGHLIGHT_BLOCK_KEY,
+            itemKey: HIGHLIGHT_BLOCK_ITEM_KEY,
+          });
           event.preventDefault();
         }
         return KEY_EVENT.STOP;

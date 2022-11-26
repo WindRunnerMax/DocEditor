@@ -20,46 +20,46 @@ import { ReactEditor, RenderElementProps } from "slate-react";
 import { useState } from "react";
 import { focusSelection } from "../../core/ops/set";
 import { cs } from "src/utils/classnames";
-import { headingPluginKey } from "../heading";
-import { quoteBlockKey } from "../quote-block";
-import { highlightBlockKey } from "../highlight-block";
-import { orderedListKey } from "../ordered-list";
-import { unorderedListKey } from "../unordered-list";
-import { imageKey } from "../image";
-import { dividingLineKey } from "../dividing-line";
 import { CODE_BLOCK_KEY } from "../codeblock";
+import { HEADING_KEY } from "../heading";
+import { QUOTE_BLOCK_KEY } from "../quote-block";
+import { HIGHLIGHT_BLOCK_KEY } from "../highlight-block";
+import { ORDERED_LIST_KEY } from "../ordered-list";
+import { UNORDERED_LIST_KEY } from "../unordered-list";
+import { IMAGE_KEY } from "../image";
+import { DIVIDING_LINE_KEY } from "../dividing-line";
 
 const DocMenuItems = (
   <>
-    <Menu.Item key={`${headingPluginKey}.h1`}>
+    <Menu.Item key={`${HEADING_KEY}.h1`}>
       <IconH1 />
       一级标题
     </Menu.Item>
-    <Menu.Item key={`${headingPluginKey}.h2`}>
+    <Menu.Item key={`${HEADING_KEY}.h2`}>
       <IconH2 />
       二级标题
     </Menu.Item>
-    <Menu.Item key={`${headingPluginKey}.h3`}>
+    <Menu.Item key={`${HEADING_KEY}.h3`}>
       <IconH3 />
       三级标题
     </Menu.Item>
-    <Menu.Item key={quoteBlockKey}>
+    <Menu.Item key={QUOTE_BLOCK_KEY}>
       <IconQuote />
       块级引用
     </Menu.Item>
-    <Menu.Item key={highlightBlockKey}>
+    <Menu.Item key={HIGHLIGHT_BLOCK_KEY}>
       <IconPaste />
       高亮块
     </Menu.Item>
-    <Menu.Item key={orderedListKey}>
+    <Menu.Item key={ORDERED_LIST_KEY}>
       <IconOrderedList />
       有序列表
     </Menu.Item>
-    <Menu.Item key={unorderedListKey}>
+    <Menu.Item key={UNORDERED_LIST_KEY}>
       <IconUnorderedList />
       无序列表
     </Menu.Item>
-    <Menu.Item key={imageKey}>
+    <Menu.Item key={IMAGE_KEY}>
       <IconFileImage />
       图片
     </Menu.Item>
@@ -67,7 +67,7 @@ const DocMenuItems = (
       <IconCode />
       代码块
     </Menu.Item>
-    <Menu.Item key={dividingLineKey}>
+    <Menu.Item key={DIVIDING_LINE_KEY}>
       <IconEdit />
       分割线
     </Menu.Item>

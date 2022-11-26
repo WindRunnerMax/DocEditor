@@ -7,17 +7,17 @@ import { execCommand, SlateCommands } from "../../core/command";
 import { execSelectMarks, getSelectionRect, maskMenuToolBar, Portal } from "./utils";
 import { ReactEditor } from "slate-react";
 import { MenuItems } from "./menu";
-import { fontBasePluginKey } from "../font-base";
-import { hyperLinkPluginKey } from "../hyper-link";
-import { lineHeightPluginKey } from "../line-height";
+import { FONT_BASE_KEY } from "../font-base";
+import { HYPER_LINK_KEY } from "../hyper-link";
+import { LINE_HEIGHT_KEY } from "../line-height";
 import { omit } from "src/utils/filter";
 import { EVENT_ENUM } from "src/utils/constant";
 
 const TOOLBAR_OFFSET_HEIGHT = 40;
 const TOOLBAR_OFFSET_WIDTH = 340;
 
-const NOT_INIT_SELECT = [hyperLinkPluginKey, fontBasePluginKey];
-const MUTEX_SELECT = [...NOT_INIT_SELECT, lineHeightPluginKey];
+const NOT_INIT_SELECT = [HYPER_LINK_KEY, FONT_BASE_KEY];
+const MUTEX_SELECT = [...NOT_INIT_SELECT, LINE_HEIGHT_KEY];
 export const MenuToolBar: FC<{
   isRender: boolean;
   editor: Editor;

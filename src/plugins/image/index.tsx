@@ -19,7 +19,7 @@ enum ImageStatus {
 declare module "slate" {
   interface BlockElement {
     uuid?: string;
-    image?: {
+    [IMAGE_KEY]?: {
       status: ImageStatus;
       src: string;
       width?: number | string;
@@ -28,7 +28,8 @@ declare module "slate" {
   }
 }
 
-export const imageKey = "image";
+export const IMAGE_KEY = "image";
+
 const DocImage: React.FC<{
   element: BlockElement;
   isRender: boolean;
@@ -60,7 +61,7 @@ export const ImagePlugin = (
       const uuid = v4();
       Transforms.insertNodes(editor, {
         uuid,
-        [imageKey]: { src: blobSRC, status: ImageStatus.LOADING },
+        [IMAGE_KEY]: { src: blobSRC, status: ImageStatus.LOADING },
         children: [{ text: "" }],
       });
       uploadHandler(file)
@@ -70,8 +71,8 @@ export const ImagePlugin = (
             HistoryEditor.withoutSaving(editor, () => {
               setBlockNode(
                 editor,
-                { [imageKey]: { src: res.src, status: ImageStatus.SUCCESS } },
-                { at: path, key: imageKey }
+                { [IMAGE_KEY]: { src: res.src, status: ImageStatus.SUCCESS } },
+                { at: path, key: IMAGE_KEY }
               );
             });
           }
@@ -82,8 +83,8 @@ export const ImagePlugin = (
             HistoryEditor.withoutSaving(editor, () => {
               setBlockNode(
                 editor,
-                { [imageKey]: { src: void 0, status: ImageStatus.FAIL } },
-                { at: path, key: imageKey }
+                { [IMAGE_KEY]: { src: void 0, status: ImageStatus.FAIL } },
+                { at: path, key: IMAGE_KEY }
               );
             });
           }
@@ -110,10 +111,10 @@ export const ImagePlugin = (
     imageInput.click();
   };
   return {
-    key: imageKey,
+    key: IMAGE_KEY,
     type: EDITOR_ELEMENT_TYPE.BLOCK,
     command,
-    match: props => existKey(props.element, imageKey),
+    match: props => existKey(props.element, IMAGE_KEY),
     render: context => <DocImage element={context.element} isRender={isRender}></DocImage>,
   };
 };
