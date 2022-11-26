@@ -103,7 +103,7 @@ type LeafPlugin = BasePlugin & {
 $ npm install doc-editor-light
 ```
 
-```typescript
+```js
 import "doc-editor-light/dist/plugins/styles"; // 注意引用样式
 import { FC, useMemo } from "react";
 import { withHistory } from "slate-history";
@@ -128,16 +128,27 @@ import {
   UnorderedListPlugin,
   SlatePlugins,
   DocToolBarPlugin,
+  withSchema,
+  SlateSchema
 } from "doc-editor-light";
+
+const schema: SlateSchema = {
+  "image": {
+    isVoid: true,
+  },
+  "dividing-line": {
+    isVoid: true,
+  },
+};
 
 export const App: FC<{
   className?: string;
 }> = props => {
-  const editor = useMemo(() => withHistory(withReact(createEditor())), []);
+  const editor = useMemo(() => withSchema(schema, withHistory(withReact(createEditor()))), []);
 
   const initText: Descendant[] = [{ children: [{ text: "Example" }] }];
 
-  const { renderElement, renderLeaf, onKeyDown, withVoidElements, commands } = useMemo(() => {
+  const { renderElement, renderLeaf, onKeyDown, onCopy, commands } = useMemo(() => {
     const register = new SlatePlugins(
       ParagraphPlugin(),
       HeadingPlugin(editor),
@@ -164,11 +175,10 @@ export const App: FC<{
     return register.apply();
   }, [editor]);
 
-  const withVoidEditor = useMemo(() => withVoidElements(editor), [editor, withVoidElements]);
   return (
     <div>
-      <Slate editor={withVoidEditor} value={initText}>
-        <MenuToolBar isRender={false} commands={commands}></MenuToolBar>
+      <Slate editor={editor} value={initText}>
+        <MenuToolBar isRender={false} commands={commands} editor={editor}></MenuToolBar>
         <Editable
           renderElement={renderElement}
           renderLeaf={renderLeaf}
