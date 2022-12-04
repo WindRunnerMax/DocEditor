@@ -43,7 +43,8 @@
     "slate-react": "0.80.0",
     "typescript": "^4.1.2",
     "uuid": "^8.3.2",
-    "web-vitals": "^1.0.1"
+    "web-vitals": "^1.0.1",
+    "embed-drawio": "^0.0.4"
   },
   "peerDependencies": {
     "slate": "0.80.0",

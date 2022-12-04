@@ -6,8 +6,8 @@ import { Trigger } from "@arco-design/web-react";
 import { ReactEditor } from "slate-react";
 import { setBlockNode } from "src/core/ops/set";
 import { useMemoizedFn } from "ahooks";
+import { HIGHLIGHT_BLOCK_KEY } from "./index";
 
-const highlightBlockKey = "highlight-block";
 export const COLOR_MAP: AssertT<BlockElement["highlight-block"]>[] = [
   { background: "var(--blue-3)", border: "var(--blue-6)" },
   { background: "var(--green-3)", border: "var(--green-6)" },
@@ -36,8 +36,8 @@ export const HighlightBlockWrapper: FC<{
     const path = ReactEditor.findPath(editor, element);
     setBlockNode(
       editor,
-      { [highlightBlockKey]: COLOR_MAP[index] },
-      { at: path, key: highlightBlockKey }
+      { [HIGHLIGHT_BLOCK_KEY]: COLOR_MAP[index] },
+      { at: path, key: HIGHLIGHT_BLOCK_KEY }
     );
   });
 

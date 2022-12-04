@@ -32,6 +32,7 @@ export const CodeBlockPlugin = (editor: Editor, isRender: boolean): Plugin => {
       { [CODE_BLOCK_KEY]: { language: DEFAULT_LANGUAGE } },
       { [CODE_BLOCK_ITEM_KEY]: true }
     );
+    Transforms.insertNodes(editor, { children: [{ text: "" }] });
   };
 
   const onLanguageChange = (element: BlockElement, language: string) => {

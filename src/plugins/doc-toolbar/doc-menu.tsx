@@ -9,6 +9,7 @@ import {
   IconH3,
   IconMoreVertical,
   IconOrderedList,
+  IconPalette,
   IconPaste,
   IconPlus,
   IconQuote,
@@ -28,6 +29,7 @@ import { ORDERED_LIST_KEY } from "../ordered-list";
 import { UNORDERED_LIST_KEY } from "../unordered-list";
 import { IMAGE_KEY } from "../image";
 import { DIVIDING_LINE_KEY } from "../dividing-line";
+import { FLOW_CHART_KEY } from "../flow-chart";
 
 const DocMenuItems = (
   <>
@@ -66,6 +68,10 @@ const DocMenuItems = (
     <Menu.Item key={CODE_BLOCK_KEY}>
       <IconCode />
       代码块
+    </Menu.Item>
+    <Menu.Item key={FLOW_CHART_KEY}>
+      <IconPalette />
+      流程图
     </Menu.Item>
     <Menu.Item key={DIVIDING_LINE_KEY}>
       <IconEdit />

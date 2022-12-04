@@ -30,6 +30,7 @@ import { withSchema } from "src/core/schema";
 import { schema } from "./schema";
 import { CodeBlockPlugin } from "src/plugins/codeblock";
 import { IndentPlugin } from "src/plugins/indent";
+import { FlowChartPlugin } from "src/plugins/flow-chart";
 
 const SlateDocEditor: FC<{
   isRender: boolean;
@@ -39,7 +40,7 @@ const SlateDocEditor: FC<{
 
   const updateText = useMemoizedFn(
     debounce((text: Descendant[]) => {
-      // console.log("Text changes", JSON.stringify(text));
+      console.log("Text changes", JSON.stringify(text));
       console.log("Text changes", text);
     }, 500)
   );
@@ -64,7 +65,8 @@ const SlateDocEditor: FC<{
       LineHeightPlugin(),
       ImagePlugin(editor, props.isRender),
       CodeBlockPlugin(editor, props.isRender),
-      IndentPlugin(editor)
+      IndentPlugin(editor),
+      FlowChartPlugin(editor, props.isRender)
     );
 
     const commands = register.getCommands();

@@ -1,5 +1,6 @@
 import { NodeEntry, Range } from "slate";
 import { RenderElementProps, RenderLeafProps } from "slate-react";
+import { Void } from "../component/void";
 import { ElementContext, ElementPlugin, LeafContext, LeafPlugin, Plugin } from "./interface";
 
 export const renderElement = (props: RenderElementProps, elementPlugins: ElementPlugin[]) => {
@@ -15,7 +16,7 @@ export const renderElement = (props: RenderElementProps, elementPlugins: Element
       context.children = (
         <>
           {props.children}
-          <div contentEditable={false}>{item.render(context)}</div>
+          <Void>{item.render(context)}</Void>
         </>
       );
       break;

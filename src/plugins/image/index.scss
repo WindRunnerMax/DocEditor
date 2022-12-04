@@ -4,6 +4,10 @@
   &.selected {
     box-shadow: 0 0 0 2px rgb(var(--blue-3));
   }
+
+  img {
+    max-width: 100%;
+  }
 }
 
 .doc-image-upload-input {
