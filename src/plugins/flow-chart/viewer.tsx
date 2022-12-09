@@ -84,7 +84,12 @@ export const DocFLowChart: React.FC<{
         {props.isRender ? (
           RenderElement
         ) : (
-          <Trigger popup={() => EditElement} position="top" popupAlign={{ top: 5 }}>
+          <Trigger
+            popup={() => EditElement}
+            position="top"
+            popupAlign={{ top: 5 }}
+            className="flow-chart-toolbar"
+          >
             {RenderElement}
           </Trigger>
         )}

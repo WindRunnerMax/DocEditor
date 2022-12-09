@@ -15,7 +15,14 @@ $min-height: 150px;
     align-items: center;
     display: flex;
     justify-content: center;
+    max-width: 100%;
     min-height: $min-height;
+
+    svg {
+      box-sizing: border-box;
+      max-width: 100%;
+      padding: 0 10px;
+    }
   }
 
   .arco-spin {
@@ -58,4 +65,9 @@ $min-height: 150px;
   border-radius: 5px;
   cursor: pointer;
   padding: 5px 10px;
+}
+
+.arco-trigger.flow-chart-toolbar {
+  background-color: var(--color-bg-1);
+  color: var(--color-text-1);
 }
