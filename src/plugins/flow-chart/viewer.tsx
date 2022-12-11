@@ -6,8 +6,8 @@ import { ReactEditor, useFocused, useSelected } from "slate-react";
 import { setBlockNode } from "src/core/ops/set";
 import { cs } from "src/utils/classnames";
 import { FLOW_CHART_KEY } from "./index";
-import { diagramLoader } from "./diagram-loader";
-import { normalizationXML } from "./utils";
+import { diagramEditor, getSvg } from "./diagram-loader";
+import { xmlToString } from "./utils";
 
 export const DocFLowChart: React.FC<{
   element: BlockElement;
@@ -25,8 +25,7 @@ export const DocFLowChart: React.FC<{
     if (props.config.content) {
       const content = props.config.content;
       const render = () => {
-        diagramLoader().then(res => {
-          const svg = res.convertXMLToSVG(content);
+        getSvg(content).then(svg => {
           const div = container.current;
           if (div && svg) {
             div.childNodes.forEach(node => div.removeChild(node));
@@ -42,23 +41,17 @@ export const DocFLowChart: React.FC<{
   }, [props.config.content, props.isRender]);
 
   const startEdit = () => {
-    diagramLoader().then(res => {
-      const bus = new res.EditorBus({
-        data: props.config.content,
-        onSave: (xml: string) => {
-          const str = normalizationXML(res.stringToXml, res.xmlToString, xml);
-          if (str) {
-            const path = ReactEditor.findPath(props.editor, props.element);
-            setBlockNode(
-              props.editor,
-              { [FLOW_CHART_KEY]: { type: "xml", content: str } },
-              { at: path, key: FLOW_CHART_KEY }
-            );
-          }
-        },
-      });
-      bus.startEdit();
-    });
+    diagramEditor("en", props.config.content, (xml: Node) => {
+      const str = xmlToString(xml);
+      if (str) {
+        const path = ReactEditor.findPath(props.editor, props.element);
+        setBlockNode(
+          props.editor,
+          { [FLOW_CHART_KEY]: { type: "xml", content: str } },
+          { at: path, key: FLOW_CHART_KEY }
+        );
+      }
+    }).then(r => r.start());
   };
 
   const RenderElement = (

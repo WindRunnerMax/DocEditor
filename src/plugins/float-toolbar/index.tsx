@@ -49,10 +49,10 @@ export const MenuToolBar: FC<{
     const toolbar = toolbarRef.current;
     if (!toolbar) return void 0;
     const mouseUpHandler = () => {
-      !keepStatus.current && (toolbar.style.display = "");
+      ReactEditor.isFocused(editor) && !keepStatus.current && (toolbar.style.display = "");
     };
     const mouseDownHandler = () => {
-      !keepStatus.current && (toolbar.style.display = "none");
+      ReactEditor.isFocused(editor) && !keepStatus.current && (toolbar.style.display = "none");
     };
     const selectionChangeHandler = () => {
       if (keepStatus.current) return void 0;

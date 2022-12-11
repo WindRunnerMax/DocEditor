@@ -17,6 +17,7 @@ $min-height: 150px;
     justify-content: center;
     max-width: 100%;
     min-height: $min-height;
+    user-select: none;
 
     svg {
       box-sizing: border-box;
@@ -70,4 +71,9 @@ $min-height: 150px;
 .arco-trigger.flow-chart-toolbar {
   background-color: var(--color-bg-1);
   color: var(--color-text-1);
+}
+
+.diagram-container .diagram-exit-btn {
+  cursor: pointer;
+  margin-right: 10px;
 }
