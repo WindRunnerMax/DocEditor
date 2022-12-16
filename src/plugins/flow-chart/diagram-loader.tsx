@@ -1,20 +1,36 @@
-import type * as Diagram from "embed-drawio";
+import type * as DiagramEditor from "embed-drawio/dist/packages/core/diagram-editor";
+import type * as DiagramViewer from "embed-drawio/dist/packages/core/diagram-viewer";
 import ReactDOM from "react-dom";
 import { isString } from "src/utils/is";
-let instance: typeof Diagram | null = null;
 
-export const diagramLoader = (): Promise<typeof Diagram> => {
-  if (instance) return Promise.resolve(instance);
+// 分开Editor与Viewer 独立export 拆包
+// 体验优化Loading 下载 预览
+
+let editor: typeof DiagramEditor | null = null;
+export const diagramEditorLoader = (): Promise<typeof DiagramEditor> => {
+  if (editor) return Promise.resolve(editor);
   return Promise.all([
-    import(/* webpackChunkName: "embed-drawio" */ "embed-drawio"),
+    import(
+      /* webpackChunkName: "embed-drawio-editor" */ "embed-drawio/dist/packages/core/diagram-editor"
+    ),
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     import(/* webpackChunkName: "embed-drawio-css" */ "embed-drawio/dist/index.css"),
-  ]).then(res => (instance = res[0]));
+  ]).then(res => (editor = res[0]));
+};
+
+let viewer: typeof DiagramViewer | null = null;
+export const diagramViewerLoader = (): Promise<typeof DiagramViewer> => {
+  if (viewer) return Promise.resolve(viewer);
+  return Promise.all([
+    import(
+      /* webpackChunkName: "embed-drawio-viewer" */ "embed-drawio/dist/packages/core/diagram-viewer"
+    ),
+  ]).then(res => (viewer = res[0]));
 };
 
 export const getSvg = (xml: XMLDocument | string): Promise<SVGElement | null> => {
-  return diagramLoader().then(({ DiagramViewer, stringToXml }) => {
+  return diagramViewerLoader().then(({ DiagramViewer, stringToXml }) => {
     const xmlDoc = isString(xml) ? stringToXml(xml) : xml;
     const viewer = new DiagramViewer(xmlDoc);
     return viewer.renderSVG(null, 1, 1);
@@ -26,7 +42,7 @@ export const diagramEditor = (
   init: string | null,
   onSave: (xml: Element) => void
 ): Promise<{ start: () => void }> => {
-  return diagramLoader()
+  return diagramEditorLoader()
     .then(({ stringToXml, DiagramEditor, getLanguage }) => {
       const renderExit = (el: HTMLDivElement) => {
         ReactDOM.render(
