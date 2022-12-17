@@ -68,7 +68,7 @@ const HyperLinkEditor: React.FC<{
     </Trigger>
   );
 };
-export const HyperLinkPlugin = (editor: Editor, isRender: boolean): Plugin => {
+export const HyperLinkPlugin = (editor: Editor, readonly: boolean): Plugin => {
   let popupModel: Popup | null = null;
   return {
     key: HYPER_LINK_KEY,
@@ -110,7 +110,7 @@ export const HyperLinkPlugin = (editor: Editor, isRender: boolean): Plugin => {
     },
     render: context => {
       const config = assertValue(context.props.leaf[HYPER_LINK_KEY]);
-      if (!isRender) {
+      if (!readonly) {
         return (
           <HyperLinkEditor config={config} element={context.element} editor={editor}>
             {context.children}

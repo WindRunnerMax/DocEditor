@@ -52,7 +52,7 @@ const DYNAMIC_ICON: Record<string, JSX.Element | Record<string, JSX.Element>> = 
 };
 export const DocToolBarPlugin = (
   editor: Editor,
-  isRender: boolean,
+  readonly: boolean,
   commands: SlateCommands
 ): Plugin => {
   return {
@@ -61,7 +61,7 @@ export const DocToolBarPlugin = (
     type: EDITOR_ELEMENT_TYPE.BLOCK,
     match: () => true,
     renderLine: context => {
-      if (isRender) return context.children;
+      if (readonly) return context.children;
       for (const item of NO_DOC_TOOL_BAR) {
         if (context.element[item]) return context.children;
       }

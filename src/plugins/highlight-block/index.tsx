@@ -28,7 +28,7 @@ declare module "slate" {
 export const HIGHLIGHT_BLOCK_KEY = "highlight-block";
 export const HIGHLIGHT_BLOCK_ITEM_KEY = "highlight-block-item";
 
-export const HighlightBlockPlugin = (editor: Editor, isRender: boolean): Plugin => {
+export const HighlightBlockPlugin = (editor: Editor, readonly: boolean): Plugin => {
   const quoteCommand: CommandFn = (editor, key, data) => {
     if (isObject(data) && data.path) {
       if (!isMatchedAttributeNode(editor, HIGHLIGHT_BLOCK_KEY, null, data.path)) {
@@ -64,7 +64,7 @@ export const HighlightBlockPlugin = (editor: Editor, isRender: boolean): Plugin 
           editor={editor}
           element={context.element}
           config={config}
-          isRender={isRender}
+          readonly={readonly}
         >
           {context.children}
         </HighlightBlockWrapper>

@@ -7,21 +7,21 @@ import { IconEdit, IconFile } from "@arco-design/web-react/icon";
 import { ThemeAction } from "./components/theme-action";
 
 export const App: React.FC = () => {
-  const [isRender, setRender] = useState(false);
+  const [readonly, setRender] = useState(false);
 
   return (
     <div className="doc-editor-container">
       <div className="header">
         <span className="left">Editor</span>
         <div className="right">
-          <div onClick={() => setRender(!isRender)}>{isRender ? <IconEdit /> : <IconFile />}</div>
+          <div onClick={() => setRender(!readonly)}>{readonly ? <IconEdit /> : <IconFile />}</div>
           <ThemeAction />
         </div>
       </div>
       <div className="gap"></div>
-      <div className={cs("editor", isRender && "render")}>
+      <div className={cs("editor", readonly && "render")}>
         <div className="slate-editor">
-          <SlateDocEditor isRender={isRender}></SlateDocEditor>
+          <SlateDocEditor readonly={readonly}></SlateDocEditor>
         </div>
       </div>
     </div>

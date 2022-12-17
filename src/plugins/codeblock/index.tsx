@@ -24,7 +24,7 @@ export const CODE_BLOCK_KEY = "code-block";
 export const CODE_BLOCK_TYPE = "code-block-type";
 export const CODE_BLOCK_ITEM_KEY = "code-block-item";
 
-export const CodeBlockPlugin = (editor: Editor, isRender: boolean): Plugin => {
+export const CodeBlockPlugin = (editor: Editor, readonly: boolean): Plugin => {
   const codeBlockCommand: CommandFn = editor => {
     Transforms.insertNodes(editor, { children: [{ text: "" }] });
     setWrapNodes(
@@ -56,7 +56,7 @@ export const CodeBlockPlugin = (editor: Editor, isRender: boolean): Plugin => {
               style={{ width: 160 }}
               showSearch
               defaultValue={language}
-              disabled={isRender}
+              disabled={readonly}
               onChange={value => onLanguageChange(context.element, value)}
             >
               {SUPPORTED_LANGUAGES.map(item => (

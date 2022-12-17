@@ -19,7 +19,7 @@ const TOOLBAR_OFFSET_WIDTH = 340;
 const NOT_INIT_SELECT = [HYPER_LINK_KEY, FONT_BASE_KEY];
 const MUTEX_SELECT = [...NOT_INIT_SELECT, LINE_HEIGHT_KEY];
 export const MenuToolBar: FC<{
-  isRender: boolean;
+  readonly: boolean;
   editor: Editor;
   commands: SlateCommands;
 }> = props => {
@@ -49,10 +49,10 @@ export const MenuToolBar: FC<{
     const toolbar = toolbarRef.current;
     if (!toolbar) return void 0;
     const mouseUpHandler = () => {
-      ReactEditor.isFocused(editor) && !keepStatus.current && (toolbar.style.display = "");
+      !keepStatus.current && (toolbar.style.display = "");
     };
     const mouseDownHandler = () => {
-      ReactEditor.isFocused(editor) && !keepStatus.current && (toolbar.style.display = "none");
+      !keepStatus.current && (toolbar.style.display = "none");
     };
     const selectionChangeHandler = () => {
       if (keepStatus.current) return void 0;
@@ -113,7 +113,7 @@ export const MenuToolBar: FC<{
     [exec, selectedMarks]
   );
 
-  return props.isRender ? null : (
+  return props.readonly ? null : (
     <Portal>
       <div ref={toolbarRef} className="hover-menu-container">
         {HoverMenu}

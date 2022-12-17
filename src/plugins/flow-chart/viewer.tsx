@@ -11,7 +11,7 @@ import { xmlToString } from "./utils";
 
 export const DocFLowChart: React.FC<{
   element: BlockElement;
-  isRender: boolean;
+  readonly: boolean;
   editor: Editor;
   config: Required<BlockElement>[typeof FLOW_CHART_KEY];
 }> = props => {
@@ -38,10 +38,10 @@ export const DocFLowChart: React.FC<{
     } else {
       setLoading(false);
     }
-  }, [props.config.content, props.isRender]);
+  }, [props.config.content, props.readonly]);
 
   const startEdit = () => {
-    diagramEditor("en", props.config.content, (xml: Node) => {
+    diagramEditor("zh", props.config.content, (xml: Node) => {
       const str = xmlToString(xml);
       if (str) {
         const path = ReactEditor.findPath(props.editor, props.element);
@@ -61,9 +61,11 @@ export const DocFLowChart: React.FC<{
   );
 
   const EditElement = (
-    <div className="flow-chart-edit" onClick={startEdit}>
-      <IconEdit />
-      编辑
+    <div>
+      <div className="flow-chart-edit" onClick={startEdit}>
+        <IconEdit />
+        编辑
+      </div>
     </div>
   );
 
@@ -74,7 +76,7 @@ export const DocFLowChart: React.FC<{
         <span>流程图</span>
       </div>
       <Spin loading={loading}>
-        {props.isRender ? (
+        {props.readonly ? (
           RenderElement
         ) : (
           <Trigger

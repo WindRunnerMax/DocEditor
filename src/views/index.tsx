@@ -33,7 +33,7 @@ import { IndentPlugin } from "src/plugins/indent";
 import { FlowChartPlugin } from "src/plugins/flow-chart";
 
 const SlateDocEditor: FC<{
-  isRender: boolean;
+  readonly: boolean;
 }> = props => {
   const editor = useMemo(() => withSchema(schema, withHistory(withReact(createEditor()))), []);
   const initText = example;
@@ -51,7 +51,7 @@ const SlateDocEditor: FC<{
       HeadingPlugin(editor),
       BoldPlugin(),
       QuoteBlockPlugin(editor),
-      HyperLinkPlugin(editor, props.isRender),
+      HyperLinkPlugin(editor, props.readonly),
       UnderLinePlugin(),
       StrikeThroughPlugin(),
       ItalicPlugin(),
@@ -60,32 +60,32 @@ const SlateDocEditor: FC<{
       UnorderedListPlugin(editor),
       DividingLinePlugin(),
       AlignPlugin(),
-      HighlightBlockPlugin(editor, props.isRender),
+      HighlightBlockPlugin(editor, props.readonly),
       FontBasePlugin(),
       LineHeightPlugin(),
-      ImagePlugin(editor, props.isRender),
-      CodeBlockPlugin(editor, props.isRender),
+      ImagePlugin(editor, props.readonly),
+      CodeBlockPlugin(editor, props.readonly),
       IndentPlugin(editor),
-      FlowChartPlugin(editor, props.isRender)
+      FlowChartPlugin(editor, props.readonly)
     );
 
     const commands = register.getCommands();
     register.add(
-      DocToolBarPlugin(editor, props.isRender, commands),
+      DocToolBarPlugin(editor, props.readonly, commands),
       ShortCutPlugin(editor, commands)
     );
 
     return register.apply();
-  }, [editor, props.isRender]);
+  }, [editor, props.readonly]);
 
   return (
     <Slate editor={editor} value={initText} onChange={updateText}>
-      <MenuToolBar isRender={props.isRender} commands={commands} editor={editor}></MenuToolBar>
+      <MenuToolBar readonly={props.readonly} commands={commands} editor={editor}></MenuToolBar>
       <Editable
         decorate={decorate}
         renderElement={renderElement}
         renderLeaf={renderLeaf}
-        readOnly={props.isRender}
+        readOnly={props.readonly}
         placeholder="Enter text ..."
         onKeyDown={onKeyDown}
         onCopy={e => onCopy(e, editor)}
