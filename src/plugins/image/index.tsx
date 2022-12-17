@@ -3,13 +3,14 @@ import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/plugin/interface";
 import { existKey, getPathByUUID } from "../../core/ops/get";
 import { setBlockNode, focusSelection } from "../../core/ops/set";
 import { BaseEditor, BlockElement, Transforms } from "slate";
-import { ReactEditor, useFocused, useSelected } from "slate-react";
-import { cs } from "src/utils/classnames";
+import { ReactEditor } from "slate-react";
 import { CommandFn } from "src/core/command";
 import { Image as ArcoImage, Spin } from "@arco-design/web-react";
 import { v4 } from "uuid";
 import { uploadImageHandler } from "./utils";
 import { HistoryEditor } from "slate-history";
+import { SelectionWrapper } from "src/components/selection-wrapper";
+import { PreviewWrapper } from "src/components/preview-wrapper";
 
 enum ImageStatus {
   LOADING = 1,
@@ -32,25 +33,25 @@ export const IMAGE_KEY = "image";
 
 const DocImage: React.FC<{
   element: BlockElement;
-  isRender: boolean;
+  readonly: boolean;
 }> = props => {
-  const selected = useSelected();
-  const focused = useFocused();
   if (!props.element.image) return null;
   const config = props.element.image;
 
   return (
     <Spin loading={config.status === ImageStatus.LOADING}>
-      <div className={cs("doc-image", focused && selected && "selected")}>
-        <ArcoImage src={config.src} preview={props.isRender}></ArcoImage>
-      </div>
+      <SelectionWrapper readonly={props.readonly} className="doc-image">
+        <PreviewWrapper readonly={props.readonly} src={config.src}>
+          <ArcoImage src={config.src} preview={false}></ArcoImage>
+        </PreviewWrapper>
+      </SelectionWrapper>
     </Spin>
   );
 };
 
 export const ImagePlugin = (
   editor: BaseEditor & ReactEditor & HistoryEditor,
-  isRender: boolean,
+  readonly: boolean,
   uploadHandler = uploadImageHandler
 ): Plugin => {
   const IMAGE_INPUT_DOM_ID = "doc-image-upload-input";
@@ -115,6 +116,6 @@ export const ImagePlugin = (
     type: EDITOR_ELEMENT_TYPE.BLOCK,
     command,
     match: props => existKey(props.element, IMAGE_KEY),
-    render: context => <DocImage element={context.element} isRender={isRender}></DocImage>,
+    render: context => <DocImage element={context.element} readonly={readonly}></DocImage>,
   };
 };

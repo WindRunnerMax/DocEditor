@@ -28,9 +28,9 @@ export const HighlightBlockWrapper: FC<{
   editor: Editor;
   element: BlockElement;
   config: AssertT<BlockElement["highlight-block"]>;
-  isRender: boolean;
+  readonly: boolean;
 }> = props => {
-  const { editor, element, config, isRender } = props;
+  const { editor, element, config, readonly } = props;
 
   const switchAction = useMemoizedFn((index: number) => {
     const path = ReactEditor.findPath(editor, element);
@@ -70,7 +70,7 @@ export const HighlightBlockWrapper: FC<{
       {props.children}
     </div>
   );
-  return isRender ? (
+  return readonly ? (
     wrapper
   ) : (
     <Trigger position="top" popup={() => Selector} popupAlign={{ top: 3 }}>
