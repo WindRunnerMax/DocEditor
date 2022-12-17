@@ -6,7 +6,7 @@ import { CommandFn } from "src/core/command";
 import { v4 } from "uuid";
 import { HistoryEditor } from "slate-history";
 import { BaseEditor, Transforms } from "slate";
-import { DocFLowChart } from "./viewer";
+import { DocFLowChart } from "./components/viewer";
 
 declare module "slate" {
   interface BlockElement {
@@ -22,7 +22,7 @@ export const FLOW_CHART_KEY = "flow-chart";
 
 export const FlowChartPlugin = (
   editor: BaseEditor & ReactEditor & HistoryEditor,
-  isRender: boolean
+  readonly: boolean
 ): Plugin => {
   const command: CommandFn = editor => {
     const uuid = v4();
@@ -44,7 +44,7 @@ export const FlowChartPlugin = (
       return (
         <DocFLowChart
           element={context.element}
-          isRender={isRender}
+          readonly={readonly}
           config={config}
           editor={editor}
         ></DocFLowChart>

@@ -32,7 +32,6 @@ $min-height: 150px;
 
   .flow-chart-title {
     align-items: center;
-    border: 1px solid var(--color-border-2);
     border-radius: 5px;
     display: flex;
     left: 5px;
@@ -42,6 +41,7 @@ $min-height: 150px;
     top: 5px;
     transition: all 0.3s;
     visibility: hidden;
+    z-index: 10000;
 
     > svg {
       color: rgb(var(--blue-7));
@@ -61,16 +61,17 @@ $min-height: 150px;
   }
 }
 
-.flow-chart-edit {
-  border: 1px solid var(--color-border-2);
-  border-radius: 5px;
-  cursor: pointer;
-  padding: 5px 10px;
-}
-
 .arco-trigger.flow-chart-toolbar {
-  background-color: var(--color-bg-1);
-  color: var(--color-text-1);
+  background-color: var(--color-bg-2);
+  box-shadow: $box-shadow;
+  display: flex;
+  justify-content: center;
+  padding: 6px 10px;
+
+  .arco-btn-text {
+    color: var(--color-text-1);
+    padding: 0 5px;
+  }
 }
 
 .diagram-container .diagram-exit-btn {

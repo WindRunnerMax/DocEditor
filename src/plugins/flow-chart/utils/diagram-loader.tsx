@@ -38,7 +38,7 @@ export const getSvg = (xml: XMLDocument | string): Promise<SVGElement | null> =>
 };
 
 export const diagramEditor = (
-  lang: "en",
+  lang: "en" | "zh",
   init: string | null,
   onSave: (xml: Element) => void
 ): Promise<{ start: () => void }> => {
@@ -47,7 +47,7 @@ export const diagramEditor = (
       const renderExit = (el: HTMLDivElement) => {
         ReactDOM.render(
           <div onClick={diagramEditor.exit} className="diagram-exit-btn">
-            Exit
+            退出
           </div>,
           el
         );
@@ -60,4 +60,14 @@ export const diagramEditor = (
         diagramEditor.start(res, init ? stringToXml(init) : null, onSave);
       },
     }));
+};
+
+export const diagramPreview = (xml: string) => {
+  return diagramViewerLoader().then(({ convertSVGToBase64 }) => convertSVGToBase64(xml));
+};
+
+export const diagramDownload = (xml: string) => {
+  return diagramViewerLoader()
+    .then(({ downloadSVG }) => downloadSVG(xml))
+    .then(res => res && res());
 };
