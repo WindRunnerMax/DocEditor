@@ -1,26 +1,26 @@
 {
   "files": {
-    "static/js/0.3f5e43a6.chunk.js": "./static/js/0.3f5e43a6.chunk.js",
-    "embed-drawio-editor.js": "./static/js/embed-drawio-editor.b7e9fad2.chunk.js",
-    "embed-drawio-viewer.js": "./static/js/embed-drawio-viewer.74e24190.chunk.js",
+    "static/js/0.12a535d4.chunk.js": "./static/js/0.12a535d4.chunk.js",
+    "embed-drawio-editor.js": "./static/js/embed-drawio-editor.ce7b3a70.chunk.js",
+    "embed-drawio-viewer.js": "./static/js/embed-drawio-viewer.d14f2823.chunk.js",
     "main.css": "./static/css/main.9008c567.chunk.css",
-    "main.js": "./static/js/main.27ef7a74.chunk.js",
-    "runtime-main.js": "./static/js/runtime-main.d02d9639.js",
+    "main.js": "./static/js/main.a9579b9d.chunk.js",
+    "runtime-main.js": "./static/js/runtime-main.c2b1d95f.js",
     "static/css/5.d4fafb88.chunk.css": "./static/css/5.d4fafb88.chunk.css",
     "static/js/5.d57c25fa.chunk.js": "./static/js/5.d57c25fa.chunk.js",
-    "static/css/6.1a0b60ca.chunk.css": "./static/css/6.1a0b60ca.chunk.css",
+    "static/css/6.0d4e2a04.chunk.css": "./static/css/6.0d4e2a04.chunk.css",
     "static/js/6.8168616a.chunk.js": "./static/js/6.8168616a.chunk.js",
     "static/js/7.f74a069a.chunk.js": "./static/js/7.f74a069a.chunk.js",
     "static/js/8.6108230f.chunk.js": "./static/js/8.6108230f.chunk.js",
     "index.html": "./index.html",
-    "static/js/0.3f5e43a6.chunk.js.LICENSE.txt": "./static/js/0.3f5e43a6.chunk.js.LICENSE.txt",
+    "static/js/0.12a535d4.chunk.js.LICENSE.txt": "./static/js/0.12a535d4.chunk.js.LICENSE.txt",
     "static/js/5.d57c25fa.chunk.js.LICENSE.txt": "./static/js/5.d57c25fa.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.d02d9639.js",
+    "static/js/runtime-main.c2b1d95f.js",
     "static/css/5.d4fafb88.chunk.css",
     "static/js/5.d57c25fa.chunk.js",
     "static/css/main.9008c567.chunk.css",
-    "static/js/main.27ef7a74.chunk.js"
+    "static/js/main.a9579b9d.chunk.js"
   ]
 }
