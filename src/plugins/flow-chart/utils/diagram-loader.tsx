@@ -3,9 +3,6 @@ import type * as DiagramViewer from "embed-drawio/dist/packages/core/diagram-vie
 import ReactDOM from "react-dom";
 import { isString } from "src/utils/is";
 
-// 分开Editor与Viewer 独立export 拆包
-// 体验优化Loading 下载 预览
-
 let editor: typeof DiagramEditor | null = null;
 export const diagramEditorLoader = (): Promise<typeof DiagramEditor> => {
   if (editor) return Promise.resolve(editor);
