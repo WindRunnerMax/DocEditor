@@ -6,6 +6,7 @@ import path from "path";
 import { terser } from "rollup-plugin-terser";
 import postcss from "rollup-plugin-postcss";
 import { fileExist, fsStat, readDir } from "./config/fs-utils";
+import json from "@rollup/plugin-json";
 
 const basePath = ["src/plugins", "src/core"];
 
@@ -36,6 +37,7 @@ export default async () => {
   const external = Object.keys(require("./package.json").dependencies || {});
   external.push(/@arco-design\/web-react\/.*/);
   external.push(/lodash\/.*/);
+  external.push(/embed-drawio\/.*/);
 
   return {
     input: dirsMap,
@@ -43,8 +45,15 @@ export default async () => {
       dir: "./dist",
       format: "es",
     },
+    onwarn: (warning, warn) => {
+      if (warning.code === "EVAL") return;
+      warn(warning);
+    },
     plugins: [
-      resolve(),
+      resolve({
+        preferBuiltins: false,
+      }),
+      json(),
       postcss({ minimize: true, extensions: [".css", ".scss"] }),
       commonjs({ include: "node_modules/**" }),
       babel({
