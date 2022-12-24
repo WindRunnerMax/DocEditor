@@ -38,6 +38,7 @@ export default async () => {
   external.push(/@arco-design\/web-react\/.*/);
   external.push(/lodash\/.*/);
   external.push(/embed-drawio\/.*/);
+  external.push(/prismjs\/.*/);
 
   return {
     input: dirsMap,

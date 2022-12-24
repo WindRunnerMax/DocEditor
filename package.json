@@ -1,9 +1,13 @@
 {
   "name": "doc-editor-light",
-  "version": "0.3.2",
+  "version": "0.3.4",
   "files": [
     "dist",
     "pnpm-lock.yaml"
+  ],
+  "sideEffects": [
+    "*.scss",
+    "*.css"
   ],
   "main": "dist/plugins/index.js",
   "types": "dist/plugins/index.d.ts",
