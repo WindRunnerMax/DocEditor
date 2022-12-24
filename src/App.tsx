@@ -1,10 +1,12 @@
 import "./App.scss";
-import "./plugins/styles";
 import SlateDocEditor from "src/views";
 import { useState } from "react";
 import { cs } from "./utils/classnames";
 import { IconEdit, IconFile } from "@arco-design/web-react/icon";
 import { ThemeAction } from "./components/theme-action";
+
+// Prevent Webpack Tree Shaking
+require("./plugins/styles");
 
 export const App: React.FC = () => {
   const [readonly, setRender] = useState(false);

@@ -26,17 +26,17 @@ const configWebpackPlugins = () => config => {
   return config;
 };
 
-const configEmpty = config => config;
-
 module.exports = {
   webpack: override(
-    process.env.NODE_ENV === "development" ? rewiredESbuild() : configEmpty,
-    addLessLoader({
-      javascriptEnabled: true,
-      importLoaders: true,
-      localIdentName: "[name]__[hash:base64:5]",
-    }),
-    disableEsLint(),
-    configWebpackPlugins()
+    ...[
+      process.env.NODE_ENV === "development" && rewiredESbuild(),
+      addLessLoader({
+        javascriptEnabled: true,
+        importLoaders: true,
+        localIdentName: "[name]__[hash:base64:5]",
+      }),
+      disableEsLint(),
+      configWebpackPlugins(),
+    ].filter(Boolean)
   ),
 };
