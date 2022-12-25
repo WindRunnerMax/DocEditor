@@ -9,6 +9,7 @@ import { fileExist, fsStat, readDir } from "./config/fs-utils";
 import json from "@rollup/plugin-json";
 
 const basePath = ["src/plugins", "src/core"];
+const baseEntry = ["src/styles/index.ts"];
 
 export default async () => {
   const dirsMap = await Promise.all(
@@ -16,6 +17,7 @@ export default async () => {
   )
     .then(res => res.reduce((pre, cur) => [...pre, ...cur], []))
     .then(dirs => {
+      dirs.push(...baseEntry);
       return Promise.all(
         dirs.map(async fullPath => {
           const isDir = (await fsStat(fullPath)).isDirectory();
