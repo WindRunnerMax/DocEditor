@@ -5,7 +5,7 @@ import { setBlockNode, focusSelection } from "../../core/ops/set";
 import { BaseEditor, BlockElement, Transforms } from "slate";
 import { ReactEditor } from "slate-react";
 import { CommandFn } from "src/core/command";
-import { Image as ArcoImage, Spin } from "@arco-design/web-react";
+import { Spin } from "@arco-design/web-react";
 import { v4 } from "uuid";
 import { uploadImageHandler } from "./utils";
 import { HistoryEditor } from "slate-history";
@@ -42,7 +42,7 @@ const DocImage: React.FC<{
     <Spin loading={config.status === ImageStatus.LOADING}>
       <SelectionWrapper readonly={props.readonly} className="doc-image">
         <PreviewWrapper readonly={props.readonly} src={config.src}>
-          <ArcoImage src={config.src} preview={false}></ArcoImage>
+          <img src={config.src} width={config.width} height={config.height} />
         </PreviewWrapper>
       </SelectionWrapper>
     </Spin>
@@ -72,7 +72,14 @@ export const ImagePlugin = (
             HistoryEditor.withoutSaving(editor, () => {
               setBlockNode(
                 editor,
-                { [IMAGE_KEY]: { src: res.src, status: ImageStatus.SUCCESS } },
+                {
+                  [IMAGE_KEY]: {
+                    src: res.src,
+                    status: ImageStatus.SUCCESS,
+                    width: res.width,
+                    height: res.height,
+                  },
+                },
                 { at: path, key: IMAGE_KEY }
               );
             });

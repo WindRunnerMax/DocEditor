@@ -195,7 +195,7 @@ export const example: BaseNode[] = [
   { children: [{ text: "支持图片上传。" }] },
   {
     children: [{ text: "" }],
-    image: { src: "./favicon.ico", status: 2 },
+    image: { src: "./favicon.ico", status: 2, width: 256, height: 256 },
     uuid: "5ab77ffb-aab55qq1",
   },
   { heading: { type: "h2", id: "82651426" }, children: [{ text: "代码块" }] },
