@@ -16,6 +16,10 @@
   .arco-icon-more-vertical {
     color: var(--color-text-3);
   }
+
+  &:hover {
+    background-color: var(--color-fill-1);
+  }
 }
 
 .doc-line-hover {
@@ -27,8 +31,9 @@
   box-shadow: $box-shadow;
   z-index: $doc-menu-z-index;
 
-  .arco-icon {
+  .arco-menu-item .arco-icon {
     color: var(--color-text-1) !important;
+    margin-right: 10px;
   }
 
   .iconfont {
