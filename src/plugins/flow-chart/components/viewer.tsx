@@ -9,7 +9,7 @@ import { FLOW_CHART_KEY } from "../index";
 import { diagramDownload, diagramEditor, diagramPreview, getSvg } from "../utils/diagram-loader";
 import { xmlToString } from "../utils/utils";
 import { SelectionWrapper } from "src/components/selection-wrapper";
-import { PreviewWrapper } from "src/components/preview-wrapper";
+import { PreviewWrapper } from "./preview";
 
 export const DocFLowChart: React.FC<{
   element: BlockElement;

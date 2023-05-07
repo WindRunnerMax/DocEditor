@@ -40,7 +40,6 @@ const SlateDocEditor: FC<{
 
   const updateText = useMemoizedFn(
     debounce((text: Descendant[]) => {
-      console.log("Text changes", JSON.stringify(text));
       console.log("Text changes", text);
     }, 500)
   );

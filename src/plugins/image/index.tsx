@@ -2,26 +2,20 @@ import "./index.scss";
 import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/plugin/interface";
 import { existKey, getPathByUUID } from "../../core/ops/get";
 import { setBlockNode, focusSelection } from "../../core/ops/set";
-import { BaseEditor, BlockElement, Transforms } from "slate";
+import { BaseEditor, Transforms } from "slate";
 import { ReactEditor } from "slate-react";
 import { CommandFn } from "src/core/command";
-import { Spin } from "@arco-design/web-react";
 import { v4 } from "uuid";
-import { uploadImageHandler } from "./utils";
+import { uploadImageHandler } from "./utils/upload";
 import { HistoryEditor } from "slate-history";
-import { SelectionWrapper } from "src/components/selection-wrapper";
-import { PreviewWrapper } from "src/components/preview-wrapper";
+import { IMAGE_STATUS } from "./utils/constant";
+import { DocImage } from "./components/doc-image";
 
-enum ImageStatus {
-  LOADING = 1,
-  SUCCESS = 2,
-  FAIL = 3,
-}
 declare module "slate" {
   interface BlockElement {
     uuid?: string;
     [IMAGE_KEY]?: {
-      status: ImageStatus;
+      status: typeof IMAGE_STATUS[keyof typeof IMAGE_STATUS];
       src: string;
       width?: number | string;
       height?: number | string;
@@ -30,24 +24,6 @@ declare module "slate" {
 }
 
 export const IMAGE_KEY = "image";
-
-const DocImage: React.FC<{
-  element: BlockElement;
-  readonly: boolean;
-}> = props => {
-  if (!props.element.image) return null;
-  const config = props.element.image;
-
-  return (
-    <Spin loading={config.status === ImageStatus.LOADING}>
-      <SelectionWrapper readonly={props.readonly} className="doc-image">
-        <PreviewWrapper readonly={props.readonly} src={config.src}>
-          <img src={config.src} width={config.width} height={config.height} />
-        </PreviewWrapper>
-      </SelectionWrapper>
-    </Spin>
-  );
-};
 
 export const ImagePlugin = (
   editor: BaseEditor & ReactEditor & HistoryEditor,
@@ -62,7 +38,7 @@ export const ImagePlugin = (
       const uuid = v4();
       Transforms.insertNodes(editor, {
         uuid,
-        [IMAGE_KEY]: { src: blobSRC, status: ImageStatus.LOADING },
+        [IMAGE_KEY]: { src: blobSRC, status: IMAGE_STATUS.LOADING },
         children: [{ text: "" }],
       });
       uploadHandler(file)
@@ -75,7 +51,7 @@ export const ImagePlugin = (
                 {
                   [IMAGE_KEY]: {
                     src: res.src,
-                    status: ImageStatus.SUCCESS,
+                    status: IMAGE_STATUS.SUCCESS,
                     width: res.width,
                     height: res.height,
                   },
@@ -91,7 +67,7 @@ export const ImagePlugin = (
             HistoryEditor.withoutSaving(editor, () => {
               setBlockNode(
                 editor,
-                { [IMAGE_KEY]: { src: void 0, status: ImageStatus.FAIL } },
+                { [IMAGE_KEY]: { src: void 0, status: IMAGE_STATUS.FAIL } },
                 { at: path, key: IMAGE_KEY }
               );
             });
