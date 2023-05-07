@@ -99,6 +99,8 @@ export const ImagePlugin = (
     type: EDITOR_ELEMENT_TYPE.BLOCK,
     command,
     match: props => existKey(props.element, IMAGE_KEY),
-    render: context => <DocImage element={context.element} readonly={readonly}></DocImage>,
+    render: context => (
+      <DocImage editor={editor} element={context.element} readonly={readonly}></DocImage>
+    ),
   };
 };
