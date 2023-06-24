@@ -1,3 +1,4 @@
+import { IMAGE_STATUS } from "src/plugins/image/utils/constant";
 import { BaseNode } from "src/types/types";
 
 export const example: BaseNode[] = [
@@ -195,7 +196,7 @@ export const example: BaseNode[] = [
   { children: [{ text: "支持图片上传。" }] },
   {
     children: [{ text: "" }],
-    image: { src: "./favicon.ico", status: 2, width: 256, height: 256 },
+    image: { src: "./favicon.ico", status: IMAGE_STATUS.SUCCESS, width: 256, height: 256 },
     uuid: "5ab77ffb-aab55qq1",
   },
   { heading: { type: "h2", id: "82651426" }, children: [{ text: "代码块" }] },
@@ -212,7 +213,7 @@ export const example: BaseNode[] = [
   {
     "uuid": "4cb99540-783d-4310-87ab-1c751cd0d5ea",
     "flow-chart": {
-      type: "xml",
+      type: "xml" as const,
       content:
         '<mxGraphModel dx="506" dy="742" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0"><root><mxCell id="0"/><mxCell id="1" parent="0"/><mxCell id="4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;sketch=0;" parent="1" source="2" target="3" edge="1"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="2" value="Start" style="rounded=1;whiteSpace=wrap;html=1;sketch=0;glass=0;shadow=0;comic=1;" parent="1" vertex="1"><mxGeometry x="140" y="230" width="120" height="60" as="geometry"/></mxCell><mxCell id="3" value="End" style="rounded=1;whiteSpace=wrap;html=1;shadow=0;glass=0;comic=1;" parent="1" vertex="1"><mxGeometry x="420" y="230" width="120" height="60" as="geometry"/></mxCell></root></mxGraphModel>',
     },

@@ -28,7 +28,7 @@ export const FlowChartPlugin = (
     const uuid = v4();
     Transforms.insertNodes(editor, {
       uuid,
-      [FLOW_CHART_KEY]: { type: "xml", content: "" },
+      [FLOW_CHART_KEY]: { type: "xml" as const, content: "" },
       children: [{ text: "" }],
     });
     Transforms.insertNodes(editor, { children: [{ text: "" }] });
