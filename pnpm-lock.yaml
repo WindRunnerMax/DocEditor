@@ -24,7 +24,7 @@ specifiers:
   babel-plugin-import: ^1.13.3
   cross-env: ^7.0.3
   customize-cra: ^1.0.0
-  embed-drawio: ^0.0.13
+  embed-drawio: ^0.0.14
   eslint: 7.11.0
   eslint-config-prettier: ^8.3.0
   eslint-plugin-import: ^2.25.3
@@ -76,7 +76,7 @@ dependencies:
   '@types/react-dom': registry.npmmirror.com/@types/react-dom/17.0.11
   '@types/uuid': registry.npmmirror.com/@types/uuid/8.3.4
   ahooks: registry.npmmirror.com/ahooks/3.3.13_react@17.0.2
-  embed-drawio: registry.npmmirror.com/embed-drawio/0.0.13_cb007ecfaf6f72ea7fc959fdf982f84c
+  embed-drawio: registry.npmmirror.com/embed-drawio/0.0.14_cb007ecfaf6f72ea7fc959fdf982f84c
   lodash: registry.npmmirror.com/lodash/4.17.21
   prismjs: registry.npmmirror.com/prismjs/1.29.0
   react: registry.npmmirror.com/react/17.0.2
@@ -12571,11 +12571,11 @@ packages:
       minimalistic-assert: registry.npmmirror.com/minimalistic-assert/1.0.1
       minimalistic-crypto-utils: registry.npmmirror.com/minimalistic-crypto-utils/1.0.1
 
-  registry.npmmirror.com/embed-drawio/0.0.13_cb007ecfaf6f72ea7fc959fdf982f84c:
-    resolution: {integrity: sha512-Zhb0ff1jpby+IzYL/zS3PNKU2OzbGbb0zr4QA7t7p3XkWUU7SNEEYDrTjNiAMpBPg4tXCxrHHWrbMlJYJesILA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/embed-drawio/-/embed-drawio-0.0.13.tgz}
-    id: registry.npmmirror.com/embed-drawio/0.0.13
+  registry.npmmirror.com/embed-drawio/0.0.14_cb007ecfaf6f72ea7fc959fdf982f84c:
+    resolution: {integrity: sha512-SlSnARKVBZnNEDTuWGR5uA/ZbDztphLzzepMz+O2G/9hJKH8Z4I7SyKp5hEx5r8LfBr7SrplgQMhv1ZXy1JNBQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/embed-drawio/-/embed-drawio-0.0.14.tgz}
+    id: registry.npmmirror.com/embed-drawio/0.0.14
     name: embed-drawio
-    version: 0.0.13
+    version: 0.0.14
     dependencies:
       '@babel/core': registry.npmmirror.com/@babel/core/7.18.5
       '@maxgraph/core': registry.npmmirror.com/@maxgraph/core/0.1.0
@@ -13739,7 +13739,7 @@ packages:
     version: 1.2.13
     engines: {node: '>= 4.0'}
     os: [darwin]
-    deprecated: fsevents 1 will break on node v14+ and could be using insecure binaries. Upgrade to fsevents 2.
+    deprecated: The v1 package contains DANGEROUS / INSECURE binaries. Upgrade to safe fsevents v2
     requiresBuild: true
     dependencies:
       bindings: registry.nlark.com/bindings/1.5.0
