@@ -12,7 +12,8 @@ import { getBlockNode } from "src/core/ops/get";
 
 declare module "slate" {
   interface BlockElement {
-    [CODE_BLOCK_KEY]?: { language: string };
+    [CODE_BLOCK_KEY]?: boolean;
+    [CODE_BLOCK_CONFIG]?: { language: string };
     [CODE_BLOCK_ITEM_KEY]?: boolean;
   }
   interface TextElement {
@@ -22,6 +23,7 @@ declare module "slate" {
 
 export const CODE_BLOCK_KEY = "code-block";
 export const CODE_BLOCK_TYPE = "code-block-type";
+export const CODE_BLOCK_CONFIG = "code-block-config";
 export const CODE_BLOCK_ITEM_KEY = "code-block-item";
 
 export const CodeBlockPlugin = (editor: Editor, readonly: boolean): Plugin => {
@@ -29,7 +31,7 @@ export const CodeBlockPlugin = (editor: Editor, readonly: boolean): Plugin => {
     Transforms.insertNodes(editor, { children: [{ text: "" }] });
     setWrapNodes(
       editor,
-      { [CODE_BLOCK_KEY]: { language: DEFAULT_LANGUAGE } },
+      { [CODE_BLOCK_CONFIG]: { language: DEFAULT_LANGUAGE }, [CODE_BLOCK_KEY]: true },
       { [CODE_BLOCK_ITEM_KEY]: true }
     );
     Transforms.insertNodes(editor, { children: [{ text: "" }] });
@@ -37,7 +39,7 @@ export const CodeBlockPlugin = (editor: Editor, readonly: boolean): Plugin => {
 
   const onLanguageChange = (element: BlockElement, language: string) => {
     const path = ReactEditor.findPath(editor, element);
-    setBlockNode(editor, { [CODE_BLOCK_KEY]: { language } }, { at: path, key: CODE_BLOCK_KEY });
+    setBlockNode(editor, { [CODE_BLOCK_CONFIG]: { language } }, { at: path, key: CODE_BLOCK_KEY });
   };
 
   return {

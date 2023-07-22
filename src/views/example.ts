@@ -201,7 +201,8 @@ export const example: BaseNode[] = [
   },
   { heading: { type: "h2", id: "82651426" }, children: [{ text: "代码块" }] },
   {
-    "code-block": { language: "JavaScript" },
+    "code-block": true,
+    "code-block-config": { language: "JavaScript" },
     "children": [
       { "children": [{ text: "// 支持代码块高亮" }], "code-block-item": true },
       { "code-block-item": true, "children": [{ text: "const a = 1;" }] },

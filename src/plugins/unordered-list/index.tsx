@@ -18,8 +18,8 @@ import { assertValue } from "src/utils/common";
 
 declare module "slate" {
   interface BlockElement {
-    "unordered-list"?: boolean;
-    "unordered-list-item"?: UnOrderListItemConfig;
+    [UNORDERED_LIST_KEY]?: boolean;
+    [UNORDERED_LIST_ITEM_KEY]?: UnOrderListItemConfig;
   }
 }
 export type UnOrderListItemConfig = {

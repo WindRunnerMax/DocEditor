@@ -3,7 +3,7 @@ import "prismjs/themes/prism.min.css";
 import "prismjs/components/prism-javascript";
 import "prismjs/components/prism-java";
 import { BlockElement } from "slate";
-import { CODE_BLOCK_KEY } from ".";
+import { CODE_BLOCK_CONFIG } from ".";
 
 export const DEFAULT_LANGUAGE = "Plain Text";
 export const SUPPORTED_LANGUAGES = [DEFAULT_LANGUAGE, "JavaScript", "Java"];
@@ -40,5 +40,5 @@ export const codeTokenize = (code: string, language: string) => {
 };
 
 export const getLanguage = (node: BlockElement): string => {
-  return node[CODE_BLOCK_KEY]?.language || DEFAULT_LANGUAGE;
+  return node[CODE_BLOCK_CONFIG]?.language || DEFAULT_LANGUAGE;
 };
