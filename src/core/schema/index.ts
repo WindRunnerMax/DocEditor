@@ -43,17 +43,18 @@ export const withSchema = <T extends Editor>(schema: SlateSchema, editor: T): T 
           // 路径上一定需要存在`Packaged Key`
           // 否则在`Text Node`上加入`Packaged Key`
           const dfs = (cur: BaseNode, path: Path) => {
-            if (isText(cur)) return;
-            else if (isBlock(editor, cur) && cur[packagedKey]) return;
-            else if (isTextBlock(editor, cur)) {
+            if (isText(cur) || (isBlock(editor, cur) && cur[packagedKey])) {
+              return void 0;
+            } else if (isTextBlock(editor, cur)) {
+              // `Text Block Node`一定是最后最后一个`Block Node`
               if (isDev) {
                 console.log("NormalizeWrapperNode: ", path, `${key}--${packagedKey}`);
               }
               batch.push(() => setBlockNode(editor, { [packagedKey]: true }, { at: path }));
-              return;
+              return void 0;
             }
             const children = cur.children;
-            if (!children) return;
+            if (!children) return void 0;
             for (let i = 0; i < children.length; i++) {
               dfs(children[i], path.concat(i));
             }
@@ -67,9 +68,9 @@ export const withSchema = <T extends Editor>(schema: SlateSchema, editor: T): T 
           let matchWrapperNode = false;
           let parent = Editor.parent(editor, path);
           // 从当前节点向上遍历
-          // 路径上一定要存在`Wrapper Node`
+          // 路径上一定需要存在`Wrapper Node`
           // 否则在`Base Node`上删除`Packaged Key`
-          while (parent && isBlock(editor, parent[0])) {
+          while (parent && parent[0] && parent[1] && isBlock(editor, parent[0])) {
             const cur = parent[0];
             if (cur[wrapperKey]) {
               matchWrapperNode = true;
@@ -86,8 +87,8 @@ export const withSchema = <T extends Editor>(schema: SlateSchema, editor: T): T 
         }
       }
     }
-    batch.forEach(fn => fn());
 
+    batch.forEach(fn => fn());
     normalizeNode(entry);
   };
 
