@@ -9,3 +9,4 @@ import "@arco-design/web-react/es/InputNumber/style";
 import "@arco-design/web-react/es/Image/style";
 import "@arco-design/web-react/es/Spin/style";
 import "@arco-design/web-react/es/Select/style";
+import "@arco-design/web-react/es/Space/style";

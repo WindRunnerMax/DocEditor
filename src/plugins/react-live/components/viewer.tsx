@@ -1,11 +1,13 @@
 import { BlockElement, Editor } from "slate";
 import "../index.scss";
-import React, { FC, useRef, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { collectText } from "../utils/parse";
 import { Void } from "src/core/component";
-import { Button, Spin } from "@arco-design/web-react";
+import { Button, Space, Spin } from "@arco-design/web-react";
 import { useDebounceEffect } from "ahooks";
-import { withSandbox, compileWithSucrase, renderWithDependency } from "react-live-runtime";
+import { withSandbox } from "react-live-runtime/dist/utils/sandbox";
+import { compileWithSucrase } from "react-live-runtime/dist/compiler/sucrase";
+import { renderWithDependency } from "react-live-runtime/dist/renderer/dependency";
 import ReactDOM from "react-dom";
 
 export const ReactLiveView: FC<{
@@ -20,10 +22,20 @@ export const ReactLiveView: FC<{
     () => {
       const el = ref.current;
       if (!el) return;
-      const sandbox = withSandbox({ React, Button, console });
-      const compiledCode = compileWithSucrase("<div>" + code + "</div>");
-      const Component = renderWithDependency(compiledCode, sandbox) as JSX.Element;
-      ReactDOM.render(Component, el);
+      try {
+        const sandbox = withSandbox({ React, Button, console, Space });
+        const compiledCode = compileWithSucrase("<div>" + code + "</div>");
+        const Component = renderWithDependency(compiledCode, sandbox) as JSX.Element;
+        const App = () => {
+          useEffect(() => {
+            setLoading(false);
+          }, []);
+          return Component;
+        };
+        ReactDOM.render(<App></App>, el);
+      } catch (error) {
+        console.log("Render Component Error", error);
+      }
     },
     [code],
     { wait: 300 }

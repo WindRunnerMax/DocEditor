@@ -57,6 +57,7 @@ export const collectText = (editor: Editor, node: BlockElement) => {
     return (node.children || [])
       .map(item => {
         if (isText(item)) return Node.string(item);
+        else if (isTextBlock(editor, item)) return parseText(item) + "\n";
         else if (isBlock(editor, item)) return parseText(item);
         else return "";
       })

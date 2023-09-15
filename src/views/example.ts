@@ -220,13 +220,23 @@ export const example: BaseNode[] = [
     },
     "children": [{ text: "" }],
   },
+  { heading: { type: "h2", id: "82651426" }, children: [{ text: "React实时预览" }] },
+  { children: [{ text: "支持React组件实时编辑及预览。" }] },
   {
     "react-live": true,
     "children": [
       {
         "children": [
           {
-            text: "<Button type='primary'>Primary</Button>",
+            text: "<Space size='large'>",
+          },
+        ],
+        "react-live-item": true,
+      },
+      {
+        "children": [
+          {
+            text: "  <Button type='primary'>Primary</Button>",
           },
         ],
         "react-live-item": true,
@@ -235,7 +245,7 @@ export const example: BaseNode[] = [
         "react-live-item": true,
         "children": [
           {
-            text: "<Button type='secondary'>Secondary</Button>",
+            text: "  <Button type='secondary'>Secondary</Button>",
           },
         ],
       },
@@ -243,7 +253,7 @@ export const example: BaseNode[] = [
         "react-live-item": true,
         "children": [
           {
-            text: " <Button type='dashed'>Dashed</Button>",
+            text: "  <Button type='dashed'>Dashed</Button>",
           },
         ],
       },
@@ -251,7 +261,7 @@ export const example: BaseNode[] = [
         "react-live-item": true,
         "children": [
           {
-            text: " <Button type='outline'>Outline</Button>",
+            text: "  <Button type='outline'>Outline</Button>",
           },
         ],
       },
@@ -259,7 +269,15 @@ export const example: BaseNode[] = [
         "react-live-item": true,
         "children": [
           {
-            text: " <Button type='text'>Text</Button>",
+            text: "  <Button type='text'>Text</Button>",
+          },
+        ],
+      },
+      {
+        "react-live-item": true,
+        "children": [
+          {
+            text: "</Space>",
           },
         ],
       },
