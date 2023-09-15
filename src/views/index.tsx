@@ -31,6 +31,7 @@ import { schema } from "./schema";
 import { CodeBlockPlugin } from "src/plugins/codeblock";
 import { IndentPlugin } from "src/plugins/indent";
 import { FlowChartPlugin } from "src/plugins/flow-chart";
+import { ReactLivePlugin } from "src/plugins/react-live";
 
 const SlateDocEditor: FC<{
   readonly: boolean;
@@ -65,7 +66,8 @@ const SlateDocEditor: FC<{
       ImagePlugin(editor, props.readonly),
       CodeBlockPlugin(editor, props.readonly),
       IndentPlugin(editor),
-      FlowChartPlugin(editor, props.readonly)
+      FlowChartPlugin(editor, props.readonly),
+      ReactLivePlugin(editor)
     );
 
     const commands = register.getCommands();

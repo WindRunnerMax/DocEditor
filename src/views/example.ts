@@ -220,6 +220,51 @@ export const example: BaseNode[] = [
     },
     "children": [{ text: "" }],
   },
+  {
+    "react-live": true,
+    "children": [
+      {
+        "children": [
+          {
+            text: "<Button type='primary'>Primary</Button>",
+          },
+        ],
+        "react-live-item": true,
+      },
+      {
+        "react-live-item": true,
+        "children": [
+          {
+            text: "<Button type='secondary'>Secondary</Button>",
+          },
+        ],
+      },
+      {
+        "react-live-item": true,
+        "children": [
+          {
+            text: " <Button type='dashed'>Dashed</Button>",
+          },
+        ],
+      },
+      {
+        "react-live-item": true,
+        "children": [
+          {
+            text: " <Button type='outline'>Outline</Button>",
+          },
+        ],
+      },
+      {
+        "react-live-item": true,
+        "children": [
+          {
+            text: " <Button type='text'>Text</Button>",
+          },
+        ],
+      },
+    ],
+  },
   { children: [{ text: "快捷功能" }], heading: { type: "h2", id: "8b4f0218" } },
   { heading: { type: "h3", id: "614d6a4c" }, children: [{ text: "快捷键" }] },
   { children: [{ text: "支持快捷键: " }] },

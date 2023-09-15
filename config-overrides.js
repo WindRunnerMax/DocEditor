@@ -23,6 +23,16 @@ const configWebpackPlugins = () => config => {
         },
       })
     );
+  // `Babel mjs`
+  config.module.rules.push({
+    test: /\.mjs$/,
+    include: /node_modules/,
+    type: "javascript/auto",
+  });
+  config.module.rules.push({
+    test: /\.wasm$/,
+    use: "file-loader",
+  });
   return config;
 };
 

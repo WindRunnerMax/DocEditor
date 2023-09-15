@@ -23,6 +23,7 @@ import { CODE_BLOCK_KEY, CODE_BLOCK_ITEM_KEY } from "../codeblock";
 import { ORDERED_LIST_ITEM_KEY, ORDERED_LIST_KEY } from "../ordered-list";
 import { UNORDERED_LIST_ITEM_KEY, UNORDERED_LIST_KEY } from "../unordered-list";
 import { FLOW_CHART_KEY } from "../flow-chart";
+import { REACT_LIVE_ITEM_KEY, REACT_LIVE_KEY } from "../react-live/utils/types";
 
 const NO_DOC_TOOL_BAR = [
   QUOTE_BLOCK_KEY,
@@ -34,6 +35,8 @@ const NO_DOC_TOOL_BAR = [
   CODE_BLOCK_KEY,
   CODE_BLOCK_ITEM_KEY,
   FLOW_CHART_KEY,
+  REACT_LIVE_KEY,
+  REACT_LIVE_ITEM_KEY,
 ];
 const OFFSET_MAP: Record<string, number> = {
   [QUOTE_BLOCK_ITEM_KEY]: 12,

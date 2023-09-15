@@ -1,3 +1,4 @@
+import { REACT_LIVE_ITEM_KEY, REACT_LIVE_KEY } from "src/plugins/react-live/utils/types";
 import { SlateSchema } from "src/core/schema";
 import { CODE_BLOCK_ITEM_KEY, CODE_BLOCK_KEY } from "src/plugins/codeblock";
 import { DIVIDING_LINE_KEY } from "src/plugins/dividing-line";
@@ -32,5 +33,8 @@ export const schema: SlateSchema = {
   },
   [CODE_BLOCK_ITEM_KEY]: {
     wrap: CODE_BLOCK_KEY,
+  },
+  [REACT_LIVE_ITEM_KEY]: {
+    wrap: REACT_LIVE_KEY,
   },
 };

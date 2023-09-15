@@ -1,0 +1,17 @@
+.react-live-container {
+  border: 1px solid var(--color-border-2);
+
+  .react-live-preview {
+    min-height: 100px;
+    width: 100%;
+  }
+
+  .react-live-code {
+    background-color: var(--color-secondary);
+    padding: 5px 10px;
+
+    .doc-line {
+      margin: 0;
+    }
+  }
+}
