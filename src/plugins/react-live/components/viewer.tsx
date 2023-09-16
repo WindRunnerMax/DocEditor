@@ -1,14 +1,12 @@
-import { BlockElement, Editor } from "slate";
 import "../index.scss";
+import { BlockElement, Editor } from "slate";
 import React, { FC, useEffect, useRef, useState } from "react";
 import { collectText } from "../utils/parse";
 import { Void } from "src/core/component";
 import { Button, Space, Spin } from "@arco-design/web-react";
 import { useDebounceEffect } from "ahooks";
-import { withSandbox } from "react-live-runtime/dist/utils/sandbox";
-import { compileWithSucrase } from "react-live-runtime/dist/compiler/sucrase";
-import { renderWithDependency } from "react-live-runtime/dist/renderer/dependency";
 import ReactDOM from "react-dom";
+import { withSandbox, compileWithSucrase, renderWithDependency } from "react-live-runtime";
 
 export const ReactLiveView: FC<{
   element: BlockElement;
