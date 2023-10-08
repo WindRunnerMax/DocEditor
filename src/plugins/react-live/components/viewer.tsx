@@ -22,6 +22,8 @@ export const ReactLiveView: FC<{
       if (!el) return;
       try {
         const sandbox = withSandbox({ React, Button, console, Space });
+        // JS Plain Object -> ({...})
+        // React.FC -> React.Fragment / div
         const compiledCode = compileWithSucrase("<div>" + code + "</div>");
         const Component = renderWithDependency(compiledCode, sandbox) as JSX.Element;
         const App = () => {
