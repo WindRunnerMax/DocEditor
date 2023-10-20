@@ -4,36 +4,36 @@ import { Slate, Editable, withReact } from "slate-react";
 import { useMemoizedFn } from "ahooks";
 import { withHistory } from "slate-history";
 import debounce from "lodash/debounce";
-import { SlatePlugins } from "src/core/plugin";
-import { ParagraphPlugin } from "src/plugins/paragraph";
-import { DocToolBarPlugin } from "src/plugins/doc-toolbar";
-import { HeadingPlugin } from "src/plugins/heading";
-import { BoldPlugin } from "src/plugins/bold";
-import { MenuToolBar } from "src/plugins/float-toolbar";
-import { QuoteBlockPlugin } from "src/plugins/quote-block";
-import { HyperLinkPlugin } from "src/plugins/hyper-link";
-import { UnderLinePlugin } from "src/plugins/under-line";
-import { StrikeThroughPlugin } from "src/plugins/strike-through";
-import { ItalicPlugin } from "src/plugins/italic";
-import { InlineCodePlugin } from "src/plugins/inline-code";
-import { ShortCutPlugin } from "src/plugins/shortcut";
-import { OrderedListPlugin } from "src/plugins/ordered-list";
-import { UnorderedListPlugin } from "src/plugins/unordered-list";
-import { DividingLinePlugin } from "src/plugins/dividing-line";
-import { example } from "./example";
-import { AlignPlugin } from "src/plugins/align";
-import { HighlightBlockPlugin } from "src/plugins/highlight-block";
-import { FontBasePlugin } from "src/plugins/font-base";
-import { LineHeightPlugin } from "src/plugins/line-height";
-import { ImagePlugin } from "src/plugins/image";
-import { withSchema } from "src/core/schema";
+import { SlatePlugins } from "../../../src/core/plugin";
+import { ParagraphPlugin } from "../../../src/plugins/paragraph";
+import { DocToolBarPlugin } from "../../../src/plugins/doc-toolbar";
+import { HeadingPlugin } from "../../../src/plugins/heading";
+import { BoldPlugin } from "../../../src/plugins/bold";
+import { MenuToolBar } from "../../../src/plugins/float-toolbar";
+import { QuoteBlockPlugin } from "../../../src/plugins/quote-block";
+import { HyperLinkPlugin } from "../../../src/plugins/hyper-link";
+import { UnderLinePlugin } from "../../../src/plugins/under-line";
+import { StrikeThroughPlugin } from "../../../src/plugins/strike-through";
+import { ItalicPlugin } from "../../../src/plugins/italic";
+import { InlineCodePlugin } from "../../../src/plugins/inline-code";
+import { ShortCutPlugin } from "../../../src/plugins/shortcut";
+import { OrderedListPlugin } from "../../../src/plugins/ordered-list";
+import { UnorderedListPlugin } from "../../../src/plugins/unordered-list";
+import { DividingLinePlugin } from "../../../src/plugins/dividing-line";
+import { example } from "./data-source";
+import { AlignPlugin } from "../../../src/plugins/align";
+import { HighlightBlockPlugin } from "../../../src/plugins/highlight-block";
+import { FontBasePlugin } from "../../../src/plugins/font-base";
+import { LineHeightPlugin } from "../../../src/plugins/line-height";
+import { ImagePlugin } from "../../../src/plugins/image";
+import { withSchema } from "../../../src/core/schema";
 import { schema } from "./schema";
-import { CodeBlockPlugin } from "src/plugins/codeblock";
-import { IndentPlugin } from "src/plugins/indent";
-import { FlowChartPlugin } from "src/plugins/flow-chart";
-import { ReactLivePlugin } from "src/plugins/react-live";
+import { CodeBlockPlugin } from "../../../src/plugins/codeblock";
+import { IndentPlugin } from "../../../src/plugins/indent";
+import { FlowChartPlugin } from "../../../src/plugins/flow-chart";
+import { ReactLivePlugin } from "../../../src/plugins/react-live";
 
-const SlateDocEditor: FC<{
+export const SlateDocEditor: FC<{
   readonly: boolean;
 }> = props => {
   const editor = useMemo(() => withSchema(schema, withHistory(withReact(createEditor()))), []);
@@ -94,8 +94,6 @@ const SlateDocEditor: FC<{
     </Slate>
   );
 };
-
-export default SlateDocEditor;
 
 // https://docs.slatejs.org/
 // https://github.com/ianstormtaylor/slate

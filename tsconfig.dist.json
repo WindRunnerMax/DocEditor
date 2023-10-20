@@ -1,11 +1,8 @@
 {
-    "extends": "./tsconfig.json",
-    "compilerOptions": {
-        "outDir": "dist",
-        "declarationDir": "dist"
-    },
-    "include": [
-        "src/plugins/**/*",
-        "src/**/types/**/*"
-    ]
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "declarationDir": "dist"
+  },
+  "include": ["src/plugins/**/*", "src/**/types/**/*"]
 }

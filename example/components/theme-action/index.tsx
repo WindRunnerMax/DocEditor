@@ -1,5 +1,5 @@
 import { IconDesktop, IconMoon, IconSun } from "@arco-design/web-react/icon";
-import React, { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import storage from "src/utils/storage";
 
 const storageKey = "theme-index";

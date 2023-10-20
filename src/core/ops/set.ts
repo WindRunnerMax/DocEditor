@@ -1,6 +1,6 @@
 import { Editor, Location, Path, TextElement, Transforms } from "slate";
 import { ReactEditor } from "slate-react";
-import { BlockElement } from "../../types/types";
+import { BlockElement } from "../../types";
 import { existKey } from "./get";
 import { isBlock, isText } from "./is";
 

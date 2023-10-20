@@ -4,7 +4,7 @@ import { setTextNode, setUnTextNode } from "../../core/ops/set";
 import { Trigger } from "@arco-design/web-react";
 import React, { useState } from "react";
 import { Editor } from "slate";
-import { TextElement } from "../../types/types";
+import { TextElement } from "../../types";
 import { HyperLinkMenu } from "./components/menu";
 import { ReactEditor } from "slate-react";
 import { assertValue } from "src/utils/common";

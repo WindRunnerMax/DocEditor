@@ -1,5 +1,5 @@
 import { Editor, Location, Path, Node, BaseNode } from "slate";
-import { BlockElement } from "../../types/types";
+import { BlockElement } from "../../types";
 import { isObject } from "../../utils/is";
 import { isSlateElement } from "./is";
 

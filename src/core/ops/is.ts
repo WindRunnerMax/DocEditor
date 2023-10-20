@@ -11,7 +11,7 @@ import {
   BlockElement,
   TextElement,
 } from "slate";
-import { BaseNode } from "../../types/types";
+import { BaseNode } from "../../types";
 import { isEmptyValue, isObject } from "../../utils/is";
 import { getBlockNode } from "./get";
 

@@ -1,4 +1,4 @@
-import { BlockElement } from "src/types/types";
+import { BlockElement } from "src/types";
 import { AssertT } from "src/utils/common";
 
 declare module "slate" {

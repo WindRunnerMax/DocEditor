@@ -1,5 +1,5 @@
-import { IMAGE_STATUS } from "src/plugins/image/types";
-import { BaseNode } from "src/types/types";
+import { IMAGE_STATUS } from "../../../src/plugins/image/types";
+import { BaseNode } from "../../../src/types";
 
 export const example: BaseNode[] = [
   {

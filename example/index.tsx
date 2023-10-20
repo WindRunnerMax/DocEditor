@@ -1,8 +1,10 @@
-import "./App.scss";
-import "./styles/index";
-import SlateDocEditor from "src/views";
+import ReactDOM from "react-dom";
+
+import "./index.scss";
+import "../src/styles/index";
+import { SlateDocEditor } from "./components/doc-editor";
 import { useState } from "react";
-import { cs } from "./utils/classnames";
+import { cs } from "../src/utils/classnames";
 import { IconEdit, IconFile } from "@arco-design/web-react/icon";
 import { ThemeAction } from "./components/theme-action";
 
@@ -27,3 +29,5 @@ export const App: React.FC = () => {
     </div>
   );
 };
+
+ReactDOM.render(<App />, document.getElementById("root"));

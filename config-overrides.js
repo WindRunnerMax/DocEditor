@@ -1,6 +1,6 @@
-const { override, disableEsLint, addLessLoader } = require("customize-cra");
+const path = require("path");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
-const rewiredESbuild = require("react-app-rewired-esbuild");
+const { override, disableEsLint, addLessLoader, babelInclude } = require("customize-cra");
 // https://github.com/arackaf/customize-cra
 
 const configWebpackPlugins = () => config => {
@@ -29,17 +29,21 @@ const configWebpackPlugins = () => config => {
     include: /node_modules/,
     type: "javascript/auto",
   });
-  config.module.rules.push({
-    test: /\.wasm$/,
-    use: "file-loader",
-  });
   return config;
 };
 
+const src = path.resolve(__dirname, "src");
+const example = path.resolve(__dirname, "example");
+
 module.exports = {
+  paths: function (paths) {
+    paths.appSrc = src;
+    paths.appIndexJs = example;
+    return paths;
+  },
   webpack: override(
     ...[
-      process.env.NODE_ENV === "development" && rewiredESbuild(),
+      babelInclude([src, example]),
       addLessLoader({
         javascriptEnabled: true,
         importLoaders: true,

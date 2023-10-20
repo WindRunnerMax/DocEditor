@@ -25,6 +25,6 @@ export * from "../core/plugin";
 export * from "../core/command";
 export * from "../core/schema";
 export * from "../core/ops";
-export * from "../types/types";
+export * from "../types";
 export * from "./codeblock";
 export * from "./flow-chart";
