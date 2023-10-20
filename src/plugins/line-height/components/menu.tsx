@@ -1,4 +1,4 @@
-import "./index.scss";
+import "../index.scss";
 import { FC } from "react";
 import { InputNumber } from "@arco-design/web-react";
 

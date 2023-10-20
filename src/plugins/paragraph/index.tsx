@@ -1,7 +1,7 @@
 import "./index.scss";
 import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/plugin/interface";
+import { PARAGRAPH_KEY } from "./types";
 
-export const PARAGRAPH_KEY = "paragraph";
 export const ParagraphPlugin = (): Plugin => {
   return {
     key: PARAGRAPH_KEY,

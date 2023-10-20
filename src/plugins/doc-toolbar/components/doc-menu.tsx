@@ -1,4 +1,4 @@
-import "./index.scss";
+import "../index.scss";
 import { Editor } from "slate";
 import {
   IconCode,
@@ -16,20 +16,20 @@ import {
   IconUnorderedList,
 } from "@arco-design/web-react/icon";
 import { Menu, Trigger } from "@arco-design/web-react";
-import { execCommand, SlateCommands } from "../../core/command";
+import { execCommand, SlateCommands } from "../../../core/command";
 import { ReactEditor, RenderElementProps } from "slate-react";
 import { useState } from "react";
-import { focusSelection } from "../../core/ops/set";
+import { focusSelection } from "../../../core/ops/set";
 import { cs } from "src/utils/classnames";
-import { CODE_BLOCK_KEY } from "../codeblock";
-import { HEADING_KEY } from "../heading";
-import { QUOTE_BLOCK_KEY } from "../quote-block";
-import { HIGHLIGHT_BLOCK_KEY } from "../highlight-block";
-import { ORDERED_LIST_KEY } from "../ordered-list";
-import { UNORDERED_LIST_KEY } from "../unordered-list";
-import { IMAGE_KEY } from "../image";
-import { DIVIDING_LINE_KEY } from "../dividing-line";
-import { FLOW_CHART_KEY } from "../flow-chart";
+import { HEADING_KEY } from "src/plugins/heading/types";
+import { QUOTE_BLOCK_KEY } from "src/plugins/quote-block/types";
+import { ORDERED_LIST_KEY } from "src/plugins/ordered-list/types";
+import { HIGHLIGHT_BLOCK_KEY } from "src/plugins/highlight-block/types";
+import { UNORDERED_LIST_KEY } from "src/plugins/unordered-list/types";
+import { IMAGE_KEY } from "src/plugins/image/types";
+import { FLOW_CHART_KEY } from "src/plugins/flow-chart/types";
+import { CODE_BLOCK_KEY } from "src/plugins/codeblock/types";
+import { DIVIDING_LINE_KEY } from "src/plugins/dividing-line/types";
 
 const DocMenuItems = (
   <>

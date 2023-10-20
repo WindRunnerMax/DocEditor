@@ -6,7 +6,7 @@ import { setWrapNodes } from "../../core/ops/set";
 import { Editor, Range, Transforms } from "slate";
 
 import { codeTokenize, collectReactLiveText } from "./utils/parse";
-import { REACT_LIVE_ITEM_KEY, REACT_LIVE_KEY, REACT_LIVE_TYPE } from "./utils/types";
+import { REACT_LIVE_ITEM_KEY, REACT_LIVE_KEY, REACT_LIVE_TYPE } from "./types";
 import { ReactLiveView } from "./components/viewer";
 
 export const ReactLivePlugin = (editor: Editor): Plugin => {

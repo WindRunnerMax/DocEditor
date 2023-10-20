@@ -13,15 +13,15 @@ import {
   IconUnderline,
 } from "@arco-design/web-react/icon";
 import { Menu } from "@arco-design/web-react";
-import { BOLD_KEY } from "../bold";
-import { ITALIC_KEY } from "../italic";
-import { UNDERLINE_KEY } from "../under-line";
-import { STRIKE_THROUGH_KEY } from "../strike-through";
-import { INLINE_CODE_KEY } from "../inline-code";
-import { HYPER_LINK_KEY } from "../hyper-link";
-import { FONT_BASE_KEY } from "../font-base";
-import { LINE_HEIGHT_KEY } from "../line-height";
-import { ALIGN_KEY } from "../align";
+import { BOLD_KEY } from "src/plugins/bold/types";
+import { ITALIC_KEY } from "src/plugins/italic/types";
+import { STRIKE_THROUGH_KEY } from "src/plugins/strike-through/types";
+import { UNDERLINE_KEY } from "src/plugins/under-line/types";
+import { HYPER_LINK_KEY } from "src/plugins/hyper-link/types";
+import { INLINE_CODE_KEY } from "src/plugins/inline-code/types";
+import { LINE_HEIGHT_KEY } from "src/plugins/line-height/types";
+import { FONT_BASE_KEY } from "src/plugins/font-base/types";
+import { ALIGN_KEY } from "src/plugins/align/types";
 
 export const MenuItems = (
   <>

@@ -1,4 +1,4 @@
-import { IMAGE_STATUS } from "src/plugins/image/utils/constant";
+import { IMAGE_STATUS } from "src/plugins/image/types";
 import { BaseNode } from "src/types/types";
 
 export const example: BaseNode[] = [

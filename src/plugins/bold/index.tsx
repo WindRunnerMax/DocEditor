@@ -1,13 +1,6 @@
 import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/plugin/interface";
 import { setTextNode, setUnTextNode } from "../../core/ops/set";
-
-declare module "slate" {
-  interface TextElement {
-    [BOLD_KEY]?: boolean;
-  }
-}
-
-export const BOLD_KEY = "bold";
+import { BOLD_KEY } from "./types";
 
 export const BoldPlugin = (): Plugin => {
   return {

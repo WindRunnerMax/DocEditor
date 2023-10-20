@@ -1,14 +1,7 @@
 import "./index.scss";
 import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/plugin/interface";
 import { setTextNode, setUnTextNode } from "../../core/ops/set";
-
-declare module "slate" {
-  interface TextElement {
-    [INLINE_CODE_KEY]?: boolean;
-  }
-}
-
-export const INLINE_CODE_KEY = "inline-code";
+import { INLINE_CODE_KEY } from "./types";
 
 export const InlineCodePlugin = (): Plugin => {
   return {

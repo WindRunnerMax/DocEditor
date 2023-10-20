@@ -1,13 +1,6 @@
 import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/plugin/interface";
 import { setTextNode, setUnTextNode } from "../../core/ops/set";
-
-declare module "slate" {
-  interface TextElement {
-    [UNDERLINE_KEY]?: boolean;
-  }
-}
-
-export const UNDERLINE_KEY = "under-line";
+import { UNDERLINE_KEY } from "./types";
 
 export const UnderLinePlugin = (): Plugin => {
   return {

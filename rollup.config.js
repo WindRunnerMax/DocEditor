@@ -62,6 +62,8 @@ export default async () => {
       babel({
         exclude: "node_modules/**",
         presets: [["@babel/preset-env", { module: false, targets: { chrome: ">= 70" } }]],
+        // extensions: [".ts", ".tsx", ".js", ".jsx", ".mjs"],
+        // plugins: [["babel-plugin-import", { libraryName: "xxx" }]],
       }),
       ts({
         tsconfig: path.resolve(__dirname, "./tsconfig.dist.json"),

@@ -5,11 +5,11 @@ import { BlockElement, Editor } from "slate";
 import { ReactEditor } from "slate-react";
 import { setBlockNode } from "src/core/ops/set";
 import { cs } from "src/utils/classnames";
-import { FLOW_CHART_KEY } from "../index";
 import { diagramDownload, diagramEditor, diagramPreview, getSvg } from "../utils/diagram-loader";
 import { xmlToString } from "../utils/utils";
 import { SelectionWrapper } from "src/components/selection-wrapper";
 import { PreviewWrapper } from "./preview";
+import { FLOW_CHART_KEY } from "../types";
 
 export const DocFLowChart: React.FC<{
   element: BlockElement;

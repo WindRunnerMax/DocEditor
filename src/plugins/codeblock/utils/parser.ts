@@ -3,7 +3,7 @@ import "prismjs/themes/prism.min.css";
 import "prismjs/components/prism-javascript";
 import "prismjs/components/prism-java";
 import { BlockElement } from "slate";
-import { CODE_BLOCK_CONFIG } from ".";
+import { CODE_BLOCK_CONFIG } from "../types";
 
 export const DEFAULT_LANGUAGE = "Plain Text";
 export const SUPPORTED_LANGUAGES = [DEFAULT_LANGUAGE, "JavaScript", "Java"];

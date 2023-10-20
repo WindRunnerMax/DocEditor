@@ -16,17 +16,8 @@ import {
 import { getBlockNode } from "../../core/ops/get";
 import { setUnWrapNodes, setWrapNodes, setWrapStructure } from "../../core/ops/set";
 import { assertValue } from "src/utils/common";
-import { HighlightBlockWrapper, COLOR_MAP } from "./wrapper";
-
-declare module "slate" {
-  interface BlockElement {
-    [HIGHLIGHT_BLOCK_KEY]?: { border: string; background: string };
-    [HIGHLIGHT_BLOCK_ITEM_KEY]?: boolean;
-  }
-}
-
-export const HIGHLIGHT_BLOCK_KEY = "highlight-block";
-export const HIGHLIGHT_BLOCK_ITEM_KEY = "highlight-block-item";
+import { HighlightBlockWrapper } from "./components/wrapper";
+import { COLOR_MAP, HIGHLIGHT_BLOCK_ITEM_KEY, HIGHLIGHT_BLOCK_KEY } from "./types";
 
 export const HighlightBlockPlugin = (editor: Editor, readonly: boolean): Plugin => {
   const quoteCommand: CommandFn = (editor, key, data) => {

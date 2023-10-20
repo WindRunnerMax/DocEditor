@@ -1,7 +1,7 @@
 import { BlockElement, Editor, Path } from "slate";
-import { existKey, getBlockNode, getNextBlockNode } from "../../core/ops/get";
-import { isCollapsed, isBlock } from "../../core/ops/is";
-import { setBlockNode } from "../../core/ops/set";
+import { existKey, getBlockNode, getNextBlockNode } from "../../../core/ops/get";
+import { isCollapsed, isBlock } from "../../../core/ops/is";
+import { setBlockNode } from "../../../core/ops/set";
 
 const orderedListKey = "ordered-list";
 const orderedListItemKey = "ordered-list-item";

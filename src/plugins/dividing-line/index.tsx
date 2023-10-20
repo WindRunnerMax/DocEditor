@@ -4,14 +4,7 @@ import { existKey } from "../../core/ops/get";
 import { Transforms } from "slate";
 import { useFocused, useSelected } from "slate-react";
 import { cs } from "src/utils/classnames";
-
-declare module "slate" {
-  interface BlockElement {
-    [DIVIDING_LINE_KEY]?: boolean;
-  }
-}
-
-export const DIVIDING_LINE_KEY = "dividing-line";
+import { DIVIDING_LINE_KEY } from "./types";
 
 const DividingLine: React.FC = () => {
   const selected = useSelected();

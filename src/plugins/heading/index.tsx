@@ -16,14 +16,7 @@ import {
 } from "../../core/ops/is";
 import { getBlockNode, getBlockAttributes } from "../../core/ops/get";
 import { setBlockNode, setUnBlockNode } from "../../core/ops/set";
-
-declare module "slate" {
-  interface BlockElement {
-    [HEADING_KEY]?: { id: string; type: string };
-  }
-}
-
-export const HEADING_KEY = "heading";
+import { HEADING_KEY } from "./types";
 
 const headingCommand: CommandFn = (editor, key, data) => {
   if (isObject(data) && data.path) {

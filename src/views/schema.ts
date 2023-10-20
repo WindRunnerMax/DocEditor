@@ -1,13 +1,13 @@
-import { REACT_LIVE_ITEM_KEY, REACT_LIVE_KEY } from "src/plugins/react-live/utils/types";
+import { REACT_LIVE_ITEM_KEY, REACT_LIVE_KEY } from "src/plugins/react-live/types";
 import { SlateSchema } from "src/core/schema";
-import { CODE_BLOCK_ITEM_KEY, CODE_BLOCK_KEY } from "src/plugins/codeblock";
-import { DIVIDING_LINE_KEY } from "src/plugins/dividing-line";
-import { FLOW_CHART_KEY } from "src/plugins/flow-chart";
-import { HIGHLIGHT_BLOCK_ITEM_KEY, HIGHLIGHT_BLOCK_KEY } from "src/plugins/highlight-block";
-import { IMAGE_KEY } from "src/plugins/image";
-import { ORDERED_LIST_ITEM_KEY, ORDERED_LIST_KEY } from "src/plugins/ordered-list";
-import { QUOTE_BLOCK_ITEM_KEY, QUOTE_BLOCK_KEY } from "src/plugins/quote-block";
-import { UNORDERED_LIST_ITEM_KEY, UNORDERED_LIST_KEY } from "src/plugins/unordered-list";
+import { IMAGE_KEY } from "src/plugins/image/types";
+import { DIVIDING_LINE_KEY } from "src/plugins/dividing-line/types";
+import { FLOW_CHART_KEY } from "src/plugins/flow-chart/types";
+import { QUOTE_BLOCK_ITEM_KEY, QUOTE_BLOCK_KEY } from "src/plugins/quote-block/types";
+import { HIGHLIGHT_BLOCK_ITEM_KEY, HIGHLIGHT_BLOCK_KEY } from "src/plugins/highlight-block/types";
+import { ORDERED_LIST_ITEM_KEY, ORDERED_LIST_KEY } from "src/plugins/ordered-list/types";
+import { UNORDERED_LIST_ITEM_KEY, UNORDERED_LIST_KEY } from "src/plugins/unordered-list/types";
+import { CODE_BLOCK_ITEM_KEY, CODE_BLOCK_KEY } from "src/plugins/codeblock/types";
 
 export const schema: SlateSchema = {
   [IMAGE_KEY]: {

@@ -15,16 +15,7 @@ import {
 } from "../../core/ops/is";
 import { setWrapStructure, setWrapNodes, setUnWrapNodes } from "../../core/ops/set";
 import { getBlockNode } from "../../core/ops/get";
-
-declare module "slate" {
-  interface BlockElement {
-    [QUOTE_BLOCK_KEY]?: boolean;
-    [QUOTE_BLOCK_ITEM_KEY]?: boolean;
-  }
-}
-
-export const QUOTE_BLOCK_KEY = "quote-block";
-export const QUOTE_BLOCK_ITEM_KEY = "quote-block-item";
+import { QUOTE_BLOCK_ITEM_KEY, QUOTE_BLOCK_KEY } from "./types";
 
 const quoteCommand: CommandFn = (editor, key, data) => {
   if (isObject(data) && data.path) {

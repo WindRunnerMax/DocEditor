@@ -1,9 +1,9 @@
-import "./index.scss";
+import "../index.scss";
 import { FC } from "react";
 import { Button, Form, Input, Switch } from "@arco-design/web-react";
 import { isEmptyValue } from "src/utils/is";
 import useForm from "@arco-design/web-react/es/Form/useForm";
-import { HyperLinkConfig } from "./index";
+import { HyperLinkConfig } from "../types";
 
 interface Props {
   top?: number;
@@ -13,7 +13,7 @@ interface Props {
   onCancel?: () => void;
 }
 
-const HyperLinkMenu: FC<Props> = props => {
+export const HyperLinkMenu: FC<Props> = props => {
   const [form] = useForm();
   const top = isEmptyValue(props.top) ? 0 : props.top + 30;
   const left = isEmptyValue(props.left) ? 0 : props.left - 150;
@@ -50,7 +50,3 @@ const HyperLinkMenu: FC<Props> = props => {
     </div>
   );
 };
-
-HyperLinkMenu.defaultProps = {};
-
-export default HyperLinkMenu;

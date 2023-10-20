@@ -1,13 +1,6 @@
 import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/plugin/interface";
 import { setTextNode, setUnTextNode } from "../../core/ops/set";
-
-declare module "slate" {
-  interface TextElement {
-    [ITALIC_KEY]?: boolean;
-  }
-}
-
-export const ITALIC_KEY = "italic";
+import { ITALIC_KEY } from "./types";
 
 export const ItalicPlugin = (): Plugin => {
   return {

@@ -15,19 +15,7 @@ import {
 import { setBlockNode, setUnWrapNodes, setWrapNodes, setWrapStructure } from "../../core/ops/set";
 import { getBlockNode, existKey } from "../../core/ops/get";
 import { assertValue } from "src/utils/common";
-
-declare module "slate" {
-  interface BlockElement {
-    [UNORDERED_LIST_KEY]?: boolean;
-    [UNORDERED_LIST_ITEM_KEY]?: UnOrderListItemConfig;
-  }
-}
-export type UnOrderListItemConfig = {
-  level: number;
-};
-
-export const UNORDERED_LIST_KEY = "unordered-list";
-export const UNORDERED_LIST_ITEM_KEY = "unordered-list-item";
+import { UNORDERED_LIST_ITEM_KEY, UNORDERED_LIST_KEY } from "./types";
 
 const orderListCommand: CommandFn = (editor, key, data) => {
   if (isObject(data) && data.path) {

@@ -4,7 +4,7 @@ import { FC, useRef, useState } from "react";
 import { BlockElement, Editor } from "slate";
 import { getPathByUUID, setBlockNode } from "src/core/ops";
 import { cs } from "src/utils/classnames";
-import { IMAGE_KEY } from "../..";
+import { IMAGE_KEY } from "../../types";
 
 const Preview = Image.Preview;
 export const ImageWrapper: FC<{

@@ -6,25 +6,10 @@ import { setBlockNode, setWrapNodes } from "../../core/ops/set";
 import { BlockElement, Editor, Range, Transforms } from "slate";
 import { ReactEditor } from "slate-react";
 
-import { codeTokenize, DEFAULT_LANGUAGE, getLanguage, SUPPORTED_LANGUAGES } from "./utils";
+import { codeTokenize, DEFAULT_LANGUAGE, getLanguage, SUPPORTED_LANGUAGES } from "./utils/parser";
 import { Select } from "@arco-design/web-react";
 import { getBlockNode } from "src/core/ops/get";
-
-declare module "slate" {
-  interface BlockElement {
-    [CODE_BLOCK_KEY]?: boolean;
-    [CODE_BLOCK_CONFIG]?: { language: string };
-    [CODE_BLOCK_ITEM_KEY]?: boolean;
-  }
-  interface TextElement {
-    [CODE_BLOCK_TYPE]?: string;
-  }
-}
-
-export const CODE_BLOCK_KEY = "code-block";
-export const CODE_BLOCK_TYPE = "code-block-type";
-export const CODE_BLOCK_CONFIG = "code-block-config";
-export const CODE_BLOCK_ITEM_KEY = "code-block-item";
+import { CODE_BLOCK_CONFIG, CODE_BLOCK_ITEM_KEY, CODE_BLOCK_KEY, CODE_BLOCK_TYPE } from "./types";
 
 export const CodeBlockPlugin = (editor: Editor, readonly: boolean): Plugin => {
   const codeBlockCommand: CommandFn = editor => {

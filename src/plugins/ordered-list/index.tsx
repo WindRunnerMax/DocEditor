@@ -14,23 +14,9 @@ import {
 } from "../../core/ops/is";
 import { getBlockNode, existKey } from "../../core/ops/get";
 import { setBlockNode, setUnWrapNodes, setWrapNodes, setWrapStructure } from "../../core/ops/set";
-import { calcNextOrderListLevels, calcOrderListLevels } from "./utils";
+import { calcNextOrderListLevels, calcOrderListLevels } from "./utils/calculate";
 import { assertValue } from "src/utils/common";
-
-declare module "slate" {
-  interface BlockElement {
-    [ORDERED_LIST_KEY]?: boolean;
-    [ORDERED_LIST_ITEM_KEY]?: OrderListItemConfig;
-  }
-}
-
-export type OrderListItemConfig = {
-  start: number;
-  level: number;
-};
-
-export const ORDERED_LIST_KEY = "ordered-list";
-export const ORDERED_LIST_ITEM_KEY = "ordered-list-item";
+import { ORDERED_LIST_ITEM_KEY, ORDERED_LIST_KEY } from "./types";
 
 const orderListCommand: CommandFn = (editor, key, data) => {
   if (isObject(data) && data.path) {

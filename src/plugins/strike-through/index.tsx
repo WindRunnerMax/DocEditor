@@ -1,13 +1,6 @@
 import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/plugin/interface";
 import { setTextNode, setUnTextNode } from "../../core/ops/set";
-
-declare module "slate" {
-  interface TextElement {
-    [STRIKE_THROUGH_KEY]?: boolean;
-  }
-}
-
-export const STRIKE_THROUGH_KEY = "strike-through";
+import { STRIKE_THROUGH_KEY } from "./types";
 
 export const StrikeThroughPlugin = (): Plugin => {
   return {

@@ -4,14 +4,7 @@ import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/plugin/interface";
 import { isObject } from "src/utils/is";
 import { isMatchedAttributeNode } from "../../core/ops/is";
 import { setBlockNode } from "../../core/ops/set";
-
-declare module "slate" {
-  interface BlockElement {
-    [ALIGN_KEY]?: "left" | "center" | "right" | "justify";
-  }
-}
-
-export const ALIGN_KEY = "align";
+import { ALIGN_KEY } from "./types";
 
 const headingCommand: CommandFn = (editor, key, data) => {
   if (isObject(data)) {

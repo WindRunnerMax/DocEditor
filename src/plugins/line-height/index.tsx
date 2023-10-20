@@ -3,15 +3,8 @@ import { Popup } from "src/components/popup";
 import { getBlockNode } from "../../core/ops/get";
 import { setBlockNode } from "../../core/ops/set";
 import { assertValue } from "src/utils/common";
-import { LineHeightMenu } from "./menu";
-
-declare module "slate" {
-  interface BlockElement {
-    [LINE_HEIGHT_KEY]?: number;
-  }
-}
-
-export const LINE_HEIGHT_KEY = "line-height";
+import { LineHeightMenu } from "./components/menu";
+import { LINE_HEIGHT_KEY } from "./types";
 
 export const LineHeightPlugin = (): Plugin => {
   let popupModel: Popup | null = null;

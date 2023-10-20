@@ -5,22 +5,11 @@ import { Trigger } from "@arco-design/web-react";
 import React, { useState } from "react";
 import { Editor } from "slate";
 import { TextElement } from "../../types/types";
-import HyperLinkMenu from "./menu";
+import { HyperLinkMenu } from "./components/menu";
 import { ReactEditor } from "slate-react";
 import { assertValue } from "src/utils/common";
 import { isCollapsed } from "src/core/ops";
-
-declare module "slate" {
-  interface TextElement {
-    [HYPER_LINK_KEY]?: HyperLinkConfig;
-  }
-}
-export type HyperLinkConfig = {
-  href: string;
-  blank: boolean;
-};
-
-export const HYPER_LINK_KEY = "link";
+import { HYPER_LINK_KEY, HyperLinkConfig } from "./types";
 
 const HyperLinkEditor: React.FC<{
   config: HyperLinkConfig;

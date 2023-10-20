@@ -7,18 +7,7 @@ import { v4 } from "uuid";
 import { HistoryEditor } from "slate-history";
 import { BaseEditor, Transforms } from "slate";
 import { DocFLowChart } from "./components/viewer";
-
-declare module "slate" {
-  interface BlockElement {
-    uuid?: string;
-    [FLOW_CHART_KEY]?: {
-      type: "xml";
-      content: string;
-    };
-  }
-}
-
-export const FLOW_CHART_KEY = "flow-chart";
+import { FLOW_CHART_KEY } from "./types";
 
 export const FlowChartPlugin = (
   editor: BaseEditor & ReactEditor & HistoryEditor,

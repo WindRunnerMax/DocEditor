@@ -8,22 +8,8 @@ import { CommandFn } from "src/core/command";
 import { v4 } from "uuid";
 import { uploadImageHandler } from "./utils/upload";
 import { HistoryEditor } from "slate-history";
-import { IMAGE_STATUS } from "./utils/constant";
 import { DocImage } from "./components/doc-image";
-
-declare module "slate" {
-  interface BlockElement {
-    uuid?: string;
-    [IMAGE_KEY]?: {
-      status: typeof IMAGE_STATUS[keyof typeof IMAGE_STATUS];
-      src: string;
-      width?: number | string;
-      height?: number | string;
-    };
-  }
-}
-
-export const IMAGE_KEY = "image";
+import { IMAGE_KEY, IMAGE_STATUS } from "./types";
 
 export const ImagePlugin = (
   editor: BaseEditor & ReactEditor & HistoryEditor,

@@ -4,11 +4,12 @@ import { getBlockNode } from "../../core/ops/get";
 import { isCollapsed, isMatchedEvent } from "../../core/ops/is";
 import { KEYBOARD } from "../../utils/constant";
 import { execCommand, SlateCommands } from "../../core/command";
-import { ORDERED_LIST_KEY } from "../ordered-list";
-import { UNORDERED_LIST_KEY } from "../unordered-list";
-import { QUOTE_BLOCK_KEY } from "../quote-block";
-import { HEADING_KEY } from "../heading";
-import { DIVIDING_LINE_KEY } from "../dividing-line";
+import { SHORTCUT_KEY } from "./types";
+import { ORDERED_LIST_KEY } from "../ordered-list/types";
+import { UNORDERED_LIST_KEY } from "../unordered-list/types";
+import { QUOTE_BLOCK_KEY } from "../quote-block/types";
+import { HEADING_KEY } from "../heading/types";
+import { DIVIDING_LINE_KEY } from "../dividing-line/types";
 
 const SHORTCUTS: Record<string, string> = {
   "1.": ORDERED_LIST_KEY,
@@ -23,7 +24,7 @@ const SHORTCUTS: Record<string, string> = {
 
 export const ShortCutPlugin = (editor: Editor, commands: SlateCommands): Plugin => {
   return {
-    key: "shortcut",
+    key: SHORTCUT_KEY,
     type: EDITOR_ELEMENT_TYPE.BLOCK,
     priority: 50,
     match: () => false,

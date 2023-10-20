@@ -2,20 +2,8 @@ import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/plugin/interface";
 import { Popup } from "src/components/popup";
 import { setTextNode } from "../../core/ops/set";
 import { assertValue } from "src/utils/common";
-import { FontBaseMenu } from "./menu";
-
-declare module "slate" {
-  interface TextElement {
-    [FONT_BASE_KEY]?: FontBaseConfig;
-  }
-}
-
-export type FontBaseConfig = {
-  fontSize?: number;
-  color?: string;
-  background?: string;
-};
-export const FONT_BASE_KEY = "font-base";
+import { FontBaseMenu } from "./components/menu";
+import { FONT_BASE_KEY, FontBaseConfig } from "./types";
 
 export const FontBasePlugin = (): Plugin => {
   let popupModel: Popup | null = null;
