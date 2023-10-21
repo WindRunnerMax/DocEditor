@@ -1,6 +1,6 @@
 import { Editor, Range, NodeEntry } from "slate";
 import { RenderElementProps, RenderLeafProps } from "slate-react";
-import { CommandFn, SlateCommands } from "../command";
+import { CommandFn, EditorCommands } from "../command";
 
 export const EDITOR_ELEMENT_TYPE = {
   BLOCK: "BLOCK" as const,
@@ -52,6 +52,6 @@ export type RenderPlugins = {
   renderLeaf: (props: RenderLeafProps) => JSX.Element;
   onKeyDown: (event: React.KeyboardEvent<HTMLDivElement>) => unknown;
   decorate: (entry: NodeEntry) => Range[];
-  commands: SlateCommands;
+  commands: EditorCommands;
   onCopy: (event: React.ClipboardEvent<HTMLDivElement>, editor: Editor) => void;
 };

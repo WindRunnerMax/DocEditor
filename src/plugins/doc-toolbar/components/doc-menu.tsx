@@ -1,108 +1,50 @@
 import "../index.scss";
 import { Editor } from "slate";
-import {
-  IconCode,
-  IconEdit,
-  IconFileImage,
-  IconH1,
-  IconH2,
-  IconH3,
-  IconMoreVertical,
-  IconOrderedList,
-  IconPalette,
-  IconPaste,
-  IconPlus,
-  IconQuote,
-  IconUnorderedList,
-} from "@arco-design/web-react/icon";
-import { Menu, Trigger } from "@arco-design/web-react";
-import { execCommand, SlateCommands } from "../../../core/command";
-import { ReactEditor, RenderElementProps } from "slate-react";
+import { IconPlus } from "@arco-design/web-react/icon";
+import { Trigger } from "@arco-design/web-react";
+import { EditorCommands } from "../../../core/command";
+import { RenderElementProps } from "slate-react";
 import { useState } from "react";
-import { focusSelection } from "../../../core/ops/set";
 import { cs } from "src/utils/classnames";
-import { HEADING_KEY } from "src/plugins/heading/types";
-import { QUOTE_BLOCK_KEY } from "src/plugins/quote-block/types";
-import { ORDERED_LIST_KEY } from "src/plugins/ordered-list/types";
-import { HIGHLIGHT_BLOCK_KEY } from "src/plugins/highlight-block/types";
-import { UNORDERED_LIST_KEY } from "src/plugins/unordered-list/types";
-import { IMAGE_KEY } from "src/plugins/image/types";
-import { FLOW_CHART_KEY } from "src/plugins/flow-chart/types";
-import { CODE_BLOCK_KEY } from "src/plugins/codeblock/types";
-import { DIVIDING_LINE_KEY } from "src/plugins/dividing-line/types";
-
-const DocMenuItems = (
-  <>
-    <Menu.Item key={`${HEADING_KEY}.h1`}>
-      <IconH1 />
-      一级标题
-    </Menu.Item>
-    <Menu.Item key={`${HEADING_KEY}.h2`}>
-      <IconH2 />
-      二级标题
-    </Menu.Item>
-    <Menu.Item key={`${HEADING_KEY}.h3`}>
-      <IconH3 />
-      三级标题
-    </Menu.Item>
-    <Menu.Item key={QUOTE_BLOCK_KEY}>
-      <IconQuote />
-      块级引用
-    </Menu.Item>
-    <Menu.Item key={HIGHLIGHT_BLOCK_KEY}>
-      <IconPaste />
-      高亮块
-    </Menu.Item>
-    <Menu.Item key={ORDERED_LIST_KEY}>
-      <IconOrderedList />
-      有序列表
-    </Menu.Item>
-    <Menu.Item key={UNORDERED_LIST_KEY}>
-      <IconUnorderedList />
-      无序列表
-    </Menu.Item>
-    <Menu.Item key={IMAGE_KEY}>
-      <IconFileImage />
-      图片
-    </Menu.Item>
-    <Menu.Item key={CODE_BLOCK_KEY}>
-      <IconCode />
-      代码块
-    </Menu.Item>
-    <Menu.Item key={FLOW_CHART_KEY}>
-      <IconPalette />
-      流程图
-    </Menu.Item>
-    <Menu.Item key={DIVIDING_LINE_KEY}>
-      <IconEdit />
-      分割线
-    </Menu.Item>
-  </>
-);
+import { DOC_TOOLBAR_MODULES } from "../modules";
+import { DocToolBarState, DocToolbarPlugin } from "../types";
 
 export const DocMenu: React.FC<{
   editor: Editor;
   element: RenderElementProps["element"];
-  commands: SlateCommands;
-  offset: number;
-  icon?: JSX.Element;
+  commands: EditorCommands;
 }> = props => {
   const [visible, setVisible] = useState(false);
 
-  const affixStyles = (param: string) => {
-    setVisible(false);
-    const [key, data] = param.split(".");
-    const path = ReactEditor.findPath(props.editor, props.element);
-    focusSelection(props.editor, path);
-    execCommand(props.editor, props.commands, key, { extraKey: data, path });
+  const plugins = DOC_TOOLBAR_MODULES;
+
+  const state: DocToolBarState = {
+    editor: props.editor,
+    element: props.element,
+    commands: props.commands,
+    status: {
+      isInCodeBlock: false,
+    },
+    close: () => setVisible(false),
   };
-  const MenuPopup = <Menu onClickMenuItem={affixStyles}>{DocMenuItems}</Menu>;
+
+  let HoverIconConfig: Exclude<ReturnType<DocToolbarPlugin["renderIcon"]>, null> = {
+    element: <IconPlus />,
+  };
+  for (const plugin of plugins) {
+    const config = plugin.renderIcon(state);
+    if (config) {
+      HoverIconConfig = config;
+      break;
+    }
+  }
+
   return (
     <Trigger
       popup={() => (
         <Trigger
           className="doc-menu-popup"
-          popup={() => MenuPopup}
+          popup={() => <div></div>}
           position="left"
           popupVisible={visible}
           onVisibleChange={setVisible}
@@ -112,15 +54,14 @@ export const DocMenu: React.FC<{
             // prevent toolbar from taking focus away from editor
             onMouseDown={e => e.preventDefault()}
           >
-            {props.icon || <IconPlus />}
-            <IconMoreVertical />
+            {HoverIconConfig.element}
           </span>
         </Trigger>
       )}
       position="left"
-      popupAlign={{ left: props.offset }}
       mouseLeaveDelay={200}
       mouseEnterDelay={200}
+      {...HoverIconConfig.config}
     >
       <div className={cs(visible && "doc-line-hover")}>{props.children}</div>
     </Trigger>

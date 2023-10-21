@@ -11,15 +11,15 @@ export type CommandFn = (
     [key: string]: unknown;
   }
 ) => void | Promise<void>;
-export type SlateCommands = Record<string, CommandFn>;
+export type EditorCommands = Record<string, CommandFn>;
 
-export const registerCommand = (key: string, fn: CommandFn, commands: SlateCommands) => {
+export const registerCommand = (key: string, fn: CommandFn, commands: EditorCommands) => {
   commands[key] = fn;
 };
 
 export const execCommand = (
   editor: Editor,
-  commands: SlateCommands,
+  commands: EditorCommands,
   key: string,
   data: {
     path?: Path;

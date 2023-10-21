@@ -3,7 +3,7 @@ import React, { FC, useEffect, useMemo, useRef, useState } from "react";
 import { Editor } from "slate";
 import { Menu } from "@arco-design/web-react";
 import { useMemoizedFn } from "ahooks";
-import { execCommand, SlateCommands } from "../../core/command";
+import { execCommand, EditorCommands } from "../../core/command";
 import { execSelectMarks, getSelectionRect, maskMenuToolBar, Portal } from "./utils/selection";
 import { ReactEditor } from "slate-react";
 import { MenuItems } from "./components/menu";
@@ -21,7 +21,7 @@ const MUTEX_SELECT = [...NOT_INIT_SELECT, LINE_HEIGHT_KEY];
 export const MenuToolBar: FC<{
   readonly: boolean;
   editor: Editor;
-  commands: SlateCommands;
+  commands: EditorCommands;
 }> = props => {
   const editor = props.editor;
   const keepStatus = useRef(false);

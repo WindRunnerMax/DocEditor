@@ -2,12 +2,22 @@
 /// <reference path="../global.d.ts" />
 
 export * from "../core/ops";
+export type { BaseNode, BlockElement, TextElement } from "../types";
+
 export { SlatePlugins } from "../core/plugin";
+export { EDITOR_ELEMENT_TYPE } from "../core/plugin/interface";
+export type {
+  ElementPlugin,
+  LeafPlugin,
+  RenderPlugins,
+  Plugin as EditorPlugin,
+} from "../core/plugin/interface";
+
 export { registerCommand, execCommand } from "../core/command";
-export type { CommandFn, SlateCommands } from "../core/command";
+export type { CommandFn, EditorCommands } from "../core/command";
+
 export { withSchema } from "../core/schema";
 export type { EditorSchema } from "../core/schema";
-export type { BaseNode, BlockElement, TextElement } from "../types";
 
 export { AlignPlugin } from "./align";
 export { ALIGN_KEY } from "./align/types";

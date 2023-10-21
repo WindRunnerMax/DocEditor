@@ -23,22 +23,6 @@
 }
 
 .doc-line-hover {
-  background-color: rgb(var(--blue-6), 0.3);
+  background-color: rgb(var(--arcoblue-6), 0.2);
   border-radius: 3px;
-}
-
-.doc-menu-popup {
-  box-shadow: $box-shadow;
-  z-index: $doc-menu-z-index;
-
-  .arco-menu-item .arco-icon {
-    color: var(--color-text-1) !important;
-    margin-right: 10px;
-  }
-
-  .iconfont {
-    align-items: center;
-    display: flex;
-    font-size: 14px;
-  }
 }

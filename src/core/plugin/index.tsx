@@ -1,11 +1,11 @@
-import { registerCommand, SlateCommands } from "../command";
+import { registerCommand, EditorCommands } from "../command";
 import { onCopy, onKeyDown } from "./event";
 import { ElementPlugin, LeafPlugin, RenderPlugins, Plugin, EDITOR_ELEMENT_TYPE } from "./interface";
 import { decorate, renderElement, renderLeaf } from "./render";
 
 export class SlatePlugins {
   private plugins: Plugin[];
-  private commands: SlateCommands;
+  private commands: EditorCommands;
 
   constructor(...plugins: Plugin[]) {
     this.plugins = plugins;

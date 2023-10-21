@@ -3,7 +3,7 @@ import { Editor, Transforms } from "slate";
 import { getBlockNode } from "../../core/ops/get";
 import { isCollapsed, isMatchedEvent } from "../../core/ops/is";
 import { KEYBOARD } from "../../utils/constant";
-import { execCommand, SlateCommands } from "../../core/command";
+import { execCommand, EditorCommands } from "../../core/command";
 import { SHORTCUT_KEY } from "./types";
 import { ORDERED_LIST_KEY } from "../ordered-list/types";
 import { UNORDERED_LIST_KEY } from "../unordered-list/types";
@@ -22,7 +22,7 @@ const SHORTCUTS: Record<string, string> = {
   "---": DIVIDING_LINE_KEY,
 };
 
-export const ShortCutPlugin = (editor: Editor, commands: SlateCommands): Plugin => {
+export const ShortCutPlugin = (editor: Editor, commands: EditorCommands): Plugin => {
   return {
     key: SHORTCUT_KEY,
     type: EDITOR_ELEMENT_TYPE.BLOCK,
