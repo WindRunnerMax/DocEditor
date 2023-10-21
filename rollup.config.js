@@ -5,42 +5,30 @@ import commonjs from "@rollup/plugin-commonjs";
 import path from "path";
 import { terser } from "rollup-plugin-terser";
 import postcss from "rollup-plugin-postcss";
-import { fileExist, fsStat, readDir } from "./config/fs-utils";
-import json from "@rollup/plugin-json";
+import replace from "@rollup/plugin-replace";
+import { glob } from "glob";
 
-const basePath = ["src/plugins", "src/core"];
-const baseEntry = ["src/styles/index.ts"];
+const SIGNAL_ENTRY = ["src/styles/index.ts", "src/plugins/index.ts"];
+const COMPOSE_ENTRY = ["src/plugins/*/index.{ts,tsx}", "src/plugins/*/types/index.{ts,tsx}"];
 
 export default async () => {
-  const dirsMap = await Promise.all(
-    basePath.map(async item => await readDir(item).then(files => files.map(it => item + "/" + it)))
-  )
-    .then(res => res.reduce((pre, cur) => [...pre, ...cur], []))
+  const dirsMap = await Promise.all(COMPOSE_ENTRY.map(item => glob(item)))
+    .then(res => res.reduce((pre, cur) => [...pre, ...cur], [...SIGNAL_ENTRY]))
     .then(dirs => {
-      dirs.push(...baseEntry);
       return Promise.all(
-        dirs.map(async fullPath => {
-          const isDir = (await fsStat(fullPath)).isDirectory();
-          if (isDir) {
-            const isTsx = await fileExist(fullPath + "/index.tsx");
-            return [
-              fullPath + "/index.ts" + (isTsx ? "x" : ""),
-              fullPath.replace("src/", "") + "/index",
-            ];
-          }
-          return [fullPath, fullPath.replace(/\.tsx?$/, "").replace("src/", "")];
-        })
+        dirs.map(async fullPath => [
+          fullPath,
+          fullPath.replace(/^src\//, "").replace(/\.tsx?$/, ""),
+        ])
       );
     })
     .then(arr => {
       return arr.reduce((res, [pre, cur]) => ({ ...res, [cur]: pre }), {});
     });
 
-  const external = Object.keys(require("./package.json").dependencies || {});
-  external.push(/@arco-design\/web-react\/.*/);
-  external.push(/lodash\/.*/);
-  external.push(/embed-drawio\/.*/);
-  external.push(/prismjs\/.*/);
+  const external = Object.keys(require("./package.json").dependencies || {}).map(
+    key => new RegExp(`(^${key}$)|(^${key}/.*)`)
+  );
 
   return {
     input: dirsMap,
@@ -53,22 +41,25 @@ export default async () => {
       warn(warning);
     },
     plugins: [
-      resolve({
-        preferBuiltins: false,
-      }),
-      json(),
-      postcss({ minimize: true, extensions: [".css", ".scss"] }),
+      resolve({ preferBuiltins: false }),
       commonjs({ include: "node_modules/**" }),
+      ts({
+        tsconfig: path.resolve(__dirname, "./tsconfig.dist.json"),
+        extensions: [".ts", ".tsx"],
+      }),
+      replace({
+        values: {
+          "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
+        },
+        preventAssignment: true,
+      }),
       babel({
         exclude: "node_modules/**",
         presets: [["@babel/preset-env", { module: false, targets: { chrome: ">= 70" } }]],
         // extensions: [".ts", ".tsx", ".js", ".jsx", ".mjs"],
         // plugins: [["babel-plugin-import", { libraryName: "xxx" }]],
       }),
-      ts({
-        tsconfig: path.resolve(__dirname, "./tsconfig.dist.json"),
-        extensions: [".ts", ".tsx"],
-      }),
+      postcss({ minimize: true, extensions: [".css", ".scss"] }),
       terser(),
     ],
     external: external,
