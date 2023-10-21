@@ -1,6 +1,6 @@
 import "./index.scss";
 import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/plugin/interface";
-import { existKey, getPathByUUID } from "../../core/ops/get";
+import { existKey, getPathById } from "../../core/ops/get";
 import { setBlockNode, focusSelection } from "../../core/ops/set";
 import { BaseEditor, Transforms } from "slate";
 import { ReactEditor } from "slate-react";
@@ -29,7 +29,7 @@ export const ImagePlugin = (
       });
       uploadHandler(file)
         .then(res => {
-          const path = getPathByUUID(editor, uuid);
+          const path = getPathById(editor, uuid);
           if (path) {
             HistoryEditor.withoutSaving(editor, () => {
               setBlockNode(
@@ -48,7 +48,7 @@ export const ImagePlugin = (
           }
         })
         .catch(() => {
-          const path = getPathByUUID(editor, uuid);
+          const path = getPathById(editor, uuid);
           if (path) {
             HistoryEditor.withoutSaving(editor, () => {
               setBlockNode(

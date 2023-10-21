@@ -1,9 +1,3 @@
-export const IMAGE_STATUS = {
-  LOADING: 1,
-  SUCCESS: 2,
-  FAIL: 3,
-} as const;
-
 declare module "slate" {
   interface BlockElement {
     uuid?: string;
@@ -15,5 +9,11 @@ declare module "slate" {
     };
   }
 }
+
+export const IMAGE_STATUS = {
+  LOADING: 1,
+  SUCCESS: 2,
+  FAIL: 3,
+} as const;
 
 export const IMAGE_KEY = "image";

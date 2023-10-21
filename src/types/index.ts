@@ -1,8 +1,6 @@
 import { BaseEditor, BlockElement, TextElement } from "slate";
 import { ReactEditor } from "slate-react";
-export type { BlockElement, TextElement } from "slate";
 
-export type BaseNode = BlockElement | TextElement;
 declare module "slate" {
   interface BlockElement {
     children: BaseNode[];
@@ -18,3 +16,6 @@ declare module "slate" {
     Text: TextElement;
   }
 }
+
+export type { BlockElement, TextElement } from "slate";
+export type BaseNode = BlockElement | TextElement;

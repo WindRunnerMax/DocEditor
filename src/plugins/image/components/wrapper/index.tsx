@@ -2,7 +2,7 @@ import styles from "./index.module.scss";
 import { Image } from "@arco-design/web-react";
 import { FC, useRef, useState } from "react";
 import { BlockElement, Editor } from "slate";
-import { getPathByUUID, setBlockNode } from "src/core/ops";
+import { getPathById, setBlockNode } from "src/core/ops";
 import { cs } from "src/utils/classnames";
 import { IMAGE_KEY } from "../../types";
 
@@ -42,7 +42,7 @@ export const ImageWrapper: FC<{
       const startHeight = element.offsetHeight;
       const ratio = startWidth / startHeight;
       const type = resider.dataset.type;
-      const path = getPathByUUID(props.editor, id);
+      const path = getPathById(props.editor, id);
       if (!path) return;
       const onMouseMove = (e: MouseEvent) => {
         const currentX = e.clientX;

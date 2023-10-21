@@ -7,9 +7,9 @@ type SchemaItem = {
   void?: boolean;
   wrap?: string;
 };
-export type SlateSchema = Record<string, SchemaItem>;
+export type EditorSchema = Record<string, SchemaItem>;
 
-export const withSchema = <T extends Editor>(schema: SlateSchema, editor: T): T => {
+export const withSchema = <T extends Editor>(schema: EditorSchema, editor: T): T => {
   const { isVoid, normalizeNode } = editor;
 
   const voidKeys: Set<string> = new Set<string>();

@@ -27,7 +27,7 @@ import { FontBasePlugin } from "../../../src/plugins/font-base";
 import { LineHeightPlugin } from "../../../src/plugins/line-height";
 import { ImagePlugin } from "../../../src/plugins/image";
 import { withSchema } from "../../../src/core/schema";
-import { schema } from "./schema";
+import { schema } from "../../config/schema";
 import { CodeBlockPlugin } from "../../../src/plugins/codeblock";
 import { IndentPlugin } from "../../../src/plugins/indent";
 import { FlowChartPlugin } from "../../../src/plugins/flow-chart";

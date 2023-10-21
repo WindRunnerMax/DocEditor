@@ -45,7 +45,7 @@ export const isEmptyLine = (editor: Editor, path: Path) => {
   return Point.equals(start, end);
 };
 
-export const isSlateElement = (block: Node): block is BaseNode => {
+export const isBaseElement = (block: Node): block is BaseNode => {
   return !Editor.isEditor(block) && SlateElement.isElement(block);
 };
 

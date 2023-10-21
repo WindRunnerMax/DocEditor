@@ -10,7 +10,7 @@ import {
   isFocusLineStart,
   isMatchedEvent,
   isCollapsed,
-  isSlateElement,
+  isBaseElement,
   isWrappedNode,
   isMatchedAttributeNode,
 } from "../../core/ops/is";
@@ -76,7 +76,7 @@ export const HeadingPlugin = (editor: Editor): Plugin => {
           const { block, path } = match;
           if (!block[HEADING_KEY]) return void 0;
 
-          if (isSlateElement(block)) {
+          if (isBaseElement(block)) {
             if (event.key === KEYBOARD.BACKSPACE && isFocusLineStart(editor, path)) {
               setUnBlockNode(editor, [HEADING_KEY], { at: path });
               event.preventDefault();
