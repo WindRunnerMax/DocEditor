@@ -79,6 +79,7 @@ export const getLineIndex = (editor: Editor, path: Path) => {
 export const existKey = (node: Node, key: string) => isBaseElement(node) && !!node[key];
 
 export const getPathById = (editor: Editor, uuid: string): Path | null => {
+  // TODO: 尝试参考`ReactEditor.findPath`优化 优化查找模式
   type QueueNode = { path: number[]; node: BaseNode };
   const queue: QueueNode[] = [{ path: [], node: editor }];
   while (queue.length) {

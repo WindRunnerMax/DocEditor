@@ -9,3 +9,11 @@ body {
   --icon-plus-z-index: $icon-plus-z-index;
   --box-shadow: $box-shadow;
 }
+
+@mixin standalone-region {
+  background-color: var(--color-bg-1);
+  border: 1px solid var(--color-border-2);
+  border-radius: 4px;
+  box-shadow: $box-shadow;
+  color: var(--color-text-1);
+}
