@@ -18,12 +18,15 @@ import { CODE_BLOCK_ITEM_KEY, CODE_BLOCK_KEY } from "../../src/plugins/codeblock
 export const schema: EditorSchema = {
   [IMAGE_KEY]: {
     void: true,
+    block: true,
   },
   [DIVIDING_LINE_KEY]: {
     void: true,
+    block: true,
   },
   [FLOW_CHART_KEY]: {
     void: true,
+    block: true,
   },
   [QUOTE_BLOCK_ITEM_KEY]: {
     wrap: QUOTE_BLOCK_KEY,
@@ -42,5 +45,14 @@ export const schema: EditorSchema = {
   },
   [REACT_LIVE_ITEM_KEY]: {
     wrap: REACT_LIVE_KEY,
+  },
+  [HIGHLIGHT_BLOCK_KEY]: {
+    block: true,
+  },
+  [CODE_BLOCK_KEY]: {
+    block: true,
+  },
+  [REACT_LIVE_KEY]: {
+    block: true,
   },
 };

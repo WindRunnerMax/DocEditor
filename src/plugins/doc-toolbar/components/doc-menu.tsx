@@ -1,6 +1,5 @@
 import "../index.scss";
 import { Editor, Path, Transforms } from "slate";
-import { IconPlus } from "@arco-design/web-react/icon";
 import { Trigger } from "@arco-design/web-react";
 import { EditorCommands } from "../../../core/command";
 import { ReactEditor, RenderElementProps } from "slate-react";
@@ -8,11 +7,15 @@ import React, { useState } from "react";
 import { cs } from "src/utils/classnames";
 import { DOC_TOOLBAR_MODULES } from "../modules";
 import { DocToolBarState, DocToolbarPlugin } from "../types";
+import { EditorSchema } from "src/core/schema";
+import { isBlockNode } from "../utils/filter";
+import { TriggerMenu } from "./trigger-menu";
 
 export const DocMenu: React.FC<{
   editor: Editor;
   element: RenderElementProps["element"];
   commands: EditorCommands;
+  schema: EditorSchema;
 }> = props => {
   const [iconVisible, setIconVisible] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
@@ -32,18 +35,18 @@ export const DocMenu: React.FC<{
   const plugins = DOC_TOOLBAR_MODULES;
   const state: DocToolBarState = {
     path: path,
+    schema: props.schema,
     editor: props.editor,
     element: props.element,
     commands: props.commands,
     status: {
+      isBlock: isBlockNode(props.schema, props.element),
       isInCodeBlock: false,
     },
     close: onClose,
   };
 
-  let HoverIconConfig: Exclude<ReturnType<DocToolbarPlugin["renderIcon"]>, null> = {
-    element: <IconPlus />,
-  };
+  let HoverIconConfig: ReturnType<DocToolbarPlugin["renderIcon"]> = null;
   for (const plugin of plugins) {
     const config = plugin.renderIcon(state);
     if (config) {
@@ -58,14 +61,19 @@ export const DocMenu: React.FC<{
     onClose();
   };
 
+  // 未匹配到任何`Icon`配置 仅注入`DOM`层级关系
+  if (!HoverIconConfig) {
+    return <div>{props.children}</div>;
+  }
+
   return (
     <Trigger
+      className="doc-icon-popup"
       popupVisible={iconVisible}
       onVisibleChange={setIconVisible}
       popup={() => (
         <Trigger
-          className="doc-menu-popup"
-          popup={() => <div></div>}
+          popup={() => <TriggerMenu state={state}></TriggerMenu>}
           position="left"
           popupVisible={menuVisible}
           onVisibleChange={setMenuVisible}
@@ -76,7 +84,7 @@ export const DocMenu: React.FC<{
             onMouseDown={e => e.preventDefault()}
             onClick={onSelect}
           >
-            {HoverIconConfig.element}
+            {HoverIconConfig && HoverIconConfig.element}
           </span>
         </Trigger>
       )}

@@ -4,11 +4,13 @@ import { Editor } from "slate";
 import { DocMenu } from "./components/doc-menu";
 import { EditorCommands } from "src/core/command";
 import { DOC_TOOLBAR_KEY } from "./types";
+import { EditorSchema } from "src/core/schema";
 
 export const DocToolBarPlugin = (
   editor: Editor,
   readonly: boolean,
-  commands: EditorCommands
+  commands: EditorCommands,
+  schema: EditorSchema
 ): Plugin => {
   return {
     key: DOC_TOOLBAR_KEY,
@@ -18,7 +20,7 @@ export const DocToolBarPlugin = (
     renderLine: context => {
       if (readonly) return context.children;
       return (
-        <DocMenu editor={editor} commands={commands} element={context.element}>
+        <DocMenu editor={editor} commands={commands} element={context.element} schema={schema}>
           {context.children}
         </DocMenu>
       );

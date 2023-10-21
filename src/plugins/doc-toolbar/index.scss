@@ -1,5 +1,10 @@
 @import '../../styles/global';
 
+.doc-icon-popup,
+.doc-trigger-menu {
+  background-color: var(--color-bg-1);
+}
+
 .doc-icon-container {
   @include standalone-region;
 
@@ -10,7 +15,7 @@
   font-size: 16px;
   justify-content: space-between;
   margin-right: 5px;
-  padding: 7px;
+  padding: 8px 7px;
 
   &:hover {
     background-color: var(--color-fill-1);
@@ -20,4 +25,33 @@
 .doc-line-hover {
   background-color: rgb(var(--arcoblue-6), 0.2);
   border-radius: 3px;
+}
+
+.doc-trigger-menu {
+  @include standalone-region;
+
+  box-sizing: border-box;
+  color: var(--color-text-2);
+  padding: 7px;
+  width: 237px;
+
+  .doc-trigger-signal-menu {
+    border-bottom: 1px solid var(--color-border-2);
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    padding-bottom: 5px;
+
+    .toolbar-signal-menu {
+      cursor: pointer;
+      flex-shrink: 0;
+      font-size: 16px;
+      margin: 4px 8px;
+      padding: 0 6px;
+    }
+
+    .toolbar-signal-menu:hover {
+      background-color: var(--color-fill-2);
+    }
+  }
 }

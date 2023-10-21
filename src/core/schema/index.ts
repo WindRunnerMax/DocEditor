@@ -4,6 +4,7 @@ import { BaseNode } from "src/types";
 import { isDev } from "src/utils/is";
 
 type SchemaItem = {
+  block?: boolean;
   void?: boolean;
   wrap?: string;
 };

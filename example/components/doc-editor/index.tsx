@@ -72,7 +72,7 @@ export const SlateDocEditor: FC<{
 
     const commands = register.getCommands();
     register.add(
-      DocToolBarPlugin(editor, props.readonly, commands),
+      DocToolBarPlugin(editor, props.readonly, commands, schema),
       ShortCutPlugin(editor, commands)
     );
 
