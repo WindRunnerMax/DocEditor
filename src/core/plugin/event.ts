@@ -10,6 +10,7 @@ export const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>, keyDownPlu
 };
 
 export const onCopy = (event: React.ClipboardEvent<HTMLDivElement>, editor: Editor) => {
+  // TODO: clipboard module
   const fragments = editor.getFragment();
   const parseText = (fragment: Descendant[]): string => {
     return fragment

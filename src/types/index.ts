@@ -1,4 +1,4 @@
-import { BaseEditor, BlockElement, TextElement, Path } from "slate";
+import { BaseEditor, BlockElement, TextElement, Path, Node } from "slate";
 import { ReactEditor } from "slate-react";
 
 declare module "slate" {
@@ -20,3 +20,4 @@ declare module "slate" {
 export type { BlockElement, TextElement } from "slate";
 export type BaseNode = BlockElement | TextElement;
 export type EditorPath = Path;
+export const EditorNode = Node;

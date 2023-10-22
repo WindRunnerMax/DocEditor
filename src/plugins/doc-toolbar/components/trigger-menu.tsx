@@ -10,7 +10,7 @@ export const TriggerMenu: React.FC<{ state: DocToolBarState }> = props => {
   const plugins = DOC_TOOLBAR_MODULES;
   for (const plugin of plugins) {
     const menu = plugin.renderSignal(state);
-    const banner = !state.status.isBlock && plugin.renderBanner(state);
+    const banner = plugin.renderBanner(state);
     menu && signalMenu.push(menu);
     banner && bannerMenu.push(banner);
   }

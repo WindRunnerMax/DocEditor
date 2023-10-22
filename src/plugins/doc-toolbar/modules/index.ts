@@ -7,6 +7,7 @@ import { HeadingDocToolBarPlugin } from "./heading";
 import { HighLightBlockDocToolBarPlugin } from "./highlight-block";
 import { ImageDocToolBarPlugin } from "./image";
 import { ListDocToolBarPlugin } from "./list";
+import { OperationDocToolBarPlugin } from "./operation";
 import { QuoteDocToolBarPlugin } from "./quote";
 import { ReactLiveDocToolBarPlugin } from "./react-live";
 import { TextDocToolBarPlugin } from "./text";
@@ -22,5 +23,6 @@ export const DOC_TOOLBAR_MODULES: DocToolbarPlugin[] = [
   CodeBlockDocToolBarPlugin,
   FlowChartDocToolBarPlugin,
   ReactLiveDocToolBarPlugin,
+  OperationDocToolBarPlugin,
   DefaultAddDocToolBarPlugin,
 ];

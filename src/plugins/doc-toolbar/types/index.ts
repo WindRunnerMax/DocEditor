@@ -15,10 +15,10 @@ export type DocToolBarState = {
   status: {
     isBlock: boolean;
     isEmptyLine: boolean;
+    isNextLine: boolean;
     isInCodeBlock: boolean;
     isInReactLive: boolean;
     isInHighLightBlock: boolean;
-    isNextLine: boolean;
   };
   close: () => void;
 };

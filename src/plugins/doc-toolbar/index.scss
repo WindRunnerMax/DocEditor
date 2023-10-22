@@ -1,6 +1,6 @@
 @import '../../styles/global';
 
-/** 弹出层图标  */
+/** 弹出层图标  **/
 
 .doc-icon-background {
   background-color: var(--color-bg-1);
@@ -28,7 +28,7 @@
   border-radius: 3px;
 }
 
-/** 弹出层菜单  */
+/** 弹出层菜单  **/
 
 .arco-trigger.doc-toolbar-trigger {
   z-index: $doc-menu-z-index;
@@ -43,6 +43,7 @@
   padding: 7px;
   width: 240px;
 
+  /** Signal Menu  **/
   .doc-trigger-signal-menu {
     border-bottom: 1px solid var(--color-border-2);
     box-sizing: border-box;
@@ -64,6 +65,7 @@
     }
   }
 
+  /** Banner Menu  **/
   .doc-trigger-banner-menu {
     padding-top: 2px;
 
