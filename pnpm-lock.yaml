@@ -5,7 +5,6 @@ specifiers:
   '@babel/core': ^7.13.0
   '@rollup/plugin-babel': ^5.3.1
   '@rollup/plugin-commonjs': ^22.0.1
-  '@rollup/plugin-json': ^6.0.0
   '@rollup/plugin-node-resolve': ^13.3.0
   '@rollup/plugin-replace': ^5.0.4
   '@testing-library/dom': ^8.11.1
@@ -85,7 +84,6 @@ devDependencies:
   '@babel/core': registry.npmmirror.com/@babel/core/7.18.5
   '@rollup/plugin-babel': registry.npmmirror.com/@rollup/plugin-babel/5.3.1_@babel+core@7.18.5+rollup@2.75.7
   '@rollup/plugin-commonjs': registry.npmmirror.com/@rollup/plugin-commonjs/22.0.1_rollup@2.75.7
-  '@rollup/plugin-json': registry.npmmirror.com/@rollup/plugin-json/6.0.0_rollup@2.75.7
   '@rollup/plugin-node-resolve': registry.npmmirror.com/@rollup/plugin-node-resolve/13.3.0_rollup@2.75.7
   '@rollup/plugin-replace': registry.npmmirror.com/@rollup/plugin-replace/5.0.4_rollup@2.75.7
   '@testing-library/dom': registry.npmmirror.com/@testing-library/dom/8.11.1
@@ -9368,22 +9366,6 @@ packages:
       is-reference: registry.npmmirror.com/is-reference/1.2.1
       magic-string: registry.npmmirror.com/magic-string/0.25.7
       resolve: registry.npmmirror.com/resolve/1.20.0
-      rollup: registry.npmmirror.com/rollup/2.75.7
-    dev: true
-
-  registry.npmmirror.com/@rollup/plugin-json/6.0.0_rollup@2.75.7:
-    resolution: {integrity: sha512-i/4C5Jrdr1XUarRhVu27EEwjt4GObltD7c+MkCIpO2QIbojw8MUs+CCTqOphQi3Qtg1FLmYt+l+6YeoIf51J7w==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@rollup/plugin-json/-/plugin-json-6.0.0.tgz}
-    id: registry.npmmirror.com/@rollup/plugin-json/6.0.0
-    name: '@rollup/plugin-json'
-    version: 6.0.0
-    engines: {node: '>=14.0.0'}
-    peerDependencies:
-      rollup: ^1.20.0||^2.0.0||^3.0.0
-    peerDependenciesMeta:
-      rollup:
-        optional: true
-    dependencies:
-      '@rollup/pluginutils': registry.npmmirror.com/@rollup/pluginutils/5.0.2_rollup@2.75.7
       rollup: registry.npmmirror.com/rollup/2.75.7
     dev: true
 
