@@ -12,7 +12,7 @@ export const HIGHLIGHT_BLOCK_KEY = "highlight-block";
 export const HIGHLIGHT_BLOCK_ITEM_KEY = "highlight-block-item";
 
 export const COLOR_MAP: AssertT<BlockElement["highlight-block"]>[] = [
-  { background: "var(--blue-3)", border: "var(--blue-6)" },
+  { background: "var(--arcoblue-3)", border: "var(--arcoblue-6)" },
   { background: "var(--green-3)", border: "var(--green-6)" },
   { background: "var(--orange-3)", border: "var(--orange-6)" },
   { background: "var(--red-3)", border: "var(--red-6)" },

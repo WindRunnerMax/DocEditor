@@ -6,7 +6,7 @@ import { QUOTE_BLOCK_KEY } from "src/plugins/quote-block/types";
 
 export const QuoteDocToolBarPlugin: DocToolbarPlugin = {
   renderIcon: () => null,
-  renderMenu: state => {
+  renderSignal: state => {
     if (state.status.isBlock) return null;
     const onClick = () => {
       exec(state, QUOTE_BLOCK_KEY);

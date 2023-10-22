@@ -7,7 +7,7 @@ import React from "react";
 
 export const HeadingDocToolBarPlugin: DocToolbarPlugin = {
   renderIcon: () => null,
-  renderMenu: state => {
+  renderSignal: state => {
     if (state.status.isBlock) return null;
     const getClickHandler = (type: string) => {
       return () => {

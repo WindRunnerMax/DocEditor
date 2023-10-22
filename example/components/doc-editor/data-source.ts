@@ -172,7 +172,7 @@ export const example: BaseNode[] = [
   { "dividing-line": true, "children": [{ text: "" }] },
   { children: [{ text: "高亮块" }], heading: { type: "h3", id: "af869b51" } },
   {
-    "highlight-block": { border: "var(--blue-6)", background: "var(--blue-3)" },
+    "highlight-block": { border: "var(--arcoblue-6)", background: "var(--arcoblue-3)" },
     "children": [
       {
         "children": [{ text: "🌰 " }, { text: "举个栗子", bold: true }],

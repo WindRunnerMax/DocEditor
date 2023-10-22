@@ -1,6 +1,6 @@
 export const DividingLine = (
   <svg
-    className="arco-icon text-icon"
+    className="arco-icon"
     viewBox="0 0 1024 1024"
     xmlns="http://www.w3.org/2000/svg"
     width="1em"

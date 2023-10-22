@@ -14,7 +14,11 @@ export type DocToolBarState = {
   element: RenderElementProps["element"];
   status: {
     isBlock: boolean;
+    isEmptyLine: boolean;
     isInCodeBlock: boolean;
+    isInReactLive: boolean;
+    isInHighLightBlock: boolean;
+    isNextLine: boolean;
   };
   close: () => void;
 };
@@ -23,6 +27,6 @@ export type DocToolbarPlugin = {
   renderIcon: (
     state: DocToolBarState
   ) => null | { element: JSX.Element; config?: Partial<TriggerProps> };
-  renderMenu: (state: DocToolBarState) => JSX.Element | null;
+  renderSignal: (state: DocToolBarState) => JSX.Element | null;
   renderBanner: (state: DocToolBarState) => JSX.Element | null;
 };

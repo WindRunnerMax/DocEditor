@@ -8,7 +8,7 @@ export function isObject(value: unknown): value is Record<string, unknown> {
   return opt.call(value) === "[object Object]";
 }
 
-export function isArray(value: unknown): value is unknown[] {
+export function isArray<T = unknown>(value: unknown): value is T[] {
   return opt.call(value) === "[object Array]";
 }
 

@@ -8,8 +8,11 @@ import { cs } from "src/utils/classnames";
 import { DOC_TOOLBAR_MODULES } from "../modules";
 import { DocToolBarState, DocToolbarPlugin } from "../types";
 import { EditorSchema } from "src/core/schema";
-import { isBlockNode } from "../utils/filter";
+import { isBlockNode, isEmptyLine, isWithinNode } from "../utils/filter";
 import { TriggerMenu } from "./trigger-menu";
+import { CODE_BLOCK_KEY } from "src/plugins/codeblock/types";
+import { REACT_LIVE_KEY } from "src/plugins/react-live/types";
+import { HIGHLIGHT_BLOCK_KEY } from "src/plugins/highlight-block/types";
 
 export const DocMenu: React.FC<{
   editor: Editor;
@@ -41,7 +44,11 @@ export const DocMenu: React.FC<{
     commands: props.commands,
     status: {
       isBlock: isBlockNode(props.schema, props.element),
-      isInCodeBlock: false,
+      isEmptyLine: isEmptyLine(props.element),
+      isInCodeBlock: isWithinNode(props.editor, path, CODE_BLOCK_KEY),
+      isInReactLive: isWithinNode(props.editor, path, REACT_LIVE_KEY),
+      isInHighLightBlock: isWithinNode(props.editor, path, HIGHLIGHT_BLOCK_KEY),
+      isNextLine: false,
     },
     close: onClose,
   };
@@ -72,6 +79,7 @@ export const DocMenu: React.FC<{
       onVisibleChange={setIconVisible}
       popup={() => (
         <Trigger
+          className="doc-toolbar-trigger"
           popup={() => <TriggerMenu state={state}></TriggerMenu>}
           position="left"
           popupVisible={menuVisible}

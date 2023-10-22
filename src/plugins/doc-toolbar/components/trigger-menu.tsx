@@ -9,8 +9,8 @@ export const TriggerMenu: React.FC<{ state: DocToolBarState }> = props => {
   const bannerMenu = [];
   const plugins = DOC_TOOLBAR_MODULES;
   for (const plugin of plugins) {
-    const menu = plugin.renderMenu(state);
-    const banner = !state.status.isBlock && plugin.renderMenu(state);
+    const menu = plugin.renderSignal(state);
+    const banner = !state.status.isBlock && plugin.renderBanner(state);
     menu && signalMenu.push(menu);
     banner && bannerMenu.push(banner);
   }
@@ -24,7 +24,13 @@ export const TriggerMenu: React.FC<{ state: DocToolBarState }> = props => {
           ))}
         </div>
       )}
-      {bannerMenu.length > 0 && <div className="doc-trigger-banner-menu"></div>}
+      {bannerMenu.length > 0 && (
+        <div className="doc-trigger-banner-menu">
+          {bannerMenu.map((item, index) => (
+            <React.Fragment key={index}>{item}</React.Fragment>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

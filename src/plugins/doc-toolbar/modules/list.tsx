@@ -8,7 +8,7 @@ import { UNORDERED_LIST_KEY } from "src/plugins/unordered-list/types";
 
 export const ListDocToolBarPlugin: DocToolbarPlugin = {
   renderIcon: () => null,
-  renderMenu: state => {
+  renderSignal: state => {
     if (state.status.isBlock) return null;
     const getClickHandler = (type: string) => {
       return () => {

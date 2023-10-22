@@ -6,7 +6,7 @@ import { DividingLine } from "../icons/dividing-line";
 
 export const DividingLineDocToolBarPlugin: DocToolbarPlugin = {
   renderIcon: () => null,
-  renderMenu: state => {
+  renderSignal: state => {
     if (state.status.isBlock) return null;
     const onClick = () => {
       exec(state, DIVIDING_LINE_KEY);
