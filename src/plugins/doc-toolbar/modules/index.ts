@@ -1,5 +1,6 @@
 import { DocToolbarPlugin } from "../types";
 import { DefaultAddDocToolBarPlugin } from "./default-add";
+import { DividingLineDocToolBarPlugin } from "./dividing-line";
 import { HeadingDocToolBarPlugin } from "./heading";
 import { ListDocToolBarPlugin } from "./list";
 import { QuoteDocToolBarPlugin } from "./quote";
@@ -10,5 +11,6 @@ export const DOC_TOOLBAR_MODULES: DocToolbarPlugin[] = [
   HeadingDocToolBarPlugin,
   QuoteDocToolBarPlugin,
   ListDocToolBarPlugin,
+  DividingLineDocToolBarPlugin,
   DefaultAddDocToolBarPlugin,
 ];

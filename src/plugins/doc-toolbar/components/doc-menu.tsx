@@ -68,7 +68,6 @@ export const DocMenu: React.FC<{
 
   return (
     <Trigger
-      className="doc-icon-popup"
       popupVisible={iconVisible}
       onVisibleChange={setIconVisible}
       popup={() => (
@@ -78,14 +77,16 @@ export const DocMenu: React.FC<{
           popupVisible={menuVisible}
           onVisibleChange={setMenuVisible}
         >
-          <span
-            className="doc-icon-container"
-            // prevent toolbar from taking focus away from editor
-            onMouseDown={e => e.preventDefault()}
-            onClick={onSelect}
-          >
-            {HoverIconConfig && HoverIconConfig.element}
-          </span>
+          <div className="doc-icon-background">
+            <span
+              className="doc-icon-container"
+              // prevent toolbar from taking focus away from editor
+              onMouseDown={e => e.preventDefault()}
+              onClick={onSelect}
+            >
+              {HoverIconConfig && HoverIconConfig.element}
+            </span>
+          </div>
         </Trigger>
       )}
       position="left"

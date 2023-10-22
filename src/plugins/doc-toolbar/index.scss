@@ -1,8 +1,8 @@
 @import '../../styles/global';
 
-.doc-icon-popup,
-.doc-trigger-menu {
+.doc-icon-background {
   background-color: var(--color-bg-1);
+  margin-right: 6px;
 }
 
 .doc-icon-container {
@@ -14,8 +14,7 @@
   display: flex;
   font-size: 16px;
   justify-content: space-between;
-  margin-right: 5px;
-  padding: 8px 7px;
+  padding: 8px;
 
   &:hover {
     background-color: var(--color-fill-1);
@@ -30,6 +29,7 @@
 .doc-trigger-menu {
   @include standalone-region;
 
+  background-color: var(--color-bg-1);
   box-sizing: border-box;
   color: var(--color-text-2);
   padding: 7px;
