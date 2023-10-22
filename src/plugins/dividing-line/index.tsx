@@ -9,7 +9,11 @@ import { DIVIDING_LINE_KEY } from "./types";
 const DividingLine: React.FC = () => {
   const selected = useSelected();
   const focused = useFocused();
-  return <div className={cs("dividing-line", focused && selected && "selected")}></div>;
+  return (
+    <div className="dividing-line-container">
+      <div className={cs("dividing-line", focused && selected && "selected")}></div>
+    </div>
+  );
 };
 export const DividingLinePlugin = (): Plugin => {
   return {

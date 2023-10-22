@@ -22,7 +22,7 @@ export const ImagePlugin = (
     Array.from(files).forEach(file => {
       const blobSRC = window.URL.createObjectURL(file);
       const uuid = v4();
-      Transforms.insertNodes(editor, {
+      setBlockNode(editor, {
         uuid,
         [IMAGE_KEY]: { src: blobSRC, status: IMAGE_STATUS.LOADING },
         children: [{ text: "" }],

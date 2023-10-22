@@ -17,3 +17,9 @@ body {
   box-shadow: $box-shadow;
   color: var(--color-text-1);
 }
+
+@mixin flex-center {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}

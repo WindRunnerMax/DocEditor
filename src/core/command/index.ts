@@ -1,10 +1,12 @@
 import { Editor, Path, Location, TextElement } from "slate";
+import { BaseNode } from "src/types";
 
 export type CommandFn = (
   editor: Editor,
   key: string,
   data: {
     path?: Path;
+    element?: BaseNode;
     event?: React.MouseEvent<HTMLDivElement, MouseEvent>;
     position?: { left: number; top: number };
     marks?: TextElement | null;
@@ -24,6 +26,7 @@ export const execCommand = (
   data: {
     path?: Path;
     selection?: Location;
+    element?: BaseNode;
     [key: string]: unknown;
   }
 ) => {

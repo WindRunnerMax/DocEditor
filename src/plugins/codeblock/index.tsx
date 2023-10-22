@@ -3,7 +3,7 @@ import { CommandFn } from "../../core/command";
 import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/plugin/interface";
 import { isBlock, isText } from "../../core/ops/is";
 import { setBlockNode, setWrapNodes } from "../../core/ops/set";
-import { BlockElement, Editor, Range, Transforms } from "slate";
+import { BlockElement, Editor, Range } from "slate";
 import { ReactEditor } from "slate-react";
 
 import { codeTokenize, DEFAULT_LANGUAGE, getLanguage, SUPPORTED_LANGUAGES } from "./utils/parser";
@@ -13,13 +13,11 @@ import { CODE_BLOCK_CONFIG, CODE_BLOCK_ITEM_KEY, CODE_BLOCK_KEY, CODE_BLOCK_TYPE
 
 export const CodeBlockPlugin = (editor: Editor, readonly: boolean): Plugin => {
   const codeBlockCommand: CommandFn = editor => {
-    Transforms.insertNodes(editor, { children: [{ text: "" }] });
     setWrapNodes(
       editor,
       { [CODE_BLOCK_CONFIG]: { language: DEFAULT_LANGUAGE }, [CODE_BLOCK_KEY]: true },
       { [CODE_BLOCK_ITEM_KEY]: true }
     );
-    Transforms.insertNodes(editor, { children: [{ text: "" }] });
   };
 
   const onLanguageChange = (element: BlockElement, language: string) => {

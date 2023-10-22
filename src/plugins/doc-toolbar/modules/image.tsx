@@ -2,11 +2,15 @@ import { DocToolbarPlugin } from "../types";
 import { getWrappedBannerMenu } from "../utils/wrapper";
 import { IconImage } from "@arco-design/web-react/icon";
 import { exec } from "../utils/exec";
-import { REACT_LIVE_KEY } from "src/plugins/react-live/types";
 import { IMAGE_KEY } from "src/plugins/image/types";
 
 export const ImageDocToolBarPlugin: DocToolbarPlugin = {
-  renderIcon: state => null,
+  renderIcon: state => {
+    if (state.element[IMAGE_KEY]) {
+      return { element: <IconImage />, config: { position: "lt" } };
+    }
+    return null;
+  },
   renderSignal: () => null,
   renderBanner: state => {
     if (state.status.isBlock || !state.status.isEmptyLine) return null;

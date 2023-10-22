@@ -6,7 +6,19 @@ import { exec } from "../utils/exec";
 import React from "react";
 
 export const HeadingDocToolBarPlugin: DocToolbarPlugin = {
-  renderIcon: () => null,
+  renderIcon: state => {
+    const config = state.element[HEADING_KEY];
+    if (config) {
+      if (config.type === "h1") {
+        return { element: <IconH1 /> };
+      } else if (config.type === "h2") {
+        return { element: <IconH2 /> };
+      } else if (config.type === "h3") {
+        return { element: <IconH3 /> };
+      }
+    }
+    return null;
+  },
   renderSignal: state => {
     if (state.status.isBlock) return null;
     const getClickHandler = (type: string) => {

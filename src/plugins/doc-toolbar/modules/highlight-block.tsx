@@ -5,7 +5,12 @@ import { HighLightBlock } from "../icons/highlight-block";
 import { HIGHLIGHT_BLOCK_KEY } from "src/plugins/highlight-block/types";
 
 export const HighLightBlockDocToolBarPlugin: DocToolbarPlugin = {
-  renderIcon: state => null,
+  renderIcon: state => {
+    if (state.element[HIGHLIGHT_BLOCK_KEY]) {
+      return { element: HighLightBlock, config: { position: "lt" } };
+    }
+    return null;
+  },
   renderSignal: () => null,
   renderBanner: state => {
     if (state.status.isBlock || !state.status.isEmptyLine) return null;

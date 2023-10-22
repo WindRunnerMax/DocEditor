@@ -5,7 +5,12 @@ import { exec } from "../utils/exec";
 import { FLOW_CHART_KEY } from "src/plugins/flow-chart/types";
 
 export const FlowChartDocToolBarPlugin: DocToolbarPlugin = {
-  renderIcon: state => null,
+  renderIcon: state => {
+    if (state.element[FLOW_CHART_KEY]) {
+      return { element: <IconPalette />, config: { position: "lt" } };
+    }
+    return null;
+  },
   renderSignal: () => null,
   renderBanner: state => {
     if (state.status.isBlock || !state.status.isEmptyLine) return null;

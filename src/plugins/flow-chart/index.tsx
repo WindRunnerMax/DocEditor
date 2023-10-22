@@ -5,9 +5,10 @@ import { ReactEditor } from "slate-react";
 import { CommandFn } from "src/core/command";
 import { v4 } from "uuid";
 import { HistoryEditor } from "slate-history";
-import { BaseEditor, Transforms } from "slate";
+import { BaseEditor } from "slate";
 import { DocFLowChart } from "./components/viewer";
 import { FLOW_CHART_KEY } from "./types";
+import { setBlockNode } from "src/core/ops/set";
 
 export const FlowChartPlugin = (
   editor: BaseEditor & ReactEditor & HistoryEditor,
@@ -15,12 +16,11 @@ export const FlowChartPlugin = (
 ): Plugin => {
   const command: CommandFn = editor => {
     const uuid = v4();
-    Transforms.insertNodes(editor, {
+    setBlockNode(editor, {
       uuid,
       [FLOW_CHART_KEY]: { type: "xml" as const, content: "" },
       children: [{ text: "" }],
     });
-    Transforms.insertNodes(editor, { children: [{ text: "" }] });
   };
   return {
     key: FLOW_CHART_KEY,

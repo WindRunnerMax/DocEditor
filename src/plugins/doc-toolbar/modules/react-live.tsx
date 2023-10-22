@@ -5,7 +5,12 @@ import { exec } from "../utils/exec";
 import { REACT_LIVE_KEY } from "src/plugins/react-live/types";
 
 export const ReactLiveDocToolBarPlugin: DocToolbarPlugin = {
-  renderIcon: state => null,
+  renderIcon: state => {
+    if (state.element[REACT_LIVE_KEY]) {
+      return { element: <IconThunderbolt />, config: { position: "lt" } };
+    }
+    return null;
+  },
   renderSignal: () => null,
   renderBanner: state => {
     if (state.status.isBlock || !state.status.isEmptyLine) return null;

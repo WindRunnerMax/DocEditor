@@ -98,8 +98,8 @@ export const DocMenu: React.FC<{
         </Trigger>
       )}
       position="left"
-      mouseLeaveDelay={200}
-      mouseEnterDelay={200}
+      mouseLeaveDelay={300}
+      mouseEnterDelay={300}
       {...HoverIconConfig.config}
     >
       <div className={cs(menuVisible && "doc-line-hover")}>{props.children}</div>

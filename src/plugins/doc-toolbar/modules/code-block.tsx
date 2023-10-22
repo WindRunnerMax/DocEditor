@@ -5,7 +5,12 @@ import { exec } from "../utils/exec";
 import { CODE_BLOCK_KEY } from "src/plugins/codeblock/types";
 
 export const CodeBlockDocToolBarPlugin: DocToolbarPlugin = {
-  renderIcon: state => null,
+  renderIcon: state => {
+    if (state.element[CODE_BLOCK_KEY]) {
+      return { element: <IconCodeSquare />, config: { position: "lt" } };
+    }
+    return null;
+  },
   renderSignal: () => null,
   renderBanner: state => {
     if (state.status.isBlock || !state.status.isEmptyLine) return null;

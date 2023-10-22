@@ -11,10 +11,8 @@ import { ReactLiveView } from "./components/viewer";
 
 export const ReactLivePlugin = (editor: Editor): Plugin => {
   const reactLiveCommand: CommandFn = editor => {
-    Transforms.insertNodes(editor, {
-      children: [{ text: "<Button type='primary'>Primary</Button>" }],
-    });
     setWrapNodes(editor, { [REACT_LIVE_KEY]: true }, { [REACT_LIVE_ITEM_KEY]: true });
+    Transforms.insertText(editor, "<Button type='primary'>Primary</Button>");
   };
 
   return {
