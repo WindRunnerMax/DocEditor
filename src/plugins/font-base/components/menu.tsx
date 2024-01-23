@@ -1,7 +1,8 @@
 import "../index.scss";
-import { FC, useMemo } from "react";
+import type { FC } from "react";
+import { useMemo } from "react";
 import { Button, InputNumber } from "@arco-design/web-react";
-import { FontBaseConfig } from "../types";
+import type { FontBaseConfig } from "../types";
 import { useMemoizedFn } from "ahooks";
 
 interface Props {

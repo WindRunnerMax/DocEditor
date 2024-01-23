@@ -1,5 +1,5 @@
 import "../index.scss";
-import { FC } from "react";
+import type { FC } from "react";
 import { InputNumber } from "@arco-design/web-react";
 
 interface Props {

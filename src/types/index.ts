@@ -1,5 +1,6 @@
-import { BaseEditor, BlockElement, TextElement, Path, Node } from "slate";
-import { ReactEditor } from "slate-react";
+import type { BaseEditor, BlockElement, TextElement, Path } from "slate";
+import { Node } from "slate";
+import type { ReactEditor } from "slate-react";
 
 declare module "slate" {
   interface BlockElement {

@@ -1,9 +1,11 @@
-import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/plugin/interface";
+import type { Plugin } from "../../core/plugin/interface";
+import { EDITOR_ELEMENT_TYPE } from "../../core/plugin/interface";
 import { Editor, Transforms } from "slate";
 import { getBlockNode } from "../../core/ops/get";
 import { isCollapsed, isMatchedEvent } from "../../core/ops/is";
 import { KEYBOARD } from "../../utils/constant";
-import { execCommand, EditorCommands } from "../../core/command";
+import type { EditorCommands } from "../../core/command";
+import { execCommand } from "../../core/command";
 import { SHORTCUT_KEY } from "./types";
 import { ORDERED_LIST_KEY } from "../ordered-list/types";
 import { UNORDERED_LIST_KEY } from "../unordered-list/types";

@@ -1,9 +1,11 @@
 import "./index.scss";
-import { CommandFn } from "../../core/command";
-import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/plugin/interface";
+import type { CommandFn } from "../../core/command";
+import type { Plugin } from "../../core/plugin/interface";
+import { EDITOR_ELEMENT_TYPE } from "../../core/plugin/interface";
 import { isBlock, isText } from "../../core/ops/is";
 import { setBlockNode, setWrapNodes } from "../../core/ops/set";
-import { BlockElement, Editor, Range } from "slate";
+import type { BlockElement, Range } from "slate";
+import { Editor } from "slate";
 import { ReactEditor } from "slate-react";
 
 import { codeTokenize, DEFAULT_LANGUAGE, getLanguage, SUPPORTED_LANGUAGES } from "./utils/parser";

@@ -1,9 +1,11 @@
 import "./index.scss";
-import React, { FC, useEffect, useMemo, useRef, useState } from "react";
+import type { FC } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Editor } from "slate";
 import { Menu } from "@arco-design/web-react";
 import { useMemoizedFn } from "ahooks";
-import { execCommand, EditorCommands } from "../../core/command";
+import type { EditorCommands } from "../../core/command";
+import { execCommand } from "../../core/command";
 import { execSelectMarks, getSelectionRect, maskMenuToolBar, Portal } from "./utils/selection";
 import { ReactEditor } from "slate-react";
 import { MenuItems } from "./components/menu";

@@ -1,4 +1,4 @@
-import { DocToolbarPlugin } from "../types";
+import type { DocToolbarPlugin } from "../types";
 import { getWrappedSignalMenu } from "../utils/wrapper";
 import { exec } from "../utils/exec";
 import { DIVIDING_LINE_KEY } from "src/plugins/dividing-line/types";

@@ -1,5 +1,5 @@
-import { Editor, Path, Location, TextElement } from "slate";
-import { BaseNode } from "src/types";
+import type { Editor, Path, Location, TextElement } from "slate";
+import type { BaseNode } from "src/types";
 
 export type CommandFn = (
   editor: Editor,

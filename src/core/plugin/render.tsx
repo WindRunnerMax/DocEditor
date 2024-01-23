@@ -1,7 +1,7 @@
-import { NodeEntry, Range } from "slate";
-import { RenderElementProps, RenderLeafProps } from "slate-react";
+import type { NodeEntry, Range } from "slate";
+import type { RenderElementProps, RenderLeafProps } from "slate-react";
 import { Void } from "../component/void";
-import { ElementContext, ElementPlugin, LeafContext, LeafPlugin, Plugin } from "./interface";
+import type { ElementContext, ElementPlugin, LeafContext, LeafPlugin, Plugin } from "./interface";
 
 export const renderElement = (props: RenderElementProps, elementPlugins: ElementPlugin[]) => {
   const context: ElementContext = {

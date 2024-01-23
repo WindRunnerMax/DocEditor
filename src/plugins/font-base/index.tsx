@@ -1,9 +1,11 @@
-import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/plugin/interface";
+import type { Plugin } from "../../core/plugin/interface";
+import { EDITOR_ELEMENT_TYPE } from "../../core/plugin/interface";
 import { Popup } from "src/components/popup";
 import { setTextNode } from "../../core/ops/set";
 import { assertValue } from "src/utils/common";
 import { FontBaseMenu } from "./components/menu";
-import { FONT_BASE_KEY, FontBaseConfig } from "./types";
+import type { FontBaseConfig } from "./types";
+import { FONT_BASE_KEY } from "./types";
 
 export const FontBasePlugin = (): Plugin => {
   let popupModel: Popup | null = null;

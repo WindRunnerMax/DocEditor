@@ -1,4 +1,4 @@
-import { BlockElement, Editor, Path } from "slate";
+import type { BlockElement, Editor, Path } from "slate";
 import { existKey, getBlockNode, getNextBlockNode } from "../../../core/ops/get";
 import { isCollapsed, isBlock } from "../../../core/ops/is";
 import { setBlockNode } from "../../../core/ops/set";

@@ -1,5 +1,6 @@
 import "./index.scss";
-import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/plugin/interface";
+import type { Plugin } from "../../core/plugin/interface";
+import { EDITOR_ELEMENT_TYPE } from "../../core/plugin/interface";
 import { PARAGRAPH_KEY } from "./types";
 import { getBlockAttributes } from "src/core/ops/get";
 import { setUnBlockNode } from "src/core/ops/set";

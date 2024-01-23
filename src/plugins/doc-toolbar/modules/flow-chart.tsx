@@ -1,4 +1,4 @@
-import { DocToolbarPlugin } from "../types";
+import type { DocToolbarPlugin } from "../types";
 import { getWrappedBannerMenu } from "../utils/wrapper";
 import { IconPalette } from "@arco-design/web-react/icon";
 import { exec } from "../utils/exec";

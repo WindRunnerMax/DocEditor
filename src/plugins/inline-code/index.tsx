@@ -1,5 +1,6 @@
 import "./index.scss";
-import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/plugin/interface";
+import type { Plugin } from "../../core/plugin/interface";
+import { EDITOR_ELEMENT_TYPE } from "../../core/plugin/interface";
 import { setTextNode, setUnTextNode } from "../../core/ops/set";
 import { INLINE_CODE_KEY } from "./types";
 

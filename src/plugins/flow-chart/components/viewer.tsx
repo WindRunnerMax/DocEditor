@@ -1,7 +1,7 @@
 import { Button, Empty, Spin, Trigger } from "@arco-design/web-react";
 import { IconDownload, IconEdit, IconPalette } from "@arco-design/web-react/icon";
 import { useEffect, useRef, useState } from "react";
-import { BlockElement, Editor } from "slate";
+import type { BlockElement, Editor } from "slate";
 import { ReactEditor } from "slate-react";
 import { setBlockNode } from "src/core/ops/set";
 import { cs } from "src/utils/classnames";

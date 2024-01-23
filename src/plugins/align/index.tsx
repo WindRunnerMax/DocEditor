@@ -1,6 +1,7 @@
 import "./index.scss";
-import { CommandFn } from "../../core/command";
-import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/plugin/interface";
+import type { CommandFn } from "../../core/command";
+import type { Plugin } from "../../core/plugin/interface";
+import { EDITOR_ELEMENT_TYPE } from "../../core/plugin/interface";
 import { isObject } from "src/utils/is";
 import { isMatchedAttributeNode } from "../../core/ops/is";
 import { setBlockNode } from "../../core/ops/set";

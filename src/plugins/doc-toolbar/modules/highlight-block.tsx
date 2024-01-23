@@ -1,4 +1,4 @@
-import { DocToolbarPlugin } from "../types";
+import type { DocToolbarPlugin } from "../types";
 import { getWrappedBannerMenu } from "../utils/wrapper";
 import { exec } from "../utils/exec";
 import { HighLightBlock } from "../icons/highlight-block";

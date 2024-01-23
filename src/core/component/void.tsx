@@ -1,4 +1,4 @@
-import { FC } from "react";
+import type { FC } from "react";
 
 export const Void: FC<{ className?: string; selectable?: boolean }> = props => {
   const { className, selectable = true } = props;

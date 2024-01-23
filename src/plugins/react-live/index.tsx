@@ -1,9 +1,11 @@
 import "./index.scss";
-import { CommandFn } from "../../core/command";
-import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/plugin/interface";
+import type { CommandFn } from "../../core/command";
+import type { Plugin } from "../../core/plugin/interface";
+import { EDITOR_ELEMENT_TYPE } from "../../core/plugin/interface";
 import { isBlock } from "../../core/ops/is";
 import { setWrapNodes } from "../../core/ops/set";
-import { Editor, Range, Transforms } from "slate";
+import type { Editor, Range } from "slate";
+import { Transforms } from "slate";
 
 import { codeTokenize, collectReactLiveText } from "./utils/parse";
 import { REACT_LIVE_ITEM_KEY, REACT_LIVE_KEY, REACT_LIVE_TYPE } from "./types";

@@ -1,4 +1,4 @@
-import { DocToolbarPlugin } from "../types";
+import type { DocToolbarPlugin } from "../types";
 import { CodeBlockDocToolBarPlugin } from "./code-block";
 import { DefaultAddDocToolBarPlugin } from "./default-add";
 import { DividingLineDocToolBarPlugin } from "./dividing-line";

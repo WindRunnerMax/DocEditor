@@ -1,7 +1,8 @@
 import styles from "./index.module.scss";
 import { Image } from "@arco-design/web-react";
-import { FC, useRef, useState } from "react";
-import { BlockElement, Editor } from "slate";
+import type { FC } from "react";
+import { useRef, useState } from "react";
+import type { BlockElement, Editor } from "slate";
 import { getPathById, setBlockNode } from "src/core/ops";
 import { cs } from "src/utils/classnames";
 import { IMAGE_KEY } from "../../types";

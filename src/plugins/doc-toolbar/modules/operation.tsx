@@ -1,6 +1,6 @@
 import "./index.scss";
 import { Trigger } from "@arco-design/web-react";
-import { DocToolBarState, DocToolbarPlugin } from "../types";
+import type { DocToolBarState, DocToolbarPlugin } from "../types";
 import { getWrappedBannerMenu } from "../utils/wrapper";
 import {
   IconCopy,
@@ -10,7 +10,8 @@ import {
   IconScissor,
 } from "@arco-design/web-react/icon";
 import React from "react";
-import { BaseNode, Transforms } from "slate";
+import type { BaseNode } from "slate";
+import { Transforms } from "slate";
 import { isBlock, isText, isTextBlock } from "src/core/ops";
 import { EditorNode } from "src/types";
 import { TriggerMenu } from "../components/trigger-menu";

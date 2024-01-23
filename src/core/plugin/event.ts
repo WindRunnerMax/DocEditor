@@ -1,6 +1,8 @@
-import { KEY_EVENT, Plugin } from "./interface";
+import type { Plugin } from "./interface";
+import { KEY_EVENT } from "./interface";
 import { isBlock, isText, isTextBlock } from "../ops/is";
-import { Descendant, Node, Editor } from "slate";
+import type { Descendant, Editor } from "slate";
+import { Node } from "slate";
 
 export const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>, keyDownPlugins: Plugin[]) => {
   if (event.nativeEvent.isComposing) return void 0;

@@ -1,5 +1,5 @@
-import { BaseNode, EditorPath } from "src/types";
-import { EditorSchema } from "src/core/schema";
+import type { BaseNode, EditorPath } from "src/types";
+import type { EditorSchema } from "src/core/schema";
 import { isArray } from "src/utils/is";
 import { Editor } from "slate";
 

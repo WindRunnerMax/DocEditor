@@ -1,6 +1,7 @@
-import { Editor, Path } from "slate";
+import type { Path } from "slate";
+import { Editor } from "slate";
 import { isBlock, isText, isTextBlock, setBlockNode, setUnBlockNode } from "../ops";
-import { BaseNode } from "src/types";
+import type { BaseNode } from "src/types";
 import { isDev } from "src/utils/is";
 
 type SchemaItem = {

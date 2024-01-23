@@ -1,5 +1,7 @@
-import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/plugin/interface";
-import { Editor, Transforms } from "slate";
+import type { Plugin } from "../../core/plugin/interface";
+import { EDITOR_ELEMENT_TYPE } from "../../core/plugin/interface";
+import type { Editor } from "slate";
+import { Transforms } from "slate";
 import { isCollapsed, isMatchedEvent } from "../../core/ops/is";
 import { KEYBOARD } from "../../utils/constant";
 import { INDENT_KEY } from "./types";

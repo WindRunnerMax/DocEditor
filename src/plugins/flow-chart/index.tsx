@@ -1,11 +1,12 @@
 import "./index.scss";
-import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/plugin/interface";
+import type { Plugin } from "../../core/plugin/interface";
+import { EDITOR_ELEMENT_TYPE } from "../../core/plugin/interface";
 import { existKey } from "../../core/ops/get";
-import { ReactEditor } from "slate-react";
-import { CommandFn } from "src/core/command";
+import type { ReactEditor } from "slate-react";
+import type { CommandFn } from "src/core/command";
 import { v4 } from "uuid";
-import { HistoryEditor } from "slate-history";
-import { BaseEditor } from "slate";
+import type { HistoryEditor } from "slate-history";
+import type { BaseEditor } from "slate";
 import { DocFLowChart } from "./components/viewer";
 import { FLOW_CHART_KEY } from "./types";
 import { setBlockNode } from "src/core/ops/set";

@@ -1,7 +1,8 @@
 import "../index.scss";
-import { FC, useMemo } from "react";
-import { BlockElement, Editor } from "slate";
-import { AssertT } from "src/utils/common";
+import type { FC } from "react";
+import { useMemo } from "react";
+import type { BlockElement, Editor } from "slate";
+import type { AssertT } from "src/utils/common";
 import { Trigger } from "@arco-design/web-react";
 import { ReactEditor } from "slate-react";
 import { setBlockNode } from "src/core/ops/set";

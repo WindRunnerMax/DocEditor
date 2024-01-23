@@ -1,9 +1,9 @@
 import "../index.scss";
-import { FC } from "react";
+import type { FC } from "react";
 import { Button, Form, Input, Switch } from "@arco-design/web-react";
 import { isEmptyValue } from "src/utils/is";
 import useForm from "@arco-design/web-react/es/Form/useForm";
-import { HyperLinkConfig } from "../types";
+import type { HyperLinkConfig } from "../types";
 
 interface Props {
   top?: number;

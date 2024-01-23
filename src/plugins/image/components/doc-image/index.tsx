@@ -1,5 +1,5 @@
 import { Spin } from "@arco-design/web-react";
-import { BlockElement, Editor } from "slate";
+import type { BlockElement, Editor } from "slate";
 import { SelectionWrapper } from "src/components/selection-wrapper";
 import { ImageWrapper } from "../wrapper";
 import { IMAGE_STATUS } from "../../types";

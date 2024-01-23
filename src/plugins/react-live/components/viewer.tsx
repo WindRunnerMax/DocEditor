@@ -1,6 +1,7 @@
 import "../index.scss";
-import { BlockElement, Editor } from "slate";
-import React, { FC, useEffect, useRef, useState } from "react";
+import type { BlockElement, Editor } from "slate";
+import type { FC } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { collectText } from "../utils/parse";
 import { Void } from "src/core/component";
 import { Button, Space, Spin } from "@arco-design/web-react";

@@ -1,6 +1,7 @@
 import styles from "./index.module.scss";
 import { Image } from "@arco-design/web-react";
-import { FC, useState } from "react";
+import type { FC } from "react";
+import { useState } from "react";
 import { cs } from "src/utils/classnames";
 
 const Preview = Image.Preview;

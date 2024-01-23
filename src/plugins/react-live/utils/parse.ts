@@ -1,7 +1,8 @@
 import Prism from "prismjs";
 import "prismjs/themes/prism.min.css";
 import "prismjs/components/prism-javascript";
-import { BlockElement, Editor, Path, Node } from "slate";
+import type { BlockElement, Path } from "slate";
+import { Editor, Node } from "slate";
 import { isBlock, isText, isTextBlock } from "src/core/ops/is";
 import { getBlockNode } from "src/core/ops/get";
 import { REACT_LIVE_KEY } from "../types";

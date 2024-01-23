@@ -1,5 +1,5 @@
 import { ReactEditor } from "slate-react";
-import { DocToolBarState } from "../types";
+import type { DocToolBarState } from "../types";
 import { execCommand } from "src/core/command";
 import { Transforms } from "slate";
 

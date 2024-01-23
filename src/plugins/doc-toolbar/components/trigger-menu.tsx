@@ -1,6 +1,6 @@
 import React from "react";
 import { DOC_TOOLBAR_MODULES } from "../modules";
-import { DocToolBarState } from "../types";
+import type { DocToolBarState } from "../types";
 
 export const TriggerMenu: React.FC<{ state: DocToolBarState }> = props => {
   const { state } = props;

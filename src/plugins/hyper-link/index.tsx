@@ -1,15 +1,17 @@
-import { EDITOR_ELEMENT_TYPE, Plugin } from "../../core/plugin/interface";
+import type { Plugin } from "../../core/plugin/interface";
+import { EDITOR_ELEMENT_TYPE } from "../../core/plugin/interface";
 import { Popup } from "src/components/popup";
 import { setTextNode, setUnTextNode } from "../../core/ops/set";
 import { Trigger } from "@arco-design/web-react";
 import React, { useState } from "react";
-import { Editor } from "slate";
-import { TextElement } from "../../types";
+import type { Editor } from "slate";
+import type { TextElement } from "../../types";
 import { HyperLinkMenu } from "./components/menu";
 import { ReactEditor } from "slate-react";
 import { assertValue } from "src/utils/common";
 import { isCollapsed } from "src/core/ops";
-import { HYPER_LINK_KEY, HyperLinkConfig } from "./types";
+import type { HyperLinkConfig } from "./types";
+import { HYPER_LINK_KEY } from "./types";
 
 const HyperLinkEditor: React.FC<{
   config: HyperLinkConfig;
