@@ -92,7 +92,7 @@
     "stylelint-config-standard": "^25.0.0",
     "tslib": "^2.4.0",
     "uglifyjs-webpack-plugin": "^2.2.0",
-    "webpack": "^4.0.0"
+    "webpack": "4.44.2"
   },
   "lint-staged": {
     "*.{js,ts,jsx,tsx}": [
