@@ -5,7 +5,7 @@ import "../src/styles/index";
 import { SlateDocEditor } from "./components/doc-editor";
 import { useState } from "react";
 import { cs } from "../src/utils/classnames";
-import { IconEdit, IconFile } from "@arco-design/web-react/icon";
+import { IconEdit, IconFile, IconGithub } from "@arco-design/web-react/icon";
 import { ThemeAction } from "./components/theme-action";
 
 export const App: React.FC = () => {
@@ -14,10 +14,17 @@ export const App: React.FC = () => {
   return (
     <div className="doc-editor-container">
       <div className="header">
-        <span className="left">Editor</span>
+        <span className="left">Document Editor</span>
         <div className="right">
           <div onClick={() => setRender(!readonly)}>{readonly ? <IconEdit /> : <IconFile />}</div>
           <ThemeAction />
+          <a
+            className={"github"}
+            target="_blank"
+            href={"https://github.com/WindrunnerMax/DocEditor"}
+          >
+            <IconGithub />
+          </a>
         </div>
       </div>
       <div className="gap"></div>

@@ -34,6 +34,12 @@ body {
     .right {
       align-items: center;
       display: flex;
+
+      > div,
+      a {
+        color: var(--color-text-1);
+        margin-left: 5px;
+      }
     }
 
     .arco-icon {
