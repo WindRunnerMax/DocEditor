@@ -1,21 +1,19 @@
 module.exports = {
-  extends: ["eslint:recommended", "plugin:prettier/recommended"],
   parserOptions: {
-    requireConfigFile: false,
-    ecmaVersion: 2020,
     sourceType: "module",
   },
+  extends: ["eslint:recommended", "plugin:prettier/recommended"],
   overrides: [
     {
       files: ["*.ts"],
       parser: "@typescript-eslint/parser",
-      plugins: ["@typescript-eslint"],
+      plugins: ["@typescript-eslint", "simple-import-sort"],
       extends: ["plugin:@typescript-eslint/recommended"],
     },
     {
       files: ["*.tsx"],
       parser: "@typescript-eslint/parser",
-      plugins: ["react", "react-hooks", "@typescript-eslint/eslint-plugin"],
+      plugins: ["react", "react-hooks", "@typescript-eslint/eslint-plugin", "simple-import-sort"],
       extends: ["plugin:@typescript-eslint/recommended", "plugin:react-hooks/recommended"],
     },
   ],
@@ -41,6 +39,9 @@ module.exports = {
     "no-console": "off",
     // 关闭每个函数都要显式声明返回值
     // "@typescript-eslint/explicit-module-boundary-types": "off",
+    // 偏好import type
     "@typescript-eslint/consistent-type-imports": "error",
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error",
   },
 };

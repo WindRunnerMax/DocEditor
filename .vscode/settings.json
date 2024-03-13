@@ -1,8 +1,11 @@
 {
     "cSpell.words": [
         "arcoblue",
-        "browserslist",
-        "Builtins",
-        "onwarn"
+        "COMPAT",
+        "pako",
+        "pnpm",
+        "TSON",
+        "undoable",
+        "webrtc"
     ]
 }

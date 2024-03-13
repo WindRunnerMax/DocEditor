@@ -1,0 +1,41 @@
+{
+  "name": "doc-editor-react",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "sideEffects": [
+    "**/*.css",
+    "**/*.scss"
+  ],
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "rspack serve --config ./rspack.config.js",
+    "build": "rspack build --config ./rspack.config.js",
+    "analyze": "rspack build --config ./rspack.config.js --analyze"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "doc-editor-core": "workspace: *",
+    "doc-editor-plugin": "workspace: *",
+    "doc-editor-utils": "workspace: *"
+  },
+  "devDependencies": {
+    "@rspack/cli": "0.2.5",
+    "@rspack/plugin-html": "0.2.5",
+    "@types/node": "20.11.10",
+    "@types/pdfkit": "0.13.3",
+    "@types/react": "17.0.2",
+    "@types/react-dom": "17.0.2",
+    "copy-webpack-plugin": "5",
+    "less": "4.2.0",
+    "less-loader": "12.1.0",
+    "sass-loader": "13.3.3"
+  }
+}
