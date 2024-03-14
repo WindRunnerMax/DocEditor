@@ -1,23 +1,25 @@
 import "../index.scss";
-import type { Editor, Path } from "slate";
-import { Transforms } from "slate";
+
 import { Trigger } from "@arco-design/web-react";
-import type { EditorCommands } from "../../../core/command";
-import type { RenderElementProps } from "slate-react";
-import { ReactEditor } from "slate-react";
+import type { EditorSchema, EditorSuite } from "doc-editor-core";
+import type { EditorCommands } from "doc-editor-core";
+import type { Path } from "doc-editor-delta";
+import type { RenderElementProps } from "doc-editor-delta";
+import { Transforms } from "doc-editor-delta";
+import { ReactEditor } from "doc-editor-delta";
+import { cs } from "doc-editor-utils";
 import React, { useState } from "react";
-import { cs } from "src/utils/classnames";
+
+import { CODE_BLOCK_KEY } from "../../codeblock/types";
+import { HIGHLIGHT_BLOCK_KEY } from "../../highlight-block/types";
+import { REACT_LIVE_KEY } from "../../react-live/types";
 import { DOC_TOOLBAR_MODULES } from "../modules";
-import type { DocToolBarState, DocToolbarPlugin } from "../types";
-import type { EditorSchema } from "src/core/schema";
+import type { DocToolbarPlugin, DocToolBarState } from "../types";
 import { isBlockNode, isEmptyLine, isWithinNode } from "../utils/filter";
 import { TriggerMenu } from "./trigger-menu";
-import { CODE_BLOCK_KEY } from "src/plugins/codeblock/types";
-import { REACT_LIVE_KEY } from "src/plugins/react-live/types";
-import { HIGHLIGHT_BLOCK_KEY } from "src/plugins/highlight-block/types";
 
 export const DocMenu: React.FC<{
-  editor: Editor;
+  editor: EditorSuite;
   element: RenderElementProps["element"];
   commands: EditorCommands;
   schema: EditorSchema;

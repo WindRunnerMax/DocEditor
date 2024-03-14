@@ -1,7 +1,8 @@
-import { ReactEditor } from "slate-react";
+import { execCommand } from "doc-editor-core";
+import { Transforms } from "doc-editor-delta";
+import { ReactEditor } from "doc-editor-delta";
+
 import type { DocToolBarState } from "../types";
-import { execCommand } from "src/core/command";
-import { Transforms } from "slate";
 
 export const exec = (state: DocToolBarState, key: string) => {
   const { editor, element, commands } = state;

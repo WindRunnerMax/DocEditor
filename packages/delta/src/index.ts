@@ -38,6 +38,8 @@ export {
 export { HistoryEditor, withHistory } from "slate-history";
 export type { RenderElementProps, RenderLeafProps } from "slate-react";
 export {
+  Editable,
+  Slate as EditorProvider,
   ReactEditor,
   useFocused,
   useReadOnly,

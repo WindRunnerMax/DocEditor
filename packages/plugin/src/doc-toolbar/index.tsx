@@ -1,14 +1,16 @@
 import "./index.scss";
-import type { Plugin } from "../../core/plugin/interface";
-import { EDITOR_ELEMENT_TYPE } from "../../core/plugin/interface";
-import type { Editor } from "slate";
+
+import type { EditorCommands } from "doc-editor-core";
+import type { EditorSchema } from "doc-editor-core";
+import type { Plugin } from "doc-editor-core";
+import type { EditorSuite } from "doc-editor-core";
+import { EDITOR_ELEMENT_TYPE } from "doc-editor-core";
+
 import { DocMenu } from "./components/doc-menu";
-import type { EditorCommands } from "src/core/command";
 import { DOC_TOOLBAR_KEY } from "./types";
-import type { EditorSchema } from "src/core/schema";
 
 export const DocToolBarPlugin = (
-  editor: Editor,
+  editor: EditorSuite,
   readonly: boolean,
   commands: EditorCommands,
   schema: EditorSchema

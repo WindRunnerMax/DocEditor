@@ -1,8 +1,9 @@
-import type { DocToolbarPlugin } from "../types";
-import { getWrappedBannerMenu } from "../utils/wrapper";
 import { IconImage } from "@arco-design/web-react/icon";
+
+import { IMAGE_KEY } from "../../image/types";
+import type { DocToolbarPlugin } from "../types";
 import { exec } from "../utils/exec";
-import { IMAGE_KEY } from "src/plugins/image/types";
+import { getWrappedBannerMenu } from "../utils/wrapper";
 
 export const ImageDocToolBarPlugin: DocToolbarPlugin = {
   renderIcon: state => {

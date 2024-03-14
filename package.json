@@ -2,8 +2,8 @@
   "name": "doc-editor-light",
   "version": "1.0.0",
   "scripts": {
-    "dev:react": "pnpm --filter doc-editor-react run dev",
-    "build:react": "pnpm --filter doc-editor-react run build"
+    "dev": "pnpm --filter doc-editor-react run dev",
+    "build": "pnpm --filter doc-editor-react run build"
   },
   "repository": {
     "type": "git",

@@ -1,0 +1,66 @@
+@import '../src/styles/global';
+
+body {
+  background-color: var(--color-bg-1);
+}
+
+.doc-editor-container {
+
+  $height: 50px;
+
+  background-color: var(--color-fill-2);
+  display: flow-root;
+  min-height: 100vh;
+
+  .header {
+    align-items: center;
+    background-color: var(--color-bg-2);
+    box-shadow: 0 0 4px var(--color-border-2);
+    color: var(--color-text-1);
+    display: flex;
+    height: $height;
+    justify-content: space-between;
+    left: 0;
+    padding: 0 20px;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: $header-z-index;
+
+    .left {
+      font-size: 18px;
+    }
+
+    .right {
+      align-items: center;
+      display: flex;
+
+      > div,
+      a {
+        color: var(--color-text-1);
+        margin-left: 5px;
+      }
+    }
+
+    .arco-icon {
+      cursor: pointer;
+      font-size: 19px;
+      margin: 7px;
+    }
+  }
+
+  .gap {
+    height: $height;
+  }
+
+  .editor {
+    margin: 0 auto;
+    max-width: 800px;
+
+    .slate-editor {
+      background-color: var(--color-bg-2);
+      margin: 10px;
+      padding: 10px 25px;
+    }
+  }
+}

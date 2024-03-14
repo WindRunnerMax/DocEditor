@@ -1,9 +1,10 @@
-import { HEADING_KEY } from "src/plugins/heading/types";
-import type { DocToolbarPlugin } from "../types";
-import { getWrappedSignalMenu } from "../utils/wrapper";
 import { IconH1, IconH2, IconH3 } from "@arco-design/web-react/icon";
-import { exec } from "../utils/exec";
 import React from "react";
+
+import { HEADING_KEY } from "../../heading/types";
+import type { DocToolbarPlugin } from "../types";
+import { exec } from "../utils/exec";
+import { getWrappedSignalMenu } from "../utils/wrapper";
 
 export const HeadingDocToolBarPlugin: DocToolbarPlugin = {
   renderIcon: state => {

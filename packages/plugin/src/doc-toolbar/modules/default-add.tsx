@@ -1,8 +1,9 @@
 import { IconPlus } from "@arco-design/web-react/icon";
+
+import { ORDERED_LIST_KEY } from "../../ordered-list/types";
+import { QUOTE_BLOCK_KEY } from "../../quote-block/types";
+import { UNORDERED_LIST_KEY } from "../../unordered-list/types";
 import type { DocToolbarPlugin } from "../types";
-import { QUOTE_BLOCK_KEY } from "src/plugins/quote-block/types";
-import { ORDERED_LIST_KEY } from "src/plugins/ordered-list/types";
-import { UNORDERED_LIST_KEY } from "src/plugins/unordered-list/types";
 
 export const DefaultAddDocToolBarPlugin: DocToolbarPlugin = {
   renderIcon: state => {

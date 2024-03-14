@@ -1,8 +1,8 @@
-import type { DocToolbarPlugin } from "../types";
-import { getWrappedBannerMenu } from "../utils/wrapper";
-import { exec } from "../utils/exec";
+import { HIGHLIGHT_BLOCK_KEY } from "../../highlight-block/types";
 import { HighLightBlock } from "../icons/highlight-block";
-import { HIGHLIGHT_BLOCK_KEY } from "src/plugins/highlight-block/types";
+import type { DocToolbarPlugin } from "../types";
+import { exec } from "../utils/exec";
+import { getWrappedBannerMenu } from "../utils/wrapper";
 
 export const HighLightBlockDocToolBarPlugin: DocToolbarPlugin = {
   renderIcon: state => {

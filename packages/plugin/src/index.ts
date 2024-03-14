@@ -1,3 +1,5 @@
+import "./styles/index";
+
 export { AlignPlugin } from "./align";
 export { ALIGN_KEY } from "./align/types";
 export { BoldPlugin } from "./bold";
@@ -29,6 +31,7 @@ export type { HyperLinkConfig } from "./hyper-link/types";
 export { HYPER_LINK_KEY } from "./hyper-link/types";
 export { ImagePlugin } from "./image";
 export { IMAGE_KEY, IMAGE_STATUS } from "./image/types";
+export { IndentPlugin } from "./indent";
 export { InlineCodePlugin } from "./inline-code";
 export { INLINE_CODE_KEY } from "./inline-code/types";
 export { ItalicPlugin } from "./italic";

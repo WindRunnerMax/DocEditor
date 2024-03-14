@@ -1,5 +1,5 @@
-import { BlockElement } from "src/types";
-import { AssertT } from "src/utils/common";
+import type { BlockElement } from "doc-editor-delta";
+import type { AssertT } from "doc-editor-utils";
 
 declare module "doc-editor-delta" {
   interface BlockElement {
