@@ -14,7 +14,7 @@ export const App: React.FC = () => {
   return (
     <div className="doc-editor-container">
       <div className="header">
-        <span className="left">文档编辑器</span>
+        <span className="left">文档</span>
         <div className="right">
           <div onClick={() => setRender(!readonly)}>{readonly ? <IconEdit /> : <IconFile />}</div>
           <ThemeAction />

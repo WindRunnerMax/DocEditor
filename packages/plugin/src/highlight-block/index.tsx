@@ -1,9 +1,8 @@
 import "./index.scss";
 
-import type { CommandFn } from "doc-editor-core";
+import type { CommandFn, EditorSuite } from "doc-editor-core";
 import type { Plugin } from "doc-editor-core";
 import { EDITOR_ELEMENT_TYPE, KEY_EVENT } from "doc-editor-core";
-import type { Editor } from "doc-editor-delta";
 import { assertValue } from "doc-editor-utils";
 import { isObject } from "doc-editor-utils";
 import { getBlockNode } from "doc-editor-utils";
@@ -22,7 +21,7 @@ import { KEYBOARD } from "doc-editor-utils";
 import { HighlightBlockWrapper } from "./components/wrapper";
 import { COLOR_MAP, HIGHLIGHT_BLOCK_ITEM_KEY, HIGHLIGHT_BLOCK_KEY } from "./types";
 
-export const HighlightBlockPlugin = (editor: Editor, readonly: boolean): Plugin => {
+export const HighlightBlockPlugin = (editor: EditorSuite, readonly: boolean): Plugin => {
   const quoteCommand: CommandFn = (editor, key, data) => {
     if (isObject(data) && data.path) {
       if (!isMatchedAttributeNode(editor, HIGHLIGHT_BLOCK_KEY, null, data.path)) {

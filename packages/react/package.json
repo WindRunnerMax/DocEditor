@@ -12,9 +12,11 @@
     "dist"
   ],
   "scripts": {
-    "dev": "rspack serve --config ./rspack.config.js",
-    "build": "rspack build --config ./rspack.config.js",
-    "analyze": "rspack build --config ./rspack.config.js --analyze"
+    "dev": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "lint-es": "eslint --fix --ext .js,.jsx,.ts,.tsx --ignore-path .gitignore .",
+    "lint-style": "stylelint \"**/*.{css,scss,sass}\" --fix --ignore-path .gitignore",
+    "lint": "npm run lint-es && npm run lint-style"
   },
   "keywords": [],
   "author": "",
@@ -30,15 +32,32 @@
     "doc-editor-utils": "workspace: *"
   },
   "devDependencies": {
-    "@rspack/cli": "0.2.5",
-    "@rspack/plugin-html": "0.2.5",
+    "cross-env": "7.0.3",
+    "customize-cra": "1.0.0",
     "@types/node": "20.11.10",
     "@types/react": "17.0.2",
     "@types/react-dom": "17.0.2",
-    "copy-webpack-plugin": "5",
     "@types/lodash-es": "4.17.6",
-    "less": "4.2.0",
-    "less-loader": "12.1.0",
-    "sass-loader": "13.3.3"
+    "less": "3.13.1",
+    "less-loader": "5.0.0",
+    "sass": "1.52.3",
+    "react-scripts": "4.0.3",
+    "react-app-rewired": "2.1.8",
+    "sass-loader": "13.3.3",
+    "tslib": "2.4.0",
+    "uglifyjs-webpack-plugin": "2.2.0",
+    "webpack": "4.44.2"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

@@ -1,3 +1,5 @@
+import "doc-editor-plugin/styles/index";
+
 import { useMemoizedFn } from "ahooks";
 import { EditorPlugin, makeEditor } from "doc-editor-core";
 import type { BaseNode } from "doc-editor-delta";
