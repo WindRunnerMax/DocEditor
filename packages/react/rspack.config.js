@@ -15,8 +15,6 @@ module.exports = {
   externals: {
     "react": "React",
     "react-dom": "ReactDOM",
-    "blob-stream": "blobStream",
-    "pdfkit": "PDFDocument",
   },
   plugins: [
     new CopyPlugin([{ from: "./public", to: "." }]),
@@ -28,10 +26,10 @@ module.exports = {
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-      "sketching-core": path.resolve(__dirname, "../core/src"),
-      "sketching-delta": path.resolve(__dirname, "../delta/src"),
-      "sketching-plugin": path.resolve(__dirname, "../plugin/src"),
-      "sketching-utils": path.resolve(__dirname, "../utils/src"),
+      "doc-editor-core": path.resolve(__dirname, "../core/src"),
+      "doc-editor-delta": path.resolve(__dirname, "../delta/src"),
+      "doc-editor-plugin": path.resolve(__dirname, "../plugin/src"),
+      "doc-editor-utils": path.resolve(__dirname, "../utils/src"),
     },
   },
   builtins: {

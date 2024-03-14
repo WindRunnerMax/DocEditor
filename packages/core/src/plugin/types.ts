@@ -1,5 +1,5 @@
-import type { Editor, NodeEntry, Range } from "slate";
-import type { RenderElementProps, RenderLeafProps } from "slate-react";
+import type { RenderElementProps, RenderLeafProps } from "doc-editor-delta";
+import type { Editor, NodeEntry, Range } from "doc-editor-delta";
 
 import type { CommandFn, EditorCommands } from "../command";
 

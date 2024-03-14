@@ -1,7 +1,9 @@
-import type { BaseNode, Editor, Location, Path, TextElement } from "doc-editor-delta";
+import type { BaseNode, Location, Path, TextElement } from "doc-editor-delta";
+
+import type { EditorSuite } from "../editor/types";
 
 export type CommandFn = (
-  editor: Editor,
+  editor: EditorSuite,
   key: string,
   data: {
     path?: Path;
@@ -19,7 +21,7 @@ export const registerCommand = (key: string, fn: CommandFn, commands: EditorComm
 };
 
 export const execCommand = (
-  editor: Editor,
+  editor: EditorSuite,
   commands: EditorCommands,
   key: string,
   data: {

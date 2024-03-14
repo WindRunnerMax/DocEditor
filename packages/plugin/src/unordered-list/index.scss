@@ -1,0 +1,20 @@
+li {
+  list-style-type: none;
+}
+
+.doc-unordered-list {
+  list-style-type: none;
+  margin: 0;
+  padding-left: 0;
+
+  .doc-unordered-item::marker {
+    color: rgb(var(--blue-7));
+  }
+
+  @each $index, $item, $type in 1 20 disc, 2 40 circle, 3 60 square {
+    .unordered-li-#{$index} {
+      list-style-type: $type;
+      margin-left: $item + px;
+    }
+  }
+}

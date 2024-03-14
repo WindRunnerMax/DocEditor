@@ -17,7 +17,14 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "slate": "0.80.0"
+    "slate": "0.80.0",
+    "slate-history": "0.66.0",
+    "slate-react": "0.80.0"
+  },
+  "peerDependencies": {
+    "slate": "0.80.0",
+    "slate-history": "0.66.0",
+    "slate-react": "0.80.0"
   },
   "devDependencies": {
     "@babel/core": "7.20.12",

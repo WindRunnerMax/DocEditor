@@ -1,0 +1,20 @@
+li {
+  list-style-type: none;
+}
+
+.doc-ordered-list {
+  list-style-type: none;
+  margin: 0;
+  padding-left: 0;
+
+  .doc-ordered-item::marker {
+    color: rgb(var(--blue-7));
+  }
+
+  @each $index, $item, $type in 1 20 decimal, 2 40 lower-alpha, 3 60 lower-roman {
+    .ordered-li-#{$index} {
+      list-style-type: $type;
+      margin-left: $item + px;
+    }
+  }
+}

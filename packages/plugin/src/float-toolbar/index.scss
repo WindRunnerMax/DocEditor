@@ -1,0 +1,81 @@
+@import 'src/styles/global';
+
+.menu-toolbar-container {
+  .arco-menu-inner {
+    display: flex;
+    padding: 2px 0;
+  }
+
+  .arco-menu-item,
+  .arco-menu-pop {
+    align-items: center;
+    display: flex;
+    height: 28px;
+    justify-content: center;
+    line-height: unset;
+    margin: 0 3px;
+    padding: 0;
+    width: 28px;
+
+    .arco-icon {
+      margin: 0;
+    }
+  }
+
+  .arco-menu-pop {
+    padding-right: 18px;
+    width: 50px;
+
+    .arco-menu-icon-suffix {
+      left: 28px;
+
+      svg {
+        transform: rotate(90deg);
+      }
+    }
+  }
+}
+
+.align-menu-center {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+}
+
+@keyframes fade-out {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.hover-menu-container {
+  animation: fade-out 0.3s;
+  background-color: var(--color-bg-2);
+  border: 1px solid var(--color-border-1);
+  box-shadow: $box-shadow;
+  left: -10000px;
+  padding: 3px 5px;
+  position: absolute;
+  top: -10000px;
+  z-index: $doc-menu-z-index;
+
+  button {
+    color: #000 !important;
+  }
+
+  .arco-icon {
+    color: var(--color-text-1) !important;
+  }
+
+  .iconfont {
+    align-items: center;
+    display: flex;
+    font-size: 14px;
+  }
+
+  .cut-line {
+    background-color: var(--color-border-2);
+    margin: 4px 6px;
+    width: 1px;
+  }
+}

@@ -1,8 +1,8 @@
-import type { Editor } from "slate";
-import { createEditor } from "slate";
-import { withHistory } from "slate-history";
-import type { ReactEditor } from "slate-react";
-import { withReact } from "slate-react";
+import type { Editor } from "doc-editor-delta";
+import type { ReactEditor } from "doc-editor-delta";
+import { createEditor } from "doc-editor-delta";
+import { withHistory } from "doc-editor-delta";
+import { withReact } from "doc-editor-delta";
 
 import type { EditorSchema } from "../schema";
 import { withSchema } from "../schema";

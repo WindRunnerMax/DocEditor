@@ -1,5 +1,5 @@
-import type { Editor } from "slate";
-import type { HistoryEditor } from "slate-history";
-import type { ReactEditor } from "slate-react";
+import type { Editor } from "doc-editor-delta";
+import type { HistoryEditor } from "doc-editor-delta";
+import type { ReactEditor } from "doc-editor-delta";
 
 export type EditorSuite = Editor & HistoryEditor & ReactEditor;

@@ -1,5 +1,5 @@
-import type { NodeEntry, Range } from "slate";
-import type { RenderElementProps, RenderLeafProps } from "slate-react";
+import type { NodeEntry, Range } from "doc-editor-delta";
+import type { RenderElementProps, RenderLeafProps } from "doc-editor-delta";
 
 import { Void } from "../preset/void";
 import type { ElementContext, ElementPlugin, LeafContext, LeafPlugin, Plugin } from "./types";

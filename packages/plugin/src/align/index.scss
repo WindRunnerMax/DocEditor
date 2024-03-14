@@ -1,0 +1,5 @@
+@each $type in left, center, right, justify {
+  .align-#{$type} {
+    text-align: $type;
+  }
+}

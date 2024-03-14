@@ -8,5 +8,6 @@ export { renderElement, renderLeaf } from "./plugin/render";
 export type { ElementPlugin, LeafPlugin, Plugin } from "./plugin/types";
 export type { RenderPlugins } from "./plugin/types";
 export { EDITOR_ELEMENT_TYPE, KEY_EVENT } from "./plugin/types";
+export { Void } from "./preset/void";
 export type { EditorSchema } from "./schema";
 export { withSchema } from "./schema";

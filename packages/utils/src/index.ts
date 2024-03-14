@@ -12,9 +12,11 @@ export {
 } from "./get";
 export {
   isCollapsed,
+  isEmptyLine,
   isFocusLineEnd,
   isFocusLineStart,
   isMatchedAttributeNode,
+  isMatchedEvent,
   isTextBlock,
   isWrappedAdjoinNode,
   isWrappedEdgeNode,
@@ -32,6 +34,7 @@ export {
 } from "./set";
 export {
   cs,
+  getUniqueId,
   isArray,
   isDev,
   isEmptyValue,
