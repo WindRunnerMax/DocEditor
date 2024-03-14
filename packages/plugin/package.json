@@ -4,7 +4,11 @@
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "sideEffects": false,
+  "sideEffects": [
+    "*.scss",
+    "*.css",
+    "**/styles/**"
+  ],
   "files": [
     "dist"
   ],

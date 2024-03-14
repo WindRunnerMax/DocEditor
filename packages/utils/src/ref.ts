@@ -1,7 +1,7 @@
 import type { BaseNode, BlockElement, Node, TextElement } from "doc-editor-delta";
 import { Editor, Element, Text } from "doc-editor-delta";
 
-// 避免循环引用
+// 此文件是为了避免循环引用
 
 export const isBaseElement = (block: Node): block is BaseNode => {
   return !Editor.isEditor(block) && Element.isElement(block);

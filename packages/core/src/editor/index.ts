@@ -1,9 +1,14 @@
-import { Editor } from "slate";
+import type { Editor } from "slate";
+import { createEditor } from "slate";
+import { withHistory } from "slate-history";
+import type { ReactEditor } from "slate-react";
+import { withReact } from "slate-react";
 
-export function makeEditor() {
-  const editor = new SlateEditor();
-  console.log("editor :>> ", editor);
+import type { EditorSchema } from "../schema";
+import { withSchema } from "../schema";
+import type { EditorSuite } from "./types";
+
+export function makeEditor(schema: EditorSchema) {
+  const editor = withHistory(withReact(createEditor() as Editor & ReactEditor));
+  return withSchema(schema, editor) as EditorSuite;
 }
-
-const e = new EditorSuite();
-console.log("e :>> ", e);

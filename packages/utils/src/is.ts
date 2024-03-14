@@ -49,6 +49,11 @@ export const isFocusLineEnd = (editor: Editor, path: Path) => {
   return isCollapsed(editor, editor.selection) && Point.equals(end, editor.selection.anchor);
 };
 
+export const isMatchedEvent = (event: React.KeyboardEvent<HTMLDivElement>, ...args: string[]) => {
+  const key = event.key;
+  return args.indexOf(key) > -1;
+};
+
 export const isTextBlock = (editor: Editor, node: Node): boolean => {
   if (isBlock(editor, node)) {
     return node.children.every(child => isText(child));

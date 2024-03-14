@@ -1,4 +1,4 @@
-import type { BaseEditor, BaseRange, Location, Path } from "slate";
+import type { BaseEditor, BaseRange, Location, NodeEntry, Path } from "slate";
 import { Editor, Element, Point, Range, Text, Transforms } from "slate";
 import { Node } from "slate";
 
@@ -23,4 +23,16 @@ export interface TextElement {
 export type BaseNode = BlockElement | TextElement;
 export type EditorPath = Path;
 export const EditorNode = Node;
-export { BaseRange, Editor, Element, Location, Node, Path, Point, Range, Text, Transforms };
+export {
+  BaseRange,
+  Editor,
+  Element,
+  Location,
+  Node,
+  NodeEntry,
+  Path,
+  Point,
+  Range,
+  Text,
+  Transforms,
+};
