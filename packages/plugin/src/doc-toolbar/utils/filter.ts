@@ -1,7 +1,7 @@
-import type { BaseNode, EditorPath } from "src/types";
-import type { EditorSchema } from "src/core/schema";
-import { isArray } from "src/utils/is";
-import { Editor } from "slate";
+import type { EditorSchema } from "doc-editor-core";
+import type { BaseNode, EditorPath } from "doc-editor-delta";
+import { Editor } from "doc-editor-delta";
+import { isArray } from "doc-editor-utils";
 
 let blockNodes: Set<string> | null = null;
 export const getBlockNodes = (schema: EditorSchema) => {
@@ -20,9 +20,9 @@ export const isBlockNode = (schema: EditorSchema, element: BaseNode) => {
 export const isEmptyLine = (element: BaseNode): boolean => {
   if (
     Object.keys(element).length === 1 &&
-    isArray<BaseNode>(element.children) &&
+    isArray(element.children) &&
     element.children.length === 1 &&
-    element.children[0].text === ""
+    (element.children[0] as BaseNode).text === ""
   ) {
     return true;
   }

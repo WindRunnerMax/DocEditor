@@ -1,20 +1,22 @@
 import { Button, Empty, Spin, Trigger } from "@arco-design/web-react";
 import { IconDownload, IconEdit, IconPalette } from "@arco-design/web-react/icon";
+import type { EditorSuite } from "doc-editor-core";
+import type { BlockElement } from "doc-editor-delta";
+import { ReactEditor } from "doc-editor-delta";
+import { setBlockNode } from "doc-editor-utils";
+import { cs } from "doc-editor-utils";
 import { useEffect, useRef, useState } from "react";
-import type { BlockElement, Editor } from "slate";
-import { ReactEditor } from "slate-react";
-import { setBlockNode } from "src/core/ops/set";
-import { cs } from "src/utils/classnames";
+
+import { SelectionWrapper } from "../../utils/selection-wrapper";
+import { FLOW_CHART_KEY } from "../types";
 import { diagramDownload, diagramEditor, diagramPreview, getSvg } from "../utils/diagram-loader";
 import { xmlToString } from "../utils/utils";
-import { SelectionWrapper } from "src/components/selection-wrapper";
 import { PreviewWrapper } from "./preview";
-import { FLOW_CHART_KEY } from "../types";
 
 export const DocFLowChart: React.FC<{
   element: BlockElement;
   readonly: boolean;
-  editor: Editor;
+  editor: EditorSuite;
   config: Required<BlockElement>[typeof FLOW_CHART_KEY];
 }> = props => {
   const container = useRef<HTMLDivElement | null>(null);

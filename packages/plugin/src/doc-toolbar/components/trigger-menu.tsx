@@ -1,4 +1,5 @@
 import React from "react";
+
 import { DOC_TOOLBAR_MODULES } from "../modules";
 import type { DocToolBarState } from "../types";
 

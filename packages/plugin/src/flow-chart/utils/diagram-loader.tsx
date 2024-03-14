@@ -1,7 +1,7 @@
+import { isString } from "doc-editor-utils";
 import type * as DiagramEditor from "embed-drawio/dist/packages/core/diagram-editor";
 import type * as DiagramViewer from "embed-drawio/dist/packages/core/diagram-viewer";
 import ReactDOM from "react-dom";
-import { isString } from "src/utils/is";
 
 let editor: typeof DiagramEditor | null = null;
 export const diagramEditorLoader = (): Promise<typeof DiagramEditor> => {

@@ -1,4 +1,4 @@
-import { isObject } from "./is";
+import { isObject } from "laser-utils";
 
 type RecordObject = Record<string | number | symbol, unknown>;
 

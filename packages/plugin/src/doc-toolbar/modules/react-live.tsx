@@ -1,8 +1,9 @@
-import type { DocToolbarPlugin } from "../types";
-import { getWrappedBannerMenu } from "../utils/wrapper";
 import { IconThunderbolt } from "@arco-design/web-react/icon";
+
+import { REACT_LIVE_KEY } from "../../react-live/types";
+import type { DocToolbarPlugin } from "../types";
 import { exec } from "../utils/exec";
-import { REACT_LIVE_KEY } from "src/plugins/react-live/types";
+import { getWrappedBannerMenu } from "../utils/wrapper";
 
 export const ReactLiveDocToolBarPlugin: DocToolbarPlugin = {
   renderIcon: state => {

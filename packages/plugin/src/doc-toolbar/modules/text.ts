@@ -1,4 +1,4 @@
-import { PARAGRAPH_KEY } from "src/plugins/paragraph/types";
+import { PARAGRAPH_KEY } from "../../paragraph/types";
 import { TextIcon } from "../icons/text";
 import type { DocToolbarPlugin } from "../types";
 import { exec } from "../utils/exec";

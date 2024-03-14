@@ -1,19 +1,21 @@
 import "./index.scss";
-import type { FC } from "react";
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Editor } from "slate";
+
 import { Menu } from "@arco-design/web-react";
 import { useMemoizedFn } from "ahooks";
-import type { EditorCommands } from "../../core/command";
-import { execCommand } from "../../core/command";
-import { execSelectMarks, getSelectionRect, maskMenuToolBar, Portal } from "./utils/selection";
-import { ReactEditor } from "slate-react";
-import { MenuItems } from "./components/menu";
-import { omit } from "src/utils/filter";
-import { EVENT_ENUM } from "src/utils/constant";
-import { HYPER_LINK_KEY } from "../hyper-link/types";
+import type { EditorCommands, EditorSuite } from "doc-editor-core";
+import { execCommand } from "doc-editor-core";
+import { Editor } from "doc-editor-delta";
+import { ReactEditor } from "doc-editor-delta";
+import { EVENT_ENUM } from "doc-editor-utils";
+import { omit } from "doc-editor-utils";
+import type { FC } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+
 import { FONT_BASE_KEY } from "../font-base/types";
+import { HYPER_LINK_KEY } from "../hyper-link/types";
 import { LINE_HEIGHT_KEY } from "../line-height/types";
+import { MenuItems } from "./components/menu";
+import { execSelectMarks, getSelectionRect, maskMenuToolBar, Portal } from "./utils/selection";
 
 const TOOLBAR_OFFSET_HEIGHT = 40;
 const TOOLBAR_OFFSET_WIDTH = 340;
@@ -22,7 +24,7 @@ const NOT_INIT_SELECT = [HYPER_LINK_KEY, FONT_BASE_KEY];
 const MUTEX_SELECT = [...NOT_INIT_SELECT, LINE_HEIGHT_KEY];
 export const MenuToolBar: FC<{
   readonly: boolean;
-  editor: Editor;
+  editor: EditorSuite;
   commands: EditorCommands;
 }> = props => {
   const editor = props.editor;

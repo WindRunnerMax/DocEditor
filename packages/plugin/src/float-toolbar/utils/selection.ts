@@ -1,5 +1,5 @@
+import { omit } from "doc-editor-utils";
 import ReactDOM from "react-dom";
-import { omit } from "src/utils/filter";
 
 export const maskMenuToolBar = (element: HTMLDivElement) => {
   element.style.left = "-1000px";

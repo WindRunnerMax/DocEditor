@@ -17,6 +17,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "react": "17.0.2",
     "doc-editor-delta": "workspace:*",
     "doc-editor-utils": "workspace:*"
   },

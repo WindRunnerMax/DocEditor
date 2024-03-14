@@ -1,8 +1,9 @@
-import type { DocToolbarPlugin } from "../types";
-import { getWrappedBannerMenu } from "../utils/wrapper";
 import { IconPalette } from "@arco-design/web-react/icon";
+
+import { FLOW_CHART_KEY } from "../../flow-chart/types";
+import type { DocToolbarPlugin } from "../types";
 import { exec } from "../utils/exec";
-import { FLOW_CHART_KEY } from "src/plugins/flow-chart/types";
+import { getWrappedBannerMenu } from "../utils/wrapper";
 
 export const FlowChartDocToolBarPlugin: DocToolbarPlugin = {
   renderIcon: state => {

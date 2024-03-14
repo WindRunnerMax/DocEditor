@@ -1,7 +1,6 @@
 import "./index.scss";
+
 import { Trigger } from "@arco-design/web-react";
-import type { DocToolBarState, DocToolbarPlugin } from "../types";
-import { getWrappedBannerMenu } from "../utils/wrapper";
 import {
   IconCopy,
   IconDelete,
@@ -9,12 +8,15 @@ import {
   IconRight,
   IconScissor,
 } from "@arco-design/web-react/icon";
+import type { BaseNode } from "doc-editor-delta";
+import { Transforms } from "doc-editor-delta";
+import { EditorNode } from "doc-editor-delta";
+import { isBlock, isText, isTextBlock } from "doc-editor-utils";
 import React from "react";
-import type { BaseNode } from "slate";
-import { Transforms } from "slate";
-import { isBlock, isText, isTextBlock } from "src/core/ops";
-import { EditorNode } from "src/types";
+
 import { TriggerMenu } from "../components/trigger-menu";
+import type { DocToolbarPlugin, DocToolBarState } from "../types";
+import { getWrappedBannerMenu } from "../utils/wrapper";
 
 export const OperationDocToolBarPlugin: DocToolbarPlugin = {
   renderIcon: () => null,

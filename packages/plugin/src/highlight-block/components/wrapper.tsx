@@ -1,17 +1,20 @@
 import "../index.scss";
+
+import { Trigger } from "@arco-design/web-react";
+import { useMemoizedFn } from "ahooks";
+import type { EditorSuite } from "doc-editor-core";
+import type { BlockElement } from "doc-editor-delta";
+import { ReactEditor } from "doc-editor-delta";
+import type { AssertT } from "doc-editor-utils";
+import { setBlockNode } from "doc-editor-utils";
 import type { FC } from "react";
 import { useMemo } from "react";
-import type { BlockElement, Editor } from "slate";
-import type { AssertT } from "src/utils/common";
-import { Trigger } from "@arco-design/web-react";
-import { ReactEditor } from "slate-react";
-import { setBlockNode } from "src/core/ops/set";
-import { useMemoizedFn } from "ahooks";
+
 import { HIGHLIGHT_BLOCK_KEY } from "../types";
 import { COLOR_MAP } from "../types";
 
 export const HighlightBlockWrapper: FC<{
-  editor: Editor;
+  editor: EditorSuite;
   element: BlockElement;
   config: AssertT<BlockElement["highlight-block"]>;
   readonly: boolean;

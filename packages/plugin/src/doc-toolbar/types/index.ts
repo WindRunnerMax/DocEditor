@@ -1,14 +1,14 @@
 import type { TriggerProps } from "@arco-design/web-react/es/Trigger/interface";
-import type { Editor, Path } from "slate";
-import type { RenderElementProps } from "slate-react";
-import type { EditorCommands } from "src/core/command";
-import type { EditorSchema } from "src/core/schema";
+import type { EditorCommands, EditorSuite } from "doc-editor-core";
+import type { EditorSchema } from "doc-editor-core";
+import type { Path } from "doc-editor-delta";
+import type { RenderElementProps } from "doc-editor-delta";
 
 export const DOC_TOOLBAR_KEY = "doc-toolbar";
 
 export type DocToolBarState = {
   path: Path;
-  editor: Editor;
+  editor: EditorSuite;
   schema: EditorSchema;
   commands: EditorCommands;
   element: RenderElementProps["element"];

@@ -1,4 +1,4 @@
-import { isEmptyValue } from "./is";
+import { isEmptyValue } from "laser-utils";
 
 export function assertValue<T>(value: T) {
   if (isEmptyValue(value)) throw new Error("assert value is empty");

@@ -1,5 +1,4 @@
-import "./index.scss";
-import "../src/styles/index";
+import "./styles/global.scss";
 
 import { IconEdit, IconFile, IconGithub } from "@arco-design/web-react/icon";
 import { cs } from "doc-editor-utils";
@@ -15,7 +14,7 @@ export const App: React.FC = () => {
   return (
     <div className="doc-editor-container">
       <div className="header">
-        <span className="left">Document Editor</span>
+        <span className="left">文档编辑器</span>
         <div className="right">
           <div onClick={() => setRender(!readonly)}>{readonly ? <IconEdit /> : <IconFile />}</div>
           <ThemeAction />

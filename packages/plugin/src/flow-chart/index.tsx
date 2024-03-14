@@ -1,22 +1,18 @@
 import "./index.scss";
-import type { Plugin } from "../../core/plugin/interface";
-import { EDITOR_ELEMENT_TYPE } from "../../core/plugin/interface";
-import { existKey } from "../../core/ops/get";
-import type { ReactEditor } from "slate-react";
-import type { CommandFn } from "src/core/command";
-import { v4 } from "uuid";
-import type { HistoryEditor } from "slate-history";
-import type { BaseEditor } from "slate";
+
+import type { EditorSuite } from "doc-editor-core";
+import type { CommandFn } from "doc-editor-core";
+import type { Plugin } from "doc-editor-core";
+import { EDITOR_ELEMENT_TYPE } from "doc-editor-core";
+import { getUniqueId, setBlockNode } from "doc-editor-utils";
+import { existKey } from "doc-editor-utils";
+
 import { DocFLowChart } from "./components/viewer";
 import { FLOW_CHART_KEY } from "./types";
-import { setBlockNode } from "src/core/ops/set";
 
-export const FlowChartPlugin = (
-  editor: BaseEditor & ReactEditor & HistoryEditor,
-  readonly: boolean
-): Plugin => {
+export const FlowChartPlugin = (editor: EditorSuite, readonly: boolean): Plugin => {
   const command: CommandFn = editor => {
-    const uuid = v4();
+    const uuid = getUniqueId();
     setBlockNode(editor, {
       uuid,
       [FLOW_CHART_KEY]: { type: "xml" as const, content: "" },

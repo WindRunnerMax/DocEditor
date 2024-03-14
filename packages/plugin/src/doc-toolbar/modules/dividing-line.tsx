@@ -1,8 +1,8 @@
-import type { DocToolbarPlugin } from "../types";
-import { getWrappedSignalMenu } from "../utils/wrapper";
-import { exec } from "../utils/exec";
-import { DIVIDING_LINE_KEY } from "src/plugins/dividing-line/types";
+import { DIVIDING_LINE_KEY } from "../../dividing-line/types";
 import { DividingLine } from "../icons/dividing-line";
+import type { DocToolbarPlugin } from "../types";
+import { exec } from "../utils/exec";
+import { getWrappedSignalMenu } from "../utils/wrapper";
 
 export const DividingLineDocToolBarPlugin: DocToolbarPlugin = {
   renderIcon: state => {

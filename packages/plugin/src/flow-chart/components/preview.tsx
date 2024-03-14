@@ -1,8 +1,9 @@
-import styles from "./index.module.scss";
 import { Image } from "@arco-design/web-react";
+import { cs } from "doc-editor-utils";
 import type { FC } from "react";
 import { useState } from "react";
-import { cs } from "src/utils/classnames";
+
+import styles from "./index.module.scss";
 
 const Preview = Image.Preview;
 export const PreviewWrapper: FC<{

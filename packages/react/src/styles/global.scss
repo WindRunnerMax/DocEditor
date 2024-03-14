@@ -1,4 +1,4 @@
-@import '../src/styles/global';
+@import './variable';
 
 body {
   background-color: var(--color-bg-1);
@@ -28,7 +28,7 @@ body {
     z-index: $header-z-index;
 
     .left {
-      font-size: 18px;
+      font-size: 16px;
     }
 
     .right {

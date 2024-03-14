@@ -1,8 +1,9 @@
-import type { DocToolbarPlugin } from "../types";
-import { getWrappedSignalMenu } from "../utils/wrapper";
 import { IconQuote } from "@arco-design/web-react/icon";
+
+import { QUOTE_BLOCK_ITEM_KEY, QUOTE_BLOCK_KEY } from "../../quote-block/types";
+import type { DocToolbarPlugin } from "../types";
 import { exec } from "../utils/exec";
-import { QUOTE_BLOCK_ITEM_KEY, QUOTE_BLOCK_KEY } from "src/plugins/quote-block/types";
+import { getWrappedSignalMenu } from "../utils/wrapper";
 
 export const QuoteDocToolBarPlugin: DocToolbarPlugin = {
   renderIcon: state => {

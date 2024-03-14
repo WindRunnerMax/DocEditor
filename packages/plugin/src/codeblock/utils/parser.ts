@@ -1,9 +1,10 @@
+// eslint-disable-next-line simple-import-sort/imports
+import Prism from "prismjs";
 import "prismjs/themes/prism.min.css";
 import "prismjs/components/prism-javascript";
 import "prismjs/components/prism-java";
 
 import type { BlockElement } from "doc-editor-delta";
-import Prism from "prismjs";
 
 import { CODE_BLOCK_CONFIG } from "../types";
 

@@ -1,3 +1,4 @@
+import { Menu } from "@arco-design/web-react";
 import {
   IconAlignCenter,
   IconAlignLeft,
@@ -12,16 +13,16 @@ import {
   IconStrikethrough,
   IconUnderline,
 } from "@arco-design/web-react/icon";
-import { Menu } from "@arco-design/web-react";
-import { BOLD_KEY } from "src/plugins/bold/types";
-import { ITALIC_KEY } from "src/plugins/italic/types";
-import { STRIKE_THROUGH_KEY } from "src/plugins/strike-through/types";
-import { UNDERLINE_KEY } from "src/plugins/under-line/types";
-import { HYPER_LINK_KEY } from "src/plugins/hyper-link/types";
-import { INLINE_CODE_KEY } from "src/plugins/inline-code/types";
-import { LINE_HEIGHT_KEY } from "src/plugins/line-height/types";
-import { FONT_BASE_KEY } from "src/plugins/font-base/types";
-import { ALIGN_KEY } from "src/plugins/align/types";
+
+import { ALIGN_KEY } from "../../align/types";
+import { BOLD_KEY } from "../../bold/types";
+import { FONT_BASE_KEY } from "../../font-base/types";
+import { HYPER_LINK_KEY } from "../../hyper-link/types";
+import { INLINE_CODE_KEY } from "../../inline-code/types";
+import { ITALIC_KEY } from "../../italic/types";
+import { LINE_HEIGHT_KEY } from "../../line-height/types";
+import { STRIKE_THROUGH_KEY } from "../../strike-through/types";
+import { UNDERLINE_KEY } from "../../under-line/types";
 
 export const MenuItems = (
   <>

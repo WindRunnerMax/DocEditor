@@ -21,8 +21,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@arco-design/web-react": "^2.32.2",
-    "ahooks": "^3.3.13",
+    "@arco-design/web-react": "2.60.3",
+    "ahooks": "3.3.13",
     "react-live-runtime": "0.0.3",
     "embed-drawio": "0.0.14",
     "lodash-es": "4.17.21",

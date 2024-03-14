@@ -1,6 +1,7 @@
 import { IconDesktop, IconMoon, IconSun } from "@arco-design/web-react/icon";
-import { FC, useEffect, useState } from "react";
-import storage from "src/utils/storage";
+import { storage } from "doc-editor-utils";
+import type { FC } from "react";
+import { useEffect, useState } from "react";
 
 const storageKey = "theme-index";
 const darkThemeMatch = window.matchMedia("(prefers-color-scheme: dark)");
@@ -10,7 +11,7 @@ const handler = (e: MediaQueryListEvent) => {
   else document.body.removeAttribute("arco-theme");
 };
 export const ThemeAction: FC = () => {
-  const [index, setIndex] = useState(storage().get<number>(storageKey) || 0);
+  const [index, setIndex] = useState(storage.local.get<number>(storageKey) || 0);
 
   useEffect(() => {
     switch (index) {
@@ -36,7 +37,7 @@ export const ThemeAction: FC = () => {
   const changeTheme = () => {
     const nextIndex = (index + 1) % list.length;
     setIndex(nextIndex);
-    storage().set(storageKey, nextIndex);
+    storage.local.set(storageKey, nextIndex);
   };
 
   return <div onClick={changeTheme}>{list[index]}</div>;
