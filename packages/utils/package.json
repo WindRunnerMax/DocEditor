@@ -18,7 +18,8 @@
   "license": "MIT",
   "dependencies": {
     "laser-utils": "0.0.2-alpha.9",
-    "lodash-es": "4.17.21"
+    "lodash-es": "4.17.21",
+    "doc-editor-delta": "workspace: *"
   },
   "devDependencies": {
     "@babel/core": "7.20.12",
