@@ -1,6 +1,6 @@
 {
   "name": "doc-editor-light",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "dev": "pnpm --filter doc-editor-react run dev",
     "build": "pnpm --filter doc-editor-react run build"
@@ -27,7 +27,6 @@
     "eslint-plugin-react-hooks": "4.3.0",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "postcss": "8.3.3",
-    "glob": "10.3.10",
     "prettier": "2.4.1",
     "sass": "1.52.3",
     "stylelint": "14.7.1",

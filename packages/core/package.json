@@ -9,17 +9,15 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "release": "./publish.sh",
-    "test": "jest"
+    "build": "rm -rf ./dist && tsc -p tsconfig.build.json"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "dependencies": {
     "react": "17.0.2",
-    "doc-editor-delta": "workspace:*",
-    "doc-editor-utils": "workspace:*"
+    "doc-editor-delta": "workspace: *",
+    "doc-editor-utils": "workspace: *"
   },
   "devDependencies": {
     "@babel/core": "7.20.12",

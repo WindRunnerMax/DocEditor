@@ -13,9 +13,8 @@
     "dist"
   ],
   "scripts": {
-    "dev": "rspack serve --config ./rspack.config.js",
-    "build": "tsc -p tsconfig.build.json",
-    "release": "./publish.sh"
+    "build": "rm -rf ./dist && export NODE_ENV=production && rollup -c",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -41,6 +40,18 @@
     "@types/react": "17.0.2",
     "@types/react-dom": "17.0.2",
     "@types/jest": "29.4.0",
+    "glob": "10.3.10",
+    "@rollup/plugin-babel": "5.3.1",
+    "@rollup/plugin-commonjs": "22.0.1",
+    "@rollup/plugin-node-resolve": "13.3.0",
+    "@rollup/plugin-replace": "5.0.4",
+    "rollup": "2.75.7",
+    "rollup-plugin-postcss": "4.0.2",
+    "rollup-plugin-terser": "7.0.2",
+    "rollup-plugin-typescript2": "0.32.1",
+    "postcss": "8.3.3",
+    "sass": "1.52.3",
+    "tslib": "2.4.0",
     "@types/prismjs": "^1.26.0",
     "sass-loader": "13.3.3",
     "babel-jest": "29.4.1",

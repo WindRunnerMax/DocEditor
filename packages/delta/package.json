@@ -9,8 +9,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "release": "./publish.sh",
+    "build": "rm -rf ./dist && tsc -p tsconfig.build.json",
     "test": "jest"
   },
   "keywords": [],

@@ -61,6 +61,10 @@ export const isTextBlock = (editor: Editor, node: Node): boolean => {
   return false;
 };
 
+export const isTextBlockAssert = (editor: Editor, node: Node): node is BlockElement => {
+  return isTextBlock(editor, node);
+};
+
 type MatchNode = { block: BlockElement; path: Path } | null;
 export function isWrappedEdgeNode(
   editor: Editor,

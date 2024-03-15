@@ -9,15 +9,14 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "release": "./publish.sh",
+    "build": "rm -rf ./dist && tsc -p tsconfig.build.json",
     "test": "jest"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "laser-utils": "0.0.2-alpha.9",
+    "laser-utils": "0.0.2-alpha.13",
     "doc-editor-delta": "workspace: *"
   },
   "devDependencies": {
