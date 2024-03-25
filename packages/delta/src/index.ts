@@ -19,7 +19,13 @@ export interface TextElement {
   [key: string]: unknown;
 }
 
-export type BaseNode = BlockElement | TextElement;
+export interface TextBlockElement {
+  children: TextElement[];
+  [key: string]: unknown;
+}
+
+export type BaseElement = BlockElement | TextElement;
+export type BaseNode = BlockElement | TextElement | TextBlockElement;
 export type EditorPath = Path;
 export const EditorNode = Node;
 export type { BaseRange, NodeEntry } from "slate";

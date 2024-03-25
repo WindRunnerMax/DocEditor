@@ -1,4 +1,11 @@
-import type { BaseRange, BlockElement, Location, Node, Path } from "doc-editor-delta";
+import type {
+  BaseRange,
+  BlockElement,
+  Location,
+  Node,
+  Path,
+  TextBlockElement,
+} from "doc-editor-delta";
 import { Editor, Point, Range } from "doc-editor-delta";
 import { isEmptyValue, isObject } from "laser-utils";
 
@@ -54,15 +61,11 @@ export const isMatchedEvent = (event: React.KeyboardEvent<HTMLDivElement>, ...ar
   return args.indexOf(key) > -1;
 };
 
-export const isTextBlock = (editor: Editor, node: Node): boolean => {
+export const isTextBlock = (editor: Editor, node: Node): node is TextBlockElement => {
   if (isBlock(editor, node)) {
     return node.children.every(child => isText(child));
   }
   return false;
-};
-
-export const isTextBlockAssert = (editor: Editor, node: Node): node is BlockElement => {
-  return isTextBlock(editor, node);
 };
 
 type MatchNode = { block: BlockElement; path: Path } | null;
