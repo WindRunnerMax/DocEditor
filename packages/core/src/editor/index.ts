@@ -10,5 +10,6 @@ import type { EditorSuite } from "./types";
 
 export function makeEditor(schema: EditorSchema) {
   const editor = withHistory(withReact(createEditor() as Editor & ReactEditor));
+  // `editor.apply`可以处理`Op&Selection Change` 重新分发事件
   return withSchema(schema, editor) as EditorSuite;
 }

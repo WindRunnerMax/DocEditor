@@ -105,9 +105,10 @@ export const MenuToolBar: FC<{
         onClickMenuItem={exec}
         onMouseUp={e => e.stopPropagation()}
         onMouseDown={e => {
+          // Prevent toolbar from taking focus away from editor
           e.preventDefault();
           e.stopPropagation();
-        }} // prevent toolbar from taking focus away from editor
+        }}
         mode="vertical"
         selectedKeys={selectedMarks}
       >
