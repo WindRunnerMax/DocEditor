@@ -47,7 +47,7 @@ export const SlateDocEditor: FC<{
     }, 500)
   );
 
-  const { renderElement, renderLeaf, onKeyDown, commands, onCopy, decorate } = useMemo(() => {
+  const { renderElement, renderLeaf, onKeyDown, commands, decorate } = useMemo(() => {
     const register = new EditorPlugin(
       ParagraphPlugin(),
       HeadingPlugin(editor),
@@ -91,7 +91,6 @@ export const SlateDocEditor: FC<{
         readOnly={props.readonly}
         placeholder="Enter text ..."
         onKeyDown={onKeyDown}
-        onCopy={e => onCopy(e, editor)}
       />
     </EditorProvider>
   );
