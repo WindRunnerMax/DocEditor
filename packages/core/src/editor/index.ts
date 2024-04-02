@@ -31,6 +31,7 @@ export function makeEditor(schema: EditorSchema, init?: BaseNode[]) {
   engine.clipboard = new Clipboard(engine);
   engine.plugin = new EditorPlugin(engine);
 
+  const apply = engine.apply;
   engine.apply = event => {
     if (event.type === "set_selection") {
       engine.event.trigger(EDITOR_EVENT.SELECTION_CHANGE, {
@@ -42,6 +43,7 @@ export function makeEditor(schema: EditorSchema, init?: BaseNode[]) {
         changes: event,
       });
     }
+    apply(event);
   };
   engine.destroy = () => {
     engine.command.destroy();

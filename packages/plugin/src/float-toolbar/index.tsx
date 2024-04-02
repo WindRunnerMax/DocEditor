@@ -2,8 +2,7 @@ import "./index.scss";
 
 import { Menu } from "@arco-design/web-react";
 import { useMemoizedFn } from "ahooks";
-import type { EditorCommands, EditorSuite } from "doc-editor-core";
-import { execCommand } from "doc-editor-core";
+import type { EditorSuite } from "doc-editor-core";
 import { Editor } from "doc-editor-delta";
 import { ReactEditor } from "doc-editor-delta";
 import { EVENT_ENUM } from "doc-editor-utils";
@@ -25,7 +24,6 @@ const MUTEX_SELECT = [...NOT_INIT_SELECT, LINE_HEIGHT_KEY];
 export const MenuToolBar: FC<{
   readonly: boolean;
   editor: EditorSuite;
-  commands: EditorCommands;
 }> = props => {
   const editor = props.editor;
   const keepStatus = useRef(false);
@@ -85,7 +83,7 @@ export const MenuToolBar: FC<{
         position.top = toolbar.offsetTop + toolbar.offsetHeight / 2;
         position.left = toolbar.offsetLeft + toolbar.offsetWidth / 2;
       }
-      const result = execCommand(editor, props.commands, key, {
+      const result = props.editor.command.exec(key, {
         extraKey,
         event,
         position,

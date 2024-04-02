@@ -2,7 +2,6 @@ import "../index.scss";
 
 import { Trigger } from "@arco-design/web-react";
 import type { EditorSchema, EditorSuite } from "doc-editor-core";
-import type { EditorCommands } from "doc-editor-core";
 import type { Path } from "doc-editor-delta";
 import type { RenderElementProps } from "doc-editor-delta";
 import { Transforms } from "doc-editor-delta";
@@ -21,7 +20,6 @@ import { TriggerMenu } from "./trigger-menu";
 export const DocMenu: React.FC<{
   editor: EditorSuite;
   element: RenderElementProps["element"];
-  commands: EditorCommands;
   schema: EditorSchema;
 }> = props => {
   const [iconVisible, setIconVisible] = useState(false);
@@ -45,7 +43,6 @@ export const DocMenu: React.FC<{
     schema: props.schema,
     editor: props.editor,
     element: props.element,
-    commands: props.commands,
     status: {
       isBlock: isBlockNode(props.schema, props.element),
       isEmptyLine: isEmptyLine(props.element),

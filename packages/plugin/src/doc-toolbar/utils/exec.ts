@@ -1,11 +1,10 @@
-import { execCommand } from "doc-editor-core";
 import { Transforms } from "doc-editor-delta";
 import { ReactEditor } from "doc-editor-delta";
 
 import type { DocToolBarState } from "../types";
 
 export const exec = (state: DocToolBarState, key: string) => {
-  const { editor, element, commands } = state;
+  const { editor, element } = state;
   const [type, data] = key.split(".");
   const path = ReactEditor.findPath(editor, element);
   ReactEditor.focus(editor);
@@ -18,9 +17,9 @@ export const exec = (state: DocToolBarState, key: string) => {
     Promise.resolve().then(() => {
       const selection = state.editor.selection;
       if (!selection) return void 0;
-      execCommand(editor, commands, type, { extraKey: data, path: selection.focus.path, element });
+      editor.command.exec(type, { extraKey: data, path: selection.focus.path, element });
     });
   } else {
-    execCommand(editor, commands, type, { extraKey: data, path, element });
+    editor.command.exec(type, { extraKey: data, path, element });
   }
 };

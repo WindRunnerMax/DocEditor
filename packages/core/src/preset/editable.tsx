@@ -11,7 +11,7 @@ type EditableProps = {
   placeholder?: string;
   onChange?: (value: BaseNode[]) => void;
 };
-export class EditableC extends React.PureComponent<EditableProps> {
+export class Editable extends React.PureComponent<EditableProps> {
   private renderModule: RenderPlugins;
   constructor(props: EditableProps) {
     super(props);
@@ -24,6 +24,7 @@ export class EditableC extends React.PureComponent<EditableProps> {
 
   componentDidUpdate(prevProps: EditableProps): void {
     if (prevProps.editor !== this.props.editor) {
+      prevProps.editor.destroy();
       this.props.editor.logger.warning("Editor实例重建 请检查编辑器状态");
     }
   }
@@ -40,7 +41,7 @@ export class EditableC extends React.PureComponent<EditableProps> {
           renderElement={this.renderModule.renderElement}
           renderLeaf={this.renderModule.renderLeaf}
           readOnly={this.props.readonly}
-          placeholder={this.props.placeholder || "Enter text ..."}
+          placeholder={this.props.placeholder}
           onKeyDown={this.renderModule.onKeyDown}
         />
       </EditorProvider>

@@ -1,6 +1,5 @@
 import "./index.scss";
 
-import type { EditorCommands } from "doc-editor-core";
 import type { EditorSchema } from "doc-editor-core";
 import type { Plugin } from "doc-editor-core";
 import type { EditorSuite } from "doc-editor-core";
@@ -12,7 +11,6 @@ import { DOC_TOOLBAR_KEY } from "./types";
 export const DocToolBarPlugin = (
   editor: EditorSuite,
   readonly: boolean,
-  commands: EditorCommands,
   schema: EditorSchema
 ): Plugin => {
   return {
@@ -23,7 +21,7 @@ export const DocToolBarPlugin = (
     renderLine: context => {
       if (readonly) return context.children;
       return (
-        <DocMenu editor={editor} commands={commands} element={context.element} schema={schema}>
+        <DocMenu editor={editor} element={context.element} schema={schema}>
           {context.children}
         </DocMenu>
       );

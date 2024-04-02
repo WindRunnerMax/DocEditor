@@ -1,6 +1,5 @@
-import type { EditorCommands, EditorSuite } from "doc-editor-core";
+import type { EditorSuite } from "doc-editor-core";
 import type { Plugin } from "doc-editor-core";
-import { execCommand } from "doc-editor-core";
 import { EDITOR_ELEMENT_TYPE } from "doc-editor-core";
 import { Editor, Transforms } from "doc-editor-delta";
 import { getBlockNode } from "doc-editor-utils";
@@ -25,7 +24,7 @@ const SHORTCUTS: Record<string, string> = {
   "---": DIVIDING_LINE_KEY,
 };
 
-export const ShortCutPlugin = (editor: EditorSuite, commands: EditorCommands): Plugin => {
+export const ShortCutPlugin = (editor: EditorSuite): Plugin => {
   return {
     key: SHORTCUT_KEY,
     type: EDITOR_ELEMENT_TYPE.BLOCK,
@@ -45,7 +44,7 @@ export const ShortCutPlugin = (editor: EditorSuite, commands: EditorCommands): P
             Transforms.select(editor, range);
             Transforms.delete(editor);
             const [key, data] = param.split(".");
-            execCommand(editor, commands, key, { extraKey: data, path });
+            editor.command.exec(key, { extraKey: data, path });
             event.preventDefault();
           }
         }
