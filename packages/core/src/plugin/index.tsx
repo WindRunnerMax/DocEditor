@@ -1,25 +1,17 @@
-import type { EditorCommands } from "../command";
-import { registerCommand } from "../command";
-import { onCopy, onKeyDown } from "../event";
+import type { EditorSuite } from "../editor/types";
 import { decorate, renderElement, renderLeaf } from "./render";
 import type { ElementPlugin, LeafPlugin, Plugin, RenderPlugins } from "./types";
-import { EDITOR_ELEMENT_TYPE } from "./types";
+import { EDITOR_ELEMENT_TYPE, KEY_EVENT } from "./types";
 
 export class EditorPlugin {
   private plugins: Plugin[];
-  private commands: EditorCommands;
 
-  constructor(...plugins: Plugin[]) {
-    this.plugins = plugins;
-    this.commands = {};
+  constructor(private editor: EditorSuite) {
+    this.plugins = [];
   }
 
-  add = (...plugins: Plugin[]) => {
+  register = (...plugins: Plugin[]) => {
     this.plugins.push(...plugins);
-  };
-
-  getCommands = () => {
-    return this.commands;
   };
 
   apply = (): RenderPlugins => {
@@ -42,7 +34,7 @@ export class EditorPlugin {
       } else if (item.type === EDITOR_ELEMENT_TYPE.INLINE) {
         leafPlugins.push(item);
       }
-      item.command && registerCommand(item.key, item.command, this.commands);
+      item.command && this.editor.command.register(item.key, item.command);
       item.onKeyDown && keyDownPlugins.push(item);
       item.decorate && decoratePlugins.push(item);
     });
@@ -55,14 +47,16 @@ export class EditorPlugin {
         return renderLeaf(props, leafPlugins);
       },
       onKeyDown: event => {
-        return onKeyDown(event, keyDownPlugins);
+        // TODO: 键盘事件由`Event`模块统一处理
+        if (event.nativeEvent.isComposing) return false;
+        for (const item of keyDownPlugins) {
+          // 返回`STOP`则停止继续执行
+          if (item.onKeyDown && item.onKeyDown(event) === KEY_EVENT.STOP) break;
+        }
+        return true;
       },
       decorate: entry => {
         return decorate(entry, decoratePlugins);
-      },
-      commands: this.commands,
-      onCopy: (event, editor) => {
-        return onCopy(event, editor);
       },
     };
   };

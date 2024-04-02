@@ -19,6 +19,10 @@
   "keywords": [],
   "author": "",
   "license": "MIT",
+  "peerDependencies": {
+    "react-dom": ">=16",
+    "react": ">=16"
+  },
   "dependencies": {
     "@arco-design/web-react": "2.60.3",
     "ahooks": "3.3.13",
@@ -26,8 +30,6 @@
     "embed-drawio": "0.0.14",
     "lodash-es": "4.17.21",
     "prismjs": "1.29.0",
-    "react-dom": "17.0.2",
-    "react": "17.0.2",
     "doc-editor-core": "workspace: *",
     "doc-editor-delta": "workspace: *",
     "doc-editor-utils": "workspace: *"

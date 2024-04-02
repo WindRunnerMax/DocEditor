@@ -29,6 +29,13 @@ export type BaseNode = BlockElement | TextElement | TextBlockElement;
 export type EditorPath = Path;
 export const EditorNode = Node;
 export type { BaseRange, NodeEntry } from "slate";
+export type {
+  BaseOperation,
+  NodeOperation,
+  Operation,
+  SetSelectionOperation,
+  TextOperation,
+} from "slate";
 export {
   createEditor,
   Editor,

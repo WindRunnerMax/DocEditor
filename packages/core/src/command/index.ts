@@ -1,35 +1,33 @@
-import type { BaseNode, Location, Path, TextElement } from "doc-editor-delta";
+import type { BaseNode, Location, Path } from "doc-editor-delta";
 
 import type { EditorSuite } from "../editor/types";
+import type { CommandFn, EditorCommands } from "./types";
 
-export type CommandFn = (
-  editor: EditorSuite,
-  key: string,
-  data: {
-    path?: Path;
-    element?: BaseNode;
-    event?: React.MouseEvent<HTMLDivElement, MouseEvent>;
-    position?: { left: number; top: number };
-    marks?: TextElement | null;
-    [key: string]: unknown;
+export class Command {
+  private commands: EditorCommands = {};
+  constructor(private editor: EditorSuite) {}
+
+  get() {
+    return this.commands;
   }
-) => void | Promise<void>;
-export type EditorCommands = Record<string, CommandFn>;
 
-export const registerCommand = (key: string, fn: CommandFn, commands: EditorCommands) => {
-  commands[key] = fn;
-};
+  register = (key: string, fn: CommandFn) => {
+    this.commands[key] = fn;
+  };
 
-export const execCommand = (
-  editor: EditorSuite,
-  commands: EditorCommands,
-  key: string,
-  data: {
-    path?: Path;
-    selection?: Location;
-    element?: BaseNode;
-    [key: string]: unknown;
-  }
-) => {
-  return commands[key] && commands[key](editor, key, data);
-};
+  exec = (
+    key: string,
+    data: {
+      path?: Path;
+      selection?: Location;
+      element?: BaseNode;
+      [key: string]: unknown;
+    }
+  ) => {
+    return this.commands[key] && this.commands[key](this.editor, key, data);
+  };
+
+  destroy = () => {
+    this.commands = {};
+  };
+}

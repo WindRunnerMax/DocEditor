@@ -15,6 +15,9 @@
   "keywords": [],
   "author": "",
   "license": "MIT",
+  "peerDependencies": {
+    "react": ">=16"
+  },
   "dependencies": {
     "laser-utils": "0.0.2-alpha.13",
     "doc-editor-delta": "workspace: *"

@@ -1,7 +1,7 @@
 import type { RenderElementProps, RenderLeafProps } from "doc-editor-delta";
-import type { Editor, NodeEntry, Range } from "doc-editor-delta";
+import type { NodeEntry, Range } from "doc-editor-delta";
 
-import type { CommandFn, EditorCommands } from "../command";
+import type { CommandFn } from "../command/types";
 
 export const EDITOR_ELEMENT_TYPE = {
   BLOCK: "BLOCK" as const,
@@ -53,6 +53,4 @@ export type RenderPlugins = {
   renderLeaf: (props: RenderLeafProps) => JSX.Element;
   onKeyDown: (event: React.KeyboardEvent<HTMLDivElement>) => unknown;
   decorate: (entry: NodeEntry) => Range[];
-  commands: EditorCommands;
-  onCopy: (event: React.ClipboardEvent<HTMLDivElement>, editor: Editor) => void;
 };

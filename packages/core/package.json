@@ -14,8 +14,10 @@
   "keywords": [],
   "author": "",
   "license": "MIT",
+  "peerDependencies": {
+    "react": ">=16"
+  },
   "dependencies": {
-    "react": "17.0.2",
     "doc-editor-delta": "workspace: *",
     "doc-editor-utils": "workspace: *"
   },
