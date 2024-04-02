@@ -11,6 +11,11 @@ export class EditorPlugin {
   }
 
   register = (...plugins: Plugin[]) => {
+    this.reset();
+    this.plugins = [...plugins];
+  };
+
+  add = (...plugins: Plugin[]) => {
     this.plugins.push(...plugins);
   };
 
@@ -59,5 +64,14 @@ export class EditorPlugin {
         return decorate(entry, decoratePlugins);
       },
     };
+  };
+
+  reset = () => {
+    this.plugins.forEach(node => node.destroy && node.destroy());
+    this.plugins = [];
+  };
+
+  destroy = () => {
+    this.reset();
   };
 }

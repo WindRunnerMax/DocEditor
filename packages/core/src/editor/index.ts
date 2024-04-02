@@ -47,6 +47,8 @@ export function makeEditor(schema: EditorSchema, init?: BaseNode[]) {
   };
   engine.destroy = () => {
     engine.command.destroy();
+    engine.event.destroy();
+    engine.plugin.destroy();
   };
 
   return engine;

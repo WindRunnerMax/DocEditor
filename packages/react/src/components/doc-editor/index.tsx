@@ -2,6 +2,7 @@ import "doc-editor-plugin/styles/index";
 
 import { useMemoizedFn } from "ahooks";
 import { Editable, makeEditor } from "doc-editor-core";
+import { LOG_LEVEL } from "doc-editor-core";
 import type { BaseNode } from "doc-editor-delta";
 import {
   AlignPlugin,
@@ -39,35 +40,36 @@ import { example } from "./data-source";
 export const SlateDocEditor: FC<{
   readonly: boolean;
 }> = props => {
-  const editor = useMemo(() => {
-    const engine = makeEditor(schema, example);
-    engine.plugin.register(
+  const editor = useMemo(() => makeEditor(schema, example), []);
+
+  useMemo(() => {
+    editor.logger.set(LOG_LEVEL.DEBUG);
+    editor.plugin.register(
       ParagraphPlugin(),
-      HeadingPlugin(engine),
+      HeadingPlugin(editor),
       BoldPlugin(),
-      QuoteBlockPlugin(engine),
-      HyperLinkPlugin(engine, props.readonly),
+      QuoteBlockPlugin(editor),
+      HyperLinkPlugin(editor, props.readonly),
       UnderLinePlugin(),
       StrikeThroughPlugin(),
       ItalicPlugin(),
       InlineCodePlugin(),
-      OrderedListPlugin(engine),
-      UnorderedListPlugin(engine),
+      OrderedListPlugin(editor),
+      UnorderedListPlugin(editor),
       DividingLinePlugin(),
       AlignPlugin(),
-      HighlightBlockPlugin(engine, props.readonly),
+      HighlightBlockPlugin(editor, props.readonly),
       FontBasePlugin(),
       LineHeightPlugin(),
-      ImagePlugin(engine, props.readonly),
-      CodeBlockPlugin(engine, props.readonly),
-      IndentPlugin(engine),
-      FlowChartPlugin(engine, props.readonly),
-      ReactLivePlugin(engine),
-      DocToolBarPlugin(engine, props.readonly, schema),
-      ShortCutPlugin(engine)
+      ImagePlugin(editor, props.readonly),
+      CodeBlockPlugin(editor, props.readonly),
+      IndentPlugin(editor),
+      FlowChartPlugin(editor, props.readonly),
+      ReactLivePlugin(editor),
+      DocToolBarPlugin(editor, props.readonly, schema),
+      ShortCutPlugin(editor)
     );
-    return engine;
-  }, [props.readonly]);
+  }, [editor, props.readonly]);
 
   const updateText = useMemoizedFn(
     debounce((text: BaseNode[]) => {
@@ -78,7 +80,12 @@ export const SlateDocEditor: FC<{
   return (
     <React.Fragment>
       <MenuToolBar readonly={props.readonly} editor={editor}></MenuToolBar>
-      <Editable editor={editor} onChange={updateText} placeholder="Enter text ..."></Editable>
+      <Editable
+        editor={editor}
+        readonly={props.readonly}
+        onChange={updateText}
+        placeholder="Enter text ..."
+      ></Editable>
     </React.Fragment>
   );
 };

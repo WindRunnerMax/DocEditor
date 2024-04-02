@@ -11,11 +11,17 @@ type EditableProps = {
   placeholder?: string;
   onChange?: (value: BaseNode[]) => void;
 };
-export class Editable extends React.PureComponent<EditableProps> {
-  private renderModule: RenderPlugins;
+
+type EditableState = {
+  renderModule: RenderPlugins;
+};
+
+export class Editable extends React.PureComponent<EditableProps, EditableState> {
   constructor(props: EditableProps) {
     super(props);
-    this.renderModule = this.props.editor.plugin.apply();
+    this.state = {
+      renderModule: this.props.editor.plugin.apply(),
+    };
   }
 
   componentWillUnmount(): void {
@@ -23,6 +29,11 @@ export class Editable extends React.PureComponent<EditableProps> {
   }
 
   componentDidUpdate(prevProps: EditableProps): void {
+    if (prevProps.readonly !== this.props.readonly) {
+      this.setState({
+        renderModule: this.props.editor.plugin.apply(),
+      });
+    }
     if (prevProps.editor !== this.props.editor) {
       prevProps.editor.destroy();
       this.props.editor.logger.warning("Editor实例重建 请检查编辑器状态");
@@ -37,12 +48,12 @@ export class Editable extends React.PureComponent<EditableProps> {
         onChange={this.props.onChange}
       >
         <EditableFC
-          decorate={this.renderModule.decorate}
-          renderElement={this.renderModule.renderElement}
-          renderLeaf={this.renderModule.renderLeaf}
+          decorate={this.state.renderModule.decorate}
+          renderElement={this.state.renderModule.renderElement}
+          renderLeaf={this.state.renderModule.renderLeaf}
           readOnly={this.props.readonly}
           placeholder={this.props.placeholder}
-          onKeyDown={this.renderModule.onKeyDown}
+          onKeyDown={this.state.renderModule.onKeyDown}
         />
       </EditorProvider>
     );

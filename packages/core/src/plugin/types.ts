@@ -17,6 +17,7 @@ type BasePlugin = {
   command?: CommandFn;
   onKeyDown?: (event: React.KeyboardEvent<HTMLDivElement>) => boolean | void;
   decorate?: (entry: NodeEntry) => Range[];
+  destroy?: () => void;
 };
 export type ElementPlugin = BasePlugin & {
   type: typeof EDITOR_ELEMENT_TYPE.BLOCK;

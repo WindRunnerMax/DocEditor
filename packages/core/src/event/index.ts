@@ -23,4 +23,8 @@ export class Event {
   trigger: EventBus["trigger"] = (key, payload) => {
     return this.bus.trigger(key, payload);
   };
+
+  destroy = () => {
+    this.bus.clear();
+  };
 }

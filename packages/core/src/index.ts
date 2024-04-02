@@ -1,6 +1,7 @@
 export type { CommandFn, EditorCommands } from "./command/types";
 export { makeEditor } from "./editor";
 export type { EditorSuite } from "./editor/types";
+export { LOG_LEVEL } from "./log";
 export { EditorPlugin } from "./plugin";
 export { renderElement, renderLeaf } from "./plugin/render";
 export type { ElementPlugin, LeafPlugin, Plugin } from "./plugin/types";
