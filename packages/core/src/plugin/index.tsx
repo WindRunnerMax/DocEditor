@@ -4,28 +4,29 @@ import type { ElementPlugin, LeafPlugin, Plugin, RenderPlugins } from "./types";
 import { EDITOR_ELEMENT_TYPE, KEY_EVENT } from "./types";
 
 export class EditorPlugin {
-  private plugins: Plugin[];
+  private plugins: Record<string, Plugin>;
 
   constructor(private editor: EditorSuite) {
-    this.plugins = [];
+    this.plugins = {};
   }
 
   register = (...plugins: Plugin[]) => {
-    this.reset();
-    this.plugins = [...plugins];
-  };
-
-  add = (...plugins: Plugin[]) => {
-    this.plugins.push(...plugins);
+    for (const plugin of plugins) {
+      const key = plugin.key;
+      const exist = this.plugins[key];
+      exist && exist.destroy && exist.destroy();
+      this.plugins[key] = plugin;
+    }
   };
 
   apply = (): RenderPlugins => {
+    const plugins = Object.values(this.plugins);
     const elementPlugins: ElementPlugin[] = [];
     const leafPlugins: LeafPlugin[] = [];
     const keyDownPlugins: Plugin[] = [];
     const decoratePlugins: Plugin[] = [];
-    this.plugins.sort((a, b) => (b.priority || 0) - (a.priority || 0));
-    this.plugins.forEach(item => {
+    plugins.sort((a, b) => (b.priority || 0) - (a.priority || 0));
+    plugins.forEach(item => {
       if (item.type === EDITOR_ELEMENT_TYPE.BLOCK) {
         elementPlugins.push(item);
         if (item.renderLeaf && item.matchLeaf) {
@@ -67,8 +68,9 @@ export class EditorPlugin {
   };
 
   reset = () => {
-    this.plugins.forEach(node => node.destroy && node.destroy());
-    this.plugins = [];
+    const plugins = Object.values(this.plugins);
+    plugins.forEach(node => node.destroy && node.destroy());
+    this.plugins = {};
   };
 
   destroy = () => {
