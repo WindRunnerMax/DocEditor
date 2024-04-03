@@ -9,5 +9,5 @@ export type { RenderPlugins } from "./plugin/types";
 export { EDITOR_ELEMENT_TYPE, KEY_EVENT } from "./plugin/types";
 export { Editable } from "./preset/editable";
 export { Void } from "./preset/void";
-export type { EditorSchema } from "./schema";
-export { withSchema } from "./schema";
+export { Schema } from "./schema";
+export type { EditorSchema } from "./schema/types";

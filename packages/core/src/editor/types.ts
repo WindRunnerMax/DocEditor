@@ -7,12 +7,14 @@ import type { Command } from "../command";
 import type { Event } from "../event";
 import type { Logger } from "../log";
 import type { EditorPlugin } from "../plugin";
+import type { Schema } from "../schema";
 
 export type EditorKit = EditorSuite;
 export type EditorSuite = Editor &
   HistoryEditor &
   ReactEditor & {
     init?: BaseNode[];
+    schema: Schema;
     command: Command;
     event: Event;
     clipboard: Clipboard;

@@ -10,8 +10,8 @@ import { Event } from "../event";
 import { EDITOR_EVENT } from "../event/modules/action";
 import { LOG_LEVEL, Logger } from "../log";
 import { EditorPlugin } from "../plugin";
-import type { EditorSchema } from "../schema";
-import { withSchema } from "../schema";
+import { Schema } from "../schema";
+import type { EditorSchema } from "../schema/types";
 import type { EditorSuite } from "./types";
 
 /**
@@ -20,11 +20,13 @@ import type { EditorSuite } from "./types";
  * 3. 增加状态管理 `Blocks`级数据结构管理
  */
 
-export function makeEditor(schema: EditorSchema, init?: BaseNode[]) {
+export function makeEditor(config: EditorSchema, init?: BaseNode[]) {
   const editor = withHistory(withReact(createEditor() as Editor & ReactEditor));
-  const engine = withSchema(schema, editor) as EditorSuite;
 
+  const schema = new Schema(config);
+  const engine = schema.with(editor) as EditorSuite;
   engine.init = init;
+  engine.schema = schema;
   engine.command = new Command(engine);
   engine.logger = new Logger(LOG_LEVEL.ERROR);
   engine.event = new Event(engine);

@@ -49,7 +49,7 @@ export const MenuToolBar: FC<{
 
   useEffect(() => {
     const toolbar = toolbarRef.current;
-    if (!toolbar) return void 0;
+    if (!toolbar || props.readonly) return void 0;
     const mouseUpHandler = () => {
       !keepStatus.current && (toolbar.style.display = "");
     };
@@ -70,7 +70,7 @@ export const MenuToolBar: FC<{
       document.removeEventListener(EVENT_ENUM.MOUSE_DOWN, mouseDownHandler);
       document.addEventListener(EVENT_ENUM.SELECTION_CHANGE, selectionChangeHandler);
     };
-  }, [editor, wakeUpToolbar]);
+  }, [editor, wakeUpToolbar, props.readonly]);
 
   const exec = useMemoizedFn(
     (param: string, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
