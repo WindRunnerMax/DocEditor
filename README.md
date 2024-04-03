@@ -78,10 +78,15 @@ type LeafPlugin = BasePlugin & {
 
 
 ## NPM包
-由于仓库本身就是实现了插件，可以直接通过引入相关包来实现快速构建富文本编辑器，可以参考 [GitHub](./packages/react/src/components/doc-editor/index.tsx) ｜ [RESUME EDITOR](https://windrunnermax.github.io/ResumeEditor/) 的引用方式，简单构建一个富文本编辑器可以直接使用如下的方案。
+[GitHub](./packages/react/src/components/doc-editor/index.tsx) ｜ [RESUME EDITOR](https://windrunnermax.github.io/ResumeEditor/)
+
+由于仓库本身就是实现了插件，可以直接通过引入相关包来实现快速构建富文本编辑器。
 
 ```bash
-$ pnpm install doc-editor-core doc-editor-delta doc-editor-plugin doc-editor-utils
+$ pnpm install doc-editor-core 
+$ pnpm install doc-editor-delta 
+$ pnpm install doc-editor-plugin 
+$ pnpm install doc-editor-utils
 ```
 
 
