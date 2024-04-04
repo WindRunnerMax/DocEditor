@@ -2,8 +2,7 @@ import { Trigger } from "@arco-design/web-react";
 import type { EditorSuite, Plugin } from "doc-editor-core";
 import { EDITOR_ELEMENT_TYPE } from "doc-editor-core";
 import type { TextElement } from "doc-editor-delta";
-import { ReactEditor } from "doc-editor-delta";
-import { isCollapsed } from "doc-editor-utils";
+import { findNodePath, isCollapsed } from "doc-editor-utils";
 import { assertValue } from "doc-editor-utils";
 import { setTextNode, setUnTextNode } from "doc-editor-utils";
 import React, { useState } from "react";
@@ -29,14 +28,14 @@ const HyperLinkEditor: React.FC<{
   const onConfirm = (value: HyperLinkConfig) => {
     const config = value;
     setVisible(false);
-    const path = ReactEditor.findPath(editor, props.element);
-    setTextNode(editor, { [HYPER_LINK_KEY]: config }, { at: path });
+    const path = findNodePath(editor, props.element);
+    path && setTextNode(editor, { [HYPER_LINK_KEY]: config }, { at: path });
   };
 
   const onCancel = () => {
     setVisible(false);
-    const path = ReactEditor.findPath(editor, props.element);
-    setUnTextNode(editor, [HYPER_LINK_KEY], { at: path });
+    const path = findNodePath(editor, props.element);
+    path && setUnTextNode(editor, [HYPER_LINK_KEY], { at: path });
   };
 
   const onVisibleChange = (visible: boolean) => {
@@ -68,7 +67,9 @@ export const HyperLinkPlugin = (editor: EditorSuite, readonly: boolean): Plugin 
     command: (editor, key, data) => {
       if (data && data.position && data.marks && !popupModel) {
         const position = data.position;
-        const config: HyperLinkConfig = data.marks[HYPER_LINK_KEY] || { href: "", blank: true };
+        const config: HyperLinkConfig = {
+          ...(data.marks[HYPER_LINK_KEY] || { href: "", blank: true }),
+        };
         return new Promise<void>(resolve => {
           const model = new Popup();
           popupModel = model;

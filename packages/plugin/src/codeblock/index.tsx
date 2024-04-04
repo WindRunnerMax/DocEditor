@@ -60,32 +60,34 @@ export const CodeBlockPlugin = (editor: EditorSuite, readonly: boolean): Plugin 
     },
     matchLeaf: props => !!props.leaf[CODE_BLOCK_TYPE],
     renderLeaf: context => {
-      context.classList.push("token", context.element[CODE_BLOCK_TYPE] || "");
+      context.classList.push("token", context.leaf[CODE_BLOCK_TYPE] || "");
       return context.children;
     },
     decorate: entry => {
       const [node, path] = entry;
       const ranges: Range[] = [];
-      if (isBlock(editor, node) && node[CODE_BLOCK_ITEM_KEY]) {
-        const textNode = node.children[0];
-        if (isText(textNode)) {
-          const codeblockNode = getBlockNode(editor, { at: path, key: CODE_BLOCK_KEY });
-          if (codeblockNode) {
-            const textPath = [...path, 0];
-            const str = Editor.string(editor, path);
-            const language = getLanguage(codeblockNode.block);
-            const codeRange = codeTokenize(str, language);
-            codeRange.forEach(item => {
-              ranges.push({
-                anchor: { path: textPath, offset: item.start },
-                focus: { path: textPath, offset: item.end },
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                [CODE_BLOCK_TYPE]: item.type,
-              });
-            });
-          }
-        }
+      if (!isBlock(editor, node) || !node[CODE_BLOCK_ITEM_KEY]) {
+        return ranges;
+      }
+      const textNode = node.children[0];
+      if (!isText(textNode)) {
+        return ranges;
+      }
+      const codeblockNode = getBlockNode(editor, { at: path, key: CODE_BLOCK_KEY });
+      if (codeblockNode) {
+        const textPath = [...path, 0];
+        const str = Editor.string(editor, path);
+        const language = getLanguage(codeblockNode.block);
+        const codeRange = codeTokenize(str, language);
+        codeRange.forEach(item => {
+          ranges.push({
+            anchor: { path: textPath, offset: item.start },
+            focus: { path: textPath, offset: item.end },
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            [CODE_BLOCK_TYPE]: item.type,
+          });
+        });
       }
       return ranges;
     },

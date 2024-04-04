@@ -40,7 +40,8 @@ export const renderLeaf = (props: RenderLeafProps, leafPlugins: LeafPlugin[]) =>
   const context: LeafContext = {
     props,
     style: {},
-    element: props.leaf,
+    element: props.text,
+    leaf: props.leaf,
     classList: [],
     children: props.children,
   };

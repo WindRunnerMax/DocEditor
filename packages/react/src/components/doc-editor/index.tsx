@@ -43,6 +43,8 @@ export const SlateDocEditor: FC<{
   const editor = useMemo(() => makeEditor(schema, example), []);
 
   useMemo(() => {
+    // @ts-expect-error example debug
+    window.editor = editor;
     editor.logger.set(LOG_LEVEL.DEBUG);
     editor.plugin.register(
       ParagraphPlugin(),

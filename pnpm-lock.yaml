@@ -60,13 +60,13 @@ importers:
   packages/core:
     dependencies:
       doc-editor-delta:
-        specifier: workspace:*
+        specifier: 'workspace: *'
         version: link:../delta
       doc-editor-utils:
-        specifier: workspace:*
+        specifier: 'workspace: *'
         version: link:../utils
       react:
-        specifier: 17.0.2
+        specifier: '>=16'
         version: 17.0.2
     devDependencies:
       '@babel/core':
@@ -158,10 +158,10 @@ importers:
         specifier: 1.29.0
         version: 1.29.0
       react:
-        specifier: 17.0.2
+        specifier: '>=16'
         version: 17.0.2
       react-dom:
-        specifier: 17.0.2
+        specifier: '>=16'
         version: 17.0.2(react@17.0.2)
       react-live-runtime:
         specifier: 0.0.3
@@ -321,6 +321,9 @@ importers:
       laser-utils:
         specifier: 0.0.2-alpha.13
         version: 0.0.2-alpha.13
+      react:
+        specifier: '>=16'
+        version: 17.0.2
     devDependencies:
       '@babel/core':
         specifier: 7.20.12
@@ -3055,7 +3058,7 @@ packages:
       typescript:
         optional: true
     dependencies:
-      '@typescript-eslint/experimental-utils': 4.33.0(eslint@7.11.0)(typescript@5.3.2)
+      '@typescript-eslint/experimental-utils': 4.33.0(eslint@7.11.0)(typescript@4.9.5)
       '@typescript-eslint/parser': 4.33.0(eslint@7.11.0)(typescript@5.3.2)
       '@typescript-eslint/scope-manager': 4.33.0
       debug: 4.3.4(supports-color@6.1.0)
@@ -3132,7 +3135,7 @@ packages:
       - typescript
     dev: true
 
-  /@typescript-eslint/experimental-utils@4.33.0(eslint@7.11.0)(typescript@5.3.2):
+  /@typescript-eslint/experimental-utils@4.33.0(eslint@7.11.0)(typescript@4.9.5):
     resolution: {integrity: sha512-zeQjOoES5JFjTnAhI5QY7ZviczMzDptls15GFsI6jyUOq0kOf9+WonkhtlIhh0RgHRnqj5gdNxW5j1EvAyYg6Q==}
     engines: {node: ^10.12.0 || >=12.0.0}
     peerDependencies:
@@ -6292,7 +6295,7 @@ packages:
       eslint: 7.11.0
       eslint-plugin-flowtype: 5.10.0(eslint@7.11.0)
       eslint-plugin-import: 2.25.3(@typescript-eslint/parser@4.33.0)(eslint@7.11.0)
-      eslint-plugin-jest: 24.7.0(@typescript-eslint/eslint-plugin@4.33.0)(eslint@7.11.0)(typescript@5.3.2)
+      eslint-plugin-jest: 24.7.0(@typescript-eslint/eslint-plugin@4.33.0)(eslint@7.11.0)(typescript@4.9.5)
       eslint-plugin-jsx-a11y: 6.8.0(eslint@7.11.0)
       eslint-plugin-react: 7.27.0(eslint@7.11.0)
       eslint-plugin-react-hooks: 4.3.0(eslint@7.11.0)
@@ -6331,7 +6334,7 @@ packages:
       eslint: 7.11.0
       eslint-plugin-flowtype: 5.10.0(eslint@7.11.0)
       eslint-plugin-import: 2.25.3(@typescript-eslint/parser@4.33.0)(eslint@7.11.0)
-      eslint-plugin-jest: 24.7.0(@typescript-eslint/eslint-plugin@4.33.0)(eslint@7.11.0)(typescript@5.3.2)
+      eslint-plugin-jest: 24.7.0(@typescript-eslint/eslint-plugin@4.33.0)(eslint@7.11.0)(typescript@4.9.5)
       eslint-plugin-jsx-a11y: 6.8.0(eslint@7.11.0)
       eslint-plugin-react: 7.27.0(eslint@7.11.0)
       eslint-plugin-react-hooks: 4.3.0(eslint@7.11.0)
@@ -6476,7 +6479,7 @@ packages:
       - supports-color
     dev: true
 
-  /eslint-plugin-jest@24.7.0(@typescript-eslint/eslint-plugin@4.33.0)(eslint@7.11.0)(typescript@5.3.2):
+  /eslint-plugin-jest@24.7.0(@typescript-eslint/eslint-plugin@4.33.0)(eslint@7.11.0)(typescript@4.9.5):
     resolution: {integrity: sha512-wUxdF2bAZiYSKBclsUMrYHH6WxiBreNjyDxbRv345TIvPeoCEgPNEn3Sa+ZrSqsf1Dl9SqqSREXMHExlMMu1DA==}
     engines: {node: '>=10'}
     peerDependencies:
@@ -6487,7 +6490,7 @@ packages:
         optional: true
     dependencies:
       '@typescript-eslint/eslint-plugin': 4.33.0(@typescript-eslint/parser@4.33.0)(eslint@7.11.0)(typescript@5.3.2)
-      '@typescript-eslint/experimental-utils': 4.33.0(eslint@7.11.0)(typescript@5.3.2)
+      '@typescript-eslint/experimental-utils': 4.33.0(eslint@7.11.0)(typescript@4.9.5)
       eslint: 7.11.0
     transitivePeerDependencies:
       - supports-color
@@ -12173,7 +12176,7 @@ packages:
       eslint-config-react-app: 6.0.0(@typescript-eslint/eslint-plugin@4.33.0)(@typescript-eslint/parser@4.33.0)(babel-eslint@10.1.0)(eslint-plugin-flowtype@5.10.0)(eslint-plugin-import@2.25.3)(eslint-plugin-jest@24.7.0)(eslint-plugin-jsx-a11y@6.8.0)(eslint-plugin-react-hooks@4.3.0)(eslint-plugin-react@7.27.0)(eslint-plugin-testing-library@3.10.2)(eslint@7.11.0)(typescript@4.9.5)
       eslint-plugin-flowtype: 5.10.0(eslint@7.11.0)
       eslint-plugin-import: 2.25.3(@typescript-eslint/parser@4.33.0)(eslint@7.11.0)
-      eslint-plugin-jest: 24.7.0(@typescript-eslint/eslint-plugin@4.33.0)(eslint@7.11.0)(typescript@5.3.2)
+      eslint-plugin-jest: 24.7.0(@typescript-eslint/eslint-plugin@4.33.0)(eslint@7.11.0)(typescript@4.9.5)
       eslint-plugin-jsx-a11y: 6.8.0(eslint@7.11.0)
       eslint-plugin-react: 7.27.0(eslint@7.11.0)
       eslint-plugin-react-hooks: 4.3.0(eslint@7.11.0)
@@ -12269,7 +12272,7 @@ packages:
       eslint-config-react-app: 6.0.0(@typescript-eslint/eslint-plugin@4.33.0)(@typescript-eslint/parser@4.33.0)(babel-eslint@10.1.0)(eslint-plugin-flowtype@5.10.0)(eslint-plugin-import@2.25.3)(eslint-plugin-jest@24.7.0)(eslint-plugin-jsx-a11y@6.8.0)(eslint-plugin-react-hooks@4.3.0)(eslint-plugin-react@7.27.0)(eslint-plugin-testing-library@3.10.2)(eslint@7.11.0)(typescript@5.3.2)
       eslint-plugin-flowtype: 5.10.0(eslint@7.11.0)
       eslint-plugin-import: 2.25.3(@typescript-eslint/parser@4.33.0)(eslint@7.11.0)
-      eslint-plugin-jest: 24.7.0(@typescript-eslint/eslint-plugin@4.33.0)(eslint@7.11.0)(typescript@5.3.2)
+      eslint-plugin-jest: 24.7.0(@typescript-eslint/eslint-plugin@4.33.0)(eslint@7.11.0)(typescript@4.9.5)
       eslint-plugin-jsx-a11y: 6.8.0(eslint@7.11.0)
       eslint-plugin-react: 7.27.0(eslint@7.11.0)
       eslint-plugin-react-hooks: 4.3.0(eslint@7.11.0)
