@@ -25,9 +25,9 @@ export default async () => {
       return arr.reduce((res, [pre, cur]) => ({ ...res, [cur]: pre }), {});
     });
 
-  const external = Object.keys(require("./package.json").dependencies || {}).map(
-    key => new RegExp(`(^${key}$)|(^${key}/.*)`)
-  );
+  const packages = require("./package.json");
+  const deps = { ...(packages.dependencies || {}), ...(packages.peerDependencies || {}) };
+  const external = Object.keys(deps).map(key => new RegExp(`(^${key}$)|(^${key}/.*)`));
 
   return {
     input: dirsMap,

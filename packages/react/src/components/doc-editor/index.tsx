@@ -1,7 +1,7 @@
 import "doc-editor-plugin/styles/index";
 
 import { useMemoizedFn } from "ahooks";
-import { Editable, makeEditor } from "doc-editor-core";
+import { Editable, useMakeEditor } from "doc-editor-core";
 import { LOG_LEVEL } from "doc-editor-core";
 import type { BaseNode } from "doc-editor-delta";
 import {
@@ -40,7 +40,7 @@ import { example } from "./data-source";
 export const SlateDocEditor: FC<{
   readonly: boolean;
 }> = props => {
-  const editor = useMemo(() => makeEditor(schema, example), []);
+  const editor = useMakeEditor(schema, example);
 
   useMemo(() => {
     // @ts-expect-error example debug

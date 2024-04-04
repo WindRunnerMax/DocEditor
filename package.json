@@ -1,6 +1,6 @@
 {
   "name": "doc-editor-light",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "scripts": {
     "dev": "pnpm --filter doc-editor-react run dev",
     "build": "pnpm --filter doc-editor-react run build"

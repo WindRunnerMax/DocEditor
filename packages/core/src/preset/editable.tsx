@@ -24,10 +24,6 @@ export class Editable extends React.PureComponent<EditableProps, EditableState> 
     };
   }
 
-  componentWillUnmount(): void {
-    this.props.editor.destroy();
-  }
-
   componentDidUpdate(prevProps: EditableProps): void {
     if (prevProps.readonly !== this.props.readonly) {
       this.setState({
@@ -44,7 +40,7 @@ export class Editable extends React.PureComponent<EditableProps, EditableState> 
     return (
       <EditorProvider
         editor={this.props.editor}
-        value={this.props.editor.init || []}
+        value={this.props.editor.init || [{ children: [{ text: "" }] }]}
         onChange={this.props.onChange}
       >
         <EditableFC
