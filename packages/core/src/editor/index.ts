@@ -25,7 +25,7 @@ export function makeEditor(config: EditorSchema, init?: BaseNode[]) {
 
   const schema = new Schema(config);
   const engine = schema.with(editor) as EditorSuite;
-  engine.init = init || [{ children: [{ text: "" }] }];
+  engine.init = init;
   engine.schema = schema;
   engine.command = new Command(engine);
   engine.logger = new Logger(LOG_LEVEL.ERROR);

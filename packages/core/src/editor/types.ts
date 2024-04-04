@@ -13,7 +13,7 @@ export type EditorKit = EditorSuite;
 export type EditorSuite = Editor &
   HistoryEditor &
   ReactEditor & {
-    init: BaseNode[];
+    init?: BaseNode[];
     schema: Schema;
     command: Command;
     event: Event;

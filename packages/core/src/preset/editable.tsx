@@ -2,11 +2,13 @@ import type { BaseNode } from "doc-editor-delta";
 import { Editable as EditableFC, EditorProvider } from "doc-editor-delta";
 import React from "react";
 
+import { INIT_NODE } from "../editor/constant";
 import type { EditorSuite } from "../editor/types";
 import type { RenderPlugins } from "../plugin/types";
 
 type EditableProps = {
   readonly?: boolean;
+  init?: BaseNode[];
   editor: EditorSuite;
   placeholder?: string;
   onChange?: (value: BaseNode[]) => void;
@@ -40,7 +42,7 @@ export class Editable extends React.PureComponent<EditableProps, EditableState> 
     return (
       <EditorProvider
         editor={this.props.editor}
-        value={this.props.editor.init || [{ children: [{ text: "" }] }]}
+        value={this.props.init || this.props.editor.init || INIT_NODE}
         onChange={this.props.onChange}
       >
         <EditableFC

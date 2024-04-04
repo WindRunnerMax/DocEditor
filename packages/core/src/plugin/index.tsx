@@ -54,12 +54,12 @@ export class EditorPlugin {
       },
       onKeyDown: event => {
         // TODO: 键盘事件由`Event`模块统一处理
-        if (event.nativeEvent.isComposing) return false;
+        if (event.nativeEvent.isComposing) return void 0;
         for (const item of keyDownPlugins) {
           // 返回`STOP`则停止继续执行
           if (item.onKeyDown && item.onKeyDown(event) === KEY_EVENT.STOP) break;
         }
-        return true;
+        return void 0;
       },
       decorate: entry => {
         return decorate(entry, decoratePlugins);
