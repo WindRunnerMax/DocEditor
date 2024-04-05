@@ -4,7 +4,7 @@
     "embed-drawio-editor.js": "./static/js/embed-drawio-editor.95e3bade.chunk.js",
     "embed-drawio-viewer.js": "./static/js/embed-drawio-viewer.f4d16e21.chunk.js",
     "main.css": "./static/css/main.35e9a2fa.chunk.css",
-    "main.js": "./static/js/main.ffc02613.chunk.js",
+    "main.js": "./static/js/main.30b99a61.chunk.js",
     "runtime-main.js": "./static/js/runtime-main.2f09304b.js",
     "static/css/5.9f47825a.chunk.css": "./static/css/5.9f47825a.chunk.css",
     "static/js/5.728e7fcb.chunk.js": "./static/js/5.728e7fcb.chunk.js",
@@ -20,6 +20,6 @@
     "static/css/5.9f47825a.chunk.css",
     "static/js/5.728e7fcb.chunk.js",
     "static/css/main.35e9a2fa.chunk.css",
-    "static/js/main.ffc02613.chunk.js"
+    "static/js/main.30b99a61.chunk.js"
   ]
 }
