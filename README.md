@@ -78,7 +78,7 @@ type LeafPlugin = BasePlugin & {
 
 
 ## NPM包
-[GitHub](./packages/react/src/components/doc-editor/index.tsx) ｜ [RESUME EDITOR](https://windrunnermax.github.io/ResumeEditor/)
+[GitHub](./packages/react/src/components/doc-editor/index.tsx) ｜ [Resume Editor](https://github.com/WindrunnerMax/ResumeEditor) ｜ [Canvas Editor](https://github.com/WindrunnerMax/CanvasEditor)
 
 由于仓库本身就是实现了插件，可以直接通过引入相关包来实现快速构建富文本编辑器。
 
