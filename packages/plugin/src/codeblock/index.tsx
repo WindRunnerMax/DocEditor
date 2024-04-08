@@ -79,6 +79,7 @@ export const CodeBlockPlugin = (editor: EditorSuite, readonly: boolean): Plugin 
         const str = Editor.string(editor, path);
         const language = getLanguage(codeblockNode.block);
         const codeRange = codeTokenize(str, language);
+        // TODO: 采取双迭代的方式 取较小值作为`range`
         codeRange.forEach(item => {
           ranges.push({
             anchor: { path: textPath, offset: item.start },

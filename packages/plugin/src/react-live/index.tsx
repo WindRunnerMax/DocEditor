@@ -33,7 +33,7 @@ export const ReactLivePlugin = (editor: Editor): Plugin => {
     },
     matchLeaf: props => !!props.leaf[REACT_LIVE_TYPE],
     renderLeaf: context => {
-      context.classList.push("token", context.element[REACT_LIVE_TYPE] || "");
+      context.classList.push("token", context.leaf[REACT_LIVE_TYPE] || "");
       return context.children;
     },
     decorate: entry => {
@@ -43,6 +43,7 @@ export const ReactLivePlugin = (editor: Editor): Plugin => {
         if (!str) return [];
         const textPath = [...path, 0];
         const codeRange = codeTokenize(str);
+        // TODO: 采取双迭代的方式 取较小值作为`range`
         const ranges: Range[] = codeRange.map(item => ({
           anchor: { path: textPath, offset: item.start },
           focus: { path: textPath, offset: item.end },
