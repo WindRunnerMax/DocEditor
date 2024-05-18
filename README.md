@@ -1,11 +1,22 @@
 # DocEditor
- [GitHub](https://github.com/WindrunnerMax/DocEditor) ｜ [Editor DEMO](https://windrunnermax.github.io/DocEditor/) ｜ [BLOG](https://github.com/WindrunnerMax/EveryDay/blob/master/Plugin/%E5%9F%BA%E4%BA%8Eslate%E6%9E%84%E5%BB%BA%E6%96%87%E6%A1%A3%E7%BC%96%E8%BE%91%E5%99%A8.md) ｜ [TODO](./TODO.MD)
+
+<p>
+<a href="https://github.com/WindrunnerMax/DocEditor">GitHub</a>
+<span>｜</span>
+<a href="https://windrunnermax.github.io/DocEditor/">Editor DEMO</a>
+<span>｜</span>
+<a href="https://github.com/WindrunnerMax/EveryDay/blob/master/Plugin/基于slate构建文档编辑器.md/">BLOG</a>
+<span>｜</span>
+<a href="./TODO.md">TODO</a>
+<span>｜</span>
+<a href="https://github.com/WindrunnerMax/QuillBlocks/blob/master/README.md">Example</a>
+</p>
 
 基于`slate.js`构建的文档编辑器，`slate`提供了控制富文本的`core`，简单来说他本身并不提供各种富文本编辑功能，所有的富文本功能都需要自己来通过其提供的`API`来实现，甚至他的插件机制也需要通过自己来拓展，所以在插件的实现方面就需要自己制定一些策略。在交互与`ui`方面对于飞书文档的参考比较多，整体来说坑也是比较多的，尤其是在做交互策略方面，不过做好兜底以后实现基本的文档编辑器功能是没有问题的。
 
 ```bash
-$ npm i -g pnpm
-$ pnpm install
+$ npm i -g pnpm 
+$ pnpm install --frozen-lockfile
 $ npx husky install && chmod 755 .husky/pre-commit
 ```
 

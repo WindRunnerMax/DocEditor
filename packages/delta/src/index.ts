@@ -1,31 +1,13 @@
-import type { BaseEditor, Path } from "slate";
+import type { Path } from "slate";
 import { Node } from "slate";
 
-declare module "slate" {
-  interface CustomTypes {
-    Editor: BaseEditor;
-    Element: BlockElement;
-    Text: TextElement;
-  }
-}
-
-export interface BlockElement {
-  children: BaseNode[];
-  [key: string]: unknown;
-}
-
-export interface TextElement {
-  text: string;
-  [key: string]: unknown;
-}
-
-export interface TextBlockElement {
-  children: TextElement[];
-  [key: string]: unknown;
-}
-
-export type BaseElement = BlockElement | TextElement;
-export type BaseNode = BlockElement | TextElement | TextBlockElement;
+export type {
+  BaseElement,
+  BaseNode,
+  BlockElement,
+  TextBlockElement,
+  TextElement,
+} from "./interface";
 export type EditorPath = Path;
 export const EditorNode = Node;
 export type { BaseRange, NodeEntry } from "slate";
