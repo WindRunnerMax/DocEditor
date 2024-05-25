@@ -91,14 +91,13 @@ export const example: BaseNode[] = [
       { "children": [{ text: "支持引用块。" }], "quote-block-item": true },
       {
         "unordered-list": true,
+        "quote-block-item": true,
         "children": [
           {
-            "quote-block-item": true,
             "children": [{ text: "可以嵌套其他格式。" }],
             "unordered-list-item": { level: 1 },
           },
           {
-            "quote-block-item": true,
             "unordered-list-item": { level: 1 },
             "children": [
               { text: "支持快捷键" },

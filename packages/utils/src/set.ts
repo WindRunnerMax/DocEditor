@@ -1,5 +1,5 @@
-import type { BlockElement, Editor, Location, Path, TextElement } from "doc-editor-delta";
-import { Transforms } from "doc-editor-delta";
+import type { BlockElement, Location, Path, TextElement } from "doc-editor-delta";
+import { Editor, Transforms } from "doc-editor-delta";
 
 import { existKey, isBlock, isText } from "./ref";
 
@@ -12,15 +12,21 @@ export const setBlockNode = (
     key?: string;
   } = {}
 ) => {
-  const { at: location, node, key } = options;
-  if (node) {
-    Transforms.setNodes(editor, config, { match: n => n === node });
-  } else {
-    Transforms.setNodes(editor, config, {
+  let { node } = options;
+  const { at: location, key } = options;
+  if (!node) {
+    // 注意`setNodes Match`的查找顺序可能与直觉不一致 顺序是由顶`Editor`至底`Node`
+    // https://github.com/ianstormtaylor/slate/blob/25be3b/packages/slate/src/transforms/node.ts#L565
+    // 因此这里需要使用`Editor.above`实现更精确的查找 再将`node`直接传入来精确变换
+    // https://github.com/ianstormtaylor/slate/blob/25be3b/packages/slate/src/interfaces/editor.ts#L334
+    const above = Editor.above(editor, {
       at: location,
       match: node => isBlock(editor, node) && (key ? existKey(node, key) : true),
     });
+    if (above && above[0]) node = above[0] as BlockElement;
   }
+  if (!node) return void 0;
+  Transforms.setNodes(editor, config, { match: n => n === node, at: location });
 };
 
 export const setUnBlockNode = (
@@ -32,15 +38,17 @@ export const setUnBlockNode = (
     key?: string;
   } = {}
 ) => {
-  const { at: location, node, key } = options;
-  if (node) {
-    Transforms.unsetNodes(editor, props, { match: n => n === node });
-  } else {
-    Transforms.unsetNodes(editor, props, {
+  let { node } = options;
+  const { at: location, key } = options;
+  if (!node) {
+    const above = Editor.above(editor, {
       at: location,
       match: node => isBlock(editor, node) && (key ? existKey(node, key) : true),
     });
+    if (above && above[0]) node = above[0] as BlockElement;
   }
+  if (!node) return void 0;
+  Transforms.unsetNodes(editor, props, { match: n => n === node, at: location });
 };
 
 export const setTextNode = (
@@ -53,7 +61,7 @@ export const setTextNode = (
 ) => {
   const { at: location, node } = options;
   if (node) {
-    Transforms.setNodes(editor, config, { match: n => n === node, split: true });
+    Transforms.setNodes(editor, config, { match: n => n === node, split: true, at: location });
   } else {
     Transforms.setNodes(editor, config, { match: isText, split: true, at: location });
   }
@@ -69,7 +77,7 @@ export const setUnTextNode = (
 ) => {
   const { at: location, node } = options;
   if (node) {
-    Transforms.unsetNodes(editor, props, { match: n => n === node });
+    Transforms.unsetNodes(editor, props, { match: n => n === node, at: location });
   } else {
     Transforms.unsetNodes(editor, props, { match: isText, split: true, at: location });
   }
@@ -84,9 +92,11 @@ export const setWrapNodes = (
   } = {}
 ) => {
   const { at } = options;
-  const computedWrapConfig: BlockElement = { ...wrapConfig, children: [] };
-  Transforms.wrapNodes(editor, computedWrapConfig, { match: n => isBlock(editor, n), at });
-  setBlockNode(editor, itemConfig, { at });
+  const config = { ...wrapConfig } as BlockElement;
+  Editor.withoutNormalizing(editor, () => {
+    Transforms.wrapNodes(editor, config, { match: n => isBlock(editor, n), at });
+    setBlockNode(editor, itemConfig, { at });
+  });
 };
 
 export const setUnWrapNodes = (
@@ -97,10 +107,12 @@ export const setUnWrapNodes = (
     itemKey: string;
   }
 ) => {
-  setUnBlockNode(editor, [options.itemKey], { key: options.itemKey });
-  Transforms.unwrapNodes(editor, {
-    match: n => existKey(n, options.wrapKey),
-    split: true,
+  Editor.withoutNormalizing(editor, () => {
+    setUnBlockNode(editor, [options.itemKey], { key: options.itemKey });
+    Transforms.unwrapNodes(editor, {
+      match: n => existKey(n, options.wrapKey),
+      split: true,
+    });
   });
 };
 

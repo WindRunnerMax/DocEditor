@@ -1,114 +1,142 @@
-import type { BaseNode, Path } from "doc-editor-delta";
+import type { BaseNode, NodeEntry, Path } from "doc-editor-delta";
 import { Editor } from "doc-editor-delta";
-import { isBlock, isText, isTextBlock, setBlockNode, setUnBlockNode } from "doc-editor-utils";
-import { isDev } from "doc-editor-utils";
+import { isBlock, setBlockNode, setUnBlockNode } from "doc-editor-utils";
 
 import type { EditorSuite } from "../editor/types";
 import type { EditorSchema } from "./types";
 
 export class Schema {
-  private voids: Set<string> = new Set<string>();
-  private blocks: Set<string> = new Set<string>();
-  private wrapper: Map<string, string> = new Map();
-  private packaged: Map<string, string> = new Map();
+  private wrap: Map<string, string> = new Map();
+  private pair: Map<string, string> = new Map();
+  private void: Set<string> = new Set<string>();
+  private block: Set<string> = new Set<string>();
 
   constructor(schema: EditorSchema) {
     for (const [key, value] of Object.entries(schema)) {
       if (value.void) {
-        this.voids.add(key);
-        this.blocks.add(key);
+        this.void.add(key);
+        this.block.add(key);
       }
       if (value.block) {
-        this.blocks.add(key);
+        this.block.add(key);
       }
       if (value.wrap) {
-        this.blocks.add(value.wrap);
-        this.wrapper.set(value.wrap, key);
-        this.packaged.set(key, value.wrap);
+        this.block.add(value.wrap);
+        this.wrap.set(value.wrap, key);
+        this.pair.set(key, value.wrap);
       }
     }
   }
 
-  with(editor: Editor): EditorSuite {
+  private normalizeNode(editor: Editor, entry: NodeEntry) {
+    const [node, path] = entry;
+    // 如果不是块级元素则返回 会继续处理默认的`Normalize`
+    if (!isBlock(editor, node)) return void 0;
+    // 对块级节点的属性值进行处理
+    for (const key of Object.keys(node)) {
+      // --- 当前节点是`Wrap Node`的`Normalize` ---
+      if (this.wrap.has(key)) {
+        const pairKey = this.wrap.get(key) as string;
+        // 子节点上一定需要存在`Pair Key`
+        // 否则需要在子节点加入`Pair Key`
+        const children = node.children || [];
+        children.forEach((child, index) => {
+          if (isBlock(editor, child) && !child[pairKey]) {
+            const location: Path = [...path, index];
+            if (process.env.NODE_ENV === "development") {
+              console.log("NormalizeWrapNode: ", location, `${key}->${pairKey}`);
+            }
+            setBlockNode(editor, { [pairKey]: true }, { node: child });
+          }
+        });
+      }
+      // --- --- ---
+
+      // --- 当前节点如果是`Pair Node`的`Normalize` ---
+      if (this.pair.has(key)) {
+        const wrapKey = this.pair.get(key) as string;
+        const ancestor = Editor.parent(editor, path);
+        const parent = ancestor && ancestor[0];
+        // 父节点上一定需要存在`Wrap Node`
+        // 否则在当前节点上删除`Pair Key`
+        if (!parent || !isBlock(editor, parent) || !parent[wrapKey]) {
+          if (process.env.NODE_ENV === "development") {
+            console.log("NormalizePairNode: ", path, `${wrapKey}<-${key}`);
+          }
+          setUnBlockNode(editor, [key], { node });
+        }
+      }
+      // --- --- ---
+    }
+  }
+
+  public with(editor: Editor): EditorSuite {
     const { isVoid, normalizeNode } = editor;
 
     editor.isVoid = element => {
       for (const key of Object.keys(element)) {
-        if (this.voids.has(key)) return true;
+        if (this.void.has(key)) return true;
       }
       return isVoid(element);
     };
 
     editor.normalizeNode = entry => {
-      const [node, path] = entry;
-      const batch: (() => void)[] = [];
-
+      const [node] = entry;
       if (!isBlock(editor, node)) {
         normalizeNode(entry);
         return void 0;
       }
-
-      // `Normalize Wrap Node`
-      for (const key of Object.keys(node)) {
-        // `Wrapper Node`
-        if (this.wrapper.has(key)) {
-          const packagedKey = this.wrapper.get(key) as string;
-          // 深度优先遍历
-          // 路径上一定需要存在`Packaged Key`
-          // 否则在`Text Node`上加入`Packaged Key`
-          const dfs = (cur: BaseNode, path: Path) => {
-            if (isText(cur)) {
-              return void 0;
-            }
-            if (isBlock(editor, cur) && cur[packagedKey]) {
-              return void 0;
-            }
-            if (isTextBlock(editor, cur)) {
-              // `Text Block Node`一定是最后最后一个`Block Node`
-              if (isDev) {
-                console.log("NormalizeWrapperNode: ", path, `${key}--${packagedKey}`);
-              }
-              batch.push(() => setBlockNode(editor, { [packagedKey]: true }, { at: path }));
-              return void 0;
-            }
-            const children = cur.children;
-            if (!children) return void 0;
-            for (let i = 0; i < children.length; i++) {
-              dfs(children[i], path.concat(i));
-            }
-          };
-          dfs(node, path);
-        }
-
-        // `Packaged Node`
-        if (this.packaged.has(key)) {
-          const wrapperKey = this.packaged.get(key) as string;
-          let matchWrapperNode = false;
-          let parent = Editor.parent(editor, path);
-          // 从当前节点向上遍历
-          // 路径上一定需要存在`Wrapper Node`
-          // 否则在`Base Node`上删除`Packaged Key`
-          while (parent && parent[0] && parent[1] && isBlock(editor, parent[0])) {
-            const cur = parent[0];
-            if (cur[wrapperKey]) {
-              matchWrapperNode = true;
-              break;
-            }
-            parent = Editor.parent(editor, parent[1]);
-          }
-          if (!matchWrapperNode) {
-            if (isDev) {
-              console.log("NormalizePackagedNode: ", path, `${wrapperKey}--${key}`);
-            }
-            batch.push(() => setUnBlockNode(editor, [key], { at: path }));
-          }
-        }
+      try {
+        Editor.withoutNormalizing(editor, () => {
+          this.normalizeNode(editor, entry);
+        });
+      } catch (error) {
+        console.error("Normalize Error: ", error);
       }
-
-      batch.forEach(fn => fn());
       normalizeNode(entry);
     };
 
     return editor as EditorSuite;
+  }
+
+  /**
+   * `Schema`所属块节点
+   * @param node BaseNode
+   * @returns boolean
+   * @description 注意与`utils`的`isBlockNode`区分
+   */
+  public isBlockNode(node: BaseNode): boolean {
+    const keys = Object.keys(node);
+    return keys.some(key => this.block.has(key));
+  }
+
+  /**
+   * `Schema`所属包装节点
+   * @param node BaseNode
+   * @returns boolean
+   */
+  public isWrapNode(node: BaseNode): boolean {
+    const keys = Object.keys(node);
+    return keys.some(key => this.wrap.has(key));
+  }
+
+  /**
+   * `Schema`所属配对子节点
+   * @param node BaseNode
+   * @returns boolean
+   */
+  public isPairNode(node: BaseNode): boolean {
+    const keys = Object.keys(node);
+    return keys.some(key => this.pair.has(key));
+  }
+
+  /**
+   * `Schema`所属块级空节点
+   * @param node BaseNode
+   * @returns boolean
+   */
+  public isVoidNode(node: BaseNode): boolean {
+    const keys = Object.keys(node);
+    return keys.some(key => this.void.has(key));
   }
 }
