@@ -1,4 +1,4 @@
-declare module "doc-editor-delta" {
+declare module "doc-editor-delta/dist/interface" {
   interface BlockElement {
     [HEADING_KEY]?: { id: string; type: string };
   }

@@ -1,4 +1,4 @@
-declare module "doc-editor-delta" {
+declare module "doc-editor-delta/dist/interface" {
   interface BlockElement {
     [CODE_BLOCK_KEY]?: boolean;
     [CODE_BLOCK_CONFIG]?: { language: string };

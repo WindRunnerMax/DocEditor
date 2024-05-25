@@ -1,4 +1,4 @@
-declare module "doc-editor-delta" {
+declare module "doc-editor-delta/dist/interface" {
   interface BlockElement {
     [REACT_LIVE_KEY]?: boolean;
     [REACT_LIVE_ITEM_KEY]?: boolean;

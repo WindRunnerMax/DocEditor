@@ -1,4 +1,4 @@
-declare module "doc-editor-delta" {
+declare module "doc-editor-delta/dist/interface" {
   interface BlockElement {
     [UNORDERED_LIST_KEY]?: boolean;
     [UNORDERED_LIST_ITEM_KEY]?: UnOrderListItemConfig;

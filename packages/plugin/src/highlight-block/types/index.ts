@@ -1,7 +1,7 @@
 import type { BlockElement } from "doc-editor-delta";
 import type { AssertT } from "doc-editor-utils";
 
-declare module "doc-editor-delta" {
+declare module "doc-editor-delta/dist/interface" {
   interface BlockElement {
     [HIGHLIGHT_BLOCK_KEY]?: { border: string; background: string };
     [HIGHLIGHT_BLOCK_ITEM_KEY]?: boolean;

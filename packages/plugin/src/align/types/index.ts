@@ -1,4 +1,4 @@
-declare module "doc-editor-delta" {
+declare module "doc-editor-delta/dist/interface" {
   interface BlockElement {
     [ALIGN_KEY]?: "left" | "center" | "right" | "justify";
   }

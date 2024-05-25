@@ -29,13 +29,17 @@ export const isEmptyLine = (element: BaseNode): boolean => {
   return false;
 };
 
-export const isWithinNode = (editor: Editor, path: EditorPath, key: string) => {
+export const withinIterator = (
+  editor: Editor,
+  path: EditorPath,
+  callback: (node: BaseNode) => void
+) => {
   if (path.length <= 1) return false;
   let count = path.length - 1;
   let parent = Editor.parent(editor, path);
   while (parent[0] && count--) {
     const node = parent[0] as BaseNode;
-    if (node[key]) return true;
+    callback(node);
     parent = Editor.parent(editor, parent[1]);
   }
   return false;

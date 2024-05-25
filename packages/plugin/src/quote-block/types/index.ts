@@ -1,4 +1,4 @@
-declare module "doc-editor-delta" {
+declare module "doc-editor-delta/dist/interface" {
   interface BlockElement {
     [QUOTE_BLOCK_KEY]?: boolean;
     [QUOTE_BLOCK_ITEM_KEY]?: boolean;
