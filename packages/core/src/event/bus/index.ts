@@ -1,29 +1,19 @@
 import { DEFAULT_PRIORITY } from "doc-editor-utils";
 
-import type { EventMap, EventMapKeys } from "./action";
-
-type Listener<T extends EventMapKeys> = (value: EventMap[T]) => void;
-type Handler<T extends EventMapKeys> = {
-  once: boolean;
-  priority: number;
-  listener: Listener<T>;
-};
-type Listeners = {
-  [T in EventMapKeys]?: Handler<T>[];
-};
+import type { EventMap, EventType, Handler, Listener, Listeners, WithStop } from "./action";
 
 export class EventBus {
   private listeners: Listeners = {};
 
-  public on<T extends EventMapKeys>(key: T, listener: Listener<T>, priority = DEFAULT_PRIORITY) {
+  public on<T extends EventType>(key: T, listener: Listener<T>, priority = DEFAULT_PRIORITY) {
     this.addEventListener(key, listener, priority, false);
   }
 
-  public once<T extends EventMapKeys>(key: T, listener: Listener<T>, priority = DEFAULT_PRIORITY) {
+  public once<T extends EventType>(key: T, listener: Listener<T>, priority = DEFAULT_PRIORITY) {
     this.addEventListener(key, listener, priority, true);
   }
 
-  private addEventListener<T extends EventMapKeys>(
+  private addEventListener<T extends EventType>(
     key: T,
     listener: Listener<T>,
     priority: number,
@@ -35,7 +25,7 @@ export class EventBus {
     (this.listeners[key] as Handler<T>[]) = handler;
   }
 
-  public off<T extends EventMapKeys>(key: T, listener: Listener<T>) {
+  public off<T extends EventType>(key: T, listener: Listener<T>) {
     const handler = this.listeners[key];
     if (!handler) return void 0;
     // COMPAT: 不能直接`splice` 可能会导致`trigger`时打断`forEach`
@@ -43,13 +33,19 @@ export class EventBus {
     (this.listeners[key] as Handler<T>[]) = next;
   }
 
-  public trigger<T extends EventMapKeys>(key: T, value: EventMap[T]) {
+  public trigger<T extends EventType>(key: T, payload: EventMap[T]) {
     const handler = this.listeners[key];
     if (!handler) return void 0;
-    handler.forEach(item => {
-      item.listener(value);
+    let stop = false;
+    const duplicate = {
+      ...payload,
+      stop: () => (stop = true),
+    } as WithStop<EventMap[T]>;
+    for (const item of handler) {
+      item.listener(duplicate);
       item.once && this.off(key, item.listener);
-    });
+      if (stop) break;
+    }
   }
 
   public clear() {

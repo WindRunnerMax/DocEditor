@@ -1,6 +1,8 @@
 export type { CommandFn, EditorCommands } from "./command/types";
 export { makeEditor } from "./editor";
 export type { EditorSuite } from "./editor/types";
+export type { EventType, Handler, Listener } from "./event/bus/action";
+export { EDITOR_EVENT } from "./event/bus/action";
 export { useMakeEditor } from "./hooks/use-make-editor";
 export { LOG_LEVEL } from "./log";
 export { EditorPlugin } from "./plugin";

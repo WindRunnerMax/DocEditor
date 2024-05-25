@@ -1,11 +1,13 @@
-import type { NativeEventMap } from "./native";
-import { NATIVE_EVENTS } from "./native";
+import type { Object } from "doc-editor-utils";
+
 import type {
   ContentChangeEvent,
   PaintEvent,
   ReadonlyStateEvent,
   SelectionChangeEvent,
-} from "./types";
+} from "../types/bus";
+import type { NativeEventMap } from "../types/react";
+import { NATIVE_EVENTS } from "../types/react";
 
 export const EDITOR_EVENT = {
   CONTENT_CHANGE: "CONTENT_CHANGE",
@@ -24,13 +26,12 @@ export type EventMap = {
   [EDITOR_EVENT.READONLY_CHANGE]: ReadonlyStateEvent;
 } & NativeEventMap;
 
-type EventMapType = typeof EDITOR_EVENT;
-export type EventMapKeys = EventMapType[keyof EventMapType];
-
-export type MapToArray<T> = T extends EventMapKeys ? [key: T, payload: EventMap[T]] : never;
-export type EditorEventAction = MapToArray<EventMapKeys>;
-
-export type MapToRecord<T extends EventMapKeys> = {
-  [P in T]: { key: P; payload: EventMap[P] };
+export type EventType = Object.Values<typeof EDITOR_EVENT>;
+export type Handler<T extends EventType> = {
+  once: boolean;
+  priority: number;
+  listener: Listener<T>;
 };
-export type EditorEventRecord = MapToRecord<EventMapKeys>;
+export type WithStop<T> = T & { stop: () => void };
+export type Listener<T extends EventType> = (value: WithStop<EventMap[T]>) => void;
+export type Listeners = { [T in EventType]?: Handler<T>[] };

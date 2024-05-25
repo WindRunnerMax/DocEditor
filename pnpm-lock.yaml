@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  react-dev-utils@11.0.4>react-error-overlay: 6.0.9
+
 importers:
 
   .:
@@ -325,8 +328,8 @@ importers:
         specifier: 'workspace: *'
         version: link:../delta
       laser-utils:
-        specifier: 0.0.2-alpha.13
-        version: 0.0.2-alpha.13
+        specifier: 0.0.2-alpha.14
+        version: 0.0.2-alpha.14
       react:
         specifier: '>=16'
         version: 17.0.2
@@ -9528,8 +9531,8 @@ packages:
     resolution: {integrity: sha512-yRTyrZ3Jsl96jNI1pPKIENBL4wv6+WBlbt7OvJ4I6ocGW3BMWO6T0xWHPRXUvXdOe3o2ujKM6wUDcmDpeyWFRg==}
     dev: false
 
-  /laser-utils@0.0.2-alpha.13:
-    resolution: {integrity: sha512-9Ke74rX3URh6V6XRI2E4sjQCohlZsgN4ELls8Uh/nOiTa5ko9hLXswjBeD70N1JXbmFdRlflzlsqtW1VKzlQEQ==}
+  /laser-utils@0.0.2-alpha.14:
+    resolution: {integrity: sha512-oq4vXRb9ZQB0V/RUTFGZSLSUh9BpFeSqls6p5hHhAIWGK8+TkJYRLX7+FZY9DqGjI2YC1LEuz3AzWeNmMZBuoQ==}
     dev: false
 
   /last-call-webpack-plugin@3.0.0:
@@ -12010,7 +12013,7 @@ packages:
       open: 7.4.2
       pkg-up: 3.1.0
       prompts: 2.4.0
-      react-error-overlay: 6.0.11
+      react-error-overlay: 6.0.9
       recursive-readdir: 2.2.2
       shell-quote: 1.7.2
       strip-ansi: 6.0.0
@@ -12052,7 +12055,7 @@ packages:
       open: 7.4.2
       pkg-up: 3.1.0
       prompts: 2.4.0
-      react-error-overlay: 6.0.11
+      react-error-overlay: 6.0.9
       recursive-readdir: 2.2.2
       shell-quote: 1.7.2
       strip-ansi: 6.0.0
@@ -12087,8 +12090,8 @@ packages:
       scheduler: 0.20.2
     dev: false
 
-  /react-error-overlay@6.0.11:
-    resolution: {integrity: sha512-/6UZ2qgEyH2aqzYZgQPxEnz33NJ2gNsnHA2o5+o4wW9bLM/JYQitNP9xPhsXwC08hMMovfGe/8retsdDsczPRg==}
+  /react-error-overlay@6.0.9:
+    resolution: {integrity: sha512-nQTTcUu+ATDbrSD1BZHr5kgSD4oF8OFjxun8uAaL8RwPBacGBNPf/yAuVVdx17N8XNzRDMrZ9XcKZHCjPW+9ew==}
 
   /react-focus-lock@2.11.2(@types/react@17.0.2)(react@17.0.1):
     resolution: {integrity: sha512-DDTbEiov0+RthESPVSTIdAWPPKic+op3sCcP+icbMRobvQNt7LuAlJ3KoarqQv5sCgKArru3kXmlmFTa27/CdQ==}

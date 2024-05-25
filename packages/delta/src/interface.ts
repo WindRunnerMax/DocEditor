@@ -9,18 +9,19 @@ declare module "slate" {
 }
 
 export interface BlockElement {
+  text?: never;
   children: BaseNode[];
   [key: string]: unknown;
 }
 
 export interface TextElement {
   text: string;
+  children?: never;
   [key: string]: unknown;
 }
 
 export interface TextBlockElement extends BlockElement {
   children: TextElement[];
-  [key: string]: unknown;
 }
 
 export type BaseElement = BlockElement | TextElement;

@@ -7,7 +7,7 @@ import { withReact } from "doc-editor-delta";
 import { Clipboard } from "../clipboard";
 import { Command } from "../command";
 import { Event } from "../event";
-import { EDITOR_EVENT } from "../event/modules/action";
+import { EDITOR_EVENT } from "../event/bus/action";
 import { LOG_LEVEL, Logger } from "../log";
 import { EditorPlugin } from "../plugin";
 import { Schema } from "../schema";

@@ -11,7 +11,6 @@ const {
 // https://github.com/arackaf/customize-cra
 
 const configWebpackPlugins = () => config => {
-  // 太卡关闭一些插件
   // 关闭`ESLINT`的插件 -> 在`VSCode`校验
   // 关闭`CaseSensitivePathsPlugin`插件
   // 关闭`IgnorePlugin`插件
@@ -21,10 +20,16 @@ const configWebpackPlugins = () => config => {
       plugin.constructor.name !== "CaseSensitivePathsPlugin" &&
       plugin.constructor.name !== "IgnorePlugin"
   );
+  // 在`MonoRepo`中关闭`ModuleScopePlugin`的检查
   config.resolve.plugins = config.resolve.plugins.filter(
     plugin => plugin.constructor.name !== "ModuleScopePlugin"
   );
-  // 添加插件
+  // 处理`webpack.DefinePlugin`相关能力
+  const definePlugin = config.plugins.find(it => it.constructor.name === "DefinePlugin");
+  if (definePlugin) {
+    definePlugin.definitions["process.platform"] = JSON.stringify("darwin");
+  }
+  // 添加代码压缩插件且配置
   process.env.NODE_ENV === "production" &&
     config.plugins.push(
       new UglifyJsPlugin({

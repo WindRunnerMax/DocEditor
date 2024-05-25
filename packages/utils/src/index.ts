@@ -33,6 +33,7 @@ export {
   setWrapNodes,
   setWrapStructure,
 } from "./set";
+export type { Object, Reflex, String } from "laser-utils";
 export {
   cs,
   getUniqueId,

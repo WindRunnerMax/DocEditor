@@ -4,6 +4,7 @@ import React from "react";
 
 import { INIT_NODE } from "../editor/constant";
 import type { EditorSuite } from "../editor/types";
+import { EDITOR_EVENT } from "../event/bus/action";
 import type { RenderPlugins } from "../plugin/types";
 
 type EditableProps = {
@@ -38,6 +39,31 @@ export class Editable extends React.PureComponent<EditableProps, EditableState> 
     }
   }
 
+  private onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    this.props.editor.event.trigger(EDITOR_EVENT.KEY_DOWN, event);
+    this.state.renderModule.onKeyDown(event);
+  };
+
+  private onKeyPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    this.props.editor.event.trigger(EDITOR_EVENT.KEY_PRESS, event);
+  };
+
+  private onMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
+    this.props.editor.event.trigger(EDITOR_EVENT.MOUSE_DOWN, event);
+  };
+
+  private onMouseUp = (event: React.MouseEvent<HTMLDivElement>) => {
+    this.props.editor.event.trigger(EDITOR_EVENT.MOUSE_UP, event);
+  };
+
+  private onCopy = (event: React.ClipboardEvent<HTMLDivElement>) => {
+    this.props.editor.event.trigger(EDITOR_EVENT.COPY, event);
+  };
+
+  private onPaste = (event: React.ClipboardEvent<HTMLDivElement>) => {
+    this.props.editor.event.trigger(EDITOR_EVENT.PASTE, event);
+  };
+
   render() {
     return (
       <EditorProvider
@@ -51,7 +77,12 @@ export class Editable extends React.PureComponent<EditableProps, EditableState> 
           renderLeaf={this.state.renderModule.renderLeaf}
           readOnly={this.props.readonly}
           placeholder={this.props.placeholder}
-          onKeyDown={this.state.renderModule.onKeyDown}
+          onKeyDown={this.onKeyDown}
+          onKeyPress={this.onKeyPress}
+          onMouseDown={this.onMouseDown}
+          onMouseUp={this.onMouseUp}
+          onCopy={this.onCopy}
+          onPaste={this.onPaste}
         />
       </EditorProvider>
     );

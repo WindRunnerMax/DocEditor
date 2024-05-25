@@ -1,5 +1,5 @@
 import type { EditorSuite } from "../editor/types";
-import { EventBus } from "./modules";
+import { EventBus } from "./bus";
 
 export class Event {
   private bus: EventBus;
