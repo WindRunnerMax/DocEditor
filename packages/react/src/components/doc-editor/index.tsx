@@ -3,6 +3,7 @@ import "doc-editor-plugin/styles/index";
 import { useMemoizedFn } from "ahooks";
 import { Editable, EDITOR_EVENT, useMakeEditor } from "doc-editor-core";
 import { LOG_LEVEL } from "doc-editor-core";
+import { Editor, Transforms } from "doc-editor-delta";
 import {
   AlignPlugin,
   BoldPlugin,
@@ -44,6 +45,10 @@ export const SlateDocEditor: FC<{
   useMemo(() => {
     // @ts-expect-error example debug
     window.editor = editor;
+    // @ts-expect-error example debug
+    window.Transformers = Transforms;
+    // @ts-expect-error example debug
+    window.Editor = Editor;
     editor.logger.set(LOG_LEVEL.DEBUG);
     editor.plugin.register(
       ParagraphPlugin(),

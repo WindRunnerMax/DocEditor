@@ -7,7 +7,7 @@ import { getWrappedSignalMenu } from "../utils/wrapper";
 
 export const QuoteDocToolBarPlugin: DocToolbarPlugin = {
   renderIcon: state => {
-    if (state.element[QUOTE_BLOCK_ITEM_KEY]) {
+    if (state.element[QUOTE_BLOCK_ITEM_KEY] && state.status.isTextBlock) {
       return { element: <IconQuote /> };
     }
     return null;

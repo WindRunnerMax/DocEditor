@@ -1,7 +1,7 @@
 import type { BlockElement, Location, Path, TextElement } from "doc-editor-delta";
 import { Editor, Transforms } from "doc-editor-delta";
 
-import { existKey, isBlock, isText } from "./ref";
+import { existKey, getAboveNode, isBlock, isText } from "./ref";
 
 export const setBlockNode = (
   editor: Editor,
@@ -19,7 +19,7 @@ export const setBlockNode = (
     // https://github.com/ianstormtaylor/slate/blob/25be3b/packages/slate/src/transforms/node.ts#L565
     // 因此这里需要使用`Editor.above`实现更精确的查找 再将`node`直接传入来精确变换
     // https://github.com/ianstormtaylor/slate/blob/25be3b/packages/slate/src/interfaces/editor.ts#L334
-    const above = Editor.above(editor, {
+    const above = getAboveNode(editor, {
       at: location,
       match: node => isBlock(editor, node) && (key ? existKey(node, key) : true),
     });
@@ -41,7 +41,7 @@ export const setUnBlockNode = (
   let { node } = options;
   const { at: location, key } = options;
   if (!node) {
-    const above = Editor.above(editor, {
+    const above = getAboveNode(editor, {
       at: location,
       match: node => isBlock(editor, node) && (key ? existKey(node, key) : true),
     });

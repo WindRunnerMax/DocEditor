@@ -9,9 +9,10 @@ import { getWrappedSignalMenu } from "../utils/wrapper";
 
 export const ListDocToolBarPlugin: DocToolbarPlugin = {
   renderIcon: state => {
-    if (state.element[ORDERED_LIST_ITEM_KEY]) {
+    if (state.element[ORDERED_LIST_ITEM_KEY] && state.status.isTextBlock) {
       return { element: <IconOrderedList /> };
-    } else if (state.element[UNORDERED_LIST_ITEM_KEY]) {
+    }
+    if (state.element[UNORDERED_LIST_ITEM_KEY] && state.status.isTextBlock) {
       return { element: <IconUnorderedList /> };
     }
     return null;

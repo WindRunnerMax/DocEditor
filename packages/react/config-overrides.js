@@ -34,7 +34,7 @@ const configWebpackPlugins = () => config => {
     config.plugins.push(
       new UglifyJsPlugin({
         uglifyOptions: {
-          compress: { drop_debugger: true, drop_console: true },
+          compress: { drop_debugger: true, drop_console: false },
         },
       })
     );

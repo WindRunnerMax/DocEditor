@@ -13,6 +13,7 @@ export type DocToolBarState = {
   element: RenderElementProps["element"];
   status: {
     isBlock: boolean;
+    isTextBlock: boolean;
     isEmptyLine: boolean;
     isNextLine: boolean;
     isInCodeBlock: boolean;

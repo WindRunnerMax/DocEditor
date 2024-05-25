@@ -6,7 +6,7 @@ import type { Path } from "doc-editor-delta";
 import type { RenderElementProps } from "doc-editor-delta";
 import { Transforms } from "doc-editor-delta";
 import { ReactEditor } from "doc-editor-delta";
-import { cs } from "doc-editor-utils";
+import { cs, isTextBlock } from "doc-editor-utils";
 import React, { useMemo, useState } from "react";
 
 import { CODE_BLOCK_KEY } from "../../codeblock/types";
@@ -61,6 +61,7 @@ export const DocMenu: React.FC<{
       element: props.element,
       status: {
         isBlock: visible && isBlockNode(props.schema, props.element),
+        isTextBlock: visible && isTextBlock(props.editor, props.element),
         isEmptyLine: visible && isEmptyLine(props.element),
         isInCodeBlock: isInCodeBlock,
         isInReactLive: isInReactLive,
