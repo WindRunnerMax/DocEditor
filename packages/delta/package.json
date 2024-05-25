@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "build": "rm -rf ./dist && tsc -p tsconfig.build.json",
-    "test": "jest"
+    "lint:ts": "tsc -p tsconfig.build.json --noEmit"
   },
   "keywords": [],
   "author": "",

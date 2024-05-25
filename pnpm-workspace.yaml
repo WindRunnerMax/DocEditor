@@ -1,3 +1,7 @@
 packages:
-  - 'packages/*'
+  - "packages/delta"
+  - "packages/utils"
+  - "packages/core"
+  - "packages/plugin"
+  - "packages/react"
   

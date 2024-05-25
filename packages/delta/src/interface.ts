@@ -18,7 +18,7 @@ export interface TextElement {
   [key: string]: unknown;
 }
 
-export interface TextBlockElement {
+export interface TextBlockElement extends BlockElement {
   children: TextElement[];
   [key: string]: unknown;
 }

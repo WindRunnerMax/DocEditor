@@ -16,7 +16,8 @@
     "build": "react-app-rewired build",
     "lint-es": "eslint --fix --ext .js,.jsx,.ts,.tsx --ignore-path .gitignore .",
     "lint-style": "stylelint \"**/*.{css,scss,sass}\" --fix --ignore-path .gitignore",
-    "lint": "npm run lint-es && npm run lint-style"
+    "lint": "npm run lint-es && npm run lint-style",
+    "lint:ts": "tsc -p tsconfig.build.json --noEmit"
   },
   "keywords": [],
   "author": "",

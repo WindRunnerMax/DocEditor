@@ -62,10 +62,16 @@ export const isMatchedEvent = (event: React.KeyboardEvent<HTMLDivElement>, ...ar
 };
 
 export const isTextBlock = (editor: Editor, node: Node): node is TextBlockElement => {
-  if (isBlock(editor, node)) {
-    return node.children.every(child => isText(child));
+  if (!isBlock(editor, node)) return false;
+  const firstNode = node.children[0];
+  const result = firstNode && isText(firstNode);
+  if (process.env.NODE_ENV === "development") {
+    const strictInspection = node.children.every(child => isText(child));
+    if (result !== strictInspection) {
+      console.error("Fatal Error: Text Block Check Fail", node);
+    }
   }
-  return false;
+  return result;
 };
 
 type MatchNode = { block: BlockElement; path: Path } | null;
