@@ -1,9 +1,8 @@
 import "./index.scss";
 
 import type { CommandFn } from "doc-editor-core";
+import type { BlockContext, BlockProps } from "doc-editor-core";
 import { BlockPlugin } from "doc-editor-core";
-import type { BlockContext } from "doc-editor-core/dist/plugin/types/context";
-import type { RenderElementProps } from "doc-editor-delta";
 import { isObject } from "doc-editor-utils";
 import { isMatchedAttributeNode } from "doc-editor-utils";
 import { setBlockNode } from "doc-editor-utils";
@@ -21,7 +20,7 @@ export class AlignPlugin extends BlockPlugin {
     }
   };
 
-  public match(props: RenderElementProps): boolean {
+  public match(props: BlockProps): boolean {
     return !!props.element[ALIGN_KEY];
   }
 

@@ -1,7 +1,7 @@
 import "./index.scss";
 
 import type { BlockContext, CommandFn, LeafContext } from "doc-editor-core";
-import { BlockPlugin } from "doc-editor-core";
+import { BlockPlugin, LeafPlugin } from "doc-editor-core";
 import type {
   BaseRange,
   Editor,
@@ -18,11 +18,27 @@ import { ReactLiveView } from "./components/viewer";
 import { REACT_LIVE_ITEM_KEY, REACT_LIVE_KEY, REACT_LIVE_TYPE } from "./types";
 import { codeTokenize, collectReactLiveText } from "./utils/parse";
 
+class ReactLiveLeafPlugin extends LeafPlugin {
+  public readonly key: string = REACT_LIVE_TYPE;
+
+  public destroy(): void {}
+
+  public match(props: RenderLeafProps): boolean {
+    return !!props.leaf[REACT_LIVE_TYPE];
+  }
+
+  public render(context: LeafContext): JSX.Element {
+    context.classList.push("token", context.leaf[REACT_LIVE_TYPE] || "");
+    return context.children;
+  }
+}
+
 export class ReactLivePlugin extends BlockPlugin {
   public key: string = REACT_LIVE_KEY;
 
   constructor(private editor: Editor) {
     super();
+    this.WITH_LEAF_PLUGINS = [new ReactLiveLeafPlugin()];
   }
 
   public destroy(): void {}
@@ -43,15 +59,6 @@ export class ReactLivePlugin extends BlockPlugin {
         {context.children}
       </ReactLiveView>
     );
-  }
-
-  public matchLeaf(props: RenderLeafProps): boolean {
-    return !!props.leaf[REACT_LIVE_TYPE];
-  }
-
-  public renderLeaf(context: LeafContext): JSX.Element {
-    context.classList.push("token", context.leaf[REACT_LIVE_TYPE] || "");
-    return context.children;
   }
 
   public onDecorate(entry: NodeEntry): BaseRange[] {

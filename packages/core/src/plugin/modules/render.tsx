@@ -1,11 +1,12 @@
 import type { NodeEntry, Range } from "doc-editor-delta";
 import type { RenderElementProps, RenderLeafProps } from "doc-editor-delta";
+import React from "react";
 
 import { Void } from "../../preset/void";
 import type { BlockContext, LeafContext } from "../types/context";
 import type { BlockPlugin, EditorPlugin, LeafPlugin } from "./declare";
 
-export const renderElement = (props: RenderElementProps, elementPlugins: BlockPlugin[]) => {
+export const renderBlock = (props: RenderElementProps, blockPlugins: BlockPlugin[]) => {
   const context: BlockContext = {
     props,
     style: {},
@@ -13,19 +14,19 @@ export const renderElement = (props: RenderElementProps, elementPlugins: BlockPl
     element: props.element,
     children: props.children,
   };
-  for (const item of elementPlugins) {
+  for (const item of blockPlugins) {
     if (item.match(props) && item.render) {
       context.children = (
-        <>
+        <React.Fragment>
           {props.children}
           <Void>{item.render(context)}</Void>
-        </>
+        </React.Fragment>
       );
       break;
     }
   }
-  for (let i = elementPlugins.length - 1; i >= 0; i--) {
-    const item = elementPlugins[i];
+  for (let i = blockPlugins.length - 1; i >= 0; i--) {
+    const item = blockPlugins[i];
     if (item.match(props) && item.renderLine) {
       context.children = item.renderLine(context);
     }
@@ -63,9 +64,7 @@ export const decorate = (entry: NodeEntry, plugins: EditorPlugin[]) => {
   for (const item of plugins) {
     if (item.onDecorate) {
       const result = item.onDecorate(entry);
-      if (result) {
-        ranges.push(...result);
-      }
+      if (result) ranges.push(...result);
     }
   }
   return ranges;

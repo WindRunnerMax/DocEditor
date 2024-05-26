@@ -1,6 +1,6 @@
 import type { EditorSuite } from "../editor/types";
 import type { BlockPlugin, EditorPlugin, LeafPlugin } from "./modules/declare";
-import { decorate, renderElement, renderLeaf } from "./modules/render";
+import { decorate, renderBlock, renderLeaf } from "./modules/render";
 import type { ApplyPlugins } from "./types/apply";
 import { EDITOR_ELEMENT_TYPE } from "./types/constant";
 import { KEY_EVENT } from "./types/constant";
@@ -12,7 +12,7 @@ export class PluginController {
     this.plugins = {};
   }
 
-  register = (...plugins: EditorPlugin[]) => {
+  public register = (...plugins: EditorPlugin[]) => {
     for (const plugin of plugins) {
       const key = plugin.key;
       const exist = this.plugins[key];
@@ -21,7 +21,7 @@ export class PluginController {
     }
   };
 
-  apply = (): ApplyPlugins => {
+  public apply = (): ApplyPlugins => {
     const plugins = Object.values(this.plugins);
     const elementPlugins: BlockPlugin[] = [];
     const leafPlugins: LeafPlugin[] = [];
@@ -31,15 +31,8 @@ export class PluginController {
     plugins.forEach(item => {
       if (item.type === EDITOR_ELEMENT_TYPE.BLOCK) {
         elementPlugins.push(item);
-        if (item.renderLeaf && item.matchLeaf) {
-          // 需要自动生成`Leaf`插件
-          leafPlugins.push({
-            type: EDITOR_ELEMENT_TYPE.INLINE,
-            key: item.key,
-            match: item.matchLeaf,
-            render: item.renderLeaf,
-            destroy: () => void 0,
-          });
+        if (item.WITH_LEAF_PLUGINS) {
+          leafPlugins.push(...item.WITH_LEAF_PLUGINS);
         }
       } else if (item.type === EDITOR_ELEMENT_TYPE.INLINE) {
         leafPlugins.push(item);
@@ -51,7 +44,7 @@ export class PluginController {
 
     return {
       renderElement: props => {
-        return renderElement(props, elementPlugins);
+        return renderBlock(props, elementPlugins);
       },
       renderLeaf: props => {
         return renderLeaf(props, leafPlugins);
@@ -71,13 +64,13 @@ export class PluginController {
     };
   };
 
-  reset = () => {
+  public reset = () => {
     const plugins = Object.values(this.plugins);
     plugins.forEach(node => node.destroy && node.destroy());
     this.plugins = {};
   };
 
-  destroy = () => {
+  public destroy = () => {
     this.reset();
   };
 }

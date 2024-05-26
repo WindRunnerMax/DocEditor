@@ -1,16 +1,16 @@
 import "./index.scss";
 
 import { Select } from "@arco-design/web-react";
-import type { BlockContext, CommandFn, EditorSuite, LeafContext } from "doc-editor-core";
-import { BlockPlugin } from "doc-editor-core";
 import type {
-  BaseRange,
-  BlockElement,
-  NodeEntry,
-  Range,
-  RenderElementProps,
-  RenderLeafProps,
-} from "doc-editor-delta";
+  BlockContext,
+  BlockProps,
+  CommandFn,
+  EditorSuite,
+  LeafContext,
+  LeafProps,
+} from "doc-editor-core";
+import { BlockPlugin, LeafPlugin } from "doc-editor-core";
+import type { BaseRange, BlockElement, NodeEntry, Range } from "doc-editor-delta";
 import { Editor } from "doc-editor-delta";
 import { ReactEditor } from "doc-editor-delta";
 import { getBlockNode } from "doc-editor-utils";
@@ -20,16 +20,32 @@ import { setBlockNode, setWrapNodes } from "doc-editor-utils";
 import { CODE_BLOCK_CONFIG, CODE_BLOCK_ITEM_KEY, CODE_BLOCK_KEY, CODE_BLOCK_TYPE } from "./types";
 import { codeTokenize, DEFAULT_LANGUAGE, getLanguage, SUPPORTED_LANGUAGES } from "./utils/parser";
 
+class CodeBlockLeafPlugin extends LeafPlugin {
+  public readonly key: string = CODE_BLOCK_TYPE;
+
+  public destroy(): void {}
+
+  public match(props: LeafProps): boolean {
+    return !!props.leaf[CODE_BLOCK_TYPE];
+  }
+
+  public render(context: LeafContext): JSX.Element {
+    context.classList.push("token", context.leaf[CODE_BLOCK_TYPE] || "");
+    return context.children;
+  }
+}
+
 export class CodeBlockPlugin extends BlockPlugin {
   public readonly key: string = CODE_BLOCK_KEY;
 
   constructor(private editor: EditorSuite, private readonly: boolean) {
     super();
+    this.WITH_LEAF_PLUGINS = [new CodeBlockLeafPlugin()];
   }
 
   public destroy(): void {}
 
-  public match(props: RenderElementProps): boolean {
+  public match(props: BlockProps): boolean {
     return !!props.element[CODE_BLOCK_KEY];
   }
 
@@ -74,15 +90,6 @@ export class CodeBlockPlugin extends BlockPlugin {
         {context.children}
       </div>
     );
-  }
-
-  public matchLeaf(props: RenderLeafProps): boolean {
-    return !!props.leaf[CODE_BLOCK_TYPE];
-  }
-
-  public renderLeaf(context: LeafContext): JSX.Element {
-    context.classList.push("token", context.leaf[CODE_BLOCK_TYPE] || "");
-    return context.children;
   }
 
   public onDecorate(entry: NodeEntry): BaseRange[] {
