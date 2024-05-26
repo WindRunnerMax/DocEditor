@@ -21,7 +21,9 @@ export const getAboveNode = (
     match?: (node: Node, path: Path) => boolean;
     self?: boolean;
   }
-): [BlockElement, Path] | undefined => {
+) => {
+  // 这里与`getBlockNode`最大区别是会有`self`的判断
+  // 这是很重要的行为 特别是在类似于`Normalizer`的场景中
   const { at = editor.selection, match, self = true } = options || {};
   if (!at) return void 0;
   const path = Editor.path(editor, at);
@@ -34,7 +36,7 @@ export const getAboveNode = (
     reverse,
   })) {
     if (!Text.isText(n) && (self || !Path.equals(path, p))) {
-      return [n as BlockElement, p];
+      return { node: n as BlockElement, path: p };
     }
   }
 };

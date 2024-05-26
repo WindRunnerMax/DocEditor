@@ -16,6 +16,8 @@ export const getBlockNode = (
   const match = Editor.above<BlockElement>(editor, {
     match: n => Editor.isBlock(editor, n) && (key ? existKey(n, key) : true),
     at: location,
+    // 这里的`Mode`与`TF.setNodes`不一样 会实际改变迭代顺序
+    // https://github.com/ianstormtaylor/slate/blob/25be3b/packages/slate/src/interfaces/editor.ts#L350
     mode: above ? "highest" : "lowest",
   });
   if (!match) return null;

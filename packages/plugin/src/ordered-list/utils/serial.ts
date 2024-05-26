@@ -1,10 +1,13 @@
-import type { BlockElement, Editor, Path } from "doc-editor-delta";
+import type { BlockElement, Path } from "doc-editor-delta";
+import { Editor } from "doc-editor-delta";
 import { existKey, getBlockNode, getNextBlockNode } from "doc-editor-utils";
 import { isBlock, isCollapsed } from "doc-editor-utils";
 import { setBlockNode } from "doc-editor-utils";
 
-const orderedListKey = "ordered-list";
-const orderedListItemKey = "ordered-list-item";
+import { ORDERED_LIST_ITEM_KEY, ORDERED_LIST_KEY } from "../types";
+
+const orderedListKey = ORDERED_LIST_KEY;
+const orderedListItemKey = ORDERED_LIST_ITEM_KEY;
 const applyNewOrderList = (editor: Editor, block: BlockElement, path: Path) => {
   const batchFn: (() => void)[] = [];
   const levelCounter: Record<number, number> = {};
@@ -28,7 +31,9 @@ const applyNewOrderList = (editor: Editor, block: BlockElement, path: Path) => {
       );
     });
   });
-  batchFn.forEach(fn => fn());
+  Editor.withoutNormalizing(editor, () => {
+    batchFn.forEach(fn => fn());
+  });
 };
 
 export const calcOrderListLevels = (editor: Editor, at = editor.selection) => {

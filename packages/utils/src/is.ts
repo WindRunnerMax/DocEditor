@@ -112,30 +112,49 @@ export function isWrappedEdgeNode(
   return false;
 }
 
-export function isWrappedAdjoinNode(
+/**
+ * 检查最近节点的`Wrap`匹配
+ * @param editor Editor
+ * @param wrapKey string
+ * @param pairKey string
+ * @param at? Location
+ * @returns boolean
+ */
+export const isMatchWrapNode = (
   editor: Editor,
-  options: { at?: Location; wrapKey: string; itemKey: string }
-): boolean;
-export function isWrappedAdjoinNode(
-  editor: Editor,
-  options: { at?: Location; wrapNode: MatchNode; itemNode: MatchNode }
-): boolean;
-export function isWrappedAdjoinNode(
-  editor: Editor,
-  options: {
-    at?: Location;
-    wrapKey?: string;
-    itemKey?: string;
-    wrapNode?: MatchNode;
-    itemNode?: MatchNode;
+  wrapKey: string,
+  pairKey: string,
+  at?: Location
+) => {
+  const location = at || editor.selection;
+  if (!location) return false;
+  const current = Editor.node(editor, location);
+  // https://github.com/ianstormtaylor/slate/blob/25be3b/packages/slate/src/interfaces/editor.ts#L1062
+  const parent = Editor.parent(editor, location);
+  if (current && parent) {
+    const [node] = current;
+    const [parentNode] = parent;
+    if (
+      isBlock(editor, node) &&
+      isBlock(editor, parentNode) &&
+      node[pairKey] &&
+      parentNode[wrapKey]
+    ) {
+      return true;
+    }
   }
-): boolean {
-  const { at, wrapKey, itemKey } = options;
-  const wrapNode = options.wrapNode || getBlockNode(editor, { at, key: wrapKey });
-  const itemNode = options.itemNode || getBlockNode(editor, { at, key: itemKey });
-  if (wrapNode && itemNode && wrapNode.block.children.length) {
-    const children = wrapNode.block.children;
-    return children.indexOf(itemNode.block) > -1;
+  const ancestor = parent && Editor.parent(editor, parent[1]);
+  if (parent && ancestor) {
+    const [node] = parent;
+    const [parentNode] = ancestor;
+    if (
+      isBlock(editor, node) &&
+      isBlock(editor, parentNode) &&
+      node[pairKey] &&
+      parentNode[wrapKey]
+    ) {
+      return true;
+    }
   }
   return false;
-}
+};

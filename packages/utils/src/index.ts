@@ -18,8 +18,8 @@ export {
   isFocusLineStart,
   isMatchedAttributeNode,
   isMatchedEvent,
+  isMatchWrapNode,
   isTextBlock,
-  isWrappedAdjoinNode,
   isWrappedEdgeNode,
   isWrappedNode,
 } from "./is";
@@ -31,7 +31,6 @@ export {
   setUnTextNode,
   setUnWrapNodes,
   setWrapNodes,
-  setWrapStructure,
 } from "./set";
 export type { Object, Reflex, String } from "laser-utils";
 export {

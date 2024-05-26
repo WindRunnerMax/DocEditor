@@ -3,7 +3,7 @@ import "./index.scss";
 import type { CommandFn, EditorSuite } from "doc-editor-core";
 import type { Plugin } from "doc-editor-core";
 import { EDITOR_ELEMENT_TYPE, KEY_EVENT } from "doc-editor-core";
-import { assertValue } from "doc-editor-utils";
+import { assertValue, isMatchWrapNode } from "doc-editor-utils";
 import { isObject } from "doc-editor-utils";
 import { getBlockNode } from "doc-editor-utils";
 import {
@@ -11,11 +11,10 @@ import {
   isFocusLineStart,
   isMatchedAttributeNode,
   isMatchedEvent,
-  isWrappedAdjoinNode,
   isWrappedEdgeNode,
   isWrappedNode,
 } from "doc-editor-utils";
-import { setUnWrapNodes, setWrapNodes, setWrapStructure } from "doc-editor-utils";
+import { setUnWrapNodes, setWrapNodes } from "doc-editor-utils";
 import { KEYBOARD } from "doc-editor-utils";
 
 import { HighlightBlockWrapper } from "./components/wrapper";
@@ -67,16 +66,12 @@ export const HighlightBlockPlugin = (editor: EditorSuite, readonly: boolean): Pl
     onKeyDown: event => {
       if (
         isMatchedEvent(event, KEYBOARD.BACKSPACE, KEYBOARD.ENTER) &&
-        isCollapsed(editor, editor.selection)
+        isCollapsed(editor, editor.selection) &&
+        isMatchWrapNode(editor, HIGHLIGHT_BLOCK_KEY, HIGHLIGHT_BLOCK_ITEM_KEY)
       ) {
         const wrapMatch = getBlockNode(editor, { key: HIGHLIGHT_BLOCK_KEY });
         const itemMatch = getBlockNode(editor, { key: HIGHLIGHT_BLOCK_ITEM_KEY });
-        setWrapStructure(editor, wrapMatch, itemMatch, HIGHLIGHT_BLOCK_ITEM_KEY);
-        if (
-          !itemMatch ||
-          !wrapMatch ||
-          !isWrappedAdjoinNode(editor, { wrapNode: wrapMatch, itemNode: itemMatch })
-        ) {
+        if (!itemMatch || !wrapMatch) {
           return void 0;
         }
 

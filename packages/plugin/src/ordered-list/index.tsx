@@ -5,7 +5,7 @@ import type { Plugin } from "doc-editor-core";
 import { EDITOR_ELEMENT_TYPE, KEY_EVENT } from "doc-editor-core";
 import type { Editor } from "doc-editor-delta";
 import { Transforms } from "doc-editor-delta";
-import { assertValue } from "doc-editor-utils";
+import { assertValue, isMatchWrapNode } from "doc-editor-utils";
 import { isObject } from "doc-editor-utils";
 import { existKey, getBlockNode } from "doc-editor-utils";
 import {
@@ -13,14 +13,13 @@ import {
   isFocusLineStart,
   isMatchedAttributeNode,
   isMatchedEvent,
-  isWrappedAdjoinNode,
   isWrappedEdgeNode,
 } from "doc-editor-utils";
-import { setBlockNode, setUnWrapNodes, setWrapNodes, setWrapStructure } from "doc-editor-utils";
+import { setBlockNode, setUnWrapNodes, setWrapNodes } from "doc-editor-utils";
 import { KEYBOARD } from "doc-editor-utils";
 
 import { ORDERED_LIST_ITEM_KEY, ORDERED_LIST_KEY } from "./types";
-import { calcNextOrderListLevels, calcOrderListLevels } from "./utils/calculate";
+import { calcNextOrderListLevels, calcOrderListLevels } from "./utils/serial";
 
 const orderListCommand: CommandFn = (editor, key, data) => {
   if (isObject(data) && data.path) {
@@ -61,16 +60,12 @@ export const OrderedListPlugin = (editor: Editor): Plugin => {
     onKeyDown: event => {
       if (
         isMatchedEvent(event, KEYBOARD.BACKSPACE, KEYBOARD.ENTER, KEYBOARD.TAB) &&
-        isCollapsed(editor, editor.selection)
+        isCollapsed(editor, editor.selection) &&
+        isMatchWrapNode(editor, ORDERED_LIST_KEY, ORDERED_LIST_ITEM_KEY)
       ) {
         const wrapMatch = getBlockNode(editor, { key: ORDERED_LIST_KEY });
         const itemMatch = getBlockNode(editor, { key: ORDERED_LIST_ITEM_KEY });
-        setWrapStructure(editor, wrapMatch, itemMatch, ORDERED_LIST_ITEM_KEY);
-        if (
-          !itemMatch ||
-          !wrapMatch ||
-          !isWrappedAdjoinNode(editor, { wrapNode: wrapMatch, itemNode: itemMatch })
-        ) {
+        if (!itemMatch || !wrapMatch) {
           return void 0;
         }
         const { level, start } = assertValue(itemMatch.block[ORDERED_LIST_ITEM_KEY]);

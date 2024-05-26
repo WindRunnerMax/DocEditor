@@ -4,7 +4,7 @@ import type { CommandFn } from "doc-editor-core";
 import type { Plugin } from "doc-editor-core";
 import { EDITOR_ELEMENT_TYPE, KEY_EVENT } from "doc-editor-core";
 import type { Editor } from "doc-editor-delta";
-import { assertValue } from "doc-editor-utils";
+import { assertValue, isMatchWrapNode } from "doc-editor-utils";
 import { isObject } from "doc-editor-utils";
 import { existKey, getBlockNode } from "doc-editor-utils";
 import {
@@ -12,10 +12,9 @@ import {
   isFocusLineStart,
   isMatchedAttributeNode,
   isMatchedEvent,
-  isWrappedAdjoinNode,
   isWrappedEdgeNode,
 } from "doc-editor-utils";
-import { setBlockNode, setUnWrapNodes, setWrapNodes, setWrapStructure } from "doc-editor-utils";
+import { setBlockNode, setUnWrapNodes, setWrapNodes } from "doc-editor-utils";
 import { KEYBOARD } from "doc-editor-utils";
 
 import { UNORDERED_LIST_ITEM_KEY, UNORDERED_LIST_KEY } from "./types";
@@ -57,17 +56,12 @@ export const UnorderedListPlugin = (editor: Editor): Plugin => {
     onKeyDown: event => {
       if (
         isMatchedEvent(event, KEYBOARD.BACKSPACE, KEYBOARD.ENTER, KEYBOARD.TAB) &&
-        isCollapsed(editor, editor.selection)
+        isCollapsed(editor, editor.selection) &&
+        isMatchWrapNode(editor, UNORDERED_LIST_KEY, UNORDERED_LIST_ITEM_KEY)
       ) {
         const wrapMatch = getBlockNode(editor, { key: UNORDERED_LIST_KEY });
         const itemMatch = getBlockNode(editor, { key: UNORDERED_LIST_ITEM_KEY });
-        setWrapStructure(editor, wrapMatch, itemMatch, UNORDERED_LIST_ITEM_KEY);
-
-        if (
-          !itemMatch ||
-          !wrapMatch ||
-          !isWrappedAdjoinNode(editor, { wrapNode: wrapMatch, itemNode: itemMatch })
-        ) {
+        if (!itemMatch || !wrapMatch) {
           return void 0;
         }
 

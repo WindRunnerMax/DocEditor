@@ -1,4 +1,4 @@
-import type { BlockElement, Location, Path, TextElement } from "doc-editor-delta";
+import type { BlockElement, Location, TextElement } from "doc-editor-delta";
 import { Editor, Transforms } from "doc-editor-delta";
 
 import { existKey, getAboveNode, isBlock, isText } from "./ref";
@@ -23,7 +23,7 @@ export const setBlockNode = (
       at: location,
       match: node => isBlock(editor, node) && (key ? existKey(node, key) : true),
     });
-    if (above && above[0]) node = above[0] as BlockElement;
+    if (above && above.node) node = above.node as BlockElement;
   }
   if (!node) return void 0;
   Transforms.setNodes(editor, config, { match: n => n === node, at: location });
@@ -45,7 +45,7 @@ export const setUnBlockNode = (
       at: location,
       match: node => isBlock(editor, node) && (key ? existKey(node, key) : true),
     });
-    if (above && above[0]) node = above[0] as BlockElement;
+    if (above && above.node) node = above.node as BlockElement;
   }
   if (!node) return void 0;
   Transforms.unsetNodes(editor, props, { match: n => n === node, at: location });
@@ -114,21 +114,4 @@ export const setUnWrapNodes = (
       split: true,
     });
   });
-};
-
-type MatchNode = { block: BlockElement; path: Path } | null;
-export const setWrapStructure = (
-  editor: Editor,
-  wrapMatch: MatchNode,
-  itemMatch: MatchNode,
-  itemKey: string
-) => {
-  if (wrapMatch && !itemMatch) {
-    Transforms.unwrapNodes(editor, {
-      match: n => n === wrapMatch.block,
-      split: true,
-    });
-  } else if (!wrapMatch && itemMatch) {
-    setUnBlockNode(editor, [itemKey], { node: itemMatch.block });
-  }
 };
