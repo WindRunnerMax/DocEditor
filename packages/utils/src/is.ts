@@ -10,7 +10,7 @@ import { Editor, Point, Range } from "doc-editor-delta";
 import { isEmptyValue, isObject } from "laser-utils";
 
 import { getBlockNode } from "./get";
-import { isBlock, isText } from "./ref";
+import { getParentNode, isBlock, isText } from "./ref";
 
 export const isWrappedNode = (editor: Editor) => {
   const match = getBlockNode(editor);
@@ -129,30 +129,23 @@ export const isMatchWrapNode = (
   const location = at || editor.selection;
   if (!location) return false;
   const current = Editor.node(editor, location);
+  const currentNode = current && current[0];
   // https://github.com/ianstormtaylor/slate/blob/25be3b/packages/slate/src/interfaces/editor.ts#L1062
-  const parent = Editor.parent(editor, location);
-  if (current && parent) {
-    const [node] = current;
-    const [parentNode] = parent;
-    if (
-      isBlock(editor, node) &&
-      isBlock(editor, parentNode) &&
-      node[pairKey] &&
-      parentNode[wrapKey]
-    ) {
+  const parent = getParentNode(editor, location);
+  const parentNode = parent && parent[0];
+  // 如果当前节点即块元素 检查当前块和父级块匹配关系
+  if (isBlock(editor, currentNode) && isBlock(editor, parentNode)) {
+    if (currentNode[pairKey] && parentNode[wrapKey]) {
       return true;
     }
+    // 在这种情况下应该是只检查
+    return false;
   }
-  const ancestor = parent && Editor.parent(editor, parent[1]);
-  if (parent && ancestor) {
-    const [node] = parent;
-    const [parentNode] = ancestor;
-    if (
-      isBlock(editor, node) &&
-      isBlock(editor, parentNode) &&
-      node[pairKey] &&
-      parentNode[wrapKey]
-    ) {
+  const ancestor = parent && getParentNode(editor, parent[1]);
+  const ancestorNode = ancestor && ancestor[0];
+  // 检查父级块和祖先块匹配关系
+  if (isBlock(editor, parentNode) && isBlock(editor, ancestorNode)) {
+    if (parentNode[pairKey] && ancestorNode[wrapKey]) {
       return true;
     }
   }

@@ -44,20 +44,6 @@ export const getNextBlockNode = (
   return { block, path };
 };
 
-export const getBlockAttributes = (
-  node?: BlockElement,
-  emit?: string[]
-): Record<string, unknown> => {
-  if (!node) return {};
-  const emits: string[] = emit ? emit : [];
-  emits.push("children");
-  const result: Record<string, unknown> = {};
-  Object.keys(node)
-    .filter(item => emits.indexOf(item) === -1)
-    .forEach(key => (result[key] = node[key]));
-  return result;
-};
-
 export const getOmitAttributes = (
   keys: string[],
   exclude: string[] = []

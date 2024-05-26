@@ -7,13 +7,7 @@ import type { Editor } from "doc-editor-delta";
 import { assertValue, isMatchWrapNode } from "doc-editor-utils";
 import { isObject } from "doc-editor-utils";
 import { existKey, getBlockNode } from "doc-editor-utils";
-import {
-  isCollapsed,
-  isFocusLineStart,
-  isMatchedAttributeNode,
-  isMatchedEvent,
-  isWrappedEdgeNode,
-} from "doc-editor-utils";
+import { isCollapsed, isFocusLineStart, isMatchedEvent, isWrappedEdgeNode } from "doc-editor-utils";
 import { setBlockNode, setUnWrapNodes, setWrapNodes } from "doc-editor-utils";
 import { KEYBOARD } from "doc-editor-utils";
 
@@ -21,14 +15,16 @@ import { UNORDERED_LIST_ITEM_KEY, UNORDERED_LIST_KEY } from "./types";
 
 const orderListCommand: CommandFn = (editor, key, data) => {
   if (isObject(data) && data.path) {
-    if (!isMatchedAttributeNode(editor, UNORDERED_LIST_KEY, true, data.path)) {
+    if (!isMatchWrapNode(editor, UNORDERED_LIST_KEY, UNORDERED_LIST_ITEM_KEY, data.path)) {
       setWrapNodes(
         editor,
         { [UNORDERED_LIST_KEY]: true },
-        { [UNORDERED_LIST_ITEM_KEY]: { level: 1 } }
+        { [UNORDERED_LIST_ITEM_KEY]: { level: 1 } },
+        { at: data.path }
       );
     } else {
       setUnWrapNodes(editor, {
+        at: data.path,
         wrapKey: UNORDERED_LIST_KEY,
         itemKey: UNORDERED_LIST_ITEM_KEY,
       });

@@ -6,14 +6,7 @@ import { EDITOR_ELEMENT_TYPE, KEY_EVENT } from "doc-editor-core";
 import { assertValue, isMatchWrapNode } from "doc-editor-utils";
 import { isObject } from "doc-editor-utils";
 import { getBlockNode } from "doc-editor-utils";
-import {
-  isCollapsed,
-  isFocusLineStart,
-  isMatchedAttributeNode,
-  isMatchedEvent,
-  isWrappedEdgeNode,
-  isWrappedNode,
-} from "doc-editor-utils";
+import { isCollapsed, isFocusLineStart, isMatchedEvent, isWrappedEdgeNode } from "doc-editor-utils";
 import { setUnWrapNodes, setWrapNodes } from "doc-editor-utils";
 import { KEYBOARD } from "doc-editor-utils";
 
@@ -23,21 +16,21 @@ import { COLOR_MAP, HIGHLIGHT_BLOCK_ITEM_KEY, HIGHLIGHT_BLOCK_KEY } from "./type
 export const HighlightBlockPlugin = (editor: EditorSuite, readonly: boolean): Plugin => {
   const quoteCommand: CommandFn = (editor, key, data) => {
     if (isObject(data) && data.path) {
-      if (!isMatchedAttributeNode(editor, HIGHLIGHT_BLOCK_KEY, null, data.path)) {
-        if (!isWrappedNode(editor)) {
-          setWrapNodes(
-            editor,
-            {
-              [HIGHLIGHT_BLOCK_KEY]: {
-                border: COLOR_MAP[0].border,
-                background: COLOR_MAP[0].background,
-              },
+      if (!isMatchWrapNode(editor, HIGHLIGHT_BLOCK_KEY, HIGHLIGHT_BLOCK_ITEM_KEY, data.path)) {
+        setWrapNodes(
+          editor,
+          {
+            [HIGHLIGHT_BLOCK_KEY]: {
+              border: COLOR_MAP[0].border,
+              background: COLOR_MAP[0].background,
             },
-            { [HIGHLIGHT_BLOCK_ITEM_KEY]: true }
-          );
-        }
+          },
+          { [HIGHLIGHT_BLOCK_ITEM_KEY]: true },
+          { at: data.path }
+        );
       } else {
         setUnWrapNodes(editor, {
+          at: data.path,
           wrapKey: HIGHLIGHT_BLOCK_KEY,
           itemKey: HIGHLIGHT_BLOCK_ITEM_KEY,
         });

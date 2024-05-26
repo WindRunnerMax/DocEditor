@@ -4,7 +4,6 @@ export { DEFAULT_PRIORITY, EVENT_ENUM, KEYBOARD } from "./constant";
 export { omit, pick } from "./filter";
 export {
   findNodePath,
-  getBlockAttributes,
   getBlockNode,
   getLineIndex,
   getNextBlockNode,
@@ -23,7 +22,15 @@ export {
   isWrappedEdgeNode,
   isWrappedNode,
 } from "./is";
-export { existKey, isBaseElement, isBlock, isText } from "./ref";
+export {
+  existKey,
+  getAboveNode,
+  getBlockAttributes,
+  getParentNode,
+  isBaseElement,
+  isBlock,
+  isText,
+} from "./ref";
 export {
   setBlockNode,
   setTextNode,

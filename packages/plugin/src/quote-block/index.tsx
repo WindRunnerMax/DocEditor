@@ -6,14 +6,7 @@ import { EDITOR_ELEMENT_TYPE, KEY_EVENT } from "doc-editor-core";
 import type { Editor } from "doc-editor-delta";
 import { isMatchWrapNode, isObject } from "doc-editor-utils";
 import { getBlockNode } from "doc-editor-utils";
-import {
-  isCollapsed,
-  isFocusLineStart,
-  isMatchedAttributeNode,
-  isMatchedEvent,
-  isWrappedEdgeNode,
-  isWrappedNode,
-} from "doc-editor-utils";
+import { isCollapsed, isFocusLineStart, isMatchedEvent, isWrappedEdgeNode } from "doc-editor-utils";
 import { setUnWrapNodes, setWrapNodes } from "doc-editor-utils";
 import { KEYBOARD } from "doc-editor-utils";
 
@@ -21,12 +14,16 @@ import { QUOTE_BLOCK_ITEM_KEY, QUOTE_BLOCK_KEY } from "./types";
 
 const quoteCommand: CommandFn = (editor, key, data) => {
   if (isObject(data) && data.path) {
-    if (!isMatchedAttributeNode(editor, QUOTE_BLOCK_KEY, true, data.path)) {
-      if (!isWrappedNode(editor)) {
-        setWrapNodes(editor, { [QUOTE_BLOCK_KEY]: true }, { [QUOTE_BLOCK_ITEM_KEY]: true });
-      }
+    if (!isMatchWrapNode(editor, QUOTE_BLOCK_KEY, QUOTE_BLOCK_ITEM_KEY, data.path)) {
+      setWrapNodes(
+        editor,
+        { [QUOTE_BLOCK_KEY]: true },
+        { [QUOTE_BLOCK_ITEM_KEY]: true },
+        { at: data.path }
+      );
     } else {
       setUnWrapNodes(editor, {
+        at: data.path,
         wrapKey: QUOTE_BLOCK_KEY,
         itemKey: QUOTE_BLOCK_ITEM_KEY,
       });

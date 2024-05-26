@@ -1,5 +1,6 @@
 import type { BaseNode, BlockElement, Location, Node, TextElement } from "doc-editor-delta";
 import { Editor, Element, Path, Text } from "doc-editor-delta";
+import { isArray } from "laser-utils";
 
 // 此文件是为了避免循环引用
 
@@ -9,8 +10,10 @@ export const isBaseElement = (block: Node): block is BaseNode => {
 
 export const existKey = (node: Node, key: string) => isBaseElement(node) && !!node[key];
 
-export const isBlock = (editor: Editor, node: Node): node is BlockElement =>
-  Editor.isBlock(editor, node);
+export const isBlock = (editor: Editor, node: Node | null): node is BlockElement => {
+  if (!node) return false;
+  return Editor.isBlock(editor, node);
+};
 
 export const isText = (node: Node): node is TextElement => Text.isText(node);
 
@@ -40,4 +43,23 @@ export const getAboveNode = (
       return { node: n as BlockElement, path: p };
     }
   }
+};
+
+export const getParentNode = (editor: Editor, at: Location) => {
+  // fix: 如果是顶层元素则会直接抛异常
+  if (isArray(at) && !at.length) return null;
+  return Editor.parent(editor, at);
+};
+export const getBlockAttributes = (
+  node?: BlockElement,
+  emit?: string[]
+): Record<string, unknown> => {
+  if (!node) return {};
+  const emits: string[] = emit ? emit : [];
+  emits.push("children");
+  const result: Record<string, unknown> = {};
+  Object.keys(node)
+    .filter(item => emits.indexOf(item) === -1)
+    .forEach(key => (result[key] = node[key]));
+  return result;
 };

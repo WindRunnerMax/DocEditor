@@ -1,7 +1,7 @@
 import type { BlockElement, Location, TextElement } from "doc-editor-delta";
-import { Editor, Transforms } from "doc-editor-delta";
+import { Editor, Path, Transforms } from "doc-editor-delta";
 
-import { existKey, getAboveNode, isBlock, isText } from "./ref";
+import { existKey, getAboveNode, getBlockAttributes, isBlock, isText } from "./ref";
 
 export const setBlockNode = (
   editor: Editor,
@@ -106,11 +106,22 @@ export const setUnWrapNodes = (
     itemKey: string;
   }
 ) => {
+  const { at, wrapKey, itemKey } = options;
+  const wrap = getAboveNode(editor, { match: n => existKey(n, wrapKey), at });
+  const pair = getAboveNode(editor, { match: n => existKey(n, itemKey), at });
+  if (!wrap || !pair) return void 0;
+  const wrapAttrs = getBlockAttributes(wrap.node, [wrapKey]);
   Editor.withoutNormalizing(editor, () => {
-    setUnBlockNode(editor, [options.itemKey], { key: options.itemKey });
+    Transforms.setNodes(editor, wrapAttrs, { at: pair.path });
+    Transforms.unsetNodes(editor, [itemKey], { at: pair.path });
     Transforms.unwrapNodes(editor, {
-      match: n => existKey(n, options.wrapKey),
+      match: (_, p) => Path.equals(p, wrap.path),
       split: true,
+      // 这里需要注意`at`会变成`range`
+      // 如果此处传入`wrap.path`会导致所有的子节点都会被`unwrap`
+      // 即使`match`的结果是一致的 但是变换时会有`rangeRef`来判断相交范围
+      // https://github.com/ianstormtaylor/slate/blob/25be3b/packages/slate/src/transforms/node.ts#L873
+      at: pair.path,
     });
   });
 };

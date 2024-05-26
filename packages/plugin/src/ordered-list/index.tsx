@@ -8,13 +8,7 @@ import { Transforms } from "doc-editor-delta";
 import { assertValue, isMatchWrapNode } from "doc-editor-utils";
 import { isObject } from "doc-editor-utils";
 import { existKey, getBlockNode } from "doc-editor-utils";
-import {
-  isCollapsed,
-  isFocusLineStart,
-  isMatchedAttributeNode,
-  isMatchedEvent,
-  isWrappedEdgeNode,
-} from "doc-editor-utils";
+import { isCollapsed, isFocusLineStart, isMatchedEvent, isWrappedEdgeNode } from "doc-editor-utils";
 import { setBlockNode, setUnWrapNodes, setWrapNodes } from "doc-editor-utils";
 import { KEYBOARD } from "doc-editor-utils";
 
@@ -23,14 +17,16 @@ import { calcNextOrderListLevels, calcOrderListLevels } from "./utils/serial";
 
 const orderListCommand: CommandFn = (editor, key, data) => {
   if (isObject(data) && data.path) {
-    if (!isMatchedAttributeNode(editor, ORDERED_LIST_KEY, true, data.path)) {
+    if (!isMatchWrapNode(editor, ORDERED_LIST_KEY, ORDERED_LIST_ITEM_KEY, data.path)) {
       setWrapNodes(
         editor,
         { [ORDERED_LIST_KEY]: true },
-        { [ORDERED_LIST_ITEM_KEY]: { start: 1, level: 1 } }
+        { [ORDERED_LIST_ITEM_KEY]: { start: 1, level: 1 } },
+        { at: data.path }
       );
     } else {
       setUnWrapNodes(editor, {
+        at: data.path,
         wrapKey: ORDERED_LIST_KEY,
         itemKey: ORDERED_LIST_ITEM_KEY,
       });
@@ -83,6 +79,8 @@ export const OrderedListPlugin = (editor: Editor): Plugin => {
           return KEY_EVENT.STOP;
         }
 
+        // 相当于匹配`Enter`和`Backspace`的情况下
+        // 实际上需要严格匹配
         if (isFocusLineStart(editor, itemMatch.path)) {
           if (level > 1) {
             setBlockNode(
