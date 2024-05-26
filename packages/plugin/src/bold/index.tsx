@@ -1,22 +1,29 @@
-import type { Plugin } from "doc-editor-core";
-import { EDITOR_ELEMENT_TYPE } from "doc-editor-core";
+import type { CommandFn, LeafContext } from "doc-editor-core";
+import { LeafPlugin } from "doc-editor-core";
+import type { RenderLeafProps } from "doc-editor-delta";
 import { setTextNode, setUnTextNode } from "doc-editor-utils";
 
 import { BOLD_KEY } from "./types";
 
-export const BoldPlugin = (): Plugin => {
-  return {
-    key: BOLD_KEY,
-    type: EDITOR_ELEMENT_TYPE.INLINE,
-    match: props => !!props.leaf[BOLD_KEY],
-    command: (editor, key, data) => {
-      const marks = data.marks;
-      if (marks && marks[key]) {
-        setUnTextNode(editor, [key]);
-      } else {
-        setTextNode(editor, { [key]: true });
-      }
-    },
-    render: context => <strong>{context.children}</strong>,
+export class BoldPlugin extends LeafPlugin {
+  public readonly key = BOLD_KEY;
+
+  public destroy(): void {}
+
+  public match(props: RenderLeafProps): boolean {
+    return !!props.leaf[BOLD_KEY];
+  }
+
+  public onCommand: CommandFn = (editor, key, data) => {
+    const marks = data.marks;
+    if (marks && marks[key]) {
+      setUnTextNode(editor, [key]);
+    } else {
+      setTextNode(editor, { [key]: true });
+    }
   };
-};
+
+  public render(context: LeafContext): JSX.Element {
+    return <strong>{context.children}</strong>;
+  }
+}

@@ -21,6 +21,7 @@ const TOOLBAR_OFFSET_WIDTH = 340;
 
 const NOT_INIT_SELECT = [HYPER_LINK_KEY, FONT_BASE_KEY];
 const MUTEX_SELECT = [...NOT_INIT_SELECT, LINE_HEIGHT_KEY];
+
 export const MenuToolBar: FC<{
   readonly: boolean;
   editor: EditorSuite;

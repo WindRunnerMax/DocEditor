@@ -9,7 +9,7 @@ import { Command } from "../command";
 import { Event } from "../event";
 import { EDITOR_EVENT } from "../event/bus/action";
 import { LOG_LEVEL, Logger } from "../log";
-import { EditorPlugin } from "../plugin";
+import { PluginController } from "../plugin";
 import { Schema } from "../schema";
 import type { EditorSchema } from "../schema/types";
 import type { EditorSuite } from "./types";
@@ -31,7 +31,7 @@ export function makeEditor(config: EditorSchema, init?: BaseNode[]) {
   engine.logger = new Logger(LOG_LEVEL.ERROR);
   engine.event = new Event(engine);
   engine.clipboard = new Clipboard(engine);
-  engine.plugin = new EditorPlugin(engine);
+  engine.plugin = new PluginController(engine);
 
   const apply = engine.apply;
   engine.apply = event => {

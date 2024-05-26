@@ -5,7 +5,7 @@ import React from "react";
 import { INIT_NODE } from "../editor/constant";
 import type { EditorSuite } from "../editor/types";
 import { EDITOR_EVENT } from "../event/bus/action";
-import type { RenderPlugins } from "../plugin/types";
+import type { ApplyPlugins } from "../plugin/types/apply";
 
 type EditableProps = {
   readonly?: boolean;
@@ -16,7 +16,7 @@ type EditableProps = {
 };
 
 type EditableState = {
-  renderModule: RenderPlugins;
+  renderModule: ApplyPlugins;
 };
 
 export class Editable extends React.PureComponent<EditableProps, EditableState> {

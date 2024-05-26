@@ -1,120 +1,80 @@
-import { Trigger } from "@arco-design/web-react";
-import type { EditorSuite, Plugin } from "doc-editor-core";
-import { EDITOR_ELEMENT_TYPE } from "doc-editor-core";
-import type { TextElement } from "doc-editor-delta";
-import { findNodePath, isCollapsed } from "doc-editor-utils";
+import type { CommandFn, EditorSuite, LeafContext } from "doc-editor-core";
+import { LeafPlugin } from "doc-editor-core";
+import type { RenderLeafProps } from "doc-editor-delta";
 import { assertValue } from "doc-editor-utils";
 import { setTextNode, setUnTextNode } from "doc-editor-utils";
-import React, { useState } from "react";
 
 import { Popup } from "../utils/popup";
 import { HyperLinkMenu } from "./components/menu";
+import { HyperLinkEditor } from "./components/panel";
 import type { HyperLinkConfig } from "./types";
 import { HYPER_LINK_KEY } from "./types";
 
-const HyperLinkEditor: React.FC<{
-  config: HyperLinkConfig;
-  element: TextElement;
-  editor: EditorSuite;
-}> = props => {
-  const { config } = props;
-  const editor = props.editor;
-  const [visible, setVisible] = useState(false);
+export class HyperLinkPlugin extends LeafPlugin {
+  public key: string = HYPER_LINK_KEY;
+  private popupModel: Popup | null = null;
 
-  const clickHref = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-  };
+  constructor(private editor: EditorSuite, private readonly: boolean) {
+    super();
+  }
 
-  const onConfirm = (value: HyperLinkConfig) => {
-    const config = value;
-    setVisible(false);
-    const path = findNodePath(editor, props.element);
-    path && setTextNode(editor, { [HYPER_LINK_KEY]: config }, { at: path });
-  };
+  public destroy(): void {}
 
-  const onCancel = () => {
-    setVisible(false);
-    const path = findNodePath(editor, props.element);
-    path && setUnTextNode(editor, [HYPER_LINK_KEY], { at: path });
-  };
+  public match(props: RenderLeafProps): boolean {
+    return !!props.leaf[HYPER_LINK_KEY];
+  }
 
-  const onVisibleChange = (visible: boolean) => {
-    if ((visible && isCollapsed(editor)) || !visible) {
-      setVisible(visible);
+  public onCommand?: CommandFn = (editor, key, data) => {
+    if (data && data.position && data.marks && !this.popupModel) {
+      const position = data.position;
+      const config: HyperLinkConfig = {
+        ...(data.marks[HYPER_LINK_KEY] || { href: "", blank: true }),
+      };
+      return new Promise<void>(resolve => {
+        const model = new Popup();
+        this.popupModel = model;
+        model.onBeforeDestroy(() => {
+          this.popupModel = null;
+          resolve();
+        });
+        model.mount(
+          <HyperLinkMenu
+            config={config}
+            left={position.left}
+            top={position.top}
+            onConfirm={value => {
+              config.href = value.href;
+              config.blank = value.blank;
+              setTextNode(editor, { [key]: config });
+              model.destroy();
+            }}
+            onCancel={() => {
+              setUnTextNode(editor, [key]);
+              model.destroy();
+            }}
+          />
+        );
+      }).catch(() => void 0);
+    } else if (this.popupModel) {
+      this.popupModel.destroy();
+      this.popupModel = null;
     }
   };
 
-  return (
-    <Trigger
-      popup={() => <HyperLinkMenu config={config} onConfirm={onConfirm} onCancel={onCancel} />}
-      position="bottom"
-      trigger="click"
-      popupVisible={visible}
-      onVisibleChange={onVisibleChange}
-    >
-      <span className="hyper-link" onClick={clickHref}>
-        {props.children}
-      </span>
-    </Trigger>
-  );
-};
-export const HyperLinkPlugin = (editor: EditorSuite, readonly: boolean): Plugin => {
-  let popupModel: Popup | null = null;
-  return {
-    key: HYPER_LINK_KEY,
-    type: EDITOR_ELEMENT_TYPE.INLINE,
-    match: props => !!props.leaf[HYPER_LINK_KEY],
-    command: (editor, key, data) => {
-      if (data && data.position && data.marks && !popupModel) {
-        const position = data.position;
-        const config: HyperLinkConfig = {
-          ...(data.marks[HYPER_LINK_KEY] || { href: "", blank: true }),
-        };
-        return new Promise<void>(resolve => {
-          const model = new Popup();
-          popupModel = model;
-          model.onBeforeDestroy(() => {
-            popupModel = null;
-            resolve();
-          });
-          model.mount(
-            <HyperLinkMenu
-              config={config}
-              left={position.left}
-              top={position.top}
-              onConfirm={value => {
-                config.href = value.href;
-                config.blank = value.blank;
-                setTextNode(editor, { [key]: config });
-                model.destroy();
-              }}
-              onCancel={() => {
-                setUnTextNode(editor, [key]);
-                model.destroy();
-              }}
-            />
-          );
-        }).catch(() => void 0);
-      } else if (popupModel) {
-        popupModel.destroy();
-        popupModel = null;
-      }
-    },
-    render: context => {
-      const config = assertValue(context.props.leaf[HYPER_LINK_KEY]);
-      if (!readonly) {
-        return (
-          <HyperLinkEditor config={config} element={context.element} editor={editor}>
-            {context.children}
-          </HyperLinkEditor>
-        );
-      } else {
-        return (
-          <a className="hyper-link" href={config.href} target={config.blank ? "_blank" : void 0}>
-            {context.children}
-          </a>
-        );
-      }
-    },
-  };
-};
+  public render(context: LeafContext): JSX.Element {
+    const config = assertValue(context.props.leaf[HYPER_LINK_KEY]);
+    if (!this.readonly) {
+      return (
+        <HyperLinkEditor config={config} element={context.element} editor={this.editor}>
+          {context.children}
+        </HyperLinkEditor>
+      );
+    } else {
+      return (
+        <a className="hyper-link" href={config.href} target={config.blank ? "_blank" : void 0}>
+          {context.children}
+        </a>
+      );
+    }
+  }
+}

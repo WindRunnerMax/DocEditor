@@ -10,8 +10,10 @@ export class Schema {
   private pair: Map<string, string> = new Map();
   private void: Set<string> = new Set<string>();
   private block: Set<string> = new Set<string>();
+  public readonly raw: EditorSchema;
 
   constructor(schema: EditorSchema) {
+    this.raw = schema;
     for (const [key, value] of Object.entries(schema)) {
       if (value.void) {
         this.void.add(key);

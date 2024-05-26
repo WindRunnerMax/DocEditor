@@ -23,7 +23,7 @@ export const OperationDocToolBarPlugin: DocToolbarPlugin = {
   renderSignal: () => null,
   renderBanner: state => {
     if (state.status.isEmptyLine) return null;
-    // TODO: clipboard module
+    // TODO: editor clipboard module
     const onCopy = () => {
       const editor = state.editor;
       const fragments = [state.element];

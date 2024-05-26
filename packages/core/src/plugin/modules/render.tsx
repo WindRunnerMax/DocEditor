@@ -1,11 +1,12 @@
 import type { NodeEntry, Range } from "doc-editor-delta";
 import type { RenderElementProps, RenderLeafProps } from "doc-editor-delta";
 
-import { Void } from "../preset/void";
-import type { ElementContext, ElementPlugin, LeafContext, LeafPlugin, Plugin } from "./types";
+import { Void } from "../../preset/void";
+import type { BlockContext, LeafContext } from "../types/context";
+import type { BlockPlugin, EditorPlugin, LeafPlugin } from "./declare";
 
-export const renderElement = (props: RenderElementProps, elementPlugins: ElementPlugin[]) => {
-  const context: ElementContext = {
+export const renderElement = (props: RenderElementProps, elementPlugins: BlockPlugin[]) => {
+  const context: BlockContext = {
     props,
     style: {},
     classList: [],
@@ -57,11 +58,11 @@ export const renderLeaf = (props: RenderLeafProps, leafPlugins: LeafPlugin[]) =>
   );
 };
 
-export const decorate = (entry: NodeEntry, plugins: Plugin[]) => {
+export const decorate = (entry: NodeEntry, plugins: EditorPlugin[]) => {
   const ranges: Range[] = [];
   for (const item of plugins) {
-    if (item.decorate) {
-      const result = item.decorate(entry);
+    if (item.onDecorate) {
+      const result = item.onDecorate(entry);
       if (result) {
         ranges.push(...result);
       }

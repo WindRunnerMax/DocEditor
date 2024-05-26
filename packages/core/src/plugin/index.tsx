@@ -1,16 +1,18 @@
 import type { EditorSuite } from "../editor/types";
-import { decorate, renderElement, renderLeaf } from "./render";
-import type { ElementPlugin, LeafPlugin, Plugin, RenderPlugins } from "./types";
-import { EDITOR_ELEMENT_TYPE, KEY_EVENT } from "./types";
+import type { BlockPlugin, EditorPlugin, LeafPlugin } from "./modules/declare";
+import { decorate, renderElement, renderLeaf } from "./modules/render";
+import type { ApplyPlugins } from "./types/apply";
+import { EDITOR_ELEMENT_TYPE } from "./types/constant";
+import { KEY_EVENT } from "./types/constant";
 
-export class EditorPlugin {
-  private plugins: Record<string, Plugin>;
+export class PluginController {
+  private plugins: Record<string, EditorPlugin>;
 
   constructor(private editor: EditorSuite) {
     this.plugins = {};
   }
 
-  register = (...plugins: Plugin[]) => {
+  register = (...plugins: EditorPlugin[]) => {
     for (const plugin of plugins) {
       const key = plugin.key;
       const exist = this.plugins[key];
@@ -19,30 +21,32 @@ export class EditorPlugin {
     }
   };
 
-  apply = (): RenderPlugins => {
+  apply = (): ApplyPlugins => {
     const plugins = Object.values(this.plugins);
-    const elementPlugins: ElementPlugin[] = [];
+    const elementPlugins: BlockPlugin[] = [];
     const leafPlugins: LeafPlugin[] = [];
-    const keyDownPlugins: Plugin[] = [];
-    const decoratePlugins: Plugin[] = [];
+    const keyDownPlugins: EditorPlugin[] = [];
+    const decoratePlugins: EditorPlugin[] = [];
     plugins.sort((a, b) => (b.priority || 0) - (a.priority || 0));
     plugins.forEach(item => {
       if (item.type === EDITOR_ELEMENT_TYPE.BLOCK) {
         elementPlugins.push(item);
         if (item.renderLeaf && item.matchLeaf) {
+          // 需要自动生成`Leaf`插件
           leafPlugins.push({
             type: EDITOR_ELEMENT_TYPE.INLINE,
             key: item.key,
             match: item.matchLeaf,
             render: item.renderLeaf,
+            destroy: () => void 0,
           });
         }
       } else if (item.type === EDITOR_ELEMENT_TYPE.INLINE) {
         leafPlugins.push(item);
       }
-      item.command && this.editor.command.register(item.key, item.command);
+      item.onCommand && this.editor.command.register(item.key, item.onCommand);
       item.onKeyDown && keyDownPlugins.push(item);
-      item.decorate && decoratePlugins.push(item);
+      item.onDecorate && decoratePlugins.push(item);
     });
 
     return {

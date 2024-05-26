@@ -9,7 +9,7 @@ import { getWrappedSignalMenu } from "../utils/wrapper";
 export const HeadingDocToolBarPlugin: DocToolbarPlugin = {
   renderIcon: state => {
     const config = state.element[HEADING_KEY];
-    if (config) {
+    if (config && state.status.isTextBlock) {
       if (config.type === "h1") {
         return { element: <IconH1 /> };
       } else if (config.type === "h2") {
