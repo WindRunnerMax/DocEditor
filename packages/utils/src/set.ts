@@ -16,9 +16,7 @@ export const setBlockNode = (
   const { at: location, key } = options;
   if (!node) {
     // 注意`setNodes Match`的查找顺序可能与直觉不一致 顺序是由顶`Editor`至底`Node`
-    // https://github.com/ianstormtaylor/slate/blob/25be3b/packages/slate/src/transforms/node.ts#L565
     // 因此这里需要使用`Editor.above`实现更精确的查找 再将`node`直接传入来精确变换
-    // https://github.com/ianstormtaylor/slate/blob/25be3b/packages/slate/src/interfaces/editor.ts#L334
     const above = getAboveNode(editor, {
       at: location,
       match: node => isBlock(editor, node) && (key ? existKey(node, key) : true),
@@ -26,6 +24,7 @@ export const setBlockNode = (
     if (above && above.node) node = above.node as BlockElement;
   }
   if (!node) return void 0;
+  // https://github.com/ianstormtaylor/slate/blob/25be3b/packages/slate/src/transforms/node.ts#L565
   Transforms.setNodes(editor, config, { match: n => n === node, at: location });
 };
 
@@ -92,10 +91,10 @@ export const setWrapNodes = (
   } = {}
 ) => {
   const { at } = options;
-  const config = { ...wrapConfig } as BlockElement;
   Editor.withoutNormalizing(editor, () => {
-    Transforms.wrapNodes(editor, config, { match: n => isBlock(editor, n), at });
-    setBlockNode(editor, itemConfig, { at });
+    // 配合`Normalizer`在此处的规则是新建内层`Node`
+    setBlockNode(editor, wrapConfig, { at });
+    Transforms.wrapNodes(editor, itemConfig as BlockElement, { match: isText, at });
   });
 };
 

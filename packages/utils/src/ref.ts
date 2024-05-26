@@ -24,6 +24,7 @@ export const getAboveNode = (
 ) => {
   // 这里与`getBlockNode`最大区别是会有`self`的判断
   // 这是很重要的行为 特别是在类似于`Normalizer`的场景中
+  // https://github.com/ianstormtaylor/slate/blob/25be3b/packages/slate/src/interfaces/editor.ts#L334
   const { at = editor.selection, match, self = true } = options || {};
   if (!at) return void 0;
   const path = Editor.path(editor, at);
