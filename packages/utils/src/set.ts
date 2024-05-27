@@ -17,6 +17,8 @@ export const setBlockNode = (
   if (!node) {
     // 注意`setNodes Match`的查找顺序可能与直觉不一致 顺序是由顶`Editor`至底`Node`
     // 因此这里需要使用`Editor.above`实现更精确的查找 再将`node`直接传入来精确变换
+    // 更加精细化/可预测的节点操作应该是通过`Node.levels`配合定义的边界属性精确控制要操作的节点
+    // https://github.com/ianstormtaylor/slate/blob/25be3b/packages/slate/src/interfaces/node.ts#L445
     const above = getAboveNode(editor, {
       at: location,
       match: node => isBlock(editor, node) && (key ? existKey(node, key) : true),

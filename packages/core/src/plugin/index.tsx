@@ -23,28 +23,29 @@ export class PluginController {
 
   public apply = (): ApplyPlugins => {
     const plugins = Object.values(this.plugins);
-    const elementPlugins: BlockPlugin[] = [];
+    const blockPlugins: BlockPlugin[] = [];
     const leafPlugins: LeafPlugin[] = [];
     const keyDownPlugins: EditorPlugin[] = [];
     const decoratePlugins: EditorPlugin[] = [];
-    plugins.sort((a, b) => (b.priority || 0) - (a.priority || 0));
     plugins.forEach(item => {
       if (item.type === EDITOR_ELEMENT_TYPE.BLOCK) {
-        elementPlugins.push(item);
+        blockPlugins.push(item);
         if (item.WITH_LEAF_PLUGINS) {
           leafPlugins.push(...item.WITH_LEAF_PLUGINS);
         }
       } else if (item.type === EDITOR_ELEMENT_TYPE.INLINE) {
         leafPlugins.push(item);
       }
+      blockPlugins.sort((a, b) => (b.priority || 0) - (a.priority || 0));
+      leafPlugins.sort((a, b) => (b.priority || 0) - (a.priority || 0));
       item.onCommand && this.editor.command.register(item.key, item.onCommand);
       item.onKeyDown && keyDownPlugins.push(item);
       item.onDecorate && decoratePlugins.push(item);
     });
 
     return {
-      renderElement: props => {
-        return renderBlock(props, elementPlugins);
+      renderBlock: props => {
+        return renderBlock(props, blockPlugins);
       },
       renderLeaf: props => {
         return renderLeaf(props, leafPlugins);

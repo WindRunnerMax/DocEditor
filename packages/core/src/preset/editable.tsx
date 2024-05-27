@@ -73,7 +73,7 @@ export class Editable extends React.PureComponent<EditableProps, EditableState> 
       >
         <EditableFC
           decorate={this.state.renderModule.decorate}
-          renderElement={this.state.renderModule.renderElement}
+          renderElement={this.state.renderModule.renderBlock}
           renderLeaf={this.state.renderModule.renderLeaf}
           readOnly={this.props.readonly}
           placeholder={this.props.placeholder}

@@ -1,4 +1,5 @@
 import type { NodeEntry, Range } from "doc-editor-delta";
+import type { BaseNode } from "doc-editor-delta";
 
 import type { CommandFn } from "../../command/types";
 import { EDITOR_ELEMENT_TYPE } from "../types/constant";
@@ -19,6 +20,12 @@ abstract class BasePlugin {
   public onKeyDown?(event: React.KeyboardEvent<HTMLDivElement>): boolean | void;
   /** 对`Range[]`进行装饰 */
   public onDecorate?(entry: NodeEntry): Range[];
+  /** 将`Fragment`序列化为`HTML` */
+  public serialize?(entry: BaseNode): HTMLElement;
+  /** 将`HTML`反序列化为`Fragment` */
+  public deserialize?(element: HTMLElement): BaseNode;
+  /** 对节点进行`Normalize` */
+  public normalize?(entry: NodeEntry): void;
 }
 
 export abstract class BlockPlugin extends BasePlugin {
