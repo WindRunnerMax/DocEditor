@@ -2,8 +2,7 @@ import "../index.scss";
 
 import { Trigger } from "@arco-design/web-react";
 import type { EditorSchema, EditorSuite } from "doc-editor-core";
-import type { Path } from "doc-editor-delta";
-import type { RenderElementProps } from "doc-editor-delta";
+import type { Path, RenderElementProps } from "doc-editor-delta";
 import { Transforms } from "doc-editor-delta";
 import { ReactEditor } from "doc-editor-delta";
 import { cs, isTextBlock } from "doc-editor-utils";
@@ -25,8 +24,6 @@ export const DocMenu: React.FC<{
   const [iconVisible, setIconVisible] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
 
-  const visible = iconVisible || menuVisible;
-
   const onClose = () => {
     setIconVisible(false);
     setMenuVisible(false);
@@ -34,35 +31,36 @@ export const DocMenu: React.FC<{
 
   const path = useMemo(() => {
     let path: Path = [];
-    if (visible) {
+    try {
       // `Slate`没有直接维护状态 需要主动查找
+      // 注意即使在非`visible`的状态下也需要查找 否则会导致节点闪烁问题
       // `findPath`不需要遍历所有`Descendant`而是根据两个`WeakMap`查找
-      // slate-react/src/plugin/react-editor.ts
+      // https://github.com/ianstormtaylor/slate/blob/25be3b/packages/slate-react/src/plugin/react-editor.ts#L100
       path = ReactEditor.findPath(props.editor, props.element);
+    } catch (error) {
+      props.editor.logger.warning("ToolBar FindPath Error", error);
     }
     return path;
-  }, [visible, props.editor, props.element]);
+  }, [props.editor, props.element]);
 
   const state = useMemo(() => {
     let isInCodeBlock = false;
     let isInReactLive = false;
     let isInHighLightBlock = false;
-    if (visible) {
-      withinIterator(props.editor, path, node => {
-        if (node[CODE_BLOCK_KEY]) isInCodeBlock = true;
-        if (node[REACT_LIVE_KEY]) isInReactLive = true;
-        if (node[HIGHLIGHT_BLOCK_KEY]) isInHighLightBlock = true;
-      });
-    }
+    withinIterator(props.editor, path, node => {
+      if (node[CODE_BLOCK_KEY]) isInCodeBlock = true;
+      if (node[REACT_LIVE_KEY]) isInReactLive = true;
+      if (node[HIGHLIGHT_BLOCK_KEY]) isInHighLightBlock = true;
+    });
     const state: DocToolBarState = {
       path: path,
       schema: props.schema,
       editor: props.editor,
       element: props.element,
       status: {
-        isBlock: visible && isBlockNode(props.schema, props.element),
-        isTextBlock: visible && isTextBlock(props.editor, props.element),
-        isEmptyLine: visible && isEmptyLine(props.element),
+        isBlock: isBlockNode(props.schema, props.element),
+        isTextBlock: isTextBlock(props.editor, props.element),
+        isEmptyLine: isEmptyLine(props.element),
         isInCodeBlock: isInCodeBlock,
         isInReactLive: isInReactLive,
         isInHighLightBlock: isInHighLightBlock,
@@ -71,7 +69,7 @@ export const DocMenu: React.FC<{
       close: onClose,
     };
     return state;
-  }, [path, visible, props.editor, props.element, props.schema]);
+  }, [path, props.editor, props.element, props.schema]);
 
   const HoverIconConfig = useMemo(() => {
     let HoverIconConfig: ReturnType<DocToolbarPlugin["renderIcon"]> = null;
