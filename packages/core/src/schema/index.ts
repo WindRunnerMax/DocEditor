@@ -1,18 +1,16 @@
-import type { BaseNode, NodeEntry, Path } from "doc-editor-delta";
-import { Editor } from "doc-editor-delta";
-import { isBlock, setBlockNode, setUnBlockNode } from "doc-editor-utils";
+import type { BaseNode } from "doc-editor-delta";
+import type { Editor } from "doc-editor-delta";
+import { isBlock } from "doc-editor-utils";
 
 import type { EditorSuite } from "../editor/types";
+import { Normalize } from "./normalize";
 import type { EditorSchema } from "./types";
 
-export class Schema {
-  private wrap: Map<string, string> = new Map();
-  private pair: Map<string, string> = new Map();
-  private void: Set<string> = new Set<string>();
-  private block: Set<string> = new Set<string>();
+export class Schema extends Normalize {
   public readonly raw: EditorSchema;
 
   constructor(schema: EditorSchema) {
+    super();
     this.raw = schema;
     for (const [key, value] of Object.entries(schema)) {
       if (value.void) {
@@ -27,53 +25,21 @@ export class Schema {
         this.wrap.set(value.wrap, key);
         this.pair.set(key, value.wrap);
       }
-    }
-  }
-
-  private normalizeNode(editor: Editor, entry: NodeEntry) {
-    const [node, path] = entry;
-    // 如果不是块级元素则返回 会继续处理默认的`Normalize`
-    if (!isBlock(editor, node)) return void 0;
-    // 对块级节点的属性值进行处理
-    for (const key of Object.keys(node)) {
-      // --- 当前节点是`Wrap Node`的`Normalize` ---
-      if (this.wrap.has(key)) {
-        const pairKey = this.wrap.get(key) as string;
-        // 子节点上一定需要存在`Pair Key`
-        // 否则需要在子节点加入`Pair Key`
-        const children = node.children || [];
-        children.forEach((child, index) => {
-          if (isBlock(editor, child) && !child[pairKey]) {
-            const location: Path = [...path, index];
-            if (process.env.NODE_ENV === "development") {
-              console.log("NormalizeWrapNode: ", location, `${key}->${pairKey}`);
-            }
-            setBlockNode(editor, { [pairKey]: true }, { node: child });
-          }
-        });
+      if (value.inline) {
+        this.inline.add(key);
       }
-      // --- --- ---
-
-      // --- 当前节点如果是`Pair Node`的`Normalize` ---
-      if (this.pair.has(key)) {
-        const wrapKey = this.pair.get(key) as string;
-        const ancestor = Editor.parent(editor, path);
-        const parent = ancestor && ancestor[0];
-        // 父节点上一定需要存在`Wrap Node`
-        // 否则在当前节点上删除`Pair Key`
-        if (!parent || !isBlock(editor, parent) || !parent[wrapKey]) {
-          if (process.env.NODE_ENV === "development") {
-            console.log("NormalizePairNode: ", path, `${wrapKey}<-${key}`);
-          }
-          setUnBlockNode(editor, [key], { node });
-        }
-      }
-      // --- --- ---
     }
   }
 
   public with(editor: Editor): EditorSuite {
-    const { isVoid, normalizeNode } = editor;
+    const { isVoid, normalizeNode, isInline } = editor;
+
+    editor.isInline = element => {
+      for (const key of Object.keys(element)) {
+        if (this.inline.has(key)) return true;
+      }
+      return isInline(element);
+    };
 
     editor.isVoid = element => {
       for (const key of Object.keys(element)) {
@@ -88,13 +54,7 @@ export class Schema {
         normalizeNode(entry);
         return void 0;
       }
-      try {
-        Editor.withoutNormalizing(editor, () => {
-          this.normalizeNode(editor, entry);
-        });
-      } catch (error) {
-        console.error("Normalize Error: ", error);
-      }
+      this.normalize(editor, entry);
       normalizeNode(entry);
     };
 

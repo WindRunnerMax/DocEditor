@@ -37,6 +37,7 @@ export {
   setUnBlockNode,
   setUnTextNode,
   setUnWrapNodes,
+  setUnWrapNodesExactly,
   setWrapNodes,
 } from "./set";
 export type { Object, Reflex, String } from "laser-utils";

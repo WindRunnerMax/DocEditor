@@ -105,17 +105,17 @@ export const setUnWrapNodes = (
   options: {
     at?: Location;
     wrapKey: string;
-    itemKey: string;
+    pairKey: string;
   }
 ) => {
-  const { at, wrapKey, itemKey } = options;
+  const { at, wrapKey, pairKey } = options;
   const wrap = getAboveNode(editor, { match: n => existKey(n, wrapKey), at });
-  const pair = getAboveNode(editor, { match: n => existKey(n, itemKey), at });
+  const pair = getAboveNode(editor, { match: n => existKey(n, pairKey), at });
   if (!wrap || !pair) return void 0;
   const wrapAttrs = getBlockAttributes(wrap.node, [wrapKey]);
   Editor.withoutNormalizing(editor, () => {
     Transforms.setNodes(editor, wrapAttrs, { at: pair.path });
-    Transforms.unsetNodes(editor, [itemKey], { at: pair.path });
+    Transforms.unsetNodes(editor, [pairKey], { at: pair.path });
     Transforms.unwrapNodes(editor, {
       match: (_, p) => Path.equals(p, wrap.path),
       split: true,
@@ -125,5 +125,23 @@ export const setUnWrapNodes = (
       // https://github.com/ianstormtaylor/slate/blob/25be3b/packages/slate/src/transforms/node.ts#L873
       at: pair.path,
     });
+  });
+};
+
+export const setUnWrapNodesExactly = (
+  editor: Editor,
+  options: {
+    wrapKey: string;
+    pairKey: string;
+    pairPath: Path;
+    wrapNode: BlockElement;
+  }
+) => {
+  const { wrapNode, pairPath, wrapKey, pairKey } = options;
+  const wrapAttrs = getBlockAttributes(wrapNode, [wrapKey]);
+  Editor.withoutNormalizing(editor, () => {
+    Transforms.setNodes(editor, wrapAttrs, { at: pairPath });
+    Transforms.unsetNodes(editor, [pairKey], { at: pairPath });
+    Transforms.unwrapNodes(editor, { split: true, at: pairPath });
   });
 };
