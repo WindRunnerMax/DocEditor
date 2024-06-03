@@ -45,7 +45,7 @@ export class HighlightBlockPlugin extends BlockPlugin {
         setUnWrapNodes(editor, {
           at: data.path,
           wrapKey: HIGHLIGHT_BLOCK_KEY,
-          itemKey: HIGHLIGHT_BLOCK_ITEM_KEY,
+          pairKey: HIGHLIGHT_BLOCK_ITEM_KEY,
         });
       }
     }
@@ -84,7 +84,7 @@ export class HighlightBlockPlugin extends BlockPlugin {
       ) {
         setUnWrapNodes(editor, {
           wrapKey: HIGHLIGHT_BLOCK_KEY,
-          itemKey: HIGHLIGHT_BLOCK_ITEM_KEY,
+          pairKey: HIGHLIGHT_BLOCK_ITEM_KEY,
         });
         event.preventDefault();
       }

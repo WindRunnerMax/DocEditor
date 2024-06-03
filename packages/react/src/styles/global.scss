@@ -1,6 +1,11 @@
 @import './variable';
 
 body {
+  --header-z-index: $header-z-index;
+  --doc-menu-z-index: $doc-menu-z-index;
+  --icon-plus-z-index: $icon-plus-z-index;
+  --box-shadow: $box-shadow;
+
   background-color: var(--color-bg-1);
 }
 

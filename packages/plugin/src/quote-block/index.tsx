@@ -38,7 +38,7 @@ export class QuoteBlockPlugin extends BlockPlugin {
         setUnWrapNodes(editor, {
           at: data.path,
           wrapKey: QUOTE_BLOCK_KEY,
-          itemKey: QUOTE_BLOCK_ITEM_KEY,
+          pairKey: QUOTE_BLOCK_ITEM_KEY,
         });
       }
     }
@@ -64,7 +64,7 @@ export class QuoteBlockPlugin extends BlockPlugin {
         isFocusLineStart(editor, itemMatch.path) &&
         isWrappedEdgeNode(editor, "or", { wrapNode: wrapMatch, itemNode: itemMatch })
       ) {
-        setUnWrapNodes(editor, { wrapKey: QUOTE_BLOCK_KEY, itemKey: QUOTE_BLOCK_ITEM_KEY });
+        setUnWrapNodes(editor, { wrapKey: QUOTE_BLOCK_KEY, pairKey: QUOTE_BLOCK_ITEM_KEY });
         event.preventDefault();
       }
       return KEY_EVENT.STOP;

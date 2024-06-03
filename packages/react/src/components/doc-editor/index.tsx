@@ -34,8 +34,8 @@ import debounce from "lodash-es/debounce";
 import type { FC } from "react";
 import React, { useEffect, useMemo } from "react";
 
-import { schema } from "../../config/schema";
-import { example } from "./data-source";
+import { example } from "./preset";
+import { schema } from "./schema";
 
 export const SlateDocEditor: FC<{
   readonly: boolean;

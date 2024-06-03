@@ -43,7 +43,7 @@ export class OrderedListPlugin extends BlockPlugin {
         setUnWrapNodes(editor, {
           at: data.path,
           wrapKey: ORDERED_LIST_KEY,
-          itemKey: ORDERED_LIST_ITEM_KEY,
+          pairKey: ORDERED_LIST_ITEM_KEY,
         });
         calcNextOrderListLevels(editor);
       }
@@ -111,7 +111,7 @@ export class OrderedListPlugin extends BlockPlugin {
               return KEY_EVENT.STOP;
             }
           } else {
-            setUnWrapNodes(editor, { wrapKey: ORDERED_LIST_KEY, itemKey: ORDERED_LIST_ITEM_KEY });
+            setUnWrapNodes(editor, { wrapKey: ORDERED_LIST_KEY, pairKey: ORDERED_LIST_ITEM_KEY });
             calcNextOrderListLevels(editor);
             event.preventDefault();
             return KEY_EVENT.STOP;

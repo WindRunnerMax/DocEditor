@@ -42,7 +42,7 @@ export class UnorderedListPlugin extends BlockPlugin {
         setUnWrapNodes(editor, {
           at: data.path,
           wrapKey: UNORDERED_LIST_KEY,
-          itemKey: UNORDERED_LIST_ITEM_KEY,
+          pairKey: UNORDERED_LIST_ITEM_KEY,
         });
       }
     }
@@ -95,7 +95,7 @@ export class UnorderedListPlugin extends BlockPlugin {
           if (isWrappedEdgeNode(editor, "or", { wrapNode: wrapMatch, itemNode: itemMatch })) {
             setUnWrapNodes(editor, {
               wrapKey: UNORDERED_LIST_KEY,
-              itemKey: UNORDERED_LIST_ITEM_KEY,
+              pairKey: UNORDERED_LIST_ITEM_KEY,
             });
             event.preventDefault();
           }
