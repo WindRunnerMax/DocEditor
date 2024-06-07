@@ -22,13 +22,13 @@
   "license": "MIT",
   "peerDependencies": {
     "react-dom": ">=16",
-    "react": ">=16"
+    "react": ">=16",
+    "@arco-design/web-react": ">=2.60.3"
   },
   "dependencies": {
-    "@arco-design/web-react": "2.60.3",
     "ahooks": "3.3.13",
     "react-live-runtime": "0.0.3",
-    "embed-drawio": "0.0.14",
+    "embed-drawio": "0.0.18",
     "lodash-es": "4.17.21",
     "prismjs": "1.29.0",
     "doc-editor-core": "workspace: *",
@@ -50,7 +50,6 @@
     "@rollup/plugin-replace": "5.0.4",
     "rollup": "2.75.7",
     "rollup-plugin-postcss": "4.0.2",
-    "rollup-plugin-terser": "7.0.2",
     "rollup-plugin-typescript2": "0.32.1",
     "postcss": "8.3.3",
     "sass": "1.52.3",

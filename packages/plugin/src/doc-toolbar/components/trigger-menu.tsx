@@ -1,20 +1,22 @@
-import React from "react";
+import React, { useMemo } from "react";
 
-import { DOC_TOOLBAR_MODULES } from "../modules";
+import { DOC_TOOLBAR_MODULES } from "../modules/index";
 import type { DocToolBarState } from "../types";
 
 export const TriggerMenu: React.FC<{ state: DocToolBarState }> = props => {
   const { state } = props;
 
-  const signalMenu = [];
-  const bannerMenu = [];
-  const plugins = DOC_TOOLBAR_MODULES;
-  for (const plugin of plugins) {
-    const menu = plugin.renderSignal(state);
-    const banner = plugin.renderBanner(state);
-    menu && signalMenu.push(menu);
-    banner && bannerMenu.push(banner);
-  }
+  const { signalMenu, bannerMenu } = useMemo(() => {
+    const signalMenu: JSX.Element[] = [];
+    const bannerMenu: JSX.Element[] = [];
+    for (const plugin of DOC_TOOLBAR_MODULES) {
+      const menu = plugin.renderSignal(state);
+      const banner = plugin.renderBanner(state);
+      menu && signalMenu.push(menu);
+      banner && bannerMenu.push(banner);
+    }
+    return { signalMenu, bannerMenu };
+  }, [state]);
 
   return (
     <div className="doc-trigger-menu">

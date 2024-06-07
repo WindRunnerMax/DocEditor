@@ -10,7 +10,7 @@ export const example: BaseNode[] = [
   {
     children: [
       {
-        text: "Github",
+        text: "GitHub",
         link: { href: "https://github.com/WindrunnerMax/DocEditor", blank: true },
       },
       { text: " ｜ " },

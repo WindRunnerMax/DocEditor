@@ -5,7 +5,7 @@
 <span>｜</span>
 <a href="https://windrunnermax.github.io/DocEditor/">DEMO</a>
 <span>｜</span>
-<a href="https://github.com/WindrunnerMax/EveryDay/blob/master/Plugin/基于slate构建文档编辑器.md/">BLOG</a>
+<a href="https://github.com/WindrunnerMax/EveryDay/blob/master/Plugin/基于slate构建文档编辑器.md">BLOG</a>
 <span>｜</span>
 <a href="./NOTE.md">NOTE</a>
 <span>｜</span>
@@ -91,7 +91,13 @@ type LeafPlugin = BasePlugin & {
 
 
 ## NPM包
-[GitHub](./packages/react/src/components/doc-editor/index.tsx) ｜ [Resume Editor](https://github.com/WindrunnerMax/ResumeEditor) ｜ [Canvas Editor](https://github.com/WindrunnerMax/CanvasEditor)
+<p>
+<a href="./packages/react/src/components/doc-editor/index.tsx">GitHub</a>
+<span>｜</span>
+<a href="https://github.com/WindrunnerMax/ResumeEditor">Resume Editor</a>
+<span>｜</span>
+<a href="https://github.com/WindrunnerMax/CanvasEditor">Canvas Editor</a>
+</p>
 
 由于仓库本身就是实现了插件，可以直接通过引入相关包来实现快速构建富文本编辑器。
 

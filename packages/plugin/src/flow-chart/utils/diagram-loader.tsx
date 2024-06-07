@@ -1,15 +1,13 @@
 import { isString } from "doc-editor-utils";
-import type * as DiagramEditor from "embed-drawio/dist/packages/core/diagram-editor";
-import type * as DiagramViewer from "embed-drawio/dist/packages/core/diagram-viewer";
+import type * as DiagramEditor from "embed-drawio/dist/core/diagram-editor";
+import type * as DiagramViewer from "embed-drawio/dist/core/diagram-viewer";
 import ReactDOM from "react-dom";
 
 let editor: typeof DiagramEditor | null = null;
 export const diagramEditorLoader = (): Promise<typeof DiagramEditor> => {
   if (editor) return Promise.resolve(editor);
   return Promise.all([
-    import(
-      /* webpackChunkName: "embed-drawio-editor" */ "embed-drawio/dist/packages/core/diagram-editor"
-    ),
+    import(/* webpackChunkName: "embed-drawio-editor" */ "embed-drawio/dist/core/diagram-editor"),
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     import(/* webpackChunkName: "embed-drawio-css" */ "embed-drawio/dist/index.css"),
@@ -20,9 +18,7 @@ let viewer: typeof DiagramViewer | null = null;
 export const diagramViewerLoader = (): Promise<typeof DiagramViewer> => {
   if (viewer) return Promise.resolve(viewer);
   return Promise.all([
-    import(
-      /* webpackChunkName: "embed-drawio-viewer" */ "embed-drawio/dist/packages/core/diagram-viewer"
-    ),
+    import(/* webpackChunkName: "embed-drawio-viewer" */ "embed-drawio/dist/core/diagram-viewer"),
   ]).then(res => (viewer = res[0]));
 };
 
