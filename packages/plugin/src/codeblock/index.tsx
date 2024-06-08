@@ -11,13 +11,13 @@ import type {
 } from "doc-editor-core";
 import { BlockPlugin, LeafPlugin } from "doc-editor-core";
 import type { BaseRange, BlockElement, NodeEntry, Range } from "doc-editor-delta";
-import { Editor } from "doc-editor-delta";
+import { Editor, Transforms } from "doc-editor-delta";
 import { ReactEditor } from "doc-editor-delta";
-import { getBlockNode } from "doc-editor-utils";
+import { getBlockNode, getBlockPath, getParentNode } from "doc-editor-utils";
 import { isBlock, isText } from "doc-editor-utils";
-import { setBlockNode, setWrapNodes } from "doc-editor-utils";
+import { setBlockNode } from "doc-editor-utils";
 
-import { CODE_BLOCK_CONFIG, CODE_BLOCK_ITEM_KEY, CODE_BLOCK_KEY, CODE_BLOCK_TYPE } from "./types";
+import { CODE_BLOCK_CONFIG, CODE_BLOCK_KEY, CODE_BLOCK_TYPE } from "./types";
 import { codeTokenize, DEFAULT_LANGUAGE, getLanguage, SUPPORTED_LANGUAGES } from "./utils/parser";
 
 class CodeBlockLeafPlugin extends LeafPlugin {
@@ -49,11 +49,18 @@ export class CodeBlockPlugin extends BlockPlugin {
     return !!props.element[CODE_BLOCK_KEY];
   }
 
-  public onCommand: CommandFn = editor => {
-    setWrapNodes(
+  public onCommand: CommandFn = (editor, _, { path }) => {
+    const blockPath = path && getBlockPath(editor, path);
+    if (!blockPath) return void 0;
+    Transforms.delete(editor, { at: blockPath, unit: "block" });
+    Transforms.insertNodes(
       editor,
-      { [CODE_BLOCK_CONFIG]: { language: DEFAULT_LANGUAGE }, [CODE_BLOCK_KEY]: true },
-      { [CODE_BLOCK_ITEM_KEY]: true }
+      {
+        [CODE_BLOCK_KEY]: true,
+        [CODE_BLOCK_CONFIG]: { language: DEFAULT_LANGUAGE },
+        children: [{ children: [{ text: "" }] }],
+      },
+      { at: blockPath, select: true }
     );
   };
 
@@ -67,7 +74,6 @@ export class CodeBlockPlugin extends BlockPlugin {
   };
 
   public renderLine(context: BlockContext): JSX.Element {
-    if (context.element[CODE_BLOCK_ITEM_KEY]) return context.children;
     const language = getLanguage(context.element);
     return (
       <div className="code-block">
@@ -95,7 +101,8 @@ export class CodeBlockPlugin extends BlockPlugin {
   public onDecorate(entry: NodeEntry): BaseRange[] {
     const [node, path] = entry;
     const ranges: Range[] = [];
-    if (!isBlock(this.editor, node) || !node[CODE_BLOCK_ITEM_KEY]) {
+    const parent = getParentNode(this.editor, path);
+    if (!isBlock(this.editor, node) || !parent || !parent.node[CODE_BLOCK_KEY]) {
       return ranges;
     }
     const textNode = node.children[0];

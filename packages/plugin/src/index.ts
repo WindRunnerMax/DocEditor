@@ -5,12 +5,7 @@ export { ALIGN_KEY } from "./align/types";
 export { BoldPlugin } from "./bold";
 export { BOLD_KEY } from "./bold/types";
 export { CodeBlockPlugin } from "./codeblock";
-export {
-  CODE_BLOCK_CONFIG,
-  CODE_BLOCK_ITEM_KEY,
-  CODE_BLOCK_KEY,
-  CODE_BLOCK_TYPE,
-} from "./codeblock/types";
+export { CODE_BLOCK_CONFIG, CODE_BLOCK_KEY, CODE_BLOCK_TYPE } from "./codeblock/types";
 export { DividingLinePlugin } from "./dividing-line";
 export { DIVIDING_LINE_KEY } from "./dividing-line/types";
 export { DocToolBarPlugin } from "./doc-toolbar";
@@ -25,7 +20,7 @@ export { FONT_BASE_KEY } from "./font-base/types";
 export { HeadingPlugin } from "./heading";
 export { HEADING_KEY } from "./heading/types";
 export { HighlightBlockPlugin } from "./highlight-block";
-export { HIGHLIGHT_BLOCK_ITEM_KEY, HIGHLIGHT_BLOCK_KEY } from "./highlight-block/types";
+export { HIGHLIGHT_BLOCK_KEY } from "./highlight-block/types";
 export { HyperLinkPlugin } from "./hyper-link";
 export type { HyperLinkConfig } from "./hyper-link/types";
 export { HYPER_LINK_KEY } from "./hyper-link/types";

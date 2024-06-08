@@ -4,12 +4,10 @@ import type { AssertT } from "doc-editor-utils";
 declare module "doc-editor-delta/dist/interface" {
   interface BlockElement {
     [HIGHLIGHT_BLOCK_KEY]?: { border: string; background: string };
-    [HIGHLIGHT_BLOCK_ITEM_KEY]?: boolean;
   }
 }
 
 export const HIGHLIGHT_BLOCK_KEY = "highlight-block";
-export const HIGHLIGHT_BLOCK_ITEM_KEY = "highlight-block-item";
 
 export const COLOR_MAP: AssertT<BlockElement["highlight-block"]>[] = [
   { background: "var(--arcoblue-3)", border: "var(--arcoblue-6)" },

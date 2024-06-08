@@ -5,6 +5,7 @@ export { omit, pick } from "./filter";
 export {
   findNodePath,
   getBlockNode,
+  getBlockPath,
   getLineIndex,
   getNextBlockNode,
   getOmitAttributes,

@@ -100,3 +100,18 @@ export const findNodePath = (editor: ReactEditor, target: BaseNode): Path | null
     return null;
   }
 };
+
+/**
+ * 向上查找指定位置的`Block`节点
+ * @param editor
+ * @param at
+ */
+export const getBlockPath = (editor: Editor, at: Location): Path | null => {
+  const path = [...Editor.path(editor, at)];
+  while (path.length) {
+    const node = Editor.node(editor, path);
+    if (node && Editor.isBlock(editor, node[0])) return path;
+    path.pop();
+  }
+  return null;
+};

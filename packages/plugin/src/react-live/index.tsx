@@ -11,7 +11,7 @@ import type {
   RenderLeafProps,
 } from "doc-editor-delta";
 import { Transforms } from "doc-editor-delta";
-import { getParentNode, isBlock } from "doc-editor-utils";
+import { getBlockPath, getParentNode, isBlock } from "doc-editor-utils";
 
 import { ReactLiveView } from "./components/viewer";
 import { REACT_LIVE_KEY, REACT_LIVE_TYPE } from "./types";
@@ -47,16 +47,23 @@ export class ReactLivePlugin extends BlockPlugin {
   }
 
   public onCommand: CommandFn = (editor, _, { path }) => {
-    path && editor.deleteBackward("block");
-    Transforms.insertNodes(editor, {
-      [REACT_LIVE_KEY]: true,
-      children: [
-        {
-          // 该层是必须的 类似于`Wrap-Pair`的关系 块内编辑的是`Pair Node`
-          children: [{ text: "<Button type='primary'>Primary</Button>" }],
-        },
-      ],
-    });
+    const blockPath = path && getBlockPath(editor, path);
+    if (!blockPath) return void 0;
+    // 删除当前行的块内容 等待节点的插入
+    Transforms.delete(editor, { at: blockPath, unit: "block" });
+    Transforms.insertNodes(
+      editor,
+      {
+        [REACT_LIVE_KEY]: true,
+        children: [
+          {
+            // 该层是必须的 类似于`Wrap-Pair`的关系 块内编辑的是`Pair Node`
+            children: [{ text: "<Button type='primary'>Primary</Button>" }],
+          },
+        ],
+      },
+      { at: blockPath, select: true }
+    );
   };
 
   public renderLine(context: BlockContext): JSX.Element {

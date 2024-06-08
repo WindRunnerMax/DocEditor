@@ -174,20 +174,16 @@ export const example: BaseNode[] = [
     "highlight-block": { border: "var(--arcoblue-6)", background: "var(--arcoblue-3)" },
     "children": [
       {
-        "children": [{ text: "🌰 " }, { text: "举个栗子", bold: true }],
-        "highlight-block-item": true,
+        children: [{ text: "🌰 " }, { text: "举个栗子", bold: true }],
       },
       {
-        "highlight-block-item": true,
-        "children": [{ text: "支持高亮块 可以用于提示文档中的重要内容。" }],
+        children: [{ text: "支持高亮块 可以用于提示文档中的重要内容。" }],
       },
     ],
   },
   {
     "highlight-block": { background: "var(--green-3)", border: "var(--green-6)" },
-    "children": [
-      { "children": [{ text: "🏝 可以为高亮块更换主题。" }], "highlight-block-item": true },
-    ],
+    "children": [{ children: [{ text: "🏝 可以为高亮块更换主题。" }] }],
   },
   { children: [{ text: "行高" }], heading: { type: "h3", id: "5ab77ffb" } },
   { "children": [{ text: "支持独立设置行高。" }], "line-height": 2 },
@@ -203,9 +199,9 @@ export const example: BaseNode[] = [
     "code-block": true,
     "code-block-config": { language: "JavaScript" },
     "children": [
-      { "children": [{ text: "// 支持代码块高亮" }], "code-block-item": true },
-      { "code-block-item": true, "children": [{ text: "const a = 1;" }] },
-      { "code-block-item": true, "children": [{ text: "const b = 2;" }] },
+      { children: [{ text: "// 支持代码块高亮" }] },
+      { children: [{ text: "const a = 1;" }] },
+      { children: [{ text: "const b = 2;" }] },
     ],
   },
   { heading: { type: "h2", id: "82651426" }, children: [{ text: "流程图" }] },
@@ -225,56 +221,49 @@ export const example: BaseNode[] = [
     "react-live": true,
     "children": [
       {
-        "children": [
+        children: [
           {
             text: "<Space size='large'>",
           },
         ],
-        "react-live-item": true,
       },
       {
-        "children": [
+        children: [
           {
             text: "  <Button type='primary'>Primary</Button>",
           },
         ],
-        "react-live-item": true,
       },
       {
-        "react-live-item": true,
-        "children": [
+        children: [
           {
             text: "  <Button type='secondary'>Secondary</Button>",
           },
         ],
       },
       {
-        "react-live-item": true,
-        "children": [
+        children: [
           {
             text: "  <Button type='dashed'>Dashed</Button>",
           },
         ],
       },
       {
-        "react-live-item": true,
-        "children": [
+        children: [
           {
             text: "  <Button type='outline'>Outline</Button>",
           },
         ],
       },
       {
-        "react-live-item": true,
-        "children": [
+        children: [
           {
             text: "  <Button type='text'>Text</Button>",
           },
         ],
       },
       {
-        "react-live-item": true,
-        "children": [
+        children: [
           {
             text: "</Space>",
           },
