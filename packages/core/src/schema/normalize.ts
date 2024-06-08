@@ -14,6 +14,8 @@ export class Normalize {
   protected block: Set<string> = new Set<string>();
   /** Inline */
   protected inline: Set<string> = new Set<string>();
+  /** Instance */
+  protected instance: Set<string> = new Set<string>();
 
   protected normalize(editor: Editor, entry: NodeEntry) {
     try {

@@ -42,11 +42,14 @@ export const schema: EditorSchema = {
   },
   [HIGHLIGHT_BLOCK_KEY]: {
     block: true,
+    instance: true,
   },
   [CODE_BLOCK_KEY]: {
     block: true,
+    instance: true,
   },
   [REACT_LIVE_KEY]: {
     block: true,
+    instance: true,
   },
 };

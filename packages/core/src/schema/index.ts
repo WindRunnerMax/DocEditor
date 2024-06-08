@@ -7,11 +7,13 @@ import { Normalize } from "./normalize";
 import type { EditorSchema } from "./types";
 
 export class Schema extends Normalize {
+  public readonly editor: Editor;
   public readonly raw: EditorSchema;
 
-  constructor(schema: EditorSchema) {
+  constructor(schema: EditorSchema, editor: Editor) {
     super();
     this.raw = schema;
+    this.editor = editor;
     for (const [key, value] of Object.entries(schema)) {
       if (value.void) {
         this.void.add(key);
@@ -27,6 +29,9 @@ export class Schema extends Normalize {
       }
       if (value.inline) {
         this.inline.add(key);
+      }
+      if (value.instance) {
+        this.instance.add(key);
       }
     }
   }
@@ -100,5 +105,18 @@ export class Schema extends Normalize {
   public isVoidNode(node: BaseNode): boolean {
     const keys = Object.keys(node);
     return keys.some(key => this.void.has(key));
+  }
+
+  /**
+   * `Schema`所属实例节点
+   * @param node BaseNode
+   * @returns boolean
+   * @description 注意与`utils`的`isBlockNode`区分
+   */
+  public isInstanceNode(node: BaseNode): boolean {
+    // @ts-expect-error editor node
+    if (node === this.editor) return true;
+    const keys = Object.keys(node);
+    return keys.some(key => this.instance.has(key));
   }
 }

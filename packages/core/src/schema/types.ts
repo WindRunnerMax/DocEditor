@@ -8,6 +8,7 @@ type SchemaItem = {
   /** 嵌套包装节点 */
   wrap?: string;
   /** 块级嵌套边界 */
-  edge?: boolean;
+  instance?: boolean;
 };
+
 export type EditorSchema = Record<string, SchemaItem>;

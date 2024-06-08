@@ -23,7 +23,7 @@ import type { EditorSuite } from "./types";
 export function makeEditor(config: EditorSchema, init?: BaseNode[]) {
   const editor = withHistory(withReact(createEditor() as Editor & ReactEditor));
 
-  const schema = new Schema(config);
+  const schema = new Schema(config, editor);
   const engine = schema.with(editor) as EditorSuite;
   engine.init = init;
   engine.schema = schema;
