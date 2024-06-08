@@ -196,7 +196,7 @@ export const example: BaseNode[] = [
   {
     children: [{ text: "" }],
     image: { src: "./favicon.ico", status: IMAGE_STATUS.SUCCESS, width: 256, height: 256 },
-    uuid: "5ab77ffb-aab55qq1",
+    uuid: "aab55qq1",
   },
   { heading: { type: "h2", id: "82651426" }, children: [{ text: "代码块" }] },
   {
@@ -211,7 +211,7 @@ export const example: BaseNode[] = [
   { heading: { type: "h2", id: "82651426" }, children: [{ text: "流程图" }] },
   { children: [{ text: "支持流程图在线编辑。" }] },
   {
-    "uuid": "4cb99540-783d-4310-87ab-1c751cd0d5ea",
+    "uuid": "c751cd0d5ea",
     "flow-chart": {
       type: "xml" as const,
       content:

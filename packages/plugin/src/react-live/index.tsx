@@ -11,11 +11,10 @@ import type {
   RenderLeafProps,
 } from "doc-editor-delta";
 import { Transforms } from "doc-editor-delta";
-import { isBlock } from "doc-editor-utils";
-import { setWrapNodes } from "doc-editor-utils";
+import { getParentNode, isBlock } from "doc-editor-utils";
 
 import { ReactLiveView } from "./components/viewer";
-import { REACT_LIVE_ITEM_KEY, REACT_LIVE_KEY, REACT_LIVE_TYPE } from "./types";
+import { REACT_LIVE_KEY, REACT_LIVE_TYPE } from "./types";
 import { codeTokenize, collectReactLiveText } from "./utils/parse";
 
 class ReactLiveLeafPlugin extends LeafPlugin {
@@ -47,13 +46,20 @@ export class ReactLivePlugin extends BlockPlugin {
     return !!props.element[REACT_LIVE_KEY];
   }
 
-  public onCommand: CommandFn = editor => {
-    setWrapNodes(editor, { [REACT_LIVE_KEY]: true }, { [REACT_LIVE_ITEM_KEY]: true });
-    Transforms.insertText(editor, "<Button type='primary'>Primary</Button>");
+  public onCommand: CommandFn = (editor, _, { path }) => {
+    path && editor.deleteBackward("block");
+    Transforms.insertNodes(editor, {
+      [REACT_LIVE_KEY]: true,
+      children: [
+        {
+          // 该层是必须的 类似于`Wrap-Pair`的关系 块内编辑的是`Pair Node`
+          children: [{ text: "<Button type='primary'>Primary</Button>" }],
+        },
+      ],
+    });
   };
 
   public renderLine(context: BlockContext): JSX.Element {
-    if (context.element[REACT_LIVE_ITEM_KEY]) return context.children;
     return (
       <ReactLiveView element={context.element} editor={this.editor}>
         {context.children}
@@ -63,7 +69,8 @@ export class ReactLivePlugin extends BlockPlugin {
 
   public onDecorate(entry: NodeEntry): BaseRange[] {
     const [node, path] = entry;
-    if (isBlock(this.editor, node) && node[REACT_LIVE_ITEM_KEY]) {
+    const parent = getParentNode(this.editor, path);
+    if (parent && isBlock(this.editor, node) && parent.node[REACT_LIVE_KEY]) {
       const str = collectReactLiveText(this.editor, node, path);
       if (!str) return [];
       const textPath = [...path, 0];

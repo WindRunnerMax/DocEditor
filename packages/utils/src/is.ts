@@ -132,7 +132,7 @@ export const isMatchWrapNode = (
   const currentNode = current && current[0];
   // https://github.com/ianstormtaylor/slate/blob/25be3b/packages/slate/src/interfaces/editor.ts#L1062
   const parent = getParentNode(editor, location);
-  const parentNode = parent && parent[0];
+  const parentNode = parent && parent.node;
   // 如果当前节点即块元素 检查当前块和父级块匹配关系
   if (isBlock(editor, currentNode) && isBlock(editor, parentNode)) {
     if (currentNode[pairKey] && parentNode[wrapKey]) {
@@ -141,8 +141,8 @@ export const isMatchWrapNode = (
     // 在这种情况下应该是只检查
     return false;
   }
-  const ancestor = parent && getParentNode(editor, parent[1]);
-  const ancestorNode = ancestor && ancestor[0];
+  const ancestor = parent && getParentNode(editor, parent.path);
+  const ancestorNode = ancestor && ancestor.node;
   // 检查父级块和祖先块匹配关系
   if (isBlock(editor, parentNode) && isBlock(editor, ancestorNode)) {
     if (parentNode[pairKey] && ancestorNode[wrapKey]) {

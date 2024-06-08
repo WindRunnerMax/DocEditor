@@ -45,7 +45,7 @@ export { PARAGRAPH_KEY } from "./paragraph/types";
 export { QuoteBlockPlugin } from "./quote-block";
 export { QUOTE_BLOCK_ITEM_KEY, QUOTE_BLOCK_KEY } from "./quote-block/types";
 export { ReactLivePlugin } from "./react-live";
-export { REACT_LIVE_ITEM_KEY, REACT_LIVE_KEY } from "./react-live/types";
+export { REACT_LIVE_KEY } from "./react-live/types";
 export { ShortCutPlugin } from "./shortcut";
 export { SHORTCUT_KEY } from "./shortcut/types";
 export { StrikeThroughPlugin } from "./strike-through";

@@ -48,8 +48,13 @@ export const getAboveNode = (
 export const getParentNode = (editor: Editor, at: Location) => {
   // fix: 如果是顶层元素则会直接抛异常
   if (isArray(at) && !at.length) return null;
-  return Editor.parent(editor, at);
+  // https://github.com/ianstormtaylor/slate/blob/25be3b/packages/slate/src/interfaces/editor.ts#L1062
+  const parent = Editor.parent(editor, at);
+  if (!parent) return null;
+  const [node, path] = parent;
+  return { node: node as BlockElement, path };
 };
+
 export const getBlockAttributes = (
   node?: BlockElement,
   emit?: string[]
