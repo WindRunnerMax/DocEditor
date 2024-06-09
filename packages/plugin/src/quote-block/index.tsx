@@ -27,7 +27,7 @@ export class QuoteBlockPlugin extends BlockPlugin {
 
   public onCommand: CommandFn = (editor, key, data) => {
     if (isObject(data) && data.path) {
-      if (!isMatchWrapNode(editor, QUOTE_BLOCK_KEY, QUOTE_BLOCK_ITEM_KEY, data.path)) {
+      if (!editor.reflex.isMatchAboveBlockNode(QUOTE_BLOCK_KEY, data.path)) {
         setWrapNodes(
           editor,
           { [QUOTE_BLOCK_KEY]: true },

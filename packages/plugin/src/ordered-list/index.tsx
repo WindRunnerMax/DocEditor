@@ -32,7 +32,7 @@ export class OrderedListPlugin extends BlockPlugin {
 
   public onCommand?: CommandFn = (editor, key, data) => {
     if (isObject(data) && data.path) {
-      if (!isMatchWrapNode(editor, ORDERED_LIST_KEY, ORDERED_LIST_ITEM_KEY, data.path)) {
+      if (!editor.reflex.isMatchAboveBlockNode(ORDERED_LIST_KEY, data.path)) {
         setWrapNodes(
           editor,
           { [ORDERED_LIST_KEY]: true },
