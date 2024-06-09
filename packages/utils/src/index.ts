@@ -4,8 +4,8 @@ export { DEFAULT_PRIORITY, EVENT_ENUM, KEYBOARD } from "./constant";
 export { omit, pick } from "./filter";
 export {
   findNodePath,
+  getAboveBlockPath,
   getBlockNode,
-  getBlockPath,
   getLineIndex,
   getNextBlockNode,
   getOmitAttributes,

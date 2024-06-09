@@ -27,6 +27,7 @@ import {
   ReactLivePlugin,
   ShortCutPlugin,
   StrikeThroughPlugin,
+  TablePlugin,
   UnderLinePlugin,
   UnorderedListPlugin,
 } from "doc-editor-plugin";
@@ -73,7 +74,8 @@ export const SlateDocEditor: FC<{
       new FlowChartPlugin(editor, props.readonly),
       new ReactLivePlugin(editor),
       new DocToolBarPlugin(editor, props.readonly),
-      new ShortCutPlugin(editor)
+      new ShortCutPlugin(editor),
+      new TablePlugin(editor, props.readonly)
     );
   }, [editor, props.readonly]);
 

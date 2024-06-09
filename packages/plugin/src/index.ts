@@ -45,6 +45,8 @@ export { ShortCutPlugin } from "./shortcut";
 export { SHORTCUT_KEY } from "./shortcut/types";
 export { StrikeThroughPlugin } from "./strike-through";
 export { STRIKE_THROUGH_KEY } from "./strike-through/types";
+export { TablePlugin } from "./table";
+export { TABLE_BLOCK_KEY, TABLE_CELL_BLOCK_KEY, TABLE_RAW_BLOCK_KEY } from "./table/types";
 export { UnderLinePlugin } from "./under-line";
 export { UNDERLINE_KEY } from "./under-line/types";
 export { UnorderedListPlugin } from "./unordered-list";

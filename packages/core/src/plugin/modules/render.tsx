@@ -10,6 +10,8 @@ export const renderBlock = (props: RenderElementProps, blockPlugins: BlockPlugin
   const context: BlockContext = {
     props,
     style: {},
+    stop: false,
+    plain: false,
     classList: [],
     element: props.element,
     children: props.children,
@@ -30,6 +32,8 @@ export const renderBlock = (props: RenderElementProps, blockPlugins: BlockPlugin
     if (item.match(props) && item.renderLine) {
       context.children = item.renderLine(context);
     }
+    if (context.stop) break;
+    if (context.plain) return context.children;
   }
   return (
     <div {...props.attributes} className={context.classList.join(" ")} style={context.style}>
