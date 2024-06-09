@@ -27,6 +27,10 @@ export class ParagraphPlugin extends BlockPlugin {
   };
 
   public renderLine(context: BlockContext): JSX.Element {
-    return <div className="doc-line">{context.children}</div>;
+    return (
+      <div className="doc-line" data-paragraph>
+        {context.children}
+      </div>
+    );
   }
 }

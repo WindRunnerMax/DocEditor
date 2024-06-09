@@ -106,7 +106,7 @@ export const findNodePath = (editor: ReactEditor, target: BaseNode): Path | null
  * @param editor
  * @param at
  */
-export const getBlockPath = (editor: Editor, at: Location): Path | null => {
+export const getAboveBlockPath = (editor: Editor, at: Location): Path | null => {
   const path = [...Editor.path(editor, at)];
   while (path.length) {
     const tuple = Editor.node(editor, path);

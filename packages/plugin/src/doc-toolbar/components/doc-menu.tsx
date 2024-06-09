@@ -124,7 +124,9 @@ export const DocMenu: React.FC<{
       mouseEnterDelay={300}
       {...HoverIconConfig.config}
     >
-      <div className={cs(menuVisible && "doc-line-hover")}>{props.children}</div>
+      <div data-doc-toolbar className={cs(menuVisible && "doc-line-hover")}>
+        {props.children}
+      </div>
     </Trigger>
   );
 };

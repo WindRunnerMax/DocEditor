@@ -104,3 +104,46 @@ unwrapNodes(editor, { match: (_, p) => Path.equals(p, [3, 1, 0]), at: [3, 1, 0, 
 }
 ```
 
+## 表格模块
+表格应该是整个富文本编辑器中最复杂的组件之一了，表格在普通的文档中大概是唯一的二维结构表达，无论是分栏还是`Tabs`也都只是一维`Row`结构即可表达，而表格就需要`Row + Column`的二维表达才可以，此外表格还会涉及到比较复杂的交互，例如单元格的滑动选中，以此衍生的单元格合并、拆分等操作，还有拖拽调整列宽等等，这些数据都需要在表格的交互中处理，并且将数据存储到本身的数据结构中。
+
+那么实现表格结构的表达首先需要我们设计数据结构，在初步思考之后，我觉得比较可行的数据结构表达有两种。第一种是将相关数据都在`Table`块结构中表达，也就是将所有的`Cell`都作为`Table`这个`Block Type`的`Children`，相当于将其扁平化表达了，之后记录行数与列数就足够初步表达整体结构了，而对于表格合并等数据，可以直接在`Cell`中记录`RowSpan`和`ColSpan`即可。这种方式可以省略一层结构表达，让我们的数据结构更加清晰，对于数据的操作也方便一些，但是在`Slate`中似乎不容易实现基于这个表达的编辑能力，因为我们现在不是多实例的结构，对于我们的主文档而言不能做到非受控模式的渲染与编辑，所以这种表达方式可能不太适合，此外如果能够拥有多实例的非受控渲染方式的话，我们还可以提炼一种`RowId - ColId`数组引用形式的渲染方式。
+
+```js
+{
+    "table": true,
+    "table-row-size": 2,
+    "table-col-size": 2,
+    children: [
+        { "table-cell": true, rowSpan: 1, colSpan: 1, children: [{ children: [/** ... */] }] },
+        { "table-cell": true, rowSpan: 1, colSpan: 1, children: [{ children: [/** ... */] }] },
+        { "table-cell": true, rowSpan: 1, colSpan: 1, children: [{ children: [/** ... */] }] },
+        { "table-cell": true, rowSpan: 1, colSpan: 1, children: [{ children: [/** ... */] }] },
+    ]
+}
+```
+
+还有一种方案就是比较常规的嵌套结构了，将`Table`的数据结构完整地表达出来，也就是将`Row`作为`Table`的`Children`，`Cell`作为`Row`的`Children`，这样的表达方式更加贴近于`DOM`结构的表达，并且在`JSON`结构中也是能够轻松表示的，只不过就是嵌套的层次太深了，这里的嵌套结构深会达到`Table - Row - Cell - Line`，没错我们需要在`Cell`中继续嵌套一层`Block`结构作为文本行结构的承载位置，否则我们直接编辑的话就会操作到`Cell`结构了，所以这里的嵌套结构会变得特别深，我们的`Schema`也就需要变得更加深入，至于额外的数据表达例如单元格合并等内容我们与上述的方案一致。
+
+```js
+{
+    "table": true,
+    children: [
+        {
+            "table-row": true,
+            "table-header": true,
+            children: [
+                { "table-cell": true, rowSpan: 1, colSpan: 1, children: [{ children: [/** ... */] }] },
+                { "table-cell": true, rowSpan: 1, colSpan: 1, children: [{ children: [/** ... */] }] },
+            ]
+        },
+        {
+            "table-row": true,
+            children: [
+                { "table-cell": true, rowSpan: 1, colSpan: 1, children: [{ children: [/** ... */] }] },
+                { "table-cell": true, rowSpan: 1, colSpan: 1, children: [{ children: [/** ... */] }] },
+            ]
+        }
+    ]
+}
+```

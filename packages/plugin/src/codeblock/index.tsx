@@ -13,7 +13,7 @@ import { BlockPlugin, LeafPlugin } from "doc-editor-core";
 import type { BaseRange, BlockElement, NodeEntry, Range } from "doc-editor-delta";
 import { Editor, Transforms } from "doc-editor-delta";
 import { ReactEditor } from "doc-editor-delta";
-import { getBlockNode, getBlockPath, getParentNode } from "doc-editor-utils";
+import { getAboveBlockPath, getBlockNode, getParentNode } from "doc-editor-utils";
 import { isBlock, isText } from "doc-editor-utils";
 import { setBlockNode } from "doc-editor-utils";
 
@@ -50,7 +50,7 @@ export class CodeBlockPlugin extends BlockPlugin {
   }
 
   public onCommand: CommandFn = (editor, _, { path }) => {
-    const blockPath = path && getBlockPath(editor, path);
+    const blockPath = path && getAboveBlockPath(editor, path);
     if (!blockPath) return void 0;
     Transforms.delete(editor, { at: blockPath, unit: "block" });
     Transforms.insertNodes(
