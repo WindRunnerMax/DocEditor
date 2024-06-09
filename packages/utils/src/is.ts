@@ -29,8 +29,11 @@ export const isMatchedAttributeNode = (
   const matchedValue = match.block[firstKey];
   let preKeyData: unknown = matchedValue;
   for (let i = 0, n = keys.length; i < n; ++i) {
-    if (isObject(preKeyData)) preKeyData = preKeyData[keys[i]];
-    else return false;
+    if (isObject(preKeyData)) {
+      preKeyData = preKeyData[keys[i]];
+    } else {
+      return false;
+    }
   }
   if (isEmptyValue(value)) return true;
   return preKeyData === value;
@@ -113,7 +116,7 @@ export function isWrappedEdgeNode(
 }
 
 /**
- * 检查最近节点的`Wrap`匹配
+ * 检查最近的`Wrap`节点匹配(两级)
  * @param editor Editor
  * @param wrapKey string
  * @param pairKey string

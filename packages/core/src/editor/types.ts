@@ -7,6 +7,7 @@ import type { Command } from "../command";
 import type { Event } from "../event";
 import type { Logger } from "../log";
 import type { PluginController } from "../plugin";
+import type { Reflex } from "../reflex";
 import type { Schema } from "../schema";
 
 export type EditorKit = EditorSuite;
@@ -15,6 +16,7 @@ export type EditorSuite = Editor &
   ReactEditor & {
     init?: BaseNode[];
     schema: Schema;
+    reflex: Reflex;
     command: Command;
     event: Event;
     clipboard: Clipboard;

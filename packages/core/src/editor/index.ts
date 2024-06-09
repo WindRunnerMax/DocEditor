@@ -10,6 +10,7 @@ import { Event } from "../event";
 import { EDITOR_EVENT } from "../event/bus/action";
 import { LOG_LEVEL, Logger } from "../log";
 import { PluginController } from "../plugin";
+import { Reflex } from "../reflex";
 import { Schema } from "../schema";
 import type { EditorSchema } from "../schema/types";
 import type { EditorSuite } from "./types";
@@ -27,6 +28,7 @@ export function makeEditor(config: EditorSchema, init?: BaseNode[]) {
   const engine = schema.with(editor) as EditorSuite;
   engine.init = init;
   engine.schema = schema;
+  engine.reflex = new Reflex(engine);
   engine.command = new Command(engine);
   engine.logger = new Logger(LOG_LEVEL.ERROR);
   engine.event = new Event(engine);

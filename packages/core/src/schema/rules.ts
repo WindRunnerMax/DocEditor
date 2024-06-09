@@ -3,19 +3,19 @@ import { Editor } from "doc-editor-delta";
 import { setUnWrapNodesExactly } from "doc-editor-utils";
 import { isBlock, setUnBlockNode } from "doc-editor-utils";
 
-export class Normalize {
+export class NormalizeRules {
   /** Wrap - Pair */
-  protected wrap: Map<string, string> = new Map();
+  public readonly wrap: Map<string, string> = new Map();
   /** Pair - Wrap */
-  protected pair: Map<string, string> = new Map();
+  public readonly pair: Map<string, string> = new Map();
   /** Void */
-  protected void: Set<string> = new Set<string>();
+  public readonly void: Set<string> = new Set<string>();
   /** Block */
-  protected block: Set<string> = new Set<string>();
+  public readonly block: Set<string> = new Set<string>();
   /** Inline */
-  protected inline: Set<string> = new Set<string>();
+  public readonly inline: Set<string> = new Set<string>();
   /** Instance */
-  protected instance: Set<string> = new Set<string>();
+  public readonly instance: Set<string> = new Set<string>();
 
   protected normalize(editor: Editor, entry: NodeEntry) {
     try {
