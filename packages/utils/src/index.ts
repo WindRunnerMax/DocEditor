@@ -11,7 +11,6 @@ export {
   getNextBlockNode,
   getNodeTupleByDepth,
   getOmitAttributes,
-  getPathById,
 } from "./get";
 export {
   isCollapsed,

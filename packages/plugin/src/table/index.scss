@@ -1,4 +1,14 @@
+@import '../styles/variable';
+
 .table-block-wrapper {
+  @include min-scrollbar;
+
+  cursor: default;
+  max-width: 100%;
+  // COMPAT: 总是存在占位 避免产生高度突变
+  // 配合`@min-scrollbar可以防止禁用的滚动条样式显示出来
+  overflow-x: scroll;
+  padding-bottom: 3px;
   padding-top: 15px;
   width: 100%;
 }
@@ -6,6 +16,7 @@
 .table-block {
   border-collapse: collapse;
   border-spacing: 0;
+  cursor: auto;
   table-layout: fixed;
   width: 100%;
 
@@ -25,5 +36,17 @@
     position: relative;
     vertical-align: top;
     word-break: break-word;
+  }
+
+  .table-cell-resize {
+    background-color: transparent;
+    bottom: 0;
+    cursor: col-resize;
+    position: absolute;
+    right: -3px;
+    top: 0;
+    user-select: none;
+    width: 6px;
+    z-index: 10;
   }
 }

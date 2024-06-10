@@ -25,8 +25,11 @@ export {
   Location,
   Node,
   Path,
+  PathRef,
   Point,
+  PointRef,
   Range,
+  RangeRef,
   Text,
   Transforms,
 } from "slate";

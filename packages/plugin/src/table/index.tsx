@@ -77,7 +77,7 @@ export class TablePlugin extends BlockPlugin {
     if (context.element[TABLE_CELL_BLOCK_KEY]) {
       context.plain = true;
       return (
-        <Cell context={context} readonly={this.readonly}>
+        <Cell editor={this.editor} context={context} readonly={this.readonly}>
           {props.children}
         </Cell>
       );

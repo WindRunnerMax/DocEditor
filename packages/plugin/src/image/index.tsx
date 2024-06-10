@@ -4,9 +4,8 @@ import type { BlockContext, EditorSuite } from "doc-editor-core";
 import type { CommandFn } from "doc-editor-core";
 import { BlockPlugin } from "doc-editor-core";
 import type { RenderElementProps } from "doc-editor-delta";
-import { HistoryEditor, Transforms } from "doc-editor-delta";
-import { existKey, getPathById, getUniqueId } from "doc-editor-utils";
-import { setBlockNode } from "doc-editor-utils";
+import { Editor, HistoryEditor, Range, Transforms } from "doc-editor-delta";
+import { existKey, getClosestBlockPath, getUniqueId } from "doc-editor-utils";
 
 import { focusSelection } from "../utils/selection";
 import { DocImage } from "./components/doc-image";
@@ -36,17 +35,29 @@ export class ImagePlugin extends BlockPlugin {
     Array.from(files).forEach(file => {
       const blobSRC = window.URL.createObjectURL(file);
       const uuid = getUniqueId();
-      setBlockNode(editor, {
-        uuid,
-        [IMAGE_KEY]: { src: blobSRC, status: IMAGE_STATUS.LOADING },
-        children: [{ text: "" }],
-      });
+      // 基于`selection`的`path`处理图片位置
+      const selection = this.editor.selection;
+      if (!selection || !Range.isCollapsed(selection)) return void 0;
+      const at = selection.anchor.path;
+      const path = getClosestBlockPath(editor, at);
+      if (!path) return void 0;
+      // 异步上传 需要处理`Path Transform`
+      const pathRef = Editor.pathRef(editor, path);
+      Transforms.setNodes(
+        this.editor,
+        {
+          uuid,
+          [IMAGE_KEY]: { src: blobSRC, status: IMAGE_STATUS.LOADING },
+          children: [{ text: "" }],
+        },
+        { at: path }
+      );
       this.uploadHandler(file)
         .then(res => {
-          const path = getPathById(editor, uuid);
+          const path = pathRef.unref();
           if (!path) return void 0;
           HistoryEditor.withoutSaving(editor, () => {
-            setBlockNode(
+            Transforms.setNodes(
               editor,
               {
                 [IMAGE_KEY]: {
@@ -56,18 +67,18 @@ export class ImagePlugin extends BlockPlugin {
                   height: res.height,
                 },
               },
-              { at: path, key: IMAGE_KEY }
+              { at: path }
             );
           });
         })
         .catch(() => {
-          const path = getPathById(editor, uuid);
+          const path = pathRef.unref();
           if (!path) return void 0;
           HistoryEditor.withoutSaving(editor, () => {
-            setBlockNode(
+            Transforms.setNodes(
               editor,
               { [IMAGE_KEY]: { src: void 0, status: IMAGE_STATUS.FAIL } },
-              { at: path, key: IMAGE_KEY }
+              { at: path }
             );
           });
         });

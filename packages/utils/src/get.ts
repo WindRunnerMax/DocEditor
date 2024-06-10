@@ -1,6 +1,5 @@
 import type { BaseNode, BlockElement, Location, Path } from "doc-editor-delta";
 import { Editor, ReactEditor } from "doc-editor-delta";
-import { isObject } from "laser-utils";
 
 import { existKey } from "./ref";
 
@@ -65,26 +64,21 @@ export const getLineIndex = (editor: Editor, path: Path) => {
   return 0;
 };
 
-export const getPathById = (editor: Editor, uuid: string): Path | null => {
-  // 尝试参考`ReactEditor.findPath`优化 优化查找模式
-  // https://github.com/ianstormtaylor/slate/blob/25be3b/packages/slate-react/src/plugin/react-editor.ts#L90
-  type QueueNode = { path: number[]; node: BaseNode | Editor };
-  const queue: QueueNode[] = [{ path: [], node: editor }];
-  while (queue.length) {
-    const curNode = queue.pop();
-    if (!curNode || !curNode.node || !Array.isArray(curNode.node.children)) continue;
-    for (const [index, node] of curNode.node.children.entries()) {
-      if (isObject(node) && node.uuid === uuid) return [...curNode.path, index];
-      queue.push({ path: [...curNode.path, index], node });
-    }
-  }
-  return null;
-};
-
+/**
+ * 根据`Node`获取`Path` 非迭代方式
+ * @param editor ReactEditor
+ * @param target BaseNode
+ * @returns Path | null
+ * @compat 在查找失败时会迭代`Editor`数据兜底
+ */
 export const findNodePath = (editor: ReactEditor, target: BaseNode): Path | null => {
   try {
+    // https://github.com/ianstormtaylor/slate/blob/25be3b/packages/slate-react/src/plugin/react-editor.ts#L90
     return ReactEditor.findPath(editor, target);
   } catch (error) {
+    if (process.env.NODE_ENV === "development") {
+      console.error("FindNodePath Error", error);
+    }
     type QueueNode = { path: number[]; node: BaseNode | Editor };
     const queue: QueueNode[] = [{ path: [], node: editor }];
     while (queue.length) {
