@@ -739,7 +739,7 @@ export const example: BaseNode[] = [
     "table-col-widths": [100, 100],
     "children": [
       {
-        "table-raw": true,
+        "table-row": true,
         "children": [
           {
             "table-cell": true,
@@ -768,7 +768,7 @@ export const example: BaseNode[] = [
         ],
       },
       {
-        "table-raw": true,
+        "table-row": true,
         "children": [
           {
             "table-cell": true,

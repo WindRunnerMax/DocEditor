@@ -1,6 +1,6 @@
 import { Editor, Point } from "doc-editor-delta";
 import { Range } from "doc-editor-delta";
-import { getParentNode, isBlock } from "doc-editor-utils";
+import { getNodeTupleByDepth, isBlock } from "doc-editor-utils";
 
 import type { EditorSuite } from "../editor/types";
 import { NormalizeRules } from "./rules";
@@ -65,22 +65,23 @@ export class Schema extends NormalizeRules {
 
     editor.deleteBackward = (unit: Parameters<typeof deleteBackward>[0]) => {
       const selection = editor.selection;
-      if (selection && Range.isCollapsed(selection)) {
-        const path = selection.anchor.path;
-        const parent = getParentNode(editor, path);
-        const ancestor = parent && getParentNode(editor, parent.path);
-        // 由于`Normalize`的存在 这里直接取直属祖先节点判断即可
-        if (ancestor && isBlock(editor, ancestor.node)) {
-          // 由于不存在统一的节点调度 所以只能遍历查找节点
-          for (const key of Object.keys(ancestor.node)) {
-            // 当处于`Instance Node`节点的最起始位置时 不允许直接调度删除逻辑
-            if (this.instance.has(key)) {
-              // 在这里会查找`Text`节点组装`Path`
-              // https://github.com/ianstormtaylor/slate/blob/25be3b/packages/slate/src/interfaces/node.ts
-              const start = Editor.start(editor, ancestor.path);
-              if (Point.equals(selection.anchor, start)) {
-                return void 0;
-              }
+      if (!selection || !Range.isCollapsed(selection)) {
+        deleteBackward(unit);
+        return void 0;
+      }
+      const target = getNodeTupleByDepth(editor, selection.anchor.path, 2);
+      // 由于`Normalize`的存在 这里直接取直属祖先节点判断即可
+      if (target && isBlock(editor, target.node)) {
+        const { node, path } = target;
+        // 由于不存在统一的节点调度 所以只能遍历查找节点
+        for (const key of Object.keys(node)) {
+          // 当处于`Instance Node`节点的最起始位置时 不允许直接调度删除逻辑
+          if (this.instance.has(key)) {
+            // 在这里会查找`Text`节点组装`Path`
+            // https://github.com/ianstormtaylor/slate/blob/25be3b/packages/slate/src/interfaces/node.ts
+            const start = Editor.start(editor, path);
+            if (Point.equals(selection.anchor, start)) {
+              return void 0;
             }
           }
         }

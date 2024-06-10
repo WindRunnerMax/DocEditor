@@ -3,7 +3,7 @@ import {
   CODE_BLOCK_KEY,
   TABLE_BLOCK_KEY,
   TABLE_CELL_BLOCK_KEY,
-  TABLE_RAW_BLOCK_KEY,
+  TABLE_ROW_BLOCK_KEY,
 } from "doc-editor-plugin";
 import { DIVIDING_LINE_KEY } from "doc-editor-plugin";
 import { FLOW_CHART_KEY } from "doc-editor-plugin";
@@ -48,11 +48,11 @@ export const schema: EditorSchema = {
     block: true,
     instance: true,
   },
-  [TABLE_RAW_BLOCK_KEY]: {
+  [TABLE_ROW_BLOCK_KEY]: {
     wrap: TABLE_BLOCK_KEY,
   },
   [TABLE_CELL_BLOCK_KEY]: {
-    wrap: TABLE_RAW_BLOCK_KEY,
+    wrap: TABLE_ROW_BLOCK_KEY,
     instance: true,
   },
 };

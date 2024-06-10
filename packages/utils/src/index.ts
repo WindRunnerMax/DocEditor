@@ -9,6 +9,7 @@ export {
   getClosestBlockPath,
   getLineIndex,
   getNextBlockNode,
+  getNodeTupleByDepth,
   getOmitAttributes,
   getPathById,
 } from "./get";

@@ -130,3 +130,19 @@ export const getClosestBlockNode = (editor: Editor, at: Location): BlockElement 
   }
   return null;
 };
+
+/**
+ * 获取指定深度的`Node`组
+ * @param editor
+ * @param at
+ * @param depth > 0
+ */
+export const getNodeTupleByDepth = (editor: Editor, at: Location, depth: number) => {
+  if (depth <= 0) return null;
+  const path = [...Editor.path(editor, at)].slice(0, -depth);
+  const target = path.length && Editor.node(editor, path);
+  if (target && target[0]) {
+    return { node: target[0] as BlockElement, path: target[1] };
+  }
+  return null;
+};

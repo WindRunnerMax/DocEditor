@@ -5,13 +5,16 @@ import { BlockPlugin } from "doc-editor-core";
 import type { RenderElementProps } from "doc-editor-delta";
 import { Transforms } from "doc-editor-delta";
 import { getClosestBlockPath } from "doc-editor-utils";
-import React from "react";
 
+import { Cell } from "./components/cell";
+import { Table } from "./components/table";
+import { Tr } from "./components/tr";
 import {
+  MIN_CELL_WIDTH,
   TABLE_BLOCK_KEY,
   TABLE_CELL_BLOCK_KEY,
   TABLE_COL_WIDTHS,
-  TABLE_RAW_BLOCK_KEY,
+  TABLE_ROW_BLOCK_KEY,
 } from "./types";
 
 export class TablePlugin extends BlockPlugin {
@@ -26,7 +29,7 @@ export class TablePlugin extends BlockPlugin {
   public match(props: RenderElementProps): boolean {
     return (
       !!props.element[TABLE_BLOCK_KEY] ||
-      !!props.element[TABLE_RAW_BLOCK_KEY] ||
+      !!props.element[TABLE_ROW_BLOCK_KEY] ||
       !!props.element[TABLE_CELL_BLOCK_KEY]
     );
   }
@@ -39,17 +42,17 @@ export class TablePlugin extends BlockPlugin {
       editor,
       {
         [TABLE_BLOCK_KEY]: true,
-        [TABLE_COL_WIDTHS]: [100, 100],
+        [TABLE_COL_WIDTHS]: new Array(2).fill(MIN_CELL_WIDTH),
         children: [
           {
-            [TABLE_RAW_BLOCK_KEY]: true,
+            [TABLE_ROW_BLOCK_KEY]: true,
             children: [
               { [TABLE_CELL_BLOCK_KEY]: true, children: [{ children: [{ text: "" }] }] },
               { [TABLE_CELL_BLOCK_KEY]: true, children: [{ children: [{ text: "" }] }] },
             ],
           },
           {
-            [TABLE_RAW_BLOCK_KEY]: true,
+            [TABLE_ROW_BLOCK_KEY]: true,
             children: [
               { [TABLE_CELL_BLOCK_KEY]: true, children: [{ children: [{ text: "" }] }] },
               { [TABLE_CELL_BLOCK_KEY]: true, children: [{ children: [{ text: "" }] }] },
@@ -63,39 +66,20 @@ export class TablePlugin extends BlockPlugin {
   };
 
   public renderLine(context: BlockContext): JSX.Element {
-    const props = context.props;
     if (context.element[TABLE_BLOCK_KEY]) {
-      const widths = context.element[TABLE_COL_WIDTHS] || [];
-      return (
-        <div className="table-block-wrapper">
-          <table className="table-block">
-            <colgroup contentEditable={false}>
-              {widths.map((width, index) => (
-                <React.Fragment key={index}>
-                  <col style={{ width }}></col>
-                </React.Fragment>
-              ))}
-              <col style={{ width: "100%" }}></col>
-            </colgroup>
-            <tbody>{context.children}</tbody>
-          </table>
-        </div>
-      );
+      return <Table context={context}>{context.children}</Table>;
     }
-    if (context.element[TABLE_RAW_BLOCK_KEY]) {
+    const props = context.props;
+    if (context.element[TABLE_ROW_BLOCK_KEY]) {
       context.plain = true;
-      return (
-        <tr className="table-block-tr" {...props.attributes}>
-          {props.children}
-        </tr>
-      );
+      return <Tr context={context}>{props.children}</Tr>;
     }
     if (context.element[TABLE_CELL_BLOCK_KEY]) {
       context.plain = true;
       return (
-        <td className="table-block-cell" {...props.attributes}>
+        <Cell context={context} readonly={this.readonly}>
           {props.children}
-        </td>
+        </Cell>
       );
     }
     return context.children;
