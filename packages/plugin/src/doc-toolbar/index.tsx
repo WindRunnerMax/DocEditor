@@ -24,7 +24,7 @@ export class DocToolBarPlugin extends BlockPlugin {
   public renderLine(context: BlockContext): JSX.Element {
     if (this.readonly) return context.children;
     return (
-      <DocMenu editor={this.editor} element={context.element} schema={this.editor.schema.raw}>
+      <DocMenu editor={this.editor} element={context.element}>
         {context.children}
       </DocMenu>
     );

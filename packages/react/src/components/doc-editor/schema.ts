@@ -1,5 +1,10 @@
 import type { EditorSchema } from "doc-editor-core";
-import { CODE_BLOCK_KEY } from "doc-editor-plugin";
+import {
+  CODE_BLOCK_KEY,
+  TABLE_BLOCK_KEY,
+  TABLE_CELL_BLOCK_KEY,
+  TABLE_RAW_BLOCK_KEY,
+} from "doc-editor-plugin";
 import { DIVIDING_LINE_KEY } from "doc-editor-plugin";
 import { FLOW_CHART_KEY } from "doc-editor-plugin";
 import { HIGHLIGHT_BLOCK_KEY } from "doc-editor-plugin";
@@ -41,6 +46,13 @@ export const schema: EditorSchema = {
   },
   [REACT_LIVE_KEY]: {
     block: true,
+    instance: true,
+  },
+  [TABLE_RAW_BLOCK_KEY]: {
+    wrap: TABLE_BLOCK_KEY,
+  },
+  [TABLE_CELL_BLOCK_KEY]: {
+    wrap: TABLE_RAW_BLOCK_KEY,
     instance: true,
   },
 };

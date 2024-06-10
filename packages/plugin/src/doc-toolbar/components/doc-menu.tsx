@@ -1,7 +1,7 @@
 import "../index.scss";
 
 import { Trigger } from "@arco-design/web-react";
-import type { EditorSchema, EditorSuite } from "doc-editor-core";
+import type { EditorSuite } from "doc-editor-core";
 import type { Path, RenderElementProps } from "doc-editor-delta";
 import { Transforms } from "doc-editor-delta";
 import { ReactEditor } from "doc-editor-delta";
@@ -13,13 +13,12 @@ import { HIGHLIGHT_BLOCK_KEY } from "../../highlight-block/types";
 import { REACT_LIVE_KEY } from "../../react-live/types";
 import { DOC_TOOLBAR_MODULES } from "../modules";
 import type { DocToolbarPlugin, DocToolBarState } from "../types";
-import { isBlockNode, isEmptyLine, withinIterator } from "../utils/filter";
+import { isEmptyLine, withinIterator } from "../utils/filter";
 import { TriggerMenu } from "./trigger-menu";
 
 export const DocMenu: React.FC<{
   editor: EditorSuite;
   element: RenderElementProps["element"];
-  schema: EditorSchema;
 }> = props => {
   const [iconVisible, setIconVisible] = useState(false);
   const [menuVisible, setMenuVisible] = useState(false);
@@ -54,11 +53,10 @@ export const DocMenu: React.FC<{
     });
     const state: DocToolBarState = {
       path: path,
-      schema: props.schema,
       editor: props.editor,
       element: props.element,
       status: {
-        isBlock: isBlockNode(props.schema, props.element),
+        isBlock: props.editor.reflex.isBlockNode(props.element),
         isTextBlock: isTextBlock(props.editor, props.element),
         isEmptyLine: isEmptyLine(props.element),
         isInCodeBlock: isInCodeBlock,
@@ -69,7 +67,7 @@ export const DocMenu: React.FC<{
       close: onClose,
     };
     return state;
-  }, [path, props.editor, props.element, props.schema]);
+  }, [path, props.editor, props.element]);
 
   const HoverIconConfig = useMemo(() => {
     let HoverIconConfig: ReturnType<DocToolbarPlugin["renderIcon"]> = null;
@@ -90,9 +88,9 @@ export const DocMenu: React.FC<{
     onClose();
   };
 
-  // 未匹配到任何`Icon`配置 仅注入`DOM`层级关系
+  // 未匹配到任何`Icon`配置
   if (!HoverIconConfig) {
-    return <div>{props.children}</div>;
+    return <React.Fragment>{props.children}</React.Fragment>;
   }
 
   return (

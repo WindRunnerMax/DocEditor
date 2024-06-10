@@ -1,7 +1,11 @@
+.table-block-wrapper {
+  padding-top: 15px;
+}
+
 .table-block {
-  // table-layout: fixed;
   border-collapse: collapse;
   border-spacing: 0;
+  table-layout: fixed;
 
   .table-block-tr {
     border-width: 0;
@@ -9,7 +13,9 @@
 
   .table-block-cell {
     border: 1px solid var(--color-border-3);
+    box-sizing: border-box;
     min-width: 100px;
+    padding: 0 5px;
     position: relative;
     vertical-align: top;
     word-break: break-word;

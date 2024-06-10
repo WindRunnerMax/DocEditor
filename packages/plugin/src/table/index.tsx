@@ -52,15 +52,18 @@ export class TablePlugin extends BlockPlugin {
       },
       { at: blockPath, select: true }
     );
+    Transforms.select(editor, blockPath.concat([0, 0, 0]));
   };
 
   public renderLine(context: BlockContext): JSX.Element {
     const props = context.props;
     if (context.element[TABLE_BLOCK_KEY]) {
       return (
-        <table className="table-block">
-          <tbody>{context.children}</tbody>
-        </table>
+        <div className="table-block-wrapper">
+          <table className="table-block">
+            <tbody>{context.children}</tbody>
+          </table>
+        </div>
       );
     }
     if (context.element[TABLE_RAW_BLOCK_KEY]) {

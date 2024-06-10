@@ -1,21 +1,6 @@
-import type { EditorSchema } from "doc-editor-core";
 import type { BaseNode, EditorPath } from "doc-editor-delta";
 import { Editor } from "doc-editor-delta";
 import { isArray } from "doc-editor-utils";
-
-let blockNodes: Set<string> | null = null;
-export const getBlockNodes = (schema: EditorSchema) => {
-  if (!blockNodes) {
-    blockNodes = new Set(Object.keys(schema).filter(key => schema[key] && schema[key].block));
-  }
-  return blockNodes;
-};
-
-export const isBlockNode = (schema: EditorSchema, element: BaseNode) => {
-  const blockNodes = getBlockNodes(schema);
-  const mixed = Object.keys(element).filter(key => blockNodes.has(key));
-  return mixed.length > 0;
-};
 
 export const isEmptyLine = (element: BaseNode): boolean => {
   if (
