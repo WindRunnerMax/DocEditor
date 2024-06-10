@@ -1,6 +1,7 @@
 import type { NodeEntry, Path } from "doc-editor-delta";
-import { Editor } from "doc-editor-delta";
-import { setUnWrapNodesExactly } from "doc-editor-utils";
+import type { BlockElement } from "doc-editor-delta";
+import { Editor, Transforms } from "doc-editor-delta";
+import { isText, setUnWrapNodesExactly } from "doc-editor-utils";
 import { isBlock, setUnBlockNode } from "doc-editor-utils";
 
 export class NormalizeRules {
@@ -20,25 +21,29 @@ export class NormalizeRules {
   protected normalize(editor: Editor, entry: NodeEntry) {
     try {
       Editor.withoutNormalizing(editor, () => {
-        this.normalizeWrapNode(editor, entry);
-        this.normalizePairNode(editor, entry);
+        this.normalizeBlockNode(editor, entry);
       });
     } catch (error) {
       console.error("Normalize Error: ", error);
     }
   }
 
-  private normalizeWrapNode(editor: Editor, entry: NodeEntry) {
+  private normalizeBlockNode(editor: Editor, entry: NodeEntry) {
     const [node, path] = entry;
     // 如果不是块级元素则返回 会继续处理默认的`Normalize`
     if (!isBlock(editor, node)) return void 0;
+    this.normalizeWrapNode(editor, node, path);
+    this.normalizePairNode(editor, node, path);
+    this.normalizeInstanceNode(editor, node, path);
+  }
+
+  private normalizeWrapNode(editor: Editor, node: BlockElement, path: Path) {
+    // 1. 子节点上一定需要存在`Pair Key` 否则需要在子节点的父节点移除`Wrap Key`
     for (const key of Object.keys(node)) {
       // --- 当前节点是`Wrap Node`的`Normalize` ---
       if (this.wrap.has(key)) {
         const pairKey = this.wrap.get(key) as string;
         const children = node.children || [];
-        // 子节点上一定需要存在`Pair Key`
-        // 否则需要在子节点的父节点移除`Wrap Key`
         children.forEach((child, index) => {
           if (isBlock(editor, child) && !child[pairKey]) {
             const location: Path = [...path, index];
@@ -60,24 +65,40 @@ export class NormalizeRules {
     }
   }
 
-  private normalizePairNode(editor: Editor, entry: NodeEntry) {
-    const [node, path] = entry;
-    // 如果不是块级元素则返回 会继续处理默认的`Normalize`
-    if (!isBlock(editor, node)) return void 0;
+  private normalizePairNode(editor: Editor, node: BlockElement, path: Path) {
+    // 1. 父节点上一定需要存在`Wrap Node` 否则在当前节点上删除`Pair Key`
     for (const key of Object.keys(node)) {
       // --- 当前节点如果是`Pair Node`的`Normalize` ---
       if (this.pair.has(key)) {
         const wrapKey = this.pair.get(key) as string;
         const ancestor = Editor.parent(editor, path);
         const parent = ancestor && ancestor[0];
-        // 父节点上一定需要存在`Wrap Node`
-        // 否则在当前节点上删除`Pair Key`
         if (!parent || !isBlock(editor, parent) || !parent[wrapKey]) {
           if (process.env.NODE_ENV === "development") {
             console.log("NormalizePairNode: ", path, `${wrapKey}<-${key}`);
           }
           setUnBlockNode(editor, [key], { node });
         }
+      }
+    }
+  }
+
+  private normalizeInstanceNode(editor: Editor, node: BlockElement, path: Path) {
+    // 1. `Instance Node`必定需要存在`Block Node`而不是直属`Text Node`
+    for (const key of Object.keys(node)) {
+      // --- 当前节点如果是`Instance Node`的`Normalize` ---
+      if (this.instance.has(key)) {
+        const children = node.children || [];
+        children.forEach((child, index) => {
+          if (isText(child)) {
+            const location: Path = [...path, index];
+            if (process.env.NODE_ENV === "development") {
+              console.log("NormalizeInstanceNode: ", location, key);
+            }
+            // 为`Child`补齐`Block Node`节点
+            Transforms.wrapNodes(editor, { children: [] }, { at: location });
+          }
+        });
       }
     }
   }

@@ -14,7 +14,9 @@ export const ReactLiveDocToolBarPlugin: DocToolbarPlugin = {
   },
   renderSignal: () => null,
   renderBanner: state => {
-    if (state.status.isBlock || !state.status.isEmptyLine) return null;
+    if (state.status.isBlock || !state.status.isEmptyLine || state.status.isInTableBlock) {
+      return null;
+    }
     const onClick = () => {
       exec(state, REACT_LIVE_KEY);
       state.close();

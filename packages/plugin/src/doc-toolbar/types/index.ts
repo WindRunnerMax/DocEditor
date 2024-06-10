@@ -17,6 +17,7 @@ export type DocToolBarState = {
     isInCodeBlock: boolean;
     isInReactLive: boolean;
     isInHighLightBlock: boolean;
+    isInTableBlock: boolean;
   };
   close: () => void;
 };

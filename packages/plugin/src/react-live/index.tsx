@@ -11,7 +11,7 @@ import type {
   RenderLeafProps,
 } from "doc-editor-delta";
 import { Transforms } from "doc-editor-delta";
-import { getAboveBlockPath, getParentNode, isBlock } from "doc-editor-utils";
+import { getClosestBlockPath, getParentNode, isBlock } from "doc-editor-utils";
 
 import { ReactLiveView } from "./components/viewer";
 import { REACT_LIVE_KEY, REACT_LIVE_TYPE } from "./types";
@@ -47,7 +47,7 @@ export class ReactLivePlugin extends BlockPlugin {
   }
 
   public onCommand: CommandFn = (editor, _, { path }) => {
-    const blockPath = path && getAboveBlockPath(editor, path);
+    const blockPath = path && getClosestBlockPath(editor, path);
     if (!blockPath) return void 0;
     // 删除当前行的块内容 等待节点的插入
     Transforms.delete(editor, { at: blockPath, unit: "block" });

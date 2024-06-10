@@ -5,6 +5,7 @@ import type { EditorSuite } from "doc-editor-core";
 import type { Path, RenderElementProps } from "doc-editor-delta";
 import { Transforms } from "doc-editor-delta";
 import { ReactEditor } from "doc-editor-delta";
+import { TABLE_CELL_BLOCK_KEY } from "doc-editor-plugin";
 import { cs, isTextBlock } from "doc-editor-utils";
 import React, { useMemo, useState } from "react";
 
@@ -46,10 +47,12 @@ export const DocMenu: React.FC<{
     let isInCodeBlock = false;
     let isInReactLive = false;
     let isInHighLightBlock = false;
+    let isInTableBlock = false;
     withinIterator(props.editor, path, node => {
       if (node[CODE_BLOCK_KEY]) isInCodeBlock = true;
       if (node[REACT_LIVE_KEY]) isInReactLive = true;
       if (node[HIGHLIGHT_BLOCK_KEY]) isInHighLightBlock = true;
+      if (node[TABLE_CELL_BLOCK_KEY]) isInTableBlock = true;
     });
     const state: DocToolBarState = {
       path: path,
@@ -63,6 +66,7 @@ export const DocMenu: React.FC<{
         isInReactLive: isInReactLive,
         isInHighLightBlock: isInHighLightBlock,
         isNextLine: false,
+        isInTableBlock: isInTableBlock,
       },
       close: onClose,
     };

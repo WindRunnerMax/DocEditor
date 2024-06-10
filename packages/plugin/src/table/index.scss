@@ -1,11 +1,17 @@
 .table-block-wrapper {
   padding-top: 15px;
+  width: 100%;
 }
 
 .table-block {
   border-collapse: collapse;
   border-spacing: 0;
   table-layout: fixed;
+  width: 100%;
+
+  colgroup {
+    user-select: none;
+  }
 
   .table-block-tr {
     border-width: 0;

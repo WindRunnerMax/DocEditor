@@ -4,7 +4,7 @@ import type { BlockContext, CommandFn, EditorSuite } from "doc-editor-core";
 import { BlockPlugin } from "doc-editor-core";
 import type { RenderElementProps } from "doc-editor-delta";
 import { Transforms } from "doc-editor-delta";
-import { assertValue, getAboveBlockPath } from "doc-editor-utils";
+import { assertValue, getClosestBlockPath } from "doc-editor-utils";
 
 import { HighlightBlockWrapper } from "./components/wrapper";
 import { COLOR_MAP, HIGHLIGHT_BLOCK_KEY } from "./types";
@@ -23,7 +23,7 @@ export class HighlightBlockPlugin extends BlockPlugin {
   }
 
   public onCommand: CommandFn = (editor, _, { path }) => {
-    const blockPath = path && getAboveBlockPath(editor, path);
+    const blockPath = path && getClosestBlockPath(editor, path);
     if (!blockPath) return void 0;
     Transforms.delete(editor, { at: blockPath, unit: "block" });
     Transforms.insertNodes(

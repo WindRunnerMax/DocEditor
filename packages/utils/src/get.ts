@@ -102,15 +102,30 @@ export const findNodePath = (editor: ReactEditor, target: BaseNode): Path | null
 };
 
 /**
- * 向上查找`at`所处位置的`Block`节点
+ * 向上查找最近的`Block`节点`Path`
  * @param editor
  * @param at
  */
-export const getAboveBlockPath = (editor: Editor, at: Location): Path | null => {
+export const getClosestBlockPath = (editor: Editor, at: Location): Path | null => {
   const path = [...Editor.path(editor, at)];
   while (path.length) {
     const tuple = Editor.node(editor, path);
     if (tuple && Editor.isBlock(editor, tuple[0])) return path;
+    path.pop();
+  }
+  return null;
+};
+
+/**
+ * 向上查找最近的`Block`节点
+ * @param editor
+ * @param at
+ */
+export const getClosestBlockNode = (editor: Editor, at: Location): BlockElement | null => {
+  const path = [...Editor.path(editor, at)];
+  while (path.length) {
+    const tuple = Editor.node(editor, path);
+    if (tuple && Editor.isBlock(editor, tuple[0])) return tuple[0];
     path.pop();
   }
   return null;

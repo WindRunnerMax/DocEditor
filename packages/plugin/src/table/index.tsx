@@ -4,9 +4,15 @@ import type { BlockContext, CommandFn, EditorSuite } from "doc-editor-core";
 import { BlockPlugin } from "doc-editor-core";
 import type { RenderElementProps } from "doc-editor-delta";
 import { Transforms } from "doc-editor-delta";
-import { getAboveBlockPath } from "doc-editor-utils";
+import { getClosestBlockPath } from "doc-editor-utils";
+import React from "react";
 
-import { TABLE_BLOCK_KEY, TABLE_CELL_BLOCK_KEY, TABLE_RAW_BLOCK_KEY } from "./types";
+import {
+  TABLE_BLOCK_KEY,
+  TABLE_CELL_BLOCK_KEY,
+  TABLE_COL_WIDTHS,
+  TABLE_RAW_BLOCK_KEY,
+} from "./types";
 
 export class TablePlugin extends BlockPlugin {
   public key: string = TABLE_BLOCK_KEY;
@@ -26,13 +32,14 @@ export class TablePlugin extends BlockPlugin {
   }
 
   public onCommand: CommandFn = (editor, _, { path }) => {
-    const blockPath = path && getAboveBlockPath(editor, path);
+    const blockPath = path && getClosestBlockPath(editor, path);
     if (!blockPath) return void 0;
     Transforms.delete(editor, { at: blockPath, unit: "block" });
     Transforms.insertNodes(
       editor,
       {
         [TABLE_BLOCK_KEY]: true,
+        [TABLE_COL_WIDTHS]: [100, 100],
         children: [
           {
             [TABLE_RAW_BLOCK_KEY]: true,
@@ -58,9 +65,18 @@ export class TablePlugin extends BlockPlugin {
   public renderLine(context: BlockContext): JSX.Element {
     const props = context.props;
     if (context.element[TABLE_BLOCK_KEY]) {
+      const widths = context.element[TABLE_COL_WIDTHS] || [];
       return (
         <div className="table-block-wrapper">
           <table className="table-block">
+            <colgroup contentEditable={false}>
+              {widths.map((width, index) => (
+                <React.Fragment key={index}>
+                  <col style={{ width }}></col>
+                </React.Fragment>
+              ))}
+              <col style={{ width: "100%" }}></col>
+            </colgroup>
             <tbody>{context.children}</tbody>
           </table>
         </div>
