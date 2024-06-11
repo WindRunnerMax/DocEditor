@@ -1,6 +1,6 @@
 import type { BlockContext, EditorSuite } from "doc-editor-core";
 import { Transforms } from "doc-editor-delta";
-import { findNodePath, getNodeTupleByDepth } from "doc-editor-utils";
+import { EVENT_ENUM, findNodePath, getNodeTupleByDepth } from "doc-editor-utils";
 import throttle from "lodash-es/throttle";
 import type { FC } from "react";
 
@@ -47,18 +47,20 @@ export const Cell: FC<{
     }, 16);
     const onMouseUp = () => {
       document.body.style.cursor = "";
-      document.removeEventListener("mousemove", onMouseMove);
-      document.removeEventListener("mouseup", onMouseUp);
+      document.removeEventListener(EVENT_ENUM.MOUSE_MOVE, onMouseMove);
+      document.removeEventListener(EVENT_ENUM.MOUSE_UP, onMouseUp);
     };
-    document.addEventListener("mousemove", onMouseMove);
-    document.addEventListener("mouseup", onMouseUp);
+    document.addEventListener(EVENT_ENUM.MOUSE_MOVE, onMouseMove);
+    document.addEventListener(EVENT_ENUM.MOUSE_UP, onMouseUp);
   };
 
   return (
     <td className="table-block-cell" {...context.props.attributes}>
       {/* COMPAT: 必须要从父层传递 否则会无限`ReRender` */}
       {props.children}
-      <div contentEditable={false} onMouseDown={onMouseDown} className="table-cell-resize"></div>
+      {!props.readonly && (
+        <div contentEditable={false} onMouseDown={onMouseDown} className="table-cell-resize"></div>
+      )}
     </td>
   );
 };

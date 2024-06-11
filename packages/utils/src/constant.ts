@@ -7,6 +7,7 @@ export const KEYBOARD = {
 
 export const EVENT_ENUM = {
   MOUSE_UP: "mouseup",
+  MOUSE_MOVE: "mousemove",
   MOUSE_DOWN: "mousedown",
   SELECTION_CHANGE: "selectionchange",
 } as const;
