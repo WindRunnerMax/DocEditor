@@ -24,7 +24,7 @@ jobs:
       - name: install dependencies
         run: |
           node -v
-          npm install -g pnpm@6.24.3
+          npm install -g pnpm@8.11.0
           pnpm install --registry=https://registry.npmjs.org/
 
       - name: build project

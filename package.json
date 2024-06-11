@@ -3,7 +3,8 @@
   "version": "1.0.6",
   "scripts": {
     "dev": "pnpm --filter doc-editor-react run dev",
-    "build": "pnpm --filter doc-editor-react run build"
+    "build": "pnpm --filter doc-editor-react run build",
+    "preview": "python3 -m http.server 9000 --directory packages/react/build"
   },
   "repository": {
     "type": "git",
