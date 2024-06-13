@@ -1,6 +1,6 @@
 # Note
 
-## 插件体系
+## 插件类型体系
 `slate`相当于实现了富文本的引擎能力，包括数据结构的定义、选区与数据的映射、模型的操作函数等等，而对我们来说主要的工作就是实现类型完备的插件化体系，并且如果需要实现完备的富文本应用，可能还需要借助`slate`提供的能力继续封装一层编辑器能力。实际上对于`slate`而言可以认为有两种插件化实现，使用`with`定义插件的方式更类似于在原本的富文本引擎上进行能力拓展，而基于`Editable`的插件定义更像是针对视图渲染层的扩展，当然实际上这两种方式不会独立存在，而是相辅相成的，在本文的相关实现可以参考`README`提到的`BLOG`。
 
 ## Wrap Normalize
@@ -168,4 +168,73 @@ unwrapNodes(editor, { match: (_, p) => Path.equals(p, [3, 1, 0]), at: [3, 1, 0, 
     </tr>
   </tbody>
 </table>
+```
+
+## Node - Path
+经常使用`Slate`的同学都知道，无论是`RenderElementProps`还是`RenderLeafProps`在渲染的时候，除了`attributes`以及`children`等数据之外，是没有`Path`数据的传递的，这对于普通的节点渲染自然是没有问题的，但是当我们想实现比较复杂的模块或者交互时，例如表格模块与图片的异步上传等场景时，这可能并不足以让我们完成这些功能。
+
+```js
+export interface RenderElementProps {
+    children: any;
+    element: Element;
+    attributes: {
+        // ...
+    };
+}
+export interface RenderLeafProps {
+    children: any;
+    leaf: Text;
+    text: Text;
+    attributes: {
+        // ...
+    };
+}
+```
+
+那么平时我们对于数据操作的时候，`Path`是非常重要的，在平时的交互处理中，我们使用`editor.selection`就可以满足大部分功能了。然而很多情况下单纯用`selection`来处理要操作的目标`Path`是有些捉襟见肘的。那么此时在传递的数据结构中我们可以看到与`Path`最相关的数据就是`element/text`值了，那么此时我们可以比较轻松地记起在`ReactEditor`中存在`findPath`方法，可以让我们通过`Node`来查找对应的`Path`。
+
+```js
+// https://github.com/ianstormtaylor/slate/blob/25be3b/packages/slate-react/src/plugin/react-editor.ts#L90
+findPath(editor: ReactEditor, node: Node): Path {
+  const path: Path = []
+  let child = node
+  while (true) {
+    const parent = NODE_TO_PARENT.get(child)
+    if (parent == null) {
+      if (Editor.isEditor(child))   return path
+      else break
+    }
+    const i = NODE_TO_INDEX.get(child)
+    if (i == null) break
+    path.unshift(i)
+    child = parent
+  }
+}
+```
+
+简单压缩了代码，在这里的实现是通过两个`WeakMap`非常巧妙地让我们可以取得节点的`Path`。那么这里就需要思考一个问题，为什么我们不直接在`RenderProps`直接将`Path`传递到渲染的方法中，而是非得需要每次都得重新查找而浪费一部分性能。实际上，如果我们只是渲染文档数据，那么自然是不会有问题的，然而我们通常是需要编辑文档的，在这个时候就会出现问题。举个例子，假设我们在`[10]`位置有一个表格，而此时我们在`[6]`位置上增添了`1`个空白行，那么此时我们的表格`Path`就应该是`[11]`了，然而由于我们实际上并没有编辑与表格相关的内容，所以我们本身也不应该刷新表格的相关内容，自然其`Props`就不会变化，此时我们如果直接取值的话，则会取到`[10]`而不是`[11]`。
+
+那么同样的，即使我们用`WeakMap`记录`Node`与`Path`的对应关系，即使表格的`Node`实际并没有变化，我们也无法很轻松地迭代所有的节点去更新其`Path`。因此我们就可以基于这个方法，在需要的时候查找即可。那么新的问题又来了，既然前边我们提到了不会更新表格相关的内容，那么应该如何更新其`index`的值呢，在这里就是另一个巧妙的方法了，在每次由于数据变化导致渲染的时候，我们同样会向上更新其所有的父节点，这点和`immutable`的模型是一致的，那么此时我们就可以更新所有影响到的索引值了，那么如何避免其他节点的更新呢，很明显我们可以根据`key`去控制这个行为，对于相同的节点赋予唯一的`id`即可。另外在这里可以看出，`useChildren`是定义为`Hooks`的，那么其调用次数必定不会低，而在这里每次组件`render`都会存在`findPath`调用，所以这里倒也不需要太过于担心这个方法的性能问题，因为这里的迭代次数是由我们的层级决定的，通常我们都不会有太多层级的嵌套，所以性能方面还是可控的。
+
+```js
+// https://github.com/ianstormtaylor/slate/blob/25be3b/packages/slate-react/src/hooks/use-children.tsx#L90
+const path = ReactEditor.findPath(editor, node)
+const children = []
+for (let i = 0; i < node.children.length; i++) {
+  const p = path.concat(i)
+  const n = node.children[i] as Descendant
+  const key = ReactEditor.findKey(editor, n)
+  // ...
+  if (Element.isElement(n)) {
+    children.push(
+      <SelectedContext.Provider key={`provider-${key.id}`} value={!!sel}>
+        <ElementComponent />
+      </SelectedContext.Provider>
+    )
+  } else {
+      children.push(<TextComponent />)
+  }
+  NODE_TO_INDEX.set(n, i)
+  NODE_TO_PARENT.set(n, node)
+}
 ```
