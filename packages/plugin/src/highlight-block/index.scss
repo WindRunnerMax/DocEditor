@@ -1,3 +1,5 @@
+@import '../styles/variable';
+
 .doc-highlight-block {
   border: 1px solid;
   border-radius: 3px;
@@ -7,15 +9,31 @@
 .highlight-block-selector {
   background-color: var(--color-bg-2);
   box-shadow: 0 0 4px var(--color-border-2);
+  box-sizing: border-box;
   display: flex;
   flex-wrap: wrap;
-  max-width: calc(100vw - 20px);
+  max-width: 191px;
+  padding: 5px;
 
   .selector-item {
     border: 1px solid;
+    box-sizing: border-box;
     cursor: pointer;
     height: 20px;
     margin: 5px;
     width: 20px;
+  }
+}
+
+.arco-trigger.hl-block-toolbar {
+  background-color: var(--color-bg-2);
+  box-shadow: $box-shadow;
+  display: flex;
+  justify-content: center;
+  padding: 6px 10px;
+
+  .arco-btn-text {
+    color: var(--color-text-1);
+    padding: 0 5px;
   }
 }

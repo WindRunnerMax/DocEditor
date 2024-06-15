@@ -22,5 +22,4 @@ export const COLOR_MAP: AssertT<BlockElement["highlight-block"]>[] = [
   { background: "var(--cyan-3)", border: "var(--cyan-6)" },
   { background: "var(--lime-3)", border: "var(--lime-6)" },
   { background: "var(--gold-3)", border: "var(--gold-6)" },
-  { background: "var(--yellow-3)", border: "var(--yellow-6)" },
 ];

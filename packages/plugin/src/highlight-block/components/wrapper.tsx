@@ -1,6 +1,5 @@
-import "../index.scss";
-
-import { Trigger } from "@arco-design/web-react";
+import { Button, Trigger } from "@arco-design/web-react";
+import { IconPalette } from "@arco-design/web-react/icon";
 import { useMemoizedFn } from "ahooks";
 import type { EditorSuite } from "doc-editor-core";
 import type { BlockElement } from "doc-editor-delta";
@@ -39,8 +38,8 @@ export const HighlightBlockWrapper: FC<{
             className="selector-item"
             onClick={() => switchAction(index)}
             style={{
-              borderColor: `rgb(${item.border})`,
-              backgroundColor: `rgb(${item.background}, 0.4)`,
+              borderColor: `rgba(${item.border}, 0.7)`,
+              backgroundColor: `rgba(${item.background}, 0.3)`,
             }}
           ></div>
         ))}
@@ -48,12 +47,22 @@ export const HighlightBlockWrapper: FC<{
     );
   }, [switchAction]);
 
+  const ButtonGroup = (
+    <div onClick={e => e.stopPropagation()} onMouseDown={e => e.preventDefault()}>
+      <Trigger trigger="click" popup={() => Selector} popupAlign={{ bottom: 10 }}>
+        <Button type="text" icon={<IconPalette />} size="small">
+          颜色
+        </Button>
+      </Trigger>
+    </div>
+  );
+
   const wrapper = (
     <div
       className="doc-highlight-block"
       style={{
-        backgroundColor: `rgb(${config.background}, 0.4)`,
-        borderColor: `rgb(${config.border})`,
+        borderColor: `rgba(${config.border}, 0.7)`,
+        backgroundColor: `rgba(${config.background}, 0.3)`,
       }}
     >
       {props.children}
@@ -62,7 +71,14 @@ export const HighlightBlockWrapper: FC<{
   return readonly ? (
     wrapper
   ) : (
-    <Trigger position="top" popup={() => Selector} popupAlign={{ top: 3 }}>
+    <Trigger
+      position="top"
+      popup={() => ButtonGroup}
+      popupAlign={{ top: 6 }}
+      mouseLeaveDelay={300}
+      mouseEnterDelay={300}
+      className="hl-block-toolbar"
+    >
       {wrapper}
     </Trigger>
   );
