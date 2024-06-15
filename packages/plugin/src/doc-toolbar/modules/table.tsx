@@ -1,6 +1,6 @@
 import { IconApps } from "@arco-design/web-react/icon";
-import { TABLE_BLOCK_KEY } from "doc-editor-plugin";
 
+import { TABLE_BLOCK_KEY } from "../../table/types/index";
 import type { DocToolbarPlugin } from "../types";
 import { exec } from "../utils/exec";
 import { getWrappedBannerMenu } from "../utils/wrapper";

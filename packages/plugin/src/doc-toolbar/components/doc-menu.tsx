@@ -5,20 +5,20 @@ import type { EditorSuite } from "doc-editor-core";
 import type { Path, RenderElementProps } from "doc-editor-delta";
 import { Transforms } from "doc-editor-delta";
 import { ReactEditor } from "doc-editor-delta";
-import { TABLE_CELL_BLOCK_KEY } from "doc-editor-plugin";
 import { cs, isTextBlock } from "doc-editor-utils";
 import React, { useMemo, useState } from "react";
 
 import { CODE_BLOCK_KEY } from "../../codeblock/types";
 import { HIGHLIGHT_BLOCK_KEY } from "../../highlight-block/types";
 import { REACT_LIVE_KEY } from "../../react-live/types";
-import { DOC_TOOLBAR_MODULES } from "../modules";
+import { TABLE_CELL_BLOCK_KEY } from "../../table/types/index";
 import type { DocToolbarPlugin, DocToolBarState } from "../types";
 import { isEmptyLine, withinIterator } from "../utils/filter";
 import { TriggerMenu } from "./trigger-menu";
 
 export const DocMenu: React.FC<{
   editor: EditorSuite;
+  plugins: DocToolbarPlugin[];
   element: RenderElementProps["element"];
 }> = props => {
   const [iconVisible, setIconVisible] = useState(false);
@@ -75,7 +75,7 @@ export const DocMenu: React.FC<{
 
   const HoverIconConfig = useMemo(() => {
     let HoverIconConfig: ReturnType<DocToolbarPlugin["renderIcon"]> = null;
-    const plugins = DOC_TOOLBAR_MODULES;
+    const plugins = props.plugins;
     for (const plugin of plugins) {
       const config = plugin.renderIcon(state);
       if (config) {
@@ -84,7 +84,7 @@ export const DocMenu: React.FC<{
       }
     }
     return HoverIconConfig;
-  }, [state]);
+  }, [props.plugins, state]);
 
   const onSelect = () => {
     ReactEditor.focus(props.editor);
@@ -104,7 +104,7 @@ export const DocMenu: React.FC<{
       popup={() => (
         <Trigger
           className="doc-toolbar-trigger"
-          popup={() => <TriggerMenu state={state}></TriggerMenu>}
+          popup={() => <TriggerMenu state={state} plugins={props.plugins}></TriggerMenu>}
           position="left"
           popupVisible={menuVisible}
           onVisibleChange={setMenuVisible}

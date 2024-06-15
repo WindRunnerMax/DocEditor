@@ -74,9 +74,7 @@ export const HighlightBlockWrapper: FC<{
     <Trigger
       position="top"
       popup={() => ButtonGroup}
-      popupAlign={{ top: 6 }}
-      mouseLeaveDelay={300}
-      mouseEnterDelay={300}
+      popupAlign={{ top: 3 }}
       className="hl-block-toolbar"
     >
       {wrapper}

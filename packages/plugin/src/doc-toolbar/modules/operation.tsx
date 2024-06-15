@@ -15,6 +15,7 @@ import { isBlock, isText, isTextBlock } from "doc-editor-utils";
 import React from "react";
 
 import { TriggerMenu } from "../components/trigger-menu";
+import { NEXT_DOC_TOOLBAR_MODULES } from "../config/next";
 import type { DocToolbarPlugin, DocToolBarState } from "../types";
 import { getWrappedBannerMenu } from "../utils/wrapper";
 
@@ -68,9 +69,10 @@ export const OperationDocToolBarPlugin: DocToolbarPlugin = {
           <React.Fragment>
             <div className="doc-trigger-menu-cut"></div>
             <Trigger
-              // 要解决循环引用问题的话需要实现`NextTriggerMenu`组件
-              // 或者采取配置传递的方式 重点都是新增组件不引用该模块的配置
-              popup={() => <TriggerMenu state={nextLineState}></TriggerMenu>}
+              // COMPAT: 采取配置传递的方式解决循环引用
+              popup={() => (
+                <TriggerMenu state={nextLineState} plugins={NEXT_DOC_TOOLBAR_MODULES}></TriggerMenu>
+              )}
               position="right"
               popupAlign={{ left: 10, right: 10 }}
             >
