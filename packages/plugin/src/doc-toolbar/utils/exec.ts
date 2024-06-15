@@ -18,10 +18,15 @@ export const exec = (state: DocToolBarState, key: string) => {
       Promise.resolve().then(() => {
         const selection = state.editor.selection;
         if (!selection) return void 0;
-        editor.command.exec(type, { extraKey: data, path: selection.focus.path, element });
+        editor.command.exec(type, {
+          extraKey: data,
+          path: selection.focus.path,
+          element,
+          origin: key,
+        });
       });
     } else {
-      editor.command.exec(type, { extraKey: data, path, element });
+      editor.command.exec(type, { extraKey: data, path, element, origin: key });
     }
   });
 };

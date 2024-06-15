@@ -1,5 +1,3 @@
-import "./index.scss";
-
 import { Trigger } from "@arco-design/web-react";
 import {
   IconCopy,

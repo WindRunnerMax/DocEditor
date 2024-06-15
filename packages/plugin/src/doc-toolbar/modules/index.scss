@@ -1,3 +1,6 @@
+@import '../../styles/variable';
+
+/* Trigger-Menu */
 .doc-trigger-menu-cut {
   background-color: var(--color-border-2);
   height: 1px;
@@ -10,5 +13,29 @@
   .toolbar-banner-menu-left {
     align-items: center;
     display: flex;
+  }
+}
+
+/* Trigger-Picker */
+.table-size-picker {
+  @include box-border;
+
+  box-sizing: border-box;
+  padding: 10px;
+
+  .table-size-picker-row {
+    display: flex;
+  }
+
+  .table-size-picker-item {
+    border: 1px solid var(--color-border-2);
+    cursor: pointer;
+    height: 20px;
+    margin: 3px;
+    width: 20px;
+
+    &.active {
+      background-color: rgba(var(--arcoblue-6), 0.3);
+    }
   }
 }

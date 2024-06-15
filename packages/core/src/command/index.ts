@@ -1,7 +1,5 @@
-import type { BaseNode, Location, Path } from "doc-editor-delta";
-
 import type { EditorSuite } from "../editor/types";
-import type { CommandFn, EditorCommands } from "./types";
+import type { CommandFn, CommandPayload, EditorCommands } from "./types";
 
 export class Command {
   private commands: EditorCommands = {};
@@ -15,15 +13,7 @@ export class Command {
     this.commands[key] = fn;
   };
 
-  exec = (
-    key: string,
-    data: {
-      path?: Path;
-      selection?: Location;
-      element?: BaseNode;
-      [key: string]: unknown;
-    }
-  ) => {
+  exec = (key: string, data: CommandPayload) => {
     return this.commands[key] && this.commands[key](this.editor, key, data);
   };
 

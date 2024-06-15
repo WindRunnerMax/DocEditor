@@ -17,6 +17,49 @@ $box-shadow: 0 0 4px var(--color-border-2);
   justify-content: center;
 }
 
+@mixin flex-center {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+@mixin flex-align-center {
+  align-items: center;
+  display: flex;
+}
+
+@mixin flex-justify-center {
+  display: flex;
+  justify-content: center;
+}
+
+@mixin flex-justify-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+@mixin border-radius-3 {
+  border-radius: 3px;
+}
+
+@mixin box-border {
+  @include border-radius-3;
+
+  background-color: var(--color-bg-1);
+  border: 1px solid var(--color-border-2);
+  box-shadow: 0 0 4px var(--color-border-2);
+}
+
+@mixin no-scrollbar {
+  overflow: -moz-scrollbars-none;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 @mixin min-scrollbar {
   // https://caniuse.com/?search=scrollbar-color
   scrollbar-color: var(--color-fill-3, #888) transparent;

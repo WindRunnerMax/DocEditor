@@ -2,7 +2,7 @@ import "./index.scss";
 
 import type { BlockContext, CommandFn, EditorSuite } from "doc-editor-core";
 import { BlockPlugin } from "doc-editor-core";
-import type { RenderElementProps } from "doc-editor-delta";
+import type { BaseNode, RenderElementProps } from "doc-editor-delta";
 import { Transforms } from "doc-editor-delta";
 import { getClosestBlockPath } from "doc-editor-utils";
 
@@ -34,31 +34,33 @@ export class TablePlugin extends BlockPlugin {
     );
   }
 
-  public onCommand: CommandFn = (editor, _, { path }) => {
+  public onCommand: CommandFn = (editor, _, { path, origin }) => {
     const blockPath = path && getClosestBlockPath(editor, path);
     if (!blockPath) return void 0;
+    const [, row, col] = origin?.split(".") || [];
+    const rowSize = Number(row) || 2;
+    const colSize = Number(col) || 2;
+    const nodes: BaseNode[] = [];
+    for (let i = 0; i < rowSize; i++) {
+      const rowNodes: BaseNode[] = [];
+      for (let k = 0; k < colSize; k++) {
+        rowNodes.push({
+          [TABLE_CELL_BLOCK_KEY]: true,
+          children: [
+            // 块级节点需要编辑的是该节点[Line Node]
+            { children: [{ text: "" }] },
+          ],
+        });
+      }
+      nodes.push({ [TABLE_ROW_BLOCK_KEY]: true, children: rowNodes });
+    }
     Transforms.delete(editor, { at: blockPath, unit: "block" });
     Transforms.insertNodes(
       editor,
       {
         [TABLE_BLOCK_KEY]: true,
-        [TABLE_COL_WIDTHS]: new Array(2).fill(MIN_CELL_WIDTH),
-        children: [
-          {
-            [TABLE_ROW_BLOCK_KEY]: true,
-            children: [
-              { [TABLE_CELL_BLOCK_KEY]: true, children: [{ children: [{ text: "" }] }] },
-              { [TABLE_CELL_BLOCK_KEY]: true, children: [{ children: [{ text: "" }] }] },
-            ],
-          },
-          {
-            [TABLE_ROW_BLOCK_KEY]: true,
-            children: [
-              { [TABLE_CELL_BLOCK_KEY]: true, children: [{ children: [{ text: "" }] }] },
-              { [TABLE_CELL_BLOCK_KEY]: true, children: [{ children: [{ text: "" }] }] },
-            ],
-          },
-        ],
+        [TABLE_COL_WIDTHS]: new Array(colSize).fill(MIN_CELL_WIDTH),
+        children: nodes,
       },
       { at: blockPath, select: true }
     );

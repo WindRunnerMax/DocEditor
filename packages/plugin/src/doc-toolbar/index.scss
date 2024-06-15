@@ -88,6 +88,17 @@
         font-size: 16px;
         margin-right: 6px;
       }
+
+      &.flex-space-between {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .toolbar-banner-menu-left,
+      .toolbar-banner-menu-right {
+        align-items: center;
+        display: flex;
+      }
     }
   }
 }

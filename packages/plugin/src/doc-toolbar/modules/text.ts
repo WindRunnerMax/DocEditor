@@ -1,3 +1,5 @@
+import "./index.scss";
+
 import { PARAGRAPH_KEY } from "../../paragraph/types";
 import { TextIcon } from "../icons/text";
 import type { DocToolbarPlugin } from "../types";
