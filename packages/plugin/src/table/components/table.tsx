@@ -12,7 +12,7 @@ export const Table: FC<{
   const widths = useMemo(() => {
     const config = context.element[TABLE_COL_WIDTHS];
     if (config) return config;
-    // 兜底从表格首行获取节点长度数据
+    // 兜底情况 从表格首行获取节点长度数据
     const len = context.element.children?.[0].children?.length || 0;
     return Array(len).fill(MIN_CELL_WIDTH);
   }, [context.element]);

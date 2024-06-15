@@ -1,5 +1,6 @@
 import type { BlockContext, EditorSuite } from "doc-editor-core";
-import { Transforms } from "doc-editor-delta";
+import type { SetNodeOperation } from "doc-editor-delta";
+import { HistoryEditor, Transforms } from "doc-editor-delta";
 import { EVENT_ENUM, findNodePath, getNodeTupleByDepth } from "doc-editor-utils";
 import throttle from "lodash-es/throttle";
 import type { FC } from "react";
@@ -21,7 +22,6 @@ export const Cell: FC<{
 
   const onMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
-    event.preventDefault();
     document.body.style.cursor = "col-resize";
     const path = findNodePath(props.editor, context.element);
     const tr = path && getNodeTupleByDepth(props.editor, path, 1);
@@ -31,7 +31,8 @@ export const Cell: FC<{
     }
     const originIndex = tr.node.children.findIndex(cell => cell === context.element);
     const span = context.element[CELL_COL_SPAN] || 1;
-    const index = originIndex + span - 1; // 在单元格横向合并情况下需要重新定位索引
+    // 在单元格横向合并情况下需要重新定位索引
+    const index = originIndex + span - 1;
     if (index < 0 || index + span > tr.node.children.length) return void 0;
     const colWidths =
       table.node[TABLE_COL_WIDTHS] || new Array(tr.node.children.length).fill(MIN_CELL_WIDTH);
@@ -43,9 +44,26 @@ export const Cell: FC<{
       const newWidth = Math.max(originWidth + diff, MIN_CELL_WIDTH);
       const newColWidths = [...colWidths];
       newColWidths[index] = newWidth;
-      Transforms.setNodes(props.editor, { [TABLE_COL_WIDTHS]: newColWidths }, { at: table.path });
+      HistoryEditor.withoutSaving(props.editor, () => {
+        Transforms.setNodes(props.editor, { [TABLE_COL_WIDTHS]: newColWidths }, { at: table.path });
+      });
+      event.stopPropagation();
     }, 16);
-    const onMouseUp = () => {
+    const onMouseUp = (event: MouseEvent) => {
+      const diff = event.clientX - originX;
+      const newWidth = Math.max(originWidth + diff, MIN_CELL_WIDTH);
+      const newColWidths = [...colWidths];
+      newColWidths[index] = newWidth;
+      // COMPAT: 缺乏控制`History Merge`的机制 而如果基于`FirstSet`会导致`redo`出现问题
+      // 理论上应该需要有控制合并的方法或者基于时间的`Merge`机制 在这里直接主动对栈区写入内容
+      // https://github.com/ianstormtaylor/slate/blob/25be3b/packages/slate-history/src/with-history.ts#L62
+      const op: SetNodeOperation = {
+        type: "set_node",
+        path: table.path,
+        properties: { [TABLE_COL_WIDTHS]: [...colWidths] },
+        newProperties: { [TABLE_COL_WIDTHS]: [...newColWidths] },
+      };
+      props.editor.history.undos.push([op]);
       document.body.style.cursor = "";
       document.removeEventListener(EVENT_ENUM.MOUSE_MOVE, onMouseMove);
       document.removeEventListener(EVENT_ENUM.MOUSE_UP, onMouseUp);

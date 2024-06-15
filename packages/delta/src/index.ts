@@ -15,6 +15,7 @@ export type {
   BaseOperation,
   NodeOperation,
   Operation,
+  SetNodeOperation,
   SetSelectionOperation,
   TextOperation,
 } from "slate";

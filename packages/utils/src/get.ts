@@ -126,7 +126,7 @@ export const getClosestBlockNode = (editor: Editor, at: Location): BlockElement 
 };
 
 /**
- * 获取指定深度的`Node`组
+ * 获取指定深度的`Node`元组
  * @param editor
  * @param at
  * @param depth > 0
