@@ -41,7 +41,7 @@ export const Cell: FC<{
     }
     const originIndex = colIndex;
     const span = context.element[CELL_COL_SPAN] || 1;
-    // 在单元格横向合并情况下需要重新定位索引
+    // NOTE: 在单元格横向合并情况下需要重新定位索引
     const index = originIndex + span - 1;
     const colSize = provider.size.cols;
     if (index < 0 || index + span > colSize) return void 0;

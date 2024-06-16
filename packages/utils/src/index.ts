@@ -49,6 +49,7 @@ export {
   isArray,
   isDev,
   isEmptyValue,
+  isFunction,
   isEmptyValue as isNil,
   isNumber,
   isObject,
