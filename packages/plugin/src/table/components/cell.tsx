@@ -5,6 +5,7 @@ import { EVENT_ENUM, findNodePath, getNodeTupleByDepth } from "doc-editor-utils"
 import throttle from "lodash-es/throttle";
 import type { FC } from "react";
 
+import { useIndex } from "../hooks/use-index";
 import {
   CELL_COL_SPAN,
   MIN_CELL_WIDTH,
@@ -19,6 +20,7 @@ export const Cell: FC<{
   context: BlockContext;
 }> = props => {
   const { context } = props;
+  const { rowIndex, colIndex } = useIndex(context.element);
 
   const onMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
@@ -33,9 +35,9 @@ export const Cell: FC<{
     const span = context.element[CELL_COL_SPAN] || 1;
     // 在单元格横向合并情况下需要重新定位索引
     const index = originIndex + span - 1;
-    if (index < 0 || index + span > tr.node.children.length) return void 0;
-    const colWidths =
-      table.node[TABLE_COL_WIDTHS] || new Array(tr.node.children.length).fill(MIN_CELL_WIDTH);
+    const colSize = tr.node.children.length;
+    if (index < 0 || index + span > colSize) return void 0;
+    const colWidths = table.node[TABLE_COL_WIDTHS] || new Array(colSize).fill(MIN_CELL_WIDTH);
     const originWidth = colWidths[originIndex] || MIN_CELL_WIDTH;
     const originX = event.clientX;
     const onMouseMove = throttle((event: MouseEvent) => {
@@ -73,7 +75,12 @@ export const Cell: FC<{
   };
 
   return (
-    <td className="table-block-cell" {...context.props.attributes}>
+    <td
+      className="table-block-cell"
+      data-row={rowIndex}
+      data-col={colIndex}
+      {...context.props.attributes}
+    >
       {/* COMPAT: 必须要从父层传递 否则会无限`ReRender` */}
       {props.children}
       {!props.readonly && (

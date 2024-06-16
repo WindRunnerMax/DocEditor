@@ -3,6 +3,7 @@ import "./index.scss";
 import { Menu } from "@arco-design/web-react";
 import { useMemoizedFn } from "ahooks";
 import type { EditorSuite } from "doc-editor-core";
+import type { TextElement } from "doc-editor-delta";
 import { Editor } from "doc-editor-delta";
 import { ReactEditor } from "doc-editor-delta";
 import { EVENT_ENUM } from "doc-editor-utils";
@@ -88,7 +89,7 @@ export const MenuToolBar: FC<{
         extraKey,
         event,
         position,
-        marks,
+        marks: marks as TextElement,
       });
       if (result) {
         keepStatus.current = true;
