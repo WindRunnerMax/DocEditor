@@ -1,6 +1,32 @@
 @import '../styles/variable';
 
 .table-block-wrapper {
+  position: relative;
+
+  .col-op-toolbar {
+    background-color: var(--color-fill-2);
+    border-radius: 6px 6px 0 0;
+    height: 10px;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 5px;
+  }
+
+  .row-op-toolbar {
+    background-color: var(--color-fill-2);
+    border-radius: 6px 0 0 6px;
+    height: 100%;
+    left: -10px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 10px;
+    z-index: 10;
+  }
+}
+
+.table-block-scroll {
   @include min-scrollbar;
 
   cursor: default;

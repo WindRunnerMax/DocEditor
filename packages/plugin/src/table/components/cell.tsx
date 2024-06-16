@@ -1,10 +1,11 @@
 import type { BlockContext, EditorSuite } from "doc-editor-core";
 import type { SetNodeOperation } from "doc-editor-delta";
 import { HistoryEditor, Transforms } from "doc-editor-delta";
-import { EVENT_ENUM, findNodePath, getNodeTupleByDepth } from "doc-editor-utils";
+import { EVENT_ENUM, findNodePath, getNodeTupleByDepth, isNil } from "doc-editor-utils";
 import throttle from "lodash-es/throttle";
 import type { FC } from "react";
 
+import { useTableContext } from "../hooks/use-context";
 import { useIndex } from "../hooks/use-index";
 import {
   CELL_COL_SPAN,
@@ -20,6 +21,7 @@ export const Cell: FC<{
   context: BlockContext;
 }> = props => {
   const { context } = props;
+  const { provider } = useTableContext();
   const { rowIndex, colIndex } = useIndex(context.element);
 
   const onMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -28,16 +30,22 @@ export const Cell: FC<{
     const path = findNodePath(props.editor, context.element);
     const tr = path && getNodeTupleByDepth(props.editor, path, 1);
     const table = path && getNodeTupleByDepth(props.editor, path, 2);
-    if (!tr || !tr.node[TABLE_ROW_BLOCK_KEY] || !table || !table.node[TABLE_BLOCK_KEY]) {
+    if (
+      !tr ||
+      !tr.node[TABLE_ROW_BLOCK_KEY] ||
+      !table ||
+      !table.node[TABLE_BLOCK_KEY] ||
+      isNil(colIndex)
+    ) {
       return void 0;
     }
-    const originIndex = tr.node.children.findIndex(cell => cell === context.element);
+    const originIndex = colIndex;
     const span = context.element[CELL_COL_SPAN] || 1;
     // 在单元格横向合并情况下需要重新定位索引
     const index = originIndex + span - 1;
-    const colSize = tr.node.children.length;
+    const colSize = provider.size.cols;
     if (index < 0 || index + span > colSize) return void 0;
-    const colWidths = table.node[TABLE_COL_WIDTHS] || new Array(colSize).fill(MIN_CELL_WIDTH);
+    const colWidths = provider.widths;
     const originWidth = colWidths[originIndex] || MIN_CELL_WIDTH;
     const originX = event.clientX;
     const onMouseMove = throttle((event: MouseEvent) => {

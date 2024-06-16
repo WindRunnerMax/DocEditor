@@ -3,7 +3,7 @@ import type { FC } from "react";
 import React, { useMemo } from "react";
 
 import { useCompose } from "../hooks/use-compose";
-import { TableContext } from "../hooks/use-context";
+import { TableContext, useTableProvider } from "../hooks/use-context";
 import { MIN_CELL_WIDTH, TABLE_COL_WIDTHS } from "../types";
 
 export const Table: FC<{
@@ -20,29 +20,31 @@ export const Table: FC<{
     return Array(len).fill(MIN_CELL_WIDTH);
   }, [context.element, size.cols]);
 
-  const provider = useMemo(() => {
-    // 保持`immutable` 尽可能避免`provider`导致的`re-render`
-    return {
-      size: { ...size },
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [size.cols, size.rows]);
+  const { provider } = useTableProvider({
+    size: size,
+    widths: widths,
+    element: context.element,
+  });
 
   return (
     <div className="table-block-wrapper">
-      <table className="table-block">
-        <colgroup contentEditable={false}>
-          {widths.map((width, index) => (
-            <React.Fragment key={index}>
-              <col style={{ width }}></col>
-            </React.Fragment>
-          ))}
-          {widths.length > 0 && <col style={{ width: "100%" }}></col>}
-        </colgroup>
-        <TableContext.Provider value={provider}>
-          <tbody>{props.children}</tbody>
-        </TableContext.Provider>
-      </table>
+      {/* <div contentEditable={false} className="col-op-toolbar"></div>
+      <div contentEditable={false} className="row-op-toolbar"></div> */}
+      <div className="table-block-scroll">
+        <table className="table-block">
+          <colgroup contentEditable={false}>
+            {widths.map((width, index) => (
+              <React.Fragment key={index}>
+                <col style={{ width }}></col>
+              </React.Fragment>
+            ))}
+            {widths.length > 0 && <col style={{ width: "100%" }}></col>}
+          </colgroup>
+          <TableContext.Provider value={provider}>
+            <tbody>{props.children}</tbody>
+          </TableContext.Provider>
+        </table>
+      </div>
     </div>
   );
 };
