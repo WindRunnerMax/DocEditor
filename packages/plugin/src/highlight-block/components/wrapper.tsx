@@ -51,7 +51,7 @@ export const HighlightBlockWrapper: FC<{
     <div onClick={e => e.stopPropagation()} onMouseDown={e => e.preventDefault()}>
       <Trigger trigger="click" popup={() => Selector} popupAlign={{ bottom: 10 }}>
         <Button type="text" icon={<IconPalette />} size="small">
-          颜色
+          主题
         </Button>
       </Trigger>
     </div>

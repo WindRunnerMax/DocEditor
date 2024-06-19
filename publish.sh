@@ -1,4 +1,6 @@
-# Usage: bash publish.sh --build-only --no-emit --dry-run
+#!/bin/bash
+# Usage: bash publish.sh --build-only --emit
+
 set -e # -x
 dir=$(pwd);
 bash_args="$@";
@@ -16,6 +18,17 @@ function check_argument {
   done
   return 1; # failure
 }
+
+function echo_notice {
+  local value=$1;
+  echo -e "\033[32m$value\033[0m"
+}
+
+echo_notice "Version: $version";
+
+if ! check_argument "--emit" || check_argument "--build-only"; then
+  echo_notice "Notice: Current Version Will Not Publish To NPM";
+fi
 
 for item in "${packages[@]}"; do
     cd $dir;
@@ -42,10 +55,10 @@ for item in "${packages[@]}"; do
       fs.writeFileSync('./package.json', JSON.stringify(json, null, 2));
     " | node;
     set +e;
-    if check_argument "--no-emit" || check_argument "--dry-run"; then
-        npm publish --registry=https://registry.npmjs.org/ --dry-run
-    else
+    if check_argument "--emit"; then
         npm publish --registry=https://registry.npmjs.org/
+    else
+        npm publish --registry=https://registry.npmjs.org/ --dry-run
     fi
     set -e;
     echo "const fs = require('fs');
