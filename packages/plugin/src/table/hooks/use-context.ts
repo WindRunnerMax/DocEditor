@@ -3,6 +3,7 @@ import React from "react";
 
 export type TableContext = {
   widths: number[];
+  heights: number[];
   element: BlockElement;
   trs: HTMLTableRowElement[];
   size: { rows: number; cols: number };
@@ -11,6 +12,7 @@ export type TableContext = {
 export const DEFAULT_TABLE_CONTEXT: TableContext = {
   trs: [],
   widths: [],
+  heights: [],
   element: { children: [] },
   size: { rows: -1, cols: -1 },
 };
