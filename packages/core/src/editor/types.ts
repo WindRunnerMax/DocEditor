@@ -9,6 +9,7 @@ import type { Logger } from "../log";
 import type { PluginController } from "../plugin";
 import type { Reflex } from "../reflex";
 import type { Schema } from "../schema";
+import type { Track } from "../track";
 
 export type EditorKit = EditorSuite;
 export type EditorSuite = Editor &
@@ -22,5 +23,6 @@ export type EditorSuite = Editor &
     clipboard: Clipboard;
     logger: Logger;
     plugin: PluginController;
+    track: Track;
     destroy: () => void;
   };

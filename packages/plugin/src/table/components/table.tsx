@@ -1,4 +1,4 @@
-import type { BlockContext } from "doc-editor-core";
+import type { BlockContext, EditorSuite } from "doc-editor-core";
 import type { FC } from "react";
 import React, { useEffect, useMemo, useRef } from "react";
 
@@ -7,8 +7,11 @@ import { createResizeObserver } from "../../utils/resize";
 import { useCompose } from "../hooks/use-compose";
 import { TableContext, useTableProvider } from "../hooks/use-context";
 import { MIN_CELL_WIDTH, TABLE_COL_WIDTHS } from "../types";
+import { ColToolBar } from "./col-toolbar";
 
 export const Table: FC<{
+  editor: EditorSuite;
+  readonly: boolean;
   context: BlockContext;
 }> = props => {
   const { context } = props;
@@ -45,9 +48,12 @@ export const Table: FC<{
 
   return (
     <div className="table-block-wrapper" ref={wrapper}>
-      {/* <div contentEditable={false} className="col-op-toolbar"></div>
-      <div contentEditable={false} className="row-op-toolbar"></div> */}
+      {/* <div contentEditable={false} className="row-op-toolbar"></div> */}
       <div className="table-block-scroll">
+        {/* COMPAT: 工具栏的状态需要主动管理 */}
+        {!props.readonly && (
+          <ColToolBar editor={props.editor} provider={{ ...provider.current }}></ColToolBar>
+        )}
         <table className="table-block">
           <colgroup contentEditable={false}>
             {widths.map((width, index) => (

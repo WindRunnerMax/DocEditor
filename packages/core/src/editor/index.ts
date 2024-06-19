@@ -13,6 +13,7 @@ import { PluginController } from "../plugin";
 import { Reflex } from "../reflex";
 import { Schema } from "../schema";
 import type { EditorSchema } from "../schema/types";
+import { Track } from "../track";
 import type { EditorSuite } from "./types";
 
 /**
@@ -34,6 +35,7 @@ export function makeEditor(config: EditorSchema, init?: BaseNode[]) {
   engine.event = new Event(engine);
   engine.clipboard = new Clipboard(engine);
   engine.plugin = new PluginController(engine);
+  engine.track = new Track(engine);
 
   const apply = engine.apply;
   engine.apply = event => {
@@ -44,7 +46,7 @@ export function makeEditor(config: EditorSchema, init?: BaseNode[]) {
       });
     } else {
       engine.event.trigger(EDITOR_EVENT.CONTENT_CHANGE, {
-        changes: event,
+        change: event,
       });
     }
     apply(event);
@@ -53,6 +55,7 @@ export function makeEditor(config: EditorSchema, init?: BaseNode[]) {
     engine.command.destroy();
     engine.event.destroy();
     engine.plugin.destroy();
+    engine.track.destroy();
   };
 
   return engine;

@@ -1,0 +1,59 @@
+@import '../../styles/variable';
+
+.table-block-wrapper {
+  position: relative;
+
+  .col-op-toolbar {
+    display: flex;
+    height: 10px;
+    left: 0;
+    position: absolute;
+    top: 5px;
+    user-select: none;
+
+    .col-toolbar-block {
+      background-color: var(--color-fill-2);
+      cursor: pointer;
+      height: 100%;
+
+      &:hover {
+        background-color: var(--color-fill-3);
+      }
+    }
+
+    .col-toolbar-block:first-child {
+      border-radius: 5px 0 0;
+    }
+
+    .col-toolbar-block:last-child {
+      border-radius: 0 5px  0 0;
+    }
+  }
+
+  .row-op-toolbar {
+    background-color: var(--color-fill-2);
+    border-radius: 6px 0 0 6px;
+    height: 100%;
+    left: -10px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    user-select: none;
+    width: 10px;
+    z-index: 10;
+  }
+}
+
+.arco-trigger.table-block-toolbar {
+  background-color: var(--color-bg-2);
+  box-shadow: $box-shadow;
+  display: flex;
+  justify-content: center;
+  padding: 6px;
+
+  .arco-btn-text {
+    color: var(--color-text-1);
+    margin: 0 5px;
+    padding: 0 3px;
+  }
+}

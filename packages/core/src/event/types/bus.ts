@@ -1,7 +1,9 @@
 import type { BaseRange, NodeOperation, Range, TextOperation } from "doc-editor-delta";
 
+export type ContentOperation = NodeOperation | TextOperation;
+
 export type ContentChangeEvent = {
-  changes: NodeOperation | TextOperation;
+  change: ContentOperation;
 };
 
 // eslint-disable-next-line @typescript-eslint/ban-types

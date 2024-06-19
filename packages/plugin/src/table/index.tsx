@@ -1,4 +1,5 @@
-import "./index.scss";
+import "./styles/index.scss";
+import "./styles/toolbar.scss";
 
 import type { BlockContext, CommandFn, EditorSuite } from "doc-editor-core";
 import { BlockPlugin } from "doc-editor-core";
@@ -69,7 +70,11 @@ export class TablePlugin extends BlockPlugin {
 
   public renderLine(context: BlockContext): JSX.Element {
     if (context.element[TABLE_BLOCK_KEY]) {
-      return <Table context={context}>{context.children}</Table>;
+      return (
+        <Table editor={this.editor} readonly={this.readonly} context={context}>
+          {context.children}
+        </Table>
+      );
     }
     const props = context.props;
     if (context.element[TABLE_ROW_BLOCK_KEY]) {
