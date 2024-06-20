@@ -22,7 +22,8 @@ export const OperationDocToolBarPlugin: DocToolbarPlugin = {
   renderSignal: () => null,
   renderBanner: state => {
     if (state.status.isEmptyLine) return null;
-    // TODO: editor clipboard module
+    // TODO: Editor Clipboard Module 覆盖`OnCopy`等事件
+    // https://github.com/ianstormtaylor/slate/blob/25be3b/packages/slate-react/src/components/editable.tsx#L931
     const onCopy = () => {
       const editor = state.editor;
       const fragments = [state.element];

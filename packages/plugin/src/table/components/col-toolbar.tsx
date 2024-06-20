@@ -9,7 +9,7 @@ import React, { useRef, useState } from "react";
 import type { TableContext } from "../hooks/use-context";
 import { MIN_CELL_WIDTH, TABLE_CELL_BLOCK_KEY, TABLE_COL_WIDTHS } from "../types";
 
-export const ColToolBar: FC<{ provider: TableContext; editor: EditorSuite }> = props => {
+export const ColToolBar: FC<{ provider: TableContext["ref"]; editor: EditorSuite }> = props => {
   const editor = props.editor;
   const { widths, element } = props.provider;
   const [visible, setVisible] = useState<boolean[]>(() => Array(widths.length).fill(false));

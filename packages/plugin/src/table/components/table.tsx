@@ -27,12 +27,17 @@ export const Table: FC<{
     return Array(len).fill(MIN_CELL_WIDTH);
   }, [context.element, size.cols]);
 
-  const { provider } = useTableProvider({
-    size: size,
-    widths: widths,
-    heights: heights,
-    element: context.element,
-  });
+  const { provider } = useTableProvider(
+    {
+      size: size,
+      widths: widths,
+      heights: heights,
+      element: context.element,
+    },
+    {
+      selection: null,
+    }
+  );
 
   useEffect(() => {
     const el = wrapper.current;
@@ -46,7 +51,7 @@ export const Table: FC<{
       const trs = Array.from(tbody.children).filter(node => {
         return node instanceof HTMLTableRowElement;
       });
-      const current = provider.current;
+      const current = provider.ref;
       current.trs.length = trs.length;
       current.heights.length = trs.length;
       trs.forEach((tr, index) => {
@@ -66,17 +71,17 @@ export const Table: FC<{
 
   return (
     <div className="table-block-wrapper" ref={wrapper}>
-      {/* COMPAT: 工具栏的状态需要主动管理 */}
+      {/* COMPAT: 工具栏的状态需要主动管理 此时`ref`需要变为`mutable` */}
       {!props.readonly && heights.length > 0 && (
         <RowToolBar
           editor={props.editor}
-          provider={{ ...provider.current }}
+          provider={{ ...provider.ref }}
           heights={heights}
         ></RowToolBar>
       )}
       <div className="table-block-scroll">
         {!props.readonly && (
-          <ColToolBar editor={props.editor} provider={{ ...provider.current }}></ColToolBar>
+          <ColToolBar editor={props.editor} provider={{ ...provider.ref }}></ColToolBar>
         )}
         <table className="table-block">
           <colgroup contentEditable={false}>

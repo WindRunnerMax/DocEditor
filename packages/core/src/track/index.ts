@@ -1,4 +1,4 @@
-import { HistoryEditor } from "doc-editor-delta";
+import { Editor, HistoryEditor } from "doc-editor-delta";
 
 import type { EditorSuite } from "../editor/types";
 import { EDITOR_EVENT } from "../event/bus/action";
@@ -31,7 +31,9 @@ export class Track {
     //   Batch End
     // Batch End
     this.isBatching = true;
-    HistoryEditor.withoutSaving(this.editor, fn);
+    Editor.withoutNormalizing(this.editor, () => {
+      HistoryEditor.withoutSaving(this.editor, fn);
+    });
     this.isBatching = false;
     this.editor.history.undos.push([...this.batchFlat]);
     this.batchFlat = [];

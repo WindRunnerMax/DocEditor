@@ -9,7 +9,7 @@ export const Tr: FC<{
   context: BlockContext;
 }> = props => {
   const { context } = props;
-  const { provider } = useTableContext();
+  const { ref } = useTableContext();
   const index = NODE_TO_INDEX.get(context.element);
 
   const onRef = (el: HTMLTableRowElement) => {
@@ -21,7 +21,7 @@ export const Tr: FC<{
       context.props.attributes.ref.current = el;
     }
     if (!isNil(index)) {
-      provider.trs[index] = el;
+      ref.trs[index] = el;
     }
   };
 

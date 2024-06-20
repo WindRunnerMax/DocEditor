@@ -21,7 +21,7 @@ export const Cell: FC<{
   context: BlockContext;
 }> = props => {
   const { context } = props;
-  const { provider } = useTableContext();
+  const { ref } = useTableContext();
   const { rowIndex, colIndex } = useIndex(context.element);
 
   const onMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -43,9 +43,9 @@ export const Cell: FC<{
     const span = context.element[CELL_COL_SPAN] || 1;
     // NOTE: 在单元格横向合并情况下需要重新定位索引
     const index = originIndex + span - 1;
-    const colSize = provider.size.cols;
+    const colSize = ref.size.cols;
     if (index < 0 || index + span > colSize) return void 0;
-    const colWidths = provider.widths;
+    const colWidths = ref.widths;
     const originWidth = colWidths[originIndex] || MIN_CELL_WIDTH;
     const originX = event.clientX;
     const onMouseMove = throttle((event: MouseEvent) => {
