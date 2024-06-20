@@ -1,4 +1,5 @@
 import type { BlockContext, EditorSuite } from "doc-editor-core";
+import { useSelected } from "doc-editor-delta";
 import type { FC } from "react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
@@ -6,6 +7,7 @@ import { createResizeObserver } from "../../utils/resize";
 import { useCompose } from "../hooks/use-compose";
 import { TableContext, useTableProvider } from "../hooks/use-context";
 import { MIN_CELL_WIDTH, TABLE_COL_WIDTHS } from "../types";
+import type { TableViewEvents } from "../types/interface";
 import { ColToolBar } from "./col-toolbar";
 import { RowToolBar } from "./row-toolbar";
 
@@ -13,8 +15,11 @@ export const Table: FC<{
   editor: EditorSuite;
   readonly: boolean;
   context: BlockContext;
+  onMount: (events: TableViewEvents) => void;
+  onUnMount: (events: TableViewEvents) => void;
 }> = props => {
   const { context } = props;
+  const isFocusIn = useSelected();
   const wrapper = useRef<HTMLDivElement>(null);
   const { size } = useCompose(context.element);
   const [heights, setHeights] = useState<number[]>([]);
@@ -42,7 +47,7 @@ export const Table: FC<{
   useEffect(() => {
     const el = wrapper.current;
     if (!el || props.readonly) return void 0;
-    const handler = () => {
+    const onResize = () => {
       // NOTE: 此处该节点的宽度是满宽度即`100%`
       // 在主文档宽度不变的情况下只会触发高度的变更观察
       // COMPAT: 主动保持`trs`和`element.children`一致
@@ -62,8 +67,8 @@ export const Table: FC<{
       });
       setHeights([...current.heights]);
     };
-    handler();
-    const clear = createResizeObserver(el, handler);
+    onResize();
+    const clear = createResizeObserver(el, onResize);
     return () => {
       clear();
     };
@@ -74,6 +79,7 @@ export const Table: FC<{
       {/* COMPAT: 工具栏的状态需要主动管理 此时`ref`需要变为`mutable` */}
       {!props.readonly && heights.length > 0 && (
         <RowToolBar
+          isFocusIn={isFocusIn}
           editor={props.editor}
           provider={{ ...provider.ref }}
           heights={heights}
@@ -81,7 +87,11 @@ export const Table: FC<{
       )}
       <div className="table-block-scroll">
         {!props.readonly && (
-          <ColToolBar editor={props.editor} provider={{ ...provider.ref }}></ColToolBar>
+          <ColToolBar
+            isFocusIn={isFocusIn}
+            editor={props.editor}
+            provider={{ ...provider.ref }}
+          ></ColToolBar>
         )}
         <table className="table-block">
           <colgroup contentEditable={false}>

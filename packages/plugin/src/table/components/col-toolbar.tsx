@@ -9,7 +9,11 @@ import React, { useRef, useState } from "react";
 import type { TableContext } from "../hooks/use-context";
 import { MIN_CELL_WIDTH, TABLE_CELL_BLOCK_KEY, TABLE_COL_WIDTHS } from "../types";
 
-export const ColToolBar: FC<{ provider: TableContext["ref"]; editor: EditorSuite }> = props => {
+export const ColToolBar: FC<{
+  isFocusIn: boolean;
+  provider: TableContext["ref"];
+  editor: EditorSuite;
+}> = props => {
   const editor = props.editor;
   const { widths, element } = props.provider;
   const [visible, setVisible] = useState<boolean[]>(() => Array(widths.length).fill(false));
@@ -82,7 +86,7 @@ export const ColToolBar: FC<{ provider: TableContext["ref"]; editor: EditorSuite
   return (
     <div
       contentEditable={false}
-      className={cs("col-op-toolbar", visible.some(Boolean) && "active")}
+      className={cs("col-op-toolbar", (props.isFocusIn || visible.some(Boolean)) && "active")}
       onClick={e => e.stopPropagation()}
       onMouseDown={e => e.preventDefault()}
     >

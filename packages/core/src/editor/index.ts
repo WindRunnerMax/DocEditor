@@ -1,4 +1,4 @@
-import type { BaseNode, Editor } from "doc-editor-delta";
+import type { BaseNode, BaseRange, Editor } from "doc-editor-delta";
 import type { ReactEditor } from "doc-editor-delta";
 import { createEditor } from "doc-editor-delta";
 import { withHistory } from "doc-editor-delta";
@@ -41,8 +41,8 @@ export function makeEditor(config: EditorSchema, init?: BaseNode[]) {
   engine.apply = event => {
     if (event.type === "set_selection") {
       engine.event.trigger(EDITOR_EVENT.SELECTION_CHANGE, {
-        previous: event.properties,
-        current: event.newProperties,
+        previous: event.properties as BaseRange | null,
+        current: event.newProperties as BaseRange | null,
       });
     } else {
       engine.event.trigger(EDITOR_EVENT.CONTENT_CHANGE, {

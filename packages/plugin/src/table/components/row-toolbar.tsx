@@ -13,6 +13,7 @@ export const RowToolBar: FC<{
   provider: TableContext["ref"];
   editor: EditorSuite;
   heights: number[];
+  isFocusIn: boolean;
 }> = props => {
   const { editor, heights, provider } = props;
   const { element, size } = provider;
@@ -83,7 +84,7 @@ export const RowToolBar: FC<{
   return (
     <div
       contentEditable={false}
-      className={cs("row-op-toolbar", visible.some(Boolean) && "active")}
+      className={cs("row-op-toolbar", (props.isFocusIn || visible.some(Boolean)) && "active")}
       onClick={e => e.stopPropagation()}
       onMouseDown={e => e.preventDefault()}
     >

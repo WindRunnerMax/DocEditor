@@ -1,8 +1,8 @@
 import "./styles/index.scss";
 import "./styles/toolbar.scss";
 
-import type { BlockContext, CommandFn, EditorSuite } from "doc-editor-core";
-import { BlockPlugin } from "doc-editor-core";
+import type { BlockContext, CommandFn, EditorSuite, EventMap } from "doc-editor-core";
+import { BlockPlugin, EDITOR_EVENT } from "doc-editor-core";
 import type { BaseNode, RenderElementProps } from "doc-editor-delta";
 import { Transforms } from "doc-editor-delta";
 import { getClosestBlockPath } from "doc-editor-utils";
@@ -17,15 +17,22 @@ import {
   TABLE_COL_WIDTHS,
   TABLE_ROW_BLOCK_KEY,
 } from "./types";
+import type { TableViewEvents } from "./types/interface";
 
 export class TablePlugin extends BlockPlugin {
   public key: string = TABLE_BLOCK_KEY;
+  private views: TableViewEvents[];
 
   constructor(private editor: EditorSuite, private readonly: boolean) {
     super();
+    this.views = [];
+    editor.event.on(EDITOR_EVENT.SELECTION_CHANGE, this.onSelectionChange);
   }
 
-  public destroy(): void {}
+  public destroy(): void {
+    this.views = [];
+    this.editor.event.off(EDITOR_EVENT.SELECTION_CHANGE, this.onSelectionChange);
+  }
 
   public match(props: RenderElementProps): boolean {
     return (
@@ -68,10 +75,30 @@ export class TablePlugin extends BlockPlugin {
     Transforms.select(editor, blockPath.concat([0, 0, 0]));
   };
 
+  private onTableMount = (fns: TableViewEvents) => {
+    this.views.push(fns);
+  };
+
+  private onTableUnMount = (fns: TableViewEvents) => {
+    const index = this.views.indexOf(fns);
+    if (index !== -1) this.views.splice(index, 1);
+  };
+
+  private onSelectionChange = (event: EventMap[typeof EDITOR_EVENT.SELECTION_CHANGE]) => {
+    const { current } = event;
+    this.views.forEach(view => view.onEditorSelectionChange(current));
+  };
+
   public renderLine(context: BlockContext): JSX.Element {
     if (context.element[TABLE_BLOCK_KEY]) {
       return (
-        <Table editor={this.editor} readonly={this.readonly} context={context}>
+        <Table
+          onMount={this.onTableMount}
+          onUnMount={this.onTableUnMount}
+          editor={this.editor}
+          readonly={this.readonly}
+          context={context}
+        >
           {context.children}
         </Table>
       );

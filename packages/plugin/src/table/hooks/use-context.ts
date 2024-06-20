@@ -1,10 +1,7 @@
 import type { BlockElement } from "doc-editor-delta";
 import React, { useMemo } from "react";
 
-export type TableSelection = {
-  start: [number, number];
-  end: [number, number];
-};
+import type { TableSelection } from "../types/interface";
 
 export type TableContext = {
   ref: {

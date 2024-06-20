@@ -1,4 +1,4 @@
-import type { BaseRange, NodeOperation, Range, TextOperation } from "doc-editor-delta";
+import type { NodeOperation, Range, TextOperation } from "doc-editor-delta";
 
 export type ContentOperation = NodeOperation | TextOperation;
 
@@ -10,8 +10,8 @@ export type ContentChangeEvent = {
 export type PaintEvent = {};
 
 export type SelectionChangeEvent = {
-  previous: Partial<BaseRange> | Range | null;
-  current: Partial<BaseRange> | Range | null;
+  previous: Range | null;
+  current: Range | null;
 };
 
 export type ReadonlyStateEvent = {

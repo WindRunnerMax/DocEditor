@@ -19,6 +19,7 @@ export type {
   SetSelectionOperation,
   TextOperation,
 } from "slate";
+export type { Selection } from "slate";
 export {
   createEditor,
   Editor,
