@@ -10,6 +10,8 @@ export type TableContext = {
     element: BlockElement;
     trs: HTMLTableRowElement[];
     size: { rows: number; cols: number };
+    anchorCell: [number, number] | null;
+    setSelection: (sel: TableSelection | null) => void;
   };
   state: {
     selection: TableSelection | null;
@@ -23,6 +25,8 @@ export const DEFAULT_TABLE_CONTEXT: TableContext = {
     heights: [],
     element: { children: [] },
     size: { rows: -1, cols: -1 },
+    anchorCell: null,
+    setSelection: () => null,
   },
   state: {
     selection: null,
@@ -42,7 +46,7 @@ export const useTableProvider = (
   Object.assign(current, ref);
   // COMPAT:  由`state`保持`mutable`
   // 此时需要依靠副作用严格控制`re-render`
-  const provider = useMemo(() => ({ ref: current, state }), [state.selection, ref.widths]);
+  const provider = useMemo(() => ({ ref: current, state }), [state.selection]);
   return { provider };
 };
 

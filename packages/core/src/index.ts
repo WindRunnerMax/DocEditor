@@ -16,3 +16,4 @@ export { Editable } from "./preset/editable";
 export { Void } from "./preset/void";
 export { Schema } from "./schema";
 export type { EditorSchema } from "./schema/types";
+export { EDITOR_STATE } from "./state/types";

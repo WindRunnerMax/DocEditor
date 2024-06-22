@@ -6,8 +6,10 @@ import type {
   ReadonlyStateEvent,
   SelectionChangeEvent,
 } from "../types/bus";
-import type { NativeEventMap } from "../types/react";
-import { NATIVE_EVENTS } from "../types/react";
+import type { NativeEventMap } from "../types/native";
+import { NATIVE_EVENTS } from "../types/native";
+import type { ReactEventMap } from "../types/react";
+import { REACT_EVENTS } from "../types/react";
 
 export const EDITOR_EVENT = {
   CONTENT_CHANGE: "CONTENT_CHANGE",
@@ -15,16 +17,19 @@ export const EDITOR_EVENT = {
   PAINT: "PAINT",
   MOUNT: "MOUNT",
   READONLY_CHANGE: "READONLY_CHANGE",
+  ...REACT_EVENTS,
   ...NATIVE_EVENTS,
 } as const;
 
-export type EventMap = {
+type EditorEventMap = {
   [EDITOR_EVENT.PAINT]: PaintEvent;
   [EDITOR_EVENT.CONTENT_CHANGE]: ContentChangeEvent;
   [EDITOR_EVENT.SELECTION_CHANGE]: SelectionChangeEvent;
   [EDITOR_EVENT.MOUNT]: PaintEvent;
   [EDITOR_EVENT.READONLY_CHANGE]: ReadonlyStateEvent;
-} & NativeEventMap;
+};
+
+export type EventMap = NativeEventMap & ReactEventMap & EditorEventMap;
 
 export type EventType = Object.Values<typeof EDITOR_EVENT>;
 export type Handler<T extends EventType> = {

@@ -72,7 +72,7 @@ export const Table: FC<{
     return () => {
       clear();
     };
-  }, [provider, props.readonly]);
+  }, [provider.ref, props.readonly]);
 
   return (
     <div className="table-block-wrapper" ref={wrapper}>

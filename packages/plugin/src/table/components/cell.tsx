@@ -24,7 +24,7 @@ export const Cell: FC<{
   const { ref } = useTableContext();
   const { rowIndex, colIndex } = useIndex(context.element);
 
-  const onMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
+  const onResizeMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
     document.body.style.cursor = "col-resize";
     const path = findNodePath(props.editor, context.element);
@@ -92,7 +92,11 @@ export const Cell: FC<{
       {/* COMPAT: 必须要从父层传递 否则会无限`ReRender` */}
       {props.children}
       {!props.readonly && (
-        <div contentEditable={false} onMouseDown={onMouseDown} className="table-cell-resize"></div>
+        <div
+          contentEditable={false}
+          onMouseDown={onResizeMouseDown}
+          className="table-cell-resize"
+        ></div>
       )}
     </td>
   );

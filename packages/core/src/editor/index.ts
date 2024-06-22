@@ -13,6 +13,7 @@ import { PluginController } from "../plugin";
 import { Reflex } from "../reflex";
 import { Schema } from "../schema";
 import type { EditorSchema } from "../schema/types";
+import { State } from "../state";
 import { Track } from "../track";
 import type { EditorSuite } from "./types";
 
@@ -32,6 +33,7 @@ export function makeEditor(config: EditorSchema, init?: BaseNode[]) {
   engine.reflex = new Reflex(engine);
   engine.command = new Command(engine);
   engine.logger = new Logger(LOG_LEVEL.ERROR);
+  engine.state = new State(engine);
   engine.event = new Event(engine);
   engine.clipboard = new Clipboard(engine);
   engine.plugin = new PluginController(engine);

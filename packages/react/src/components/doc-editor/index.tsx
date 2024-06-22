@@ -47,7 +47,7 @@ export const SlateDocEditor: FC<{
     // @ts-expect-error example debug
     window.editor = editor;
     // @ts-expect-error example debug
-    window.Transformers = Transforms;
+    window.Transforms = Transforms;
     // @ts-expect-error example debug
     window.Editor = Editor;
     editor.logger.set(LOG_LEVEL.DEBUG);
