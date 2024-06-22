@@ -1,13 +1,15 @@
+import { useMemoizedFn } from "ahooks";
 import type { BlockContext, EditorSuite } from "doc-editor-core";
-import { useSelected } from "doc-editor-delta";
+import { Transforms, useSelected } from "doc-editor-delta";
 import type { FC } from "react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
 import { createResizeObserver } from "../../utils/resize";
+import type { EditorSelectChangeEvent } from "../../utils/types/event";
 import { useCompose } from "../hooks/use-compose";
 import { TableContext, useTableProvider } from "../hooks/use-context";
 import { MIN_CELL_WIDTH, TABLE_COL_WIDTHS } from "../types";
-import type { TableViewEvents } from "../types/interface";
+import type { TableSelection, TableViewEvents } from "../types/interface";
 import { ColToolBar } from "./col-toolbar";
 import { RowToolBar } from "./row-toolbar";
 
@@ -23,6 +25,7 @@ export const Table: FC<{
   const wrapper = useRef<HTMLDivElement>(null);
   const { size } = useCompose(context.element);
   const [heights, setHeights] = useState<number[]>([]);
+  const [sel, setSel] = useState<TableSelection>(null);
 
   const widths = useMemo(() => {
     const config = context.element[TABLE_COL_WIDTHS];
@@ -32,17 +35,22 @@ export const Table: FC<{
     return Array(len).fill(MIN_CELL_WIDTH);
   }, [context.element, size.cols]);
 
-  const { provider } = useTableProvider(
-    {
-      size: size,
-      widths: widths,
-      heights: heights,
-      element: context.element,
-    },
-    {
-      selection: null,
-    }
-  );
+  const onSetSelection = (sel: TableSelection) => {
+    Transforms.deselect(props.editor);
+    setSel(sel);
+  };
+
+  const ref = {
+    size: size,
+    widths: widths,
+    heights: heights,
+    element: context.element,
+    setSelection: onSetSelection,
+  };
+  const state = {
+    selection: sel,
+  };
+  const { provider } = useTableProvider(ref, state);
 
   useEffect(() => {
     const el = wrapper.current;
@@ -73,6 +81,21 @@ export const Table: FC<{
       clear();
     };
   }, [provider.ref, props.readonly]);
+
+  const onEditorSelectionChange = useMemoizedFn((e: EditorSelectChangeEvent) => {
+    const { previous, current } = e;
+    if (!previous && current && sel) {
+      setSel(null);
+    }
+  });
+
+  useEffect(() => {
+    props.onMount({ onEditorSelectionChange });
+    return () => {
+      props.onUnMount({ onEditorSelectionChange });
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [onEditorSelectionChange, props.onMount, props.onUnMount]);
 
   return (
     <div className="table-block-wrapper" ref={wrapper}>

@@ -1,12 +1,13 @@
 import "./styles/index.scss";
 import "./styles/toolbar.scss";
 
-import type { BlockContext, CommandFn, EditorSuite, EventMap } from "doc-editor-core";
+import type { BlockContext, CommandFn, EditorSuite } from "doc-editor-core";
 import { BlockPlugin, EDITOR_EVENT } from "doc-editor-core";
 import type { BaseNode, RenderElementProps } from "doc-editor-delta";
 import { Transforms } from "doc-editor-delta";
 import { getClosestBlockPath } from "doc-editor-utils";
 
+import type { EditorSelectChangeEvent } from "../utils/types/event";
 import { Cell } from "./components/cell";
 import { Table } from "./components/table";
 import { Tr } from "./components/tr";
@@ -84,9 +85,8 @@ export class TablePlugin extends BlockPlugin {
     if (index !== -1) this.views.splice(index, 1);
   };
 
-  private onSelectionChange = (event: EventMap[typeof EDITOR_EVENT.SELECTION_CHANGE]) => {
-    const { current } = event;
-    this.views.forEach(view => view.onEditorSelectionChange(current));
+  private onSelectionChange = (event: EditorSelectChangeEvent) => {
+    this.views.forEach(view => view.onEditorSelectionChange(event));
   };
 
   public renderLine(context: BlockContext): JSX.Element {

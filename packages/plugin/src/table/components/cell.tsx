@@ -1,14 +1,17 @@
 import type { BlockContext, EditorSuite } from "doc-editor-core";
+import { EDITOR_STATE } from "doc-editor-core";
 import type { SetNodeOperation } from "doc-editor-delta";
 import { HistoryEditor, Transforms } from "doc-editor-delta";
-import { EVENT_ENUM, findNodePath, getNodeTupleByDepth, isNil } from "doc-editor-utils";
+import { cs, EVENT_ENUM, findNodePath, getNodeTupleByDepth, isNil } from "doc-editor-utils";
 import throttle from "lodash-es/throttle";
 import type { FC } from "react";
+import { useMemo } from "react";
 
 import { useTableContext } from "../hooks/use-context";
 import { useIndex } from "../hooks/use-index";
 import {
   CELL_COL_SPAN,
+  CELL_ROW_SPAN,
   MIN_CELL_WIDTH,
   TABLE_BLOCK_KEY,
   TABLE_COL_WIDTHS,
@@ -21,8 +24,10 @@ export const Cell: FC<{
   context: BlockContext;
 }> = props => {
   const { context } = props;
-  const { ref } = useTableContext();
+  const { ref, state } = useTableContext();
   const { rowIndex, colIndex } = useIndex(context.element);
+  const colSpan = context.element[CELL_COL_SPAN] || 1;
+  const rowSpan = context.element[CELL_ROW_SPAN] || 1;
 
   const onResizeMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
@@ -40,11 +45,10 @@ export const Cell: FC<{
       return void 0;
     }
     const originIndex = colIndex;
-    const span = context.element[CELL_COL_SPAN] || 1;
     // NOTE: 在单元格横向合并情况下需要重新定位索引
-    const index = originIndex + span - 1;
+    const index = originIndex + colSpan - 1;
     const colSize = ref.size.cols;
-    if (index < 0 || index + span > colSize) return void 0;
+    if (index < 0 || index + colSpan > colSize) return void 0;
     const colWidths = ref.widths;
     const originWidth = colWidths[originIndex] || MIN_CELL_WIDTH;
     const originX = event.clientX;
@@ -82,12 +86,53 @@ export const Cell: FC<{
     document.addEventListener(EVENT_ENUM.MOUSE_UP, onMouseUp);
   };
 
+  const onCellMouseEnter = () => {
+    const isMouseDown = props.editor.state.get(EDITOR_STATE.IS_MOUSE_DOWN);
+    if (
+      !isMouseDown ||
+      !ref.anchorCell ||
+      isNil(colIndex) ||
+      isNil(rowIndex) ||
+      !rowSpan ||
+      !colSpan
+    ) {
+      return void 0;
+    }
+    const [anchorRow, anchorCol] = ref.anchorCell;
+    const currentRowIndex = rowIndex + rowSpan - 1;
+    const currentColIndex = colIndex + colSpan - 1;
+    const minRow = Math.min(anchorRow, currentRowIndex);
+    const minCol = Math.min(anchorCol, currentColIndex);
+    const maxRow = Math.max(anchorRow, currentRowIndex);
+    const maxCol = Math.max(anchorCol, currentColIndex);
+    ref.setSelection({ start: [minRow, minCol], end: [maxRow, maxCol] });
+  };
+
+  const onCellMouseDown = () => {
+    if (isNil(colIndex) || isNil(rowIndex)) return void 0;
+    ref.anchorCell = [rowIndex, colIndex];
+  };
+
+  const isInSelectionRange = useMemo(() => {
+    const selection = state.selection;
+    if (!selection || isNil(rowIndex) || isNil(colIndex)) return false;
+    const { start, end } = selection;
+    const [startRow, startCol] = start;
+    const [endRow, endCol] = end;
+    if (rowIndex >= startRow && rowIndex <= endRow && colIndex >= startCol && colIndex <= endCol) {
+      return true;
+    }
+    return false;
+  }, [colIndex, rowIndex, state.selection]);
+
   return (
     <td
-      className="table-block-cell"
+      className={cs("table-block-cell", isInSelectionRange && "is-selected")}
       data-row={rowIndex}
       data-col={colIndex}
       {...context.props.attributes}
+      onMouseEnter={onCellMouseEnter}
+      onMouseDown={onCellMouseDown}
     >
       {/* COMPAT: 必须要从父层传递 否则会无限`ReRender` */}
       {props.children}

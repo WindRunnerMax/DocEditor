@@ -37,6 +37,10 @@
     position: relative;
     vertical-align: top;
     word-break: break-word;
+
+    &.is-selected {
+      background-color: rgba(var(--arcoblue-6), 0.1);
+    }
   }
 
   .table-cell-resize {
