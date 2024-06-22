@@ -4,8 +4,8 @@ import { Transforms, useSelected } from "doc-editor-delta";
 import type { FC } from "react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
-import { createResizeObserver } from "../../utils/resize";
-import type { EditorSelectChangeEvent } from "../../utils/types/event";
+import type { EditorSelectChangeEvent } from "../../shared/types/event";
+import { createResizeObserver } from "../../shared/utils/resize";
 import { useCompose } from "../hooks/use-compose";
 import { TableContext, useTableProvider } from "../hooks/use-context";
 import { MIN_CELL_WIDTH, TABLE_COL_WIDTHS } from "../types";

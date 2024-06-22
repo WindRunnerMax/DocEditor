@@ -4,7 +4,7 @@ import type { RenderLeafProps } from "doc-editor-delta";
 import { assertValue } from "doc-editor-utils";
 import { setTextNode } from "doc-editor-utils";
 
-import { Popup } from "../utils/popup";
+import { Popup } from "../shared/components/popup";
 import { FontBaseMenu } from "./components/menu";
 import type { FontBaseConfig } from "./types";
 import { FONT_BASE_KEY } from "./types";

@@ -2,7 +2,7 @@ import { Spin } from "@arco-design/web-react";
 import type { EditorSuite } from "doc-editor-core";
 import type { BlockElement } from "doc-editor-delta";
 
-import { SelectionWrapper } from "../../../utils/selection/wrapper";
+import { SelectionWrapper } from "../../../shared/components/selection/wrapper";
 import { IMAGE_STATUS } from "../../types";
 import { ImageWrapper } from "../wrapper";
 

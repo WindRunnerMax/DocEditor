@@ -5,7 +5,7 @@ import { assertValue } from "doc-editor-utils";
 import { getBlockNode } from "doc-editor-utils";
 import { setBlockNode } from "doc-editor-utils";
 
-import { Popup } from "../utils/popup";
+import { Popup } from "../shared/components/popup";
 import { LineHeightMenu } from "./components/menu";
 import { LINE_HEIGHT_KEY } from "./types";
 

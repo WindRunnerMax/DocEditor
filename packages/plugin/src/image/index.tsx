@@ -7,7 +7,7 @@ import type { RenderElementProps } from "doc-editor-delta";
 import { Editor, HistoryEditor, Range, Transforms } from "doc-editor-delta";
 import { existKey, getClosestBlockPath, getUniqueId } from "doc-editor-utils";
 
-import { focusSelection } from "../utils/selection";
+import { focusSelection } from "../shared/components/selection";
 import { DocImage } from "./components/doc-image";
 import { IMAGE_KEY, IMAGE_STATUS } from "./types";
 import { uploadImageHandler } from "./utils/upload";

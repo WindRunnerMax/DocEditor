@@ -7,7 +7,7 @@ import type { BaseNode, RenderElementProps } from "doc-editor-delta";
 import { Transforms } from "doc-editor-delta";
 import { getClosestBlockPath } from "doc-editor-utils";
 
-import type { EditorSelectChangeEvent } from "../utils/types/event";
+import type { EditorSelectChangeEvent } from "../shared/types/event";
 import { Cell } from "./components/cell";
 import { Table } from "./components/table";
 import { Tr } from "./components/tr";
