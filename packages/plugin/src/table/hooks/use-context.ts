@@ -10,7 +10,10 @@ export type TableContext = {
     element: BlockElement;
     trs: HTMLTableRowElement[];
     size: { rows: number; cols: number };
-    anchorCell: [number, number] | null;
+    /**
+     * NOTE: RowIndex ColIndex RowSpan ColSpan
+     */
+    anchorCell: [number, number, number, number] | null;
     setSelection: (sel: TableSelection | null) => void;
   };
   state: {

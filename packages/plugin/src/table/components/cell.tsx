@@ -26,8 +26,8 @@ export const Cell: FC<{
   const { context } = props;
   const { ref, state } = useTableContext();
   const { rowIndex, colIndex } = useIndex(context.element);
-  const colSpan = context.element[CELL_COL_SPAN] || 1;
-  const rowSpan = context.element[CELL_ROW_SPAN] || 1;
+  const colSpan = context.element[CELL_COL_SPAN] ?? 1;
+  const rowSpan = context.element[CELL_ROW_SPAN] ?? 1;
 
   const onResizeMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
@@ -48,7 +48,7 @@ export const Cell: FC<{
     // NOTE: 在单元格横向合并情况下需要重新定位索引
     const index = originIndex + colSpan - 1;
     const colSize = ref.size.cols;
-    if (index < 0 || index + colSpan > colSize) return void 0;
+    if (index < 0 || index > colSize) return void 0;
     const colWidths = ref.widths;
     const originWidth = colWidths[originIndex] || MIN_CELL_WIDTH;
     const originX = event.clientX;
@@ -86,7 +86,7 @@ export const Cell: FC<{
     document.addEventListener(EVENT_ENUM.MOUSE_UP, onMouseUp);
   };
 
-  const onCellMouseEnter = () => {
+  const onCellMouseEnter = (e: React.MouseEvent<HTMLTableCellElement>) => {
     const isMouseDown = props.editor.state.get(EDITOR_STATE.IS_MOUSE_DOWN);
     if (
       !isMouseDown ||
@@ -98,19 +98,23 @@ export const Cell: FC<{
     ) {
       return void 0;
     }
-    const [anchorRow, anchorCol] = ref.anchorCell;
-    const currentRowIndex = rowIndex + rowSpan - 1;
-    const currentColIndex = colIndex + colSpan - 1;
-    const minRow = Math.min(anchorRow, currentRowIndex);
-    const minCol = Math.min(anchorCol, currentColIndex);
-    const maxRow = Math.max(anchorRow, currentRowIndex);
-    const maxCol = Math.max(anchorCol, currentColIndex);
+    const [anchorRow, anchorCol, anchorRowSpan, anchorColSpan] = ref.anchorCell;
+    const maxFocusRowIndex = rowIndex + rowSpan - 1;
+    const maxFocusColIndex = colIndex + colSpan - 1;
+    const maxAnchorRowIndex = anchorRow + anchorRowSpan - 1;
+    const maxAnchorColIndex = anchorCol + anchorColSpan - 1;
+    const minRow = Math.min(anchorRow, rowIndex, maxFocusRowIndex, maxAnchorRowIndex);
+    const minCol = Math.min(anchorCol, colIndex, maxFocusColIndex, maxAnchorColIndex);
+    const maxRow = Math.max(anchorRow, rowIndex, maxFocusRowIndex, maxAnchorRowIndex);
+    const maxCol = Math.max(anchorCol, colIndex, maxFocusColIndex, maxAnchorColIndex);
     ref.setSelection({ start: [minRow, minCol], end: [maxRow, maxCol] });
+    e.preventDefault();
+    e.stopPropagation();
   };
 
   const onCellMouseDown = () => {
     if (isNil(colIndex) || isNil(rowIndex)) return void 0;
-    ref.anchorCell = [rowIndex, colIndex];
+    ref.anchorCell = [rowIndex, colIndex, rowSpan, colSpan];
   };
 
   const isInSelectionRange = useMemo(() => {
@@ -125,7 +129,7 @@ export const Cell: FC<{
     return false;
   }, [colIndex, rowIndex, state.selection]);
 
-  return (
+  return colSpan !== 0 && rowSpan !== 0 ? (
     <td
       className={cs("table-block-cell", isInSelectionRange && "is-selected")}
       data-row={rowIndex}
@@ -133,6 +137,8 @@ export const Cell: FC<{
       {...context.props.attributes}
       onMouseEnter={onCellMouseEnter}
       onMouseDown={onCellMouseDown}
+      colSpan={colSpan}
+      rowSpan={rowSpan}
     >
       {/* COMPAT: 必须要从父层传递 否则会无限`ReRender` */}
       {props.children}
@@ -144,5 +150,5 @@ export const Cell: FC<{
         ></div>
       )}
     </td>
-  );
+  ) : null;
 };

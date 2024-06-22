@@ -47,11 +47,11 @@
     }
 
     .col-toolbar-block:first-child {
-      border-radius: 5px 0 0;
+      border-top-left-radius: 5px;
     }
 
     .col-toolbar-block:last-child {
-      border-radius: 0 5px  0 0;
+      border-top-right-radius: 5px;
     }
   }
 
@@ -74,13 +74,20 @@
     }
 
     .row-toolbar-block:first-child {
-      border-radius: 5px 0 0;
+      border-top-left-radius: 5px;
     }
 
     .row-toolbar-block:last-child {
-      border-radius: 0   0 0 5px;
+      border-bottom-left-radius: 5px;
     }
   }
+}
+
+.merge-toolbar-container {
+  height: 0;
+  position: absolute;
+  top: 0;
+  user-select: none;
 }
 
 .arco-trigger.table-toolbar-trigger {
@@ -94,5 +101,9 @@
     color: var(--color-text-1);
     margin: 0 3px;
     padding: 0 3px;
+
+    &.arco-btn-disabled {
+      color: var(--color-text-4);
+    }
   }
 }

@@ -1,6 +1,7 @@
 import { useMemoizedFn } from "ahooks";
 import type { BlockContext, EditorSuite } from "doc-editor-core";
 import { Transforms, useSelected } from "doc-editor-delta";
+import { EVENT_ENUM } from "doc-editor-utils";
 import type { FC } from "react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
@@ -11,6 +12,7 @@ import { TableContext, useTableProvider } from "../hooks/use-context";
 import { MIN_CELL_WIDTH, TABLE_COL_WIDTHS } from "../types";
 import type { TableSelection, TableViewEvents } from "../types/interface";
 import { ColToolBar } from "./col-toolbar";
+import { PinToolbar } from "./pin-toolbar";
 import { RowToolBar } from "./row-toolbar";
 
 export const Table: FC<{
@@ -26,6 +28,7 @@ export const Table: FC<{
   const { size } = useCompose(context.element);
   const [heights, setHeights] = useState<number[]>([]);
   const [sel, setSel] = useState<TableSelection>(null);
+  const [isMouseDown, setIsMouseDown] = useState(false);
 
   const widths = useMemo(() => {
     const config = context.element[TABLE_COL_WIDTHS];
@@ -40,14 +43,14 @@ export const Table: FC<{
     setSel(sel);
   };
 
-  const ref = {
+  const ref: Partial<TableContext["ref"]> = {
     size: size,
     widths: widths,
     heights: heights,
     element: context.element,
     setSelection: onSetSelection,
   };
-  const state = {
+  const state: TableContext["state"] = {
     selection: sel,
   };
   const { provider } = useTableProvider(ref, state);
@@ -86,13 +89,20 @@ export const Table: FC<{
     const { previous, current } = e;
     if (!previous && current && sel) {
       setSel(null);
+      ref.anchorCell = null;
     }
   });
 
   useEffect(() => {
     props.onMount({ onEditorSelectionChange });
+    const onMouseUp = () => setIsMouseDown(false);
+    const onMouseMown = () => setIsMouseDown(true);
+    document.addEventListener(EVENT_ENUM.MOUSE_DOWN, onMouseMown);
+    document.addEventListener(EVENT_ENUM.MOUSE_UP, onMouseUp);
     return () => {
       props.onUnMount({ onEditorSelectionChange });
+      document.removeEventListener(EVENT_ENUM.MOUSE_DOWN, onMouseMown);
+      document.removeEventListener(EVENT_ENUM.MOUSE_UP, onMouseUp);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onEditorSelectionChange, props.onMount, props.onUnMount]);
@@ -102,16 +112,19 @@ export const Table: FC<{
       {/* COMPAT: 工具栏的状态需要主动管理 此时`ref`需要变为`mutable` */}
       {!props.readonly && heights.length > 0 && (
         <RowToolBar
-          isFocusIn={isFocusIn}
+          isFocusIn={isFocusIn || !!sel}
           editor={props.editor}
           provider={{ ...provider.ref }}
           heights={heights}
         ></RowToolBar>
       )}
+      {!props.readonly && sel && !isMouseDown && (
+        <PinToolbar sel={sel} editor={props.editor} provider={{ ...provider.ref }}></PinToolbar>
+      )}
       <div className="table-block-scroll">
         {!props.readonly && (
           <ColToolBar
-            isFocusIn={isFocusIn}
+            isFocusIn={isFocusIn || !!sel}
             editor={props.editor}
             provider={{ ...provider.ref }}
           ></ColToolBar>

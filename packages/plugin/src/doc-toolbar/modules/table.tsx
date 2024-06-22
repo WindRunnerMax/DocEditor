@@ -54,7 +54,7 @@ export const TableDocToolBarPlugin: DocToolbarPlugin = {
     if (state.element[TABLE_BLOCK_KEY]) {
       return {
         element: <IconApps />,
-        config: { position: "lt", style: { marginTop: -15, marginLeft: 5 } },
+        config: { position: "lt", style: { marginTop: -17, marginLeft: 5 } },
       };
     }
     return null;
