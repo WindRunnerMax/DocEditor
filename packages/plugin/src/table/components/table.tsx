@@ -89,7 +89,7 @@ export const Table: FC<{
     const { previous, current } = e;
     if (!previous && current && sel) {
       setSel(null);
-      ref.anchorCell = null;
+      provider.ref.anchorCell = null;
     }
   });
 

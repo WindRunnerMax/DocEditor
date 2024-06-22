@@ -132,8 +132,6 @@ export const Cell: FC<{
   return colSpan !== 0 && rowSpan !== 0 ? (
     <td
       className={cs("table-block-cell", isInSelectionRange && "is-selected")}
-      data-row={rowIndex}
-      data-col={colIndex}
       {...context.props.attributes}
       onMouseEnter={onCellMouseEnter}
       onMouseDown={onCellMouseDown}

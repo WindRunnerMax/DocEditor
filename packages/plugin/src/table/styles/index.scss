@@ -27,6 +27,9 @@
 
   .table-block-tr {
     border-width: 0;
+    // FIX: 单元格合并使得行高为`0`的情况
+    // 表格 3 x 3 合并 [[0,0]-[1,0]] [[2,2]-[3,3]]
+    height: 42.2px;
   }
 
   .table-block-cell {
