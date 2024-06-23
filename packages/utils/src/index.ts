@@ -44,6 +44,7 @@ export {
 } from "./set";
 export type { Object, Reflex, String } from "laser-utils";
 export {
+  Clipboard,
   cs,
   getUniqueId,
   isArray,

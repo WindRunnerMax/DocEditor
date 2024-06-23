@@ -144,7 +144,7 @@ importers:
     dependencies:
       '@arco-design/web-react':
         specifier: '>=2.60.3'
-        version: 2.60.3(@types/react@17.0.2)(react-dom@17.0.2)(react@17.0.2)
+        version: 2.60.3(@types/react@17.0.2)(react-dom@17.0.1)(react@17.0.2)
       ahooks:
         specifier: 3.3.13
         version: 3.3.13(react@17.0.2)
@@ -325,8 +325,8 @@ importers:
         specifier: 'workspace: *'
         version: link:../delta
       laser-utils:
-        specifier: 0.0.2-alpha.14
-        version: 0.0.2-alpha.14
+        specifier: 0.0.2-alpha.16
+        version: 0.0.2-alpha.16
       react:
         specifier: '>=16'
         version: 17.0.2
@@ -392,10 +392,36 @@ packages:
       lodash: 4.17.21
       number-precision: 1.6.0
       react: 17.0.1
-      react-dom: 17.0.1(react@17.0.2)
+      react-dom: 17.0.1(react@17.0.1)
       react-focus-lock: 2.11.2(@types/react@17.0.2)(react@17.0.1)
       react-is: 18.2.0
       react-transition-group: 4.4.5(react-dom@17.0.1)(react@17.0.1)
+      resize-observer-polyfill: 1.5.1
+      scroll-into-view-if-needed: 2.2.20
+      shallowequal: 1.1.0
+    transitivePeerDependencies:
+      - '@types/react'
+    dev: false
+
+  /@arco-design/web-react@2.60.3(@types/react@17.0.2)(react-dom@17.0.1)(react@17.0.2):
+    resolution: {integrity: sha512-mSSxpX0n8SdKr6Jy+Xl4C+CPzbf52wG3Fwv0dkdCkq3FNERJBPCTlbJ5SNb7USWrDEpvY79OrtZ8IAgQVP5ncA==}
+    peerDependencies:
+      react: '>=16'
+      react-dom: '>=16'
+    dependencies:
+      '@arco-design/color': 0.4.0
+      '@babel/runtime': 7.24.0
+      b-tween: 0.3.3
+      b-validate: 1.5.3
+      compute-scroll-into-view: 1.0.20
+      dayjs: 1.11.10
+      lodash: 4.17.21
+      number-precision: 1.6.0
+      react: 17.0.2
+      react-dom: 17.0.1(react@17.0.2)
+      react-focus-lock: 2.11.2(@types/react@17.0.2)(react@17.0.2)
+      react-is: 18.2.0
+      react-transition-group: 4.4.5(react-dom@17.0.1)(react@17.0.2)
       resize-observer-polyfill: 1.5.1
       scroll-into-view-if-needed: 2.2.20
       shallowequal: 1.1.0
@@ -10038,8 +10064,8 @@ packages:
     resolution: {integrity: sha512-9Ke74rX3URh6V6XRI2E4sjQCohlZsgN4ELls8Uh/nOiTa5ko9hLXswjBeD70N1JXbmFdRlflzlsqtW1VKzlQEQ==}
     dev: false
 
-  /laser-utils@0.0.2-alpha.14:
-    resolution: {integrity: sha512-oq4vXRb9ZQB0V/RUTFGZSLSUh9BpFeSqls6p5hHhAIWGK8+TkJYRLX7+FZY9DqGjI2YC1LEuz3AzWeNmMZBuoQ==}
+  /laser-utils@0.0.2-alpha.16:
+    resolution: {integrity: sha512-pJxg5cmkp2DKoJMdhdjF9ljB1AKg4WrzXpQN+9piyM+1osHuEca1HmKEsRmEI6qIYiGOICw1Z3UbD1uzBx5VJw==}
     dev: false
 
   /last-call-webpack-plugin@3.0.0:
@@ -12785,6 +12811,17 @@ packages:
       - vue-template-compiler
     dev: true
 
+  /react-dom@17.0.1(react@17.0.1):
+    resolution: {integrity: sha512-6eV150oJZ9U2t9svnsspTMrWNyHc6chX0KzDeAOXftRa8bNeOKTTfCJ7KorIwenkHd2xqVTBTCZd79yk/lx/Ug==}
+    peerDependencies:
+      react: 17.0.1
+    dependencies:
+      loose-envify: 1.4.0
+      object-assign: 4.1.1
+      react: 17.0.1
+      scheduler: 0.20.2
+    dev: false
+
   /react-dom@17.0.1(react@17.0.2):
     resolution: {integrity: sha512-6eV150oJZ9U2t9svnsspTMrWNyHc6chX0KzDeAOXftRa8bNeOKTTfCJ7KorIwenkHd2xqVTBTCZd79yk/lx/Ug==}
     peerDependencies:
@@ -12868,7 +12905,7 @@ packages:
       babel-standalone: 6.26.0
       laser-utils: 0.0.2
       react: 17.0.1
-      react-dom: 17.0.1(react@17.0.2)
+      react-dom: 17.0.1(react@17.0.1)
       sucrase: 3.35.0
     transitivePeerDependencies:
       - '@types/react'
@@ -12986,6 +13023,20 @@ packages:
       loose-envify: 1.4.0
       prop-types: 15.8.1
       react: 17.0.1
+      react-dom: 17.0.1(react@17.0.1)
+    dev: false
+
+  /react-transition-group@4.4.5(react-dom@17.0.1)(react@17.0.2):
+    resolution: {integrity: sha512-pZcd1MCJoiKiBR2NRxeCRg13uCXbydPnmB4EOeRrY7480qNWO8IIgQG6zlDkm6uRMsURXPuKq0GWtiM59a5Q6g==}
+    peerDependencies:
+      react: '>=16.6.0'
+      react-dom: '>=16.6.0'
+    dependencies:
+      '@babel/runtime': 7.24.0
+      dom-helpers: 5.2.1
+      loose-envify: 1.4.0
+      prop-types: 15.8.1
+      react: 17.0.2
       react-dom: 17.0.1(react@17.0.2)
     dev: false
 

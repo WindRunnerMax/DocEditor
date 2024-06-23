@@ -1,6 +1,8 @@
 import type { Path } from "slate";
 import { Node } from "slate";
 
+import type { BaseNode as BaseElement, BlockElement, TextElement } from "./interface";
+
 export type {
   BaseElement,
   BaseNode,
@@ -49,3 +51,7 @@ export {
   useSlateStatic,
   withReact,
 } from "slate-react";
+
+export type NodeTuple = { node: BaseElement; path: Path };
+export type TextNodeTuple = { node: TextElement; path: Path };
+export type BlockNodeTuple = { node: BlockElement; path: Path };

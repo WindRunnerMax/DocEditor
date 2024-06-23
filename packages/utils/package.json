@@ -20,7 +20,7 @@
     "react": ">=16"
   },
   "dependencies": {
-    "laser-utils": "0.0.2-alpha.14",
+    "laser-utils": "0.0.2-alpha.16",
     "doc-editor-delta": "workspace: *"
   },
   "devDependencies": {

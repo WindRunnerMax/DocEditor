@@ -27,9 +27,6 @@ export class Schema extends NormalizeRules {
         this.wrap.set(value.wrap, key);
         this.pair.set(key, value.wrap);
       }
-      if (value.inline) {
-        this.inline.add(key);
-      }
       if (value.instance) {
         this.instance.add(key);
       }

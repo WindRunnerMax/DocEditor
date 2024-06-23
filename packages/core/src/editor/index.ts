@@ -13,28 +13,43 @@ import { PluginController } from "../plugin";
 import { Reflex } from "../reflex";
 import { Schema } from "../schema";
 import type { EditorSchema } from "../schema/types";
+import { Selection } from "../selection";
 import { State } from "../state";
 import { Track } from "../track";
 import type { EditorRaw } from "./types";
 
 /**
  * 1. 完整封装组件 通过`Editor`重新分发事件
- * 2. 重新设计数据结构 避免大量层级嵌套 扁平化数据结构
- * 4. 属性与事件全部由`Editor`以套件形式分发
+ * 2. 重新设计扁平化数据结构 避免大量层级嵌套
+ * 3. 完善状态管理模块 `Blocks`级数据结构管理
  */
 
 export class EditorKit {
+  /** 原始对象 */
   public readonly raw: EditorRaw;
+  /** 初始化渲染的内容 */
   public readonly init?: BaseNode[];
+  /** 内容更新与选区变换 */
   public readonly do: Do;
+  /** 事件监听与分发 */
   public readonly event: Event;
+  /** 内部状态 */
   public readonly state: State;
+  /** 历史操作与追踪 */
   public readonly track: Track;
+  /** 配置模块 */
   public readonly schema: Schema;
+  /** 内容节点获取与判断 */
   public readonly reflex: Reflex;
+  /** 日志模块 */
   public readonly logger: Logger;
+  /** 命令模块 */
   public readonly command: Command;
+  /** 剪贴板模块 */
   public readonly clipboard: Clipboard;
+  /** 选区模块 */
+  public readonly selection: Selection;
+  /** 插件化控制器 */
   public readonly plugin: PluginController;
 
   constructor(config: EditorSchema, init?: BaseNode[]) {
@@ -52,6 +67,7 @@ export class EditorKit {
     this.clipboard = new Clipboard(this);
     this.plugin = new PluginController(this);
     this.track = new Track(this);
+    this.selection = new Selection(this);
   }
 
   public destroy(): void {
@@ -59,5 +75,6 @@ export class EditorKit {
     this.event.destroy();
     this.plugin.destroy();
     this.track.destroy();
+    this.state.destroy();
   }
 }
