@@ -1,5 +1,5 @@
 import { useMemoizedFn } from "ahooks";
-import type { BlockContext, EditorSuite } from "doc-editor-core";
+import type { BlockContext, EditorKit } from "doc-editor-core";
 import { Transforms, useSelected } from "doc-editor-delta";
 import { EVENT_ENUM } from "doc-editor-utils";
 import type { FC } from "react";
@@ -16,7 +16,7 @@ import { PinToolbar } from "./pin-toolbar";
 import { RowToolBar } from "./row-toolbar";
 
 export const Table: FC<{
-  editor: EditorSuite;
+  editor: EditorKit;
   readonly: boolean;
   context: BlockContext;
   onMount: (events: TableViewEvents) => void;
@@ -39,7 +39,7 @@ export const Table: FC<{
   }, [context.element, size.cols]);
 
   const onSetSelection = (sel: TableSelection) => {
-    Transforms.deselect(props.editor);
+    Transforms.deselect(props.editor.raw);
     setSel(sel);
   };
 

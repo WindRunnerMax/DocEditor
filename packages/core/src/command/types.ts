@@ -1,6 +1,6 @@
 import type { BaseNode, Path, TextElement } from "doc-editor-delta";
 
-import type { EditorSuite } from "../editor/types";
+import type { EditorKit } from "../editor";
 
 export type CommandPayload = {
   path?: Path;
@@ -14,7 +14,7 @@ export type CommandPayload = {
 };
 
 export type CommandFn = (
-  editor: EditorSuite,
+  editor: EditorKit,
   key: string,
   data: CommandPayload
 ) => void | Promise<void>;

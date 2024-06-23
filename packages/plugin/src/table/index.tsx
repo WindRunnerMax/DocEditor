@@ -1,7 +1,7 @@
 import "./styles/index.scss";
 import "./styles/toolbar.scss";
 
-import type { BlockContext, CommandFn, EditorSuite } from "doc-editor-core";
+import type { BlockContext, CommandFn, EditorKit, EditorRaw } from "doc-editor-core";
 import { BlockPlugin, EDITOR_EVENT } from "doc-editor-core";
 import type { BaseNode, RenderElementProps } from "doc-editor-delta";
 import { Transforms } from "doc-editor-delta";
@@ -21,12 +21,14 @@ import {
 import type { TableViewEvents } from "./types/interface";
 
 export class TablePlugin extends BlockPlugin {
+  private raw: EditorRaw;
   public key: string = TABLE_BLOCK_KEY;
   private views: TableViewEvents[];
 
-  constructor(private editor: EditorSuite, private readonly: boolean) {
+  constructor(private editor: EditorKit, private readonly: boolean) {
     super();
     this.views = [];
+    this.raw = editor.raw;
     editor.event.on(EDITOR_EVENT.SELECTION_CHANGE, this.onSelectionChange);
   }
 
@@ -43,8 +45,8 @@ export class TablePlugin extends BlockPlugin {
     );
   }
 
-  public onCommand: CommandFn = (editor, _, { path, origin }) => {
-    const blockPath = path && getClosestBlockPath(editor, path);
+  public onCommand: CommandFn = (_, __, { path, origin }) => {
+    const blockPath = path && getClosestBlockPath(this.raw, path);
     if (!blockPath) return void 0;
     const [, row, col] = origin?.split(".") || [];
     const rowSize = Number(row) || 2;
@@ -63,9 +65,9 @@ export class TablePlugin extends BlockPlugin {
       }
       nodes.push({ [TABLE_ROW_BLOCK_KEY]: true, children: rowNodes });
     }
-    Transforms.delete(editor, { at: blockPath, unit: "block" });
+    Transforms.delete(this.raw, { at: blockPath, unit: "block" });
     Transforms.insertNodes(
-      editor,
+      this.raw,
       {
         [TABLE_BLOCK_KEY]: true,
         [TABLE_COL_WIDTHS]: new Array(colSize).fill(MIN_CELL_WIDTH),
@@ -73,7 +75,7 @@ export class TablePlugin extends BlockPlugin {
       },
       { at: blockPath, select: true }
     );
-    Transforms.select(editor, blockPath.concat([0, 0, 0]));
+    Transforms.select(this.raw, blockPath.concat([0, 0, 0]));
   };
 
   private onTableMount = (fns: TableViewEvents) => {

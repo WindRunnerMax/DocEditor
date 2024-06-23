@@ -1,7 +1,7 @@
 import "./index.scss";
 
 import type { BlockContext } from "doc-editor-core";
-import type { EditorSuite } from "doc-editor-core";
+import type { EditorKit } from "doc-editor-core";
 import { BlockPlugin } from "doc-editor-core";
 
 import { DocMenu } from "./components/doc-menu";
@@ -13,7 +13,7 @@ export class DocToolBarPlugin extends BlockPlugin {
   public readonly priority: number = 13;
 
   constructor(
-    private editor: EditorSuite,
+    private editor: EditorKit,
     private readonly: boolean,
     private plugins = DOC_TOOLBAR_MODULES
   ) {

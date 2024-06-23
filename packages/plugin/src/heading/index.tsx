@@ -1,8 +1,9 @@
 import "./index.scss";
 
 import type { BlockContext, CommandFn } from "doc-editor-core";
+import type { EditorKit } from "doc-editor-core";
 import { BlockPlugin, KEY_EVENT } from "doc-editor-core";
-import type { Editor, RenderElementProps } from "doc-editor-delta";
+import type { RenderElementProps } from "doc-editor-delta";
 import { Transforms } from "doc-editor-delta";
 import { getUniqueId, KEYBOARD } from "doc-editor-utils";
 import { isObject } from "doc-editor-utils";
@@ -24,7 +25,7 @@ import { HEADING_KEY } from "./types";
 export class HeadingPlugin extends BlockPlugin {
   public key: string = HEADING_KEY;
 
-  constructor(private editor: Editor) {
+  constructor(private editor: EditorKit) {
     super();
   }
 
@@ -36,14 +37,14 @@ export class HeadingPlugin extends BlockPlugin {
 
   public onCommand?: CommandFn = (editor, key, data) => {
     if (isObject(data) && data.path) {
-      if (!isMatchedAttributeNode(editor, `${HEADING_KEY}.type`, data.extraKey)) {
+      if (!isMatchedAttributeNode(editor.raw, `${HEADING_KEY}.type`, data.extraKey)) {
         setBlockNode(
-          editor,
+          editor.raw,
           { [key]: { type: data.extraKey, id: getUniqueId().slice(0, 8) } },
           { at: data.path }
         );
       } else {
-        setUnBlockNode(editor, [HEADING_KEY], { at: data.path });
+        setUnBlockNode(editor.raw, [HEADING_KEY], { at: data.path });
       }
     }
   };
@@ -80,32 +81,32 @@ export class HeadingPlugin extends BlockPlugin {
     const editor = this.editor;
     if (
       isMatchedEvent(event, KEYBOARD.BACKSPACE, KEYBOARD.ENTER) &&
-      isCollapsed(editor, editor.selection)
+      isCollapsed(editor.raw, editor.raw.selection)
     ) {
-      const match = getBlockNode(editor);
+      const match = getBlockNode(editor.raw);
 
       if (match) {
         const { block, path } = match;
         if (!block[HEADING_KEY]) return void 0;
 
         if (isBaseElement(block)) {
-          if (event.key === KEYBOARD.BACKSPACE && isFocusLineStart(editor, path)) {
-            setUnBlockNode(editor, [HEADING_KEY], { at: path });
+          if (event.key === KEYBOARD.BACKSPACE && isFocusLineStart(editor.raw, path)) {
+            setUnBlockNode(editor.raw, [HEADING_KEY], { at: path });
             event.preventDefault();
           }
-          if (event.key === KEYBOARD.ENTER && isFocusLineEnd(editor, path)) {
+          if (event.key === KEYBOARD.ENTER && isFocusLineEnd(editor.raw, path)) {
             const attributes = getBlockAttributes(block, [HEADING_KEY]);
-            if (isWrappedNode(editor)) {
+            if (isWrappedNode(editor.raw)) {
               // 在`wrap`的情况下插入节点会出现问题 先多插入一个空格再删除
               Transforms.insertNodes(
-                editor,
+                editor.raw,
                 { ...attributes, children: [{ text: " " }] },
-                { at: editor.selection.focus, select: false }
+                { at: editor.raw.selection.focus, select: false }
               );
-              Transforms.move(editor, { distance: 1 });
-              Promise.resolve().then(() => editor.deleteForward("character"));
+              Transforms.move(editor.raw, { distance: 1 });
+              Promise.resolve().then(() => editor.raw.deleteForward("character"));
             } else {
-              Transforms.insertNodes(editor, { ...attributes, children: [{ text: "" }] });
+              Transforms.insertNodes(editor.raw, { ...attributes, children: [{ text: "" }] });
             }
             event.preventDefault();
           }

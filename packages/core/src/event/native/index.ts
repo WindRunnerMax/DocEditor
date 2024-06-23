@@ -1,10 +1,10 @@
-import type { EditorSuite } from "../../editor/types";
+import type { EditorKit } from "../../editor/";
 import { EDITOR_STATE } from "../../state/types";
 import type { EventBus } from "../bus";
 import { NATIVE_EVENTS } from "../types/native";
 
 export class NativeEvent {
-  constructor(private editor: EditorSuite, private bus: EventBus) {
+  constructor(private editor: EditorKit, private bus: EventBus) {
     document.addEventListener(NATIVE_EVENTS.GLOBAL_MOUSE_DOWN, this.onMouseDown);
     document.addEventListener(NATIVE_EVENTS.GLOBAL_MOUSE_UP, this.onMouseUp);
   }

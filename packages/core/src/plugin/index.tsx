@@ -1,4 +1,4 @@
-import type { EditorSuite } from "../editor/types";
+import type { EditorKit } from "../editor/";
 import type { BlockPlugin, EditorPlugin, LeafPlugin } from "./modules/declare";
 import { decorate, renderBlock, renderLeaf } from "./modules/render";
 import type { ApplyPlugins } from "./types/apply";
@@ -8,7 +8,7 @@ import { KEY_EVENT } from "./types/constant";
 export class PluginController {
   private plugins: Record<string, EditorPlugin>;
 
-  constructor(private editor: EditorSuite) {
+  constructor(private editor: EditorKit) {
     this.plugins = {};
   }
 

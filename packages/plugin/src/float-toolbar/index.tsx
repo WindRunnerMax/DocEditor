@@ -2,7 +2,7 @@ import "./index.scss";
 
 import { Menu } from "@arco-design/web-react";
 import { useMemoizedFn } from "ahooks";
-import type { EditorSuite } from "doc-editor-core";
+import type { EditorKit } from "doc-editor-core";
 import type { TextElement } from "doc-editor-delta";
 import { Editor } from "doc-editor-delta";
 import { ReactEditor } from "doc-editor-delta";
@@ -25,7 +25,7 @@ const MUTEX_SELECT = [...NOT_INIT_SELECT, LINE_HEIGHT_KEY];
 
 export const MenuToolBar: FC<{
   readonly: boolean;
-  editor: EditorSuite;
+  editor: EditorKit;
 }> = props => {
   const editor = props.editor;
   const keepStatus = useRef(false);
@@ -35,8 +35,8 @@ export const MenuToolBar: FC<{
   const wakeUpToolbar = useMemoizedFn((wakeUp: boolean) => {
     const toolbar = toolbarRef.current;
     if (!toolbar) return void 0;
-    if (ReactEditor.isFocused(editor) && wakeUp) {
-      setSelectedMarks(omit(Object.keys(Editor.marks(editor) || []), NOT_INIT_SELECT));
+    if (ReactEditor.isFocused(editor.raw) && wakeUp) {
+      setSelectedMarks(omit(Object.keys(Editor.marks(editor.raw) || []), NOT_INIT_SELECT));
       const rect = getSelectionRect();
       if (rect) {
         toolbar.style.top = `${rect.top + window.pageYOffset - TOOLBAR_OFFSET_HEIGHT - 10}px`;
@@ -77,7 +77,7 @@ export const MenuToolBar: FC<{
   const exec = useMemoizedFn(
     (param: string, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       const [key, extraKey] = param.split(".");
-      const marks = Editor.marks(editor);
+      const marks = Editor.marks(editor.raw);
       const position = { left: 0, top: 0 };
       const toolbar = toolbarRef.current;
       setSelectedMarks(execSelectMarks(key, selectedMarks, MUTEX_SELECT));

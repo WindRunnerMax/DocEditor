@@ -1,7 +1,7 @@
 import { Button, Trigger } from "@arco-design/web-react";
 import { IconPalette } from "@arco-design/web-react/icon";
 import { useMemoizedFn } from "ahooks";
-import type { EditorSuite } from "doc-editor-core";
+import type { EditorKit } from "doc-editor-core";
 import type { BlockElement } from "doc-editor-delta";
 import { ReactEditor } from "doc-editor-delta";
 import type { AssertT } from "doc-editor-utils";
@@ -13,7 +13,7 @@ import { HIGHLIGHT_BLOCK_KEY } from "../types";
 import { COLOR_MAP } from "../types";
 
 export const HighlightBlockWrapper: FC<{
-  editor: EditorSuite;
+  editor: EditorKit;
   element: BlockElement;
   config: AssertT<BlockElement["highlight-block"]>;
   readonly: boolean;
@@ -21,9 +21,9 @@ export const HighlightBlockWrapper: FC<{
   const { editor, element, config, readonly } = props;
 
   const switchAction = useMemoizedFn((index: number) => {
-    const path = ReactEditor.findPath(editor, element);
+    const path = ReactEditor.findPath(editor.raw, element);
     setBlockNode(
-      editor,
+      editor.raw,
       { [HIGHLIGHT_BLOCK_KEY]: COLOR_MAP[index] },
       { at: path, key: HIGHLIGHT_BLOCK_KEY }
     );

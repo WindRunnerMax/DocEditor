@@ -36,7 +36,7 @@ export class FontBasePlugin extends LeafPlugin {
             left={position.left}
             top={position.top}
             onChange={value => {
-              setTextNode(editor, { [key]: value });
+              setTextNode(editor.raw, { [key]: value });
             }}
           />
         );

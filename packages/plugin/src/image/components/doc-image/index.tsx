@@ -1,5 +1,5 @@
 import { Spin } from "@arco-design/web-react";
-import type { EditorSuite } from "doc-editor-core";
+import type { EditorKit } from "doc-editor-core";
 import type { BlockElement } from "doc-editor-delta";
 
 import { SelectionWrapper } from "../../../shared/components/selection/wrapper";
@@ -9,7 +9,7 @@ import { ImageWrapper } from "../wrapper";
 export const DocImage: React.FC<{
   element: BlockElement;
   readonly: boolean;
-  editor: EditorSuite;
+  editor: EditorKit;
 }> = props => {
   if (!props.element.image) return null;
   const config = props.element.image;

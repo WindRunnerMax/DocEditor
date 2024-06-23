@@ -17,9 +17,9 @@ export class BoldPlugin extends LeafPlugin {
   public onCommand: CommandFn = (editor, key, data) => {
     const marks = data.marks;
     if (marks && marks[key]) {
-      setUnTextNode(editor, [key]);
+      setUnTextNode(editor.raw, [key]);
     } else {
-      setTextNode(editor, { [key]: true });
+      setTextNode(editor.raw, { [key]: true });
     }
   };
 

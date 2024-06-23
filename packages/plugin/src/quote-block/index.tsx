@@ -1,8 +1,9 @@
 import "./index.scss";
 
 import type { BlockContext, CommandFn } from "doc-editor-core";
+import type { EditorKit } from "doc-editor-core";
 import { BlockPlugin, KEY_EVENT } from "doc-editor-core";
-import type { Editor, RenderElementProps } from "doc-editor-delta";
+import type { RenderElementProps } from "doc-editor-delta";
 import { isMatchWrapNode, isObject } from "doc-editor-utils";
 import { getBlockNode } from "doc-editor-utils";
 import { isCollapsed, isFocusLineStart, isMatchedEvent, isWrappedEdgeNode } from "doc-editor-utils";
@@ -15,7 +16,7 @@ import { QUOTE_BLOCK_ITEM_KEY, QUOTE_BLOCK_KEY } from "./types";
 export class QuoteBlockPlugin extends BlockPlugin {
   public key: string = QUOTE_BLOCK_KEY;
 
-  constructor(private editor: Editor) {
+  constructor(private editor: EditorKit) {
     super();
   }
 
@@ -29,13 +30,13 @@ export class QuoteBlockPlugin extends BlockPlugin {
     if (isObject(data) && data.path) {
       if (!editor.reflex.isMatchAboveBlockNode(QUOTE_BLOCK_KEY, data.path)) {
         setWrapNodes(
-          editor,
+          editor.raw,
           { [QUOTE_BLOCK_KEY]: true },
           { [QUOTE_BLOCK_ITEM_KEY]: true },
           { at: data.path }
         );
       } else {
-        setUnWrapNodes(editor, {
+        setUnWrapNodes(editor.raw, {
           at: data.path,
           wrapKey: QUOTE_BLOCK_KEY,
           pairKey: QUOTE_BLOCK_ITEM_KEY,
@@ -52,19 +53,19 @@ export class QuoteBlockPlugin extends BlockPlugin {
     const editor = this.editor;
     if (
       isMatchedEvent(event, KEYBOARD.BACKSPACE, KEYBOARD.ENTER) &&
-      isCollapsed(editor, editor.selection) &&
-      isMatchWrapNode(editor, QUOTE_BLOCK_KEY, QUOTE_BLOCK_ITEM_KEY)
+      isCollapsed(editor.raw, editor.raw.selection) &&
+      isMatchWrapNode(editor.raw, QUOTE_BLOCK_KEY, QUOTE_BLOCK_ITEM_KEY)
     ) {
-      const wrapMatch = getBlockNode(editor, { key: QUOTE_BLOCK_KEY });
-      const itemMatch = getBlockNode(editor, { key: QUOTE_BLOCK_ITEM_KEY });
+      const wrapMatch = getBlockNode(editor.raw, { key: QUOTE_BLOCK_KEY });
+      const itemMatch = getBlockNode(editor.raw, { key: QUOTE_BLOCK_ITEM_KEY });
       if (!itemMatch || !wrapMatch) {
         return void 0;
       }
       if (
-        isFocusLineStart(editor, itemMatch.path) &&
-        isWrappedEdgeNode(editor, "or", { wrapNode: wrapMatch, itemNode: itemMatch })
+        isFocusLineStart(editor.raw, itemMatch.path) &&
+        isWrappedEdgeNode(editor.raw, "or", { wrapNode: wrapMatch, itemNode: itemMatch })
       ) {
-        setUnWrapNodes(editor, { wrapKey: QUOTE_BLOCK_KEY, pairKey: QUOTE_BLOCK_ITEM_KEY });
+        setUnWrapNodes(editor.raw, { wrapKey: QUOTE_BLOCK_KEY, pairKey: QUOTE_BLOCK_ITEM_KEY });
         event.preventDefault();
       }
       return KEY_EVENT.STOP;

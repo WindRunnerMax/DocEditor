@@ -5,7 +5,8 @@ import type {
   BlockContext,
   BlockProps,
   CommandFn,
-  EditorSuite,
+  EditorKit,
+  EditorRaw,
   LeafContext,
   LeafProps,
 } from "doc-editor-core";
@@ -37,10 +38,12 @@ class CodeBlockLeafPlugin extends LeafPlugin {
 }
 
 export class CodeBlockPlugin extends BlockPlugin {
+  private raw: EditorRaw;
   public readonly key: string = CODE_BLOCK_KEY;
 
-  constructor(private editor: EditorSuite, private readonly: boolean) {
+  constructor(private editor: EditorKit, private readonly: boolean) {
     super();
+    this.raw = editor.raw;
     this.WITH_LEAF_PLUGINS = [new CodeBlockLeafPlugin()];
   }
 
@@ -50,12 +53,12 @@ export class CodeBlockPlugin extends BlockPlugin {
     return !!props.element[CODE_BLOCK_KEY];
   }
 
-  public onCommand: CommandFn = (editor, _, { path }) => {
-    const blockPath = path && getClosestBlockPath(editor, path);
+  public onCommand: CommandFn = (_, __, { path }) => {
+    const blockPath = path && getClosestBlockPath(this.raw, path);
     if (!blockPath) return void 0;
-    Transforms.delete(editor, { at: blockPath, unit: "block" });
+    Transforms.delete(this.raw, { at: blockPath, unit: "block" });
     Transforms.insertNodes(
-      editor,
+      this.raw,
       {
         [CODE_BLOCK_KEY]: true,
         [CODE_BLOCK_CONFIG]: { language: DEFAULT_LANGUAGE },
@@ -66,9 +69,9 @@ export class CodeBlockPlugin extends BlockPlugin {
   };
 
   private onLanguageChange = (element: BlockElement, language: string) => {
-    const path = ReactEditor.findPath(this.editor, element);
+    const path = ReactEditor.findPath(this.raw, element);
     setBlockNode(
-      this.editor,
+      this.raw,
       { [CODE_BLOCK_CONFIG]: { language } },
       { at: path, key: CODE_BLOCK_KEY }
     );
@@ -102,18 +105,18 @@ export class CodeBlockPlugin extends BlockPlugin {
   public onDecorate(entry: NodeEntry): BaseRange[] {
     const [node, path] = entry;
     const ranges: Range[] = [];
-    const parent = getParentNode(this.editor, path);
-    if (!isBlock(this.editor, node) || !parent || !parent.node[CODE_BLOCK_KEY]) {
+    const parent = getParentNode(this.raw, path);
+    if (!isBlock(this.raw, node) || !parent || !parent.node[CODE_BLOCK_KEY]) {
       return ranges;
     }
     const textNode = node.children[0];
     if (!isText(textNode)) {
       return ranges;
     }
-    const codeblockNode = getBlockNode(this.editor, { at: path, key: CODE_BLOCK_KEY });
+    const codeblockNode = getBlockNode(this.raw, { at: path, key: CODE_BLOCK_KEY });
     if (codeblockNode) {
       const textPath = [...path, 0];
-      const str = Editor.string(this.editor, path);
+      const str = Editor.string(this.raw, path);
       const language = getLanguage(codeblockNode.block);
       const codeRange = codeTokenize(str, language);
       // TODO: 采取双迭代的方式 取较小值作为`range`

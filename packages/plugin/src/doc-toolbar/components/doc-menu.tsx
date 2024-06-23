@@ -1,7 +1,7 @@
 import "../index.scss";
 
 import { Trigger } from "@arco-design/web-react";
-import type { EditorSuite } from "doc-editor-core";
+import type { EditorKit } from "doc-editor-core";
 import type { Path, RenderElementProps } from "doc-editor-delta";
 import { Transforms } from "doc-editor-delta";
 import { ReactEditor } from "doc-editor-delta";
@@ -17,7 +17,7 @@ import { isEmptyLine, withinIterator } from "../utils/filter";
 import { TriggerMenu } from "./trigger-menu";
 
 export const DocMenu: React.FC<{
-  editor: EditorSuite;
+  editor: EditorKit;
   plugins: DocToolbarPlugin[];
   element: RenderElementProps["element"];
 }> = props => {
@@ -36,7 +36,7 @@ export const DocMenu: React.FC<{
       // 注意即使在非`visible`的状态下也需要查找 否则会导致节点闪烁问题
       // `findPath`不需要遍历所有`Descendant`而是根据两个`WeakMap`查找
       // https://github.com/ianstormtaylor/slate/blob/25be3b/packages/slate-react/src/plugin/react-editor.ts#L100
-      path = ReactEditor.findPath(props.editor, props.element);
+      path = ReactEditor.findPath(props.editor.raw, props.element);
     } catch (error) {
       props.editor.logger.warning("ToolBar FindPath Error", error);
     }
@@ -48,7 +48,7 @@ export const DocMenu: React.FC<{
     let isInReactLive = false;
     let isInHighLightBlock = false;
     let isInTableBlock = false;
-    withinIterator(props.editor, path, node => {
+    withinIterator(props.editor.raw, path, node => {
       if (node[CODE_BLOCK_KEY]) isInCodeBlock = true;
       if (node[REACT_LIVE_KEY]) isInReactLive = true;
       if (node[HIGHLIGHT_BLOCK_KEY]) isInHighLightBlock = true;
@@ -60,7 +60,7 @@ export const DocMenu: React.FC<{
       element: props.element,
       status: {
         isBlock: props.editor.reflex.isBlockNode(props.element),
-        isTextBlock: isTextBlock(props.editor, props.element),
+        isTextBlock: isTextBlock(props.editor.raw, props.element),
         isEmptyLine: isEmptyLine(props.element),
         isInCodeBlock: isInCodeBlock,
         isInReactLive: isInReactLive,
@@ -87,8 +87,8 @@ export const DocMenu: React.FC<{
   }, [props.plugins, state]);
 
   const onSelect = () => {
-    ReactEditor.focus(props.editor);
-    Transforms.select(props.editor, path);
+    ReactEditor.focus(props.editor.raw);
+    Transforms.select(props.editor.raw, path);
     onClose();
   };
 

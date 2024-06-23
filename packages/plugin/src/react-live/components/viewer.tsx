@@ -2,8 +2,9 @@ import "../index.scss";
 
 import { Button, Space, Spin } from "@arco-design/web-react";
 import { useDebounceEffect } from "ahooks";
+import type { EditorKit } from "doc-editor-core";
 import { Void } from "doc-editor-core";
-import type { BlockElement, Editor } from "doc-editor-delta";
+import type { BlockElement } from "doc-editor-delta";
 import type { FC } from "react";
 import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
@@ -13,11 +14,11 @@ import { collectText } from "../utils/parse";
 
 export const ReactLiveView: FC<{
   element: BlockElement;
-  editor: Editor;
+  editor: EditorKit;
 }> = props => {
   const ref = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(true);
-  const code = collectText(props.editor, props.element);
+  const code = collectText(props.editor.raw, props.element);
 
   useDebounceEffect(
     () => {

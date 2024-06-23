@@ -1,10 +1,10 @@
 import "./index.scss";
 
 import type { BlockContext, CommandFn, LeafContext } from "doc-editor-core";
+import type { EditorKit } from "doc-editor-core";
 import { BlockPlugin, LeafPlugin } from "doc-editor-core";
 import type {
   BaseRange,
-  Editor,
   NodeEntry,
   Range,
   RenderElementProps,
@@ -35,7 +35,7 @@ class ReactLiveLeafPlugin extends LeafPlugin {
 export class ReactLivePlugin extends BlockPlugin {
   public key: string = REACT_LIVE_KEY;
 
-  constructor(private editor: Editor) {
+  constructor(private editor: EditorKit) {
     super();
     this.WITH_LEAF_PLUGINS = [new ReactLiveLeafPlugin()];
   }
@@ -47,12 +47,12 @@ export class ReactLivePlugin extends BlockPlugin {
   }
 
   public onCommand: CommandFn = (editor, _, { path }) => {
-    const blockPath = path && getClosestBlockPath(editor, path);
+    const blockPath = path && getClosestBlockPath(editor.raw, path);
     if (!blockPath) return void 0;
     // 删除当前行的块内容 等待节点的插入
-    Transforms.delete(editor, { at: blockPath, unit: "block" });
+    Transforms.delete(editor.raw, { at: blockPath, unit: "block" });
     Transforms.insertNodes(
-      editor,
+      editor.raw,
       {
         [REACT_LIVE_KEY]: true,
         children: [
@@ -76,9 +76,9 @@ export class ReactLivePlugin extends BlockPlugin {
 
   public onDecorate(entry: NodeEntry): BaseRange[] {
     const [node, path] = entry;
-    const parent = getParentNode(this.editor, path);
-    if (parent && isBlock(this.editor, node) && parent.node[REACT_LIVE_KEY]) {
-      const str = collectReactLiveText(this.editor, node, path);
+    const parent = getParentNode(this.editor.raw, path);
+    if (parent && isBlock(this.editor.raw, node) && parent.node[REACT_LIVE_KEY]) {
+      const str = collectReactLiveText(this.editor.raw, node, path);
       if (!str) return [];
       const textPath = [...path, 0];
       const codeRange = codeTokenize(str);

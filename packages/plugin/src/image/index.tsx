@@ -1,6 +1,6 @@
 import "./index.scss";
 
-import type { BlockContext, EditorSuite } from "doc-editor-core";
+import type { BlockContext, EditorKit } from "doc-editor-core";
 import type { CommandFn } from "doc-editor-core";
 import { BlockPlugin } from "doc-editor-core";
 import type { RenderElementProps } from "doc-editor-delta";
@@ -17,7 +17,7 @@ export class ImagePlugin extends BlockPlugin {
   private IMAGE_INPUT_DOM_ID = "doc-image-upload-input";
 
   constructor(
-    private editor: EditorSuite,
+    private editor: EditorKit,
     private readonly: boolean,
     private uploadHandler = uploadImageHandler
   ) {
@@ -36,15 +36,15 @@ export class ImagePlugin extends BlockPlugin {
       const blobSRC = window.URL.createObjectURL(file);
       const uuid = getUniqueId();
       // 基于`selection`的`path`处理图片位置
-      const selection = this.editor.selection;
+      const selection = this.editor.raw.selection;
       if (!selection || !Range.isCollapsed(selection)) return void 0;
       const at = selection.anchor.path;
-      const path = getClosestBlockPath(editor, at);
+      const path = getClosestBlockPath(editor.raw, at);
       if (!path) return void 0;
       // 异步上传 需要处理`Path Transform`
-      const pathRef = Editor.pathRef(editor, path);
+      const pathRef = Editor.pathRef(editor.raw, path);
       Transforms.setNodes(
-        this.editor,
+        this.editor.raw,
         {
           uuid,
           [IMAGE_KEY]: { src: blobSRC, status: IMAGE_STATUS.LOADING },
@@ -56,9 +56,9 @@ export class ImagePlugin extends BlockPlugin {
         .then(res => {
           const path = pathRef.unref();
           if (!path) return void 0;
-          HistoryEditor.withoutSaving(editor, () => {
+          HistoryEditor.withoutSaving(editor.raw, () => {
             Transforms.setNodes(
-              editor,
+              editor.raw,
               {
                 [IMAGE_KEY]: {
                   src: res.src,
@@ -74,9 +74,9 @@ export class ImagePlugin extends BlockPlugin {
         .catch(() => {
           const path = pathRef.unref();
           if (!path) return void 0;
-          HistoryEditor.withoutSaving(editor, () => {
+          HistoryEditor.withoutSaving(editor.raw, () => {
             Transforms.setNodes(
-              editor,
+              editor.raw,
               { [IMAGE_KEY]: { src: void 0, status: IMAGE_STATUS.FAIL } },
               { at: path }
             );
@@ -99,7 +99,7 @@ export class ImagePlugin extends BlockPlugin {
       const files = target.files;
       focusSelection(editor, data?.path);
       files && this.uploadImage(files);
-      Transforms.insertNodes(editor, { children: [{ text: "" }] });
+      Transforms.insertNodes(editor.raw, { children: [{ text: "" }] });
     };
     imageInput.click();
   };

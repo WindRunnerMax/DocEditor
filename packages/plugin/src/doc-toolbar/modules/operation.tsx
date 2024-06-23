@@ -31,8 +31,8 @@ export const OperationDocToolBarPlugin: DocToolbarPlugin = {
         return fragment
           .map(item => {
             if (isText(item)) return EditorNode.string(item);
-            else if (isTextBlock(editor, item)) return parseText(item.children) + "\n";
-            else if (isBlock(editor, item)) return parseText(item.children);
+            else if (isTextBlock(editor.raw, item)) return parseText(item.children) + "\n";
+            else if (isBlock(editor.raw, item)) return parseText(item.children);
             else return "";
           })
           .join("");
@@ -42,7 +42,7 @@ export const OperationDocToolBarPlugin: DocToolbarPlugin = {
       state.close();
     };
     const onDelete = () => {
-      Transforms.delete(state.editor, { at: state.path, unit: "block" });
+      Transforms.delete(state.editor.raw, { at: state.path, unit: "block" });
       state.close();
     };
     const onCut = () => {

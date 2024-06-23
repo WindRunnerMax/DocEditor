@@ -1,9 +1,9 @@
-import type { EditorSuite } from "../editor/types";
+import type { EditorKit } from "../editor/";
 import type { StateKey, StateMap } from "./types";
 
 export class State {
   private _state: Partial<StateMap>;
-  constructor(private editor: EditorSuite) {
+  constructor(private editor: EditorKit) {
     this._state = {};
   }
 

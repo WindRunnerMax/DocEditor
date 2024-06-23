@@ -1,6 +1,6 @@
 import "./index.scss";
 
-import type { BlockContext, EditorSuite } from "doc-editor-core";
+import type { BlockContext, EditorKit } from "doc-editor-core";
 import type { CommandFn } from "doc-editor-core";
 import { BlockPlugin } from "doc-editor-core";
 import type { RenderElementProps } from "doc-editor-delta";
@@ -13,7 +13,7 @@ import { FLOW_CHART_KEY } from "./types";
 export class FlowChartPlugin extends BlockPlugin {
   public key: string = FLOW_CHART_KEY;
 
-  constructor(private editor: EditorSuite, private readonly: boolean) {
+  constructor(private editor: EditorKit, private readonly: boolean) {
     super();
   }
 
@@ -25,7 +25,7 @@ export class FlowChartPlugin extends BlockPlugin {
 
   public onCommand: CommandFn = editor => {
     const uuid = getUniqueId();
-    setBlockNode(editor, {
+    setBlockNode(editor.raw, {
       uuid,
       [FLOW_CHART_KEY]: { type: "xml" as const, content: "" },
       children: [{ text: "" }],

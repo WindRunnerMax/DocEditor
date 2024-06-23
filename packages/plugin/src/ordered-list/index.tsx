@@ -1,8 +1,9 @@
 import "./index.scss";
 
 import type { BlockContext, CommandFn } from "doc-editor-core";
+import type { EditorKit } from "doc-editor-core";
 import { BlockPlugin, KEY_EVENT } from "doc-editor-core";
-import type { Editor, RenderElementProps } from "doc-editor-delta";
+import type { RenderElementProps } from "doc-editor-delta";
 import { Transforms } from "doc-editor-delta";
 import { assertValue, isMatchWrapNode } from "doc-editor-utils";
 import { isObject } from "doc-editor-utils";
@@ -18,7 +19,7 @@ import { calcNextOrderListLevels, calcOrderListLevels } from "./utils/serial";
 export class OrderedListPlugin extends BlockPlugin {
   public key: string = ORDERED_LIST_KEY;
 
-  constructor(private editor: Editor) {
+  constructor(private editor: EditorKit) {
     super();
   }
 
@@ -34,18 +35,18 @@ export class OrderedListPlugin extends BlockPlugin {
     if (isObject(data) && data.path) {
       if (!editor.reflex.isMatchAboveBlockNode(ORDERED_LIST_KEY, data.path)) {
         setWrapNodes(
-          editor,
+          editor.raw,
           { [ORDERED_LIST_KEY]: true },
           { [ORDERED_LIST_ITEM_KEY]: { start: 1, level: 1 } },
           { at: data.path }
         );
       } else {
-        setUnWrapNodes(editor, {
+        setUnWrapNodes(editor.raw, {
           at: data.path,
           wrapKey: ORDERED_LIST_KEY,
           pairKey: ORDERED_LIST_ITEM_KEY,
         });
-        calcNextOrderListLevels(editor);
+        calcNextOrderListLevels(editor.raw);
       }
     }
   };
@@ -67,11 +68,11 @@ export class OrderedListPlugin extends BlockPlugin {
     const editor = this.editor;
     if (
       isMatchedEvent(event, KEYBOARD.BACKSPACE, KEYBOARD.ENTER, KEYBOARD.TAB) &&
-      isCollapsed(editor, editor.selection) &&
-      isMatchWrapNode(editor, ORDERED_LIST_KEY, ORDERED_LIST_ITEM_KEY)
+      isCollapsed(editor.raw, editor.raw.selection) &&
+      isMatchWrapNode(editor.raw, ORDERED_LIST_KEY, ORDERED_LIST_ITEM_KEY)
     ) {
-      const wrapMatch = getBlockNode(editor, { key: ORDERED_LIST_KEY });
-      const itemMatch = getBlockNode(editor, { key: ORDERED_LIST_ITEM_KEY });
+      const wrapMatch = getBlockNode(editor.raw, { key: ORDERED_LIST_KEY });
+      const itemMatch = getBlockNode(editor.raw, { key: ORDERED_LIST_ITEM_KEY });
       if (!itemMatch || !wrapMatch) {
         return void 0;
       }
@@ -80,39 +81,42 @@ export class OrderedListPlugin extends BlockPlugin {
       if (event.key === KEYBOARD.TAB) {
         if (level < 3) {
           setBlockNode(
-            editor,
+            editor.raw,
             { [ORDERED_LIST_ITEM_KEY]: { start, level: level + 1 } },
             { node: itemMatch.block }
           );
         }
-        calcOrderListLevels(editor);
+        calcOrderListLevels(editor.raw);
         event.preventDefault();
         return KEY_EVENT.STOP;
       }
 
       // 相当于匹配`Enter`和`Backspace`的情况下
       // 实际上需要严格匹配
-      if (isFocusLineStart(editor, itemMatch.path)) {
+      if (isFocusLineStart(editor.raw, itemMatch.path)) {
         if (level > 1) {
           setBlockNode(
-            editor,
+            editor.raw,
             { [ORDERED_LIST_ITEM_KEY]: { start, level: level - 1 } },
             { node: itemMatch.block }
           );
-          calcOrderListLevels(editor);
+          calcOrderListLevels(editor.raw);
           event.preventDefault();
           return KEY_EVENT.STOP;
         } else {
-          if (!isWrappedEdgeNode(editor, "or", { wrapNode: wrapMatch, itemNode: itemMatch })) {
+          if (!isWrappedEdgeNode(editor.raw, "or", { wrapNode: wrapMatch, itemNode: itemMatch })) {
             if (isMatchedEvent(event, KEYBOARD.BACKSPACE)) {
-              editor.deleteBackward("block");
-              calcOrderListLevels(editor);
+              editor.raw.deleteBackward("block");
+              calcOrderListLevels(editor.raw);
               event.preventDefault();
               return KEY_EVENT.STOP;
             }
           } else {
-            setUnWrapNodes(editor, { wrapKey: ORDERED_LIST_KEY, pairKey: ORDERED_LIST_ITEM_KEY });
-            calcNextOrderListLevels(editor);
+            setUnWrapNodes(editor.raw, {
+              wrapKey: ORDERED_LIST_KEY,
+              pairKey: ORDERED_LIST_ITEM_KEY,
+            });
+            calcNextOrderListLevels(editor.raw);
             event.preventDefault();
             return KEY_EVENT.STOP;
           }
@@ -120,8 +124,8 @@ export class OrderedListPlugin extends BlockPlugin {
       }
 
       if (event.key === KEYBOARD.ENTER) {
-        Transforms.splitNodes(editor, { always: true });
-        calcOrderListLevels(editor);
+        Transforms.splitNodes(editor.raw, { always: true });
+        calcOrderListLevels(editor.raw);
         event.preventDefault();
       }
       return KEY_EVENT.STOP;

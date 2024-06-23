@@ -1,13 +1,16 @@
 import { Editor, HistoryEditor } from "doc-editor-delta";
 
-import type { EditorSuite } from "../editor/types";
+import type { EditorKit } from "../editor/";
+import type { EditorRaw } from "../editor/types";
 import { EDITOR_EVENT } from "../event/bus/action";
 import type { ContentChangeEvent, ContentOperation } from "../event/types/bus";
 
 export class Track {
+  private raw: EditorRaw;
   private isBatching: boolean;
   private batchFlat: ContentOperation[];
-  constructor(private editor: EditorSuite) {
+  constructor(private editor: EditorKit) {
+    this.raw = editor.raw;
     this.batchFlat = [];
     this.isBatching = false;
     this.editor.event.on(EDITOR_EVENT.CONTENT_CHANGE, this.onApply);
@@ -31,11 +34,11 @@ export class Track {
     //   Batch End
     // Batch End
     this.isBatching = true;
-    Editor.withoutNormalizing(this.editor, () => {
-      HistoryEditor.withoutSaving(this.editor, fn);
+    Editor.withoutNormalizing(this.raw, () => {
+      HistoryEditor.withoutSaving(this.raw, fn);
     });
     this.isBatching = false;
-    this.editor.history.undos.push([...this.batchFlat]);
+    this.raw.history.undos.push([...this.batchFlat]);
     this.batchFlat = [];
   };
 }

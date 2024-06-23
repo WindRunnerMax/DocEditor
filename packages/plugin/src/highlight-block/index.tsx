@@ -1,6 +1,6 @@
 import "./index.scss";
 
-import type { BlockContext, CommandFn, EditorSuite } from "doc-editor-core";
+import type { BlockContext, CommandFn, EditorKit } from "doc-editor-core";
 import { BlockPlugin } from "doc-editor-core";
 import type { RenderElementProps } from "doc-editor-delta";
 import { Transforms } from "doc-editor-delta";
@@ -12,7 +12,7 @@ import { COLOR_MAP, HIGHLIGHT_BLOCK_KEY } from "./types";
 export class HighlightBlockPlugin extends BlockPlugin {
   public key: string = HIGHLIGHT_BLOCK_KEY;
 
-  constructor(private editor: EditorSuite, private readonly: boolean) {
+  constructor(private editor: EditorKit, private readonly: boolean) {
     super();
   }
 
@@ -23,11 +23,11 @@ export class HighlightBlockPlugin extends BlockPlugin {
   }
 
   public onCommand: CommandFn = (editor, _, { path }) => {
-    const blockPath = path && getClosestBlockPath(editor, path);
+    const blockPath = path && getClosestBlockPath(editor.raw, path);
     if (!blockPath) return void 0;
-    Transforms.delete(editor, { at: blockPath, unit: "block" });
+    Transforms.delete(editor.raw, { at: blockPath, unit: "block" });
     Transforms.insertNodes(
-      editor,
+      editor.raw,
       {
         [HIGHLIGHT_BLOCK_KEY]: {
           border: COLOR_MAP[0].border,

@@ -1,4 +1,4 @@
-import type { BlockContext, EditorSuite } from "doc-editor-core";
+import type { BlockContext, EditorKit } from "doc-editor-core";
 import { EDITOR_STATE } from "doc-editor-core";
 import type { SetNodeOperation } from "doc-editor-delta";
 import { HistoryEditor, Transforms } from "doc-editor-delta";
@@ -19,7 +19,7 @@ import {
 } from "../types";
 
 export const Cell: FC<{
-  editor: EditorSuite;
+  editor: EditorKit;
   readonly: boolean;
   context: BlockContext;
 }> = props => {
@@ -32,9 +32,9 @@ export const Cell: FC<{
   const onResizeMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
     document.body.style.cursor = "col-resize";
-    const path = findNodePath(props.editor, context.element);
-    const tr = path && getNodeTupleByDepth(props.editor, path, 1);
-    const table = path && getNodeTupleByDepth(props.editor, path, 2);
+    const path = findNodePath(props.editor.raw, context.element);
+    const tr = path && getNodeTupleByDepth(props.editor.raw, path, 1);
+    const table = path && getNodeTupleByDepth(props.editor.raw, path, 2);
     if (
       !tr ||
       !tr.node[TABLE_ROW_BLOCK_KEY] ||
@@ -58,8 +58,12 @@ export const Cell: FC<{
       const newWidth = Math.max(originWidth + diff, MIN_CELL_WIDTH);
       const newColWidths = [...colWidths];
       newColWidths[index] = newWidth;
-      HistoryEditor.withoutSaving(props.editor, () => {
-        Transforms.setNodes(props.editor, { [TABLE_COL_WIDTHS]: newColWidths }, { at: table.path });
+      HistoryEditor.withoutSaving(props.editor.raw, () => {
+        Transforms.setNodes(
+          props.editor.raw,
+          { [TABLE_COL_WIDTHS]: newColWidths },
+          { at: table.path }
+        );
       });
       event.stopPropagation();
     }, 16);
@@ -77,7 +81,7 @@ export const Cell: FC<{
         properties: { [TABLE_COL_WIDTHS]: [...colWidths] },
         newProperties: { [TABLE_COL_WIDTHS]: [...newColWidths] },
       };
-      props.editor.history.undos.push([op]);
+      props.editor.raw.history.undos.push([op]);
       document.body.style.cursor = "";
       document.removeEventListener(EVENT_ENUM.MOUSE_MOVE, onMouseMove);
       document.removeEventListener(EVENT_ENUM.MOUSE_UP, onMouseUp);

@@ -1,10 +1,14 @@
 import type { BaseNode, Location, Node } from "doc-editor-delta";
 import { Editor } from "doc-editor-delta";
 
-import type { EditorSuite } from "../editor/types";
+import type { EditorKit } from "../editor/";
+import type { EditorRaw } from "../editor/types";
 
 export class Reflex {
-  constructor(private editor: EditorSuite) {}
+  private raw: EditorRaw;
+  constructor(private editor: EditorKit) {
+    this.raw = editor.raw;
+  }
 
   /**
    * `Schema`所属块节点
@@ -54,7 +58,7 @@ export class Reflex {
    * @description 注意与`utils`的`isBlockNode`区分
    */
   public isInstanceNode = (node: Node): boolean => {
-    if (node === this.editor) return true;
+    if (node === this.raw) return true;
     const keys = Object.keys(node);
     return keys.some(key => this.editor.schema.instance.has(key));
   };
@@ -64,17 +68,18 @@ export class Reflex {
    * @param key string
    * @param at? Location
    * @returns boolean
+   * @description 用于检查当前`Path`到`Instance`是否有节点匹配`key`值
    */
   public isMatchAboveBlockNode = (key: string, at?: Location): boolean => {
-    const location = at || this.editor.selection;
+    const location = at || this.raw.selection;
     if (!location) return false;
-    const path = [...Editor.path(this.editor, location)];
+    const path = [...Editor.path(this.raw, location)];
     while (path.length) {
-      const tuple = Editor.node(this.editor, path);
+      const tuple = Editor.node(this.raw, path);
       if (!tuple) return false;
       const [node] = tuple;
       if (this.isInstanceNode(node)) return false;
-      if (Editor.isBlock(this.editor, node) && node[key]) {
+      if (Editor.isBlock(this.raw, node) && node[key]) {
         return true;
       }
       path.pop();

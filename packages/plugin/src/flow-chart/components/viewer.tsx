@@ -1,6 +1,6 @@
 import { Button, Empty, Spin, Trigger } from "@arco-design/web-react";
 import { IconDownload, IconEdit, IconPalette } from "@arco-design/web-react/icon";
-import type { EditorSuite } from "doc-editor-core";
+import type { EditorKit } from "doc-editor-core";
 import type { BlockElement } from "doc-editor-delta";
 import { ReactEditor } from "doc-editor-delta";
 import { setBlockNode } from "doc-editor-utils";
@@ -16,7 +16,7 @@ import { PreviewWrapper } from "./preview";
 export const DocFLowChart: React.FC<{
   element: BlockElement;
   readonly: boolean;
-  editor: EditorSuite;
+  editor: EditorKit;
   config: Required<BlockElement>[typeof FLOW_CHART_KEY];
 }> = props => {
   const container = useRef<HTMLDivElement | null>(null);
@@ -47,9 +47,9 @@ export const DocFLowChart: React.FC<{
     diagramEditor("zh", props.config.content, (xml: Node) => {
       const str = xmlToString(xml);
       if (str) {
-        const path = ReactEditor.findPath(props.editor, props.element);
+        const path = ReactEditor.findPath(props.editor.raw, props.element);
         setBlockNode(
-          props.editor,
+          props.editor.raw,
           { [FLOW_CHART_KEY]: { type: "xml", content: str } },
           { at: path, key: FLOW_CHART_KEY }
         );

@@ -15,8 +15,8 @@ export class AlignPlugin extends BlockPlugin {
   public destroy(): void {}
 
   public onCommand: CommandFn = (editor, key, data) => {
-    if (isObject(data) && !isMatchedAttributeNode(editor, ALIGN_KEY, data.extraKey)) {
-      setBlockNode(editor, { [key]: data.extraKey });
+    if (isObject(data) && !isMatchedAttributeNode(editor.raw, ALIGN_KEY, data.extraKey)) {
+      setBlockNode(editor.raw, { [key]: data.extraKey });
     }
   };
 

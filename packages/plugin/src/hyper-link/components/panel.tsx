@@ -1,5 +1,5 @@
 import { Trigger } from "@arco-design/web-react";
-import type { EditorSuite } from "doc-editor-core";
+import type { EditorKit } from "doc-editor-core";
 import type { TextElement } from "doc-editor-delta";
 import { findNodePath, isCollapsed, setTextNode, setUnTextNode } from "doc-editor-utils";
 import React, { useState } from "react";
@@ -11,7 +11,7 @@ import { HyperLinkMenu } from "./menu";
 export const HyperLinkEditor: React.FC<{
   config: HyperLinkConfig;
   element: TextElement;
-  editor: EditorSuite;
+  editor: EditorKit;
 }> = props => {
   const { config } = props;
   const editor = props.editor;
@@ -24,18 +24,18 @@ export const HyperLinkEditor: React.FC<{
   const onConfirm = (value: HyperLinkConfig) => {
     const config = value;
     setVisible(false);
-    const path = findNodePath(editor, props.element);
-    path && setTextNode(editor, { [HYPER_LINK_KEY]: config }, { at: path });
+    const path = findNodePath(editor.raw, props.element);
+    path && setTextNode(editor.raw, { [HYPER_LINK_KEY]: config }, { at: path });
   };
 
   const onCancel = () => {
     setVisible(false);
-    const path = findNodePath(editor, props.element);
-    path && setUnTextNode(editor, [HYPER_LINK_KEY], { at: path });
+    const path = findNodePath(editor.raw, props.element);
+    path && setUnTextNode(editor.raw, [HYPER_LINK_KEY], { at: path });
   };
 
   const onVisibleChange = (visible: boolean) => {
-    if ((visible && isCollapsed(editor)) || !visible) {
+    if ((visible && isCollapsed(editor.raw)) || !visible) {
       setVisible(visible);
     }
   };

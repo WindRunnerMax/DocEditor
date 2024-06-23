@@ -21,9 +21,9 @@ export class ParagraphPlugin extends BlockPlugin {
   public onCommand: CommandFn = (editor, Key, data) => {
     const element = data.element;
     const path = data.path;
-    if (!element || !path || !isBlock(editor, element)) return void 0;
+    if (!element || !path || !isBlock(editor.raw, element)) return void 0;
     const attributes = getBlockAttributes(element);
-    setUnBlockNode(editor, Object.keys(attributes), { at: path });
+    setUnBlockNode(editor.raw, Object.keys(attributes), { at: path });
   };
 
   public renderLine(context: BlockContext): JSX.Element {

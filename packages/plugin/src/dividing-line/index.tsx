@@ -23,7 +23,7 @@ export class DividingLinePlugin extends BlockPlugin {
   }
 
   public onCommand?: CommandFn = (editor, key) => {
-    Transforms.insertNodes(editor, { [key]: true, children: [{ text: "" }] });
-    Transforms.insertNodes(editor, { children: [{ text: "" }] });
+    Transforms.insertNodes(editor.raw, { [key]: true, children: [{ text: "" }] });
+    Transforms.insertNodes(editor.raw, { children: [{ text: "" }] });
   };
 }

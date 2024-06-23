@@ -1,9 +1,9 @@
-import type { EditorSuite } from "../editor/types";
+import type { EditorKit } from "../editor";
 import type { CommandFn, CommandPayload, EditorCommands } from "./types";
 
 export class Command {
   private commands: EditorCommands = {};
-  constructor(private editor: EditorSuite) {}
+  constructor(private editor: EditorKit) {}
 
   get() {
     return this.commands;

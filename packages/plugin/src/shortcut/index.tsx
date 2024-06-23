@@ -1,4 +1,4 @@
-import type { EditorSuite } from "doc-editor-core";
+import type { EditorKit } from "doc-editor-core";
 import { BlockPlugin } from "doc-editor-core";
 import { Editor, Transforms } from "doc-editor-delta";
 import { getBlockNode } from "doc-editor-utils";
@@ -28,7 +28,7 @@ export class ShortCutPlugin extends BlockPlugin {
   public key: string = SHORTCUT_KEY;
   public priority: number = 50;
 
-  constructor(private editor: EditorSuite) {
+  constructor(private editor: EditorKit) {
     super();
   }
 
@@ -40,18 +40,18 @@ export class ShortCutPlugin extends BlockPlugin {
 
   public onKeyDown(event: KeyboardEvent<HTMLDivElement>): boolean | void {
     const editor = this.editor;
-    if (isMatchedEvent(event, KEYBOARD.SPACE) && isCollapsed(editor, editor.selection)) {
-      const match = getBlockNode(editor);
+    if (isMatchedEvent(event, KEYBOARD.SPACE) && isCollapsed(editor.raw, editor.raw.selection)) {
+      const match = getBlockNode(editor.raw);
       if (match) {
-        const { anchor } = editor.selection;
+        const { anchor } = editor.raw.selection;
         const { path } = match;
-        const start = Editor.start(editor, path);
+        const start = Editor.start(editor.raw, path);
         const range = { anchor, focus: start };
-        const beforeText = Editor.string(editor, range);
+        const beforeText = Editor.string(editor.raw, range);
         const param = SHORTCUTS[beforeText.trim()];
         if (param) {
-          Transforms.select(editor, range);
-          Transforms.delete(editor);
+          Transforms.select(editor.raw, range);
+          Transforms.delete(editor.raw);
           const [key, data] = param.split(".");
           editor.command.exec(key, { extraKey: data, path });
           event.preventDefault();

@@ -1,5 +1,5 @@
 import { Button } from "@arco-design/web-react";
-import type { EditorSuite } from "doc-editor-core";
+import type { EditorKit } from "doc-editor-core";
 import type { BlockElement } from "doc-editor-delta";
 import { Editor, Transforms } from "doc-editor-delta";
 import { findNodePath } from "doc-editor-utils";
@@ -16,7 +16,7 @@ import type { TableSelection } from "../types/interface";
 export const PinToolbar: FC<{
   sel: Exclude<TableSelection, null>;
   provider: TableContext["ref"];
-  editor: EditorSuite;
+  editor: EditorKit;
 }> = props => {
   const { editor, provider, sel } = props;
   const { element, widths } = provider;
@@ -25,12 +25,12 @@ export const PinToolbar: FC<{
   const [endRow, endCol] = sel.end;
 
   const { isMergeAble, isSplitAble } = useMemo(() => {
-    const path = findNodePath(editor, element);
+    const path = findNodePath(editor.raw, element);
     if (!path) {
       return { isMergeAble: false, isSplitAble: false };
     }
     const firstNodePath = path.concat(startRow, startCol);
-    const tuple = Editor.node(editor, firstNodePath);
+    const tuple = Editor.node(editor.raw, firstNodePath);
     if (!tuple || !tuple[0]) {
       return { isMergeAble: false, isSplitAble: false };
     }
@@ -51,7 +51,7 @@ export const PinToolbar: FC<{
   }, [editor, element, endCol, endRow, startCol, startRow]);
 
   const onMerge = () => {
-    const path = findNodePath(editor, element);
+    const path = findNodePath(editor.raw, element);
     if (!path) return void 0;
     editor.track.batch(() => {
       const rowSpan = endRow - startRow + 1;
@@ -61,14 +61,18 @@ export const PinToolbar: FC<{
           if (i === startRow && k === startCol) {
             const target = path.concat(i, k);
             Transforms.setNodes(
-              editor,
+              editor.raw,
               { [CELL_ROW_SPAN]: rowSpan, [CELL_COL_SPAN]: colSpan },
               { at: target }
             );
             continue;
           }
           const target = path.concat(i, k);
-          Transforms.setNodes(editor, { [CELL_ROW_SPAN]: 0, [CELL_COL_SPAN]: 0 }, { at: target });
+          Transforms.setNodes(
+            editor.raw,
+            { [CELL_ROW_SPAN]: 0, [CELL_COL_SPAN]: 0 },
+            { at: target }
+          );
         }
       }
     });
@@ -76,13 +80,17 @@ export const PinToolbar: FC<{
   };
 
   const onSplit = () => {
-    const path = findNodePath(editor, element);
+    const path = findNodePath(editor.raw, element);
     if (!path) return void 0;
     editor.track.batch(() => {
       for (let i = startRow; i <= endRow; i++) {
         for (let k = startCol; k <= endCol; k++) {
           const target = path.concat(i, k);
-          Transforms.setNodes(editor, { [CELL_ROW_SPAN]: 1, [CELL_COL_SPAN]: 1 }, { at: target });
+          Transforms.setNodes(
+            editor.raw,
+            { [CELL_ROW_SPAN]: 1, [CELL_COL_SPAN]: 1 },
+            { at: target }
+          );
         }
       }
     });

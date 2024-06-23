@@ -1,6 +1,6 @@
 import { Button, Trigger } from "@arco-design/web-react";
 import { IconDelete, IconPlus } from "@arco-design/web-react/icon";
-import type { EditorSuite } from "doc-editor-core";
+import type { EditorKit } from "doc-editor-core";
 import type { BlockElement } from "doc-editor-delta";
 import { Editor, Transforms } from "doc-editor-delta";
 import { cs, findNodePath } from "doc-editor-utils";
@@ -12,7 +12,7 @@ import { CELL_COL_SPAN, CELL_ROW_SPAN, TABLE_CELL_BLOCK_KEY, TABLE_ROW_BLOCK_KEY
 
 export const RowToolBar: FC<{
   provider: TableContext["ref"];
-  editor: EditorSuite;
+  editor: EditorKit;
   heights: number[];
   isFocusIn: boolean;
 }> = props => {
@@ -23,7 +23,7 @@ export const RowToolBar: FC<{
 
   const onInsert = () => {
     if (indexRef.current < 0) return void 0;
-    const path = findNodePath(editor, element);
+    const path = findNodePath(editor.raw, element);
     if (!path) return void 0;
     const rowIndex = indexRef.current;
     const targetRowIndex = indexRef.current + 1;
@@ -33,10 +33,10 @@ export const RowToolBar: FC<{
         // NOTE: 获取到周围两个节点 判断其合并状态
         const topIndex = rowIndex;
         const topPath = path.concat([topIndex, colIndex]);
-        const topTuple = topIndex >= 0 && Editor.node(editor, topPath);
+        const topTuple = topIndex >= 0 && Editor.node(editor.raw, topPath);
         const bottomIndex = rowIndex + 1;
         const bottomPath = path.concat([bottomIndex, colIndex]);
-        const bottomTuple = bottomIndex < size.rows && Editor.node(editor, bottomPath);
+        const bottomTuple = bottomIndex < size.rows && Editor.node(editor.raw, bottomPath);
         if (!topTuple || !bottomTuple || !topTuple[0] || !bottomTuple[0]) return 1;
         const topNode = topTuple[0] as BlockElement;
         const bottomNode = bottomTuple[0] as BlockElement;
@@ -46,13 +46,17 @@ export const RowToolBar: FC<{
         if (topColSpan !== 1 && bottomColSpan !== 1) {
           for (let i = rowIndex; i >= 0; i--) {
             const cellPath = path.concat([i, colIndex]);
-            const tuple = Editor.node(editor, cellPath);
+            const tuple = Editor.node(editor.raw, cellPath);
             if (!tuple || !tuple[0]) continue;
             const targetNode = tuple[0] as BlockElement;
             const targetRowSpan = targetNode[CELL_ROW_SPAN] ?? 1;
             if (targetRowSpan <= 1) continue;
             // NOTE: 将单元格合并的单元格数据增加
-            Transforms.setNodes(editor, { [CELL_ROW_SPAN]: targetRowSpan + 1 }, { at: cellPath });
+            Transforms.setNodes(
+              editor.raw,
+              { [CELL_ROW_SPAN]: targetRowSpan + 1 },
+              { at: cellPath }
+            );
             break;
           }
           return 0;
@@ -60,7 +64,7 @@ export const RowToolBar: FC<{
         return 1;
       });
       Transforms.insertNodes(
-        editor,
+        editor.raw,
         {
           [TABLE_ROW_BLOCK_KEY]: true,
           children: rowSpans.map(rowSpan => ({
@@ -78,14 +82,14 @@ export const RowToolBar: FC<{
 
   const onDelete = () => {
     if (indexRef.current < 0) return void 0;
-    const path = findNodePath(editor, element);
+    const path = findNodePath(editor.raw, element);
     if (!path) return void 0;
     const targetRowIndex = indexRef.current;
     const targetPath = path.concat([targetRowIndex]);
     editor.track.batch(() => {
       for (let i = 0; i < size.cols; i++) {
         const cellPath = targetPath.concat([i]);
-        const tuple = Editor.node(editor, cellPath);
+        const tuple = Editor.node(editor.raw, cellPath);
         if (!tuple || !tuple[0]) return void 0;
         const node = tuple[0] as BlockElement;
         const rowSpan = node[CELL_ROW_SPAN] ?? 1;
@@ -94,13 +98,17 @@ export const RowToolBar: FC<{
         if (rowSpan === 0) {
           for (let k = targetRowIndex - 1; k >= 0; k--) {
             const cellPath = path.concat([k, i]);
-            const tuple = Editor.node(editor, cellPath);
+            const tuple = Editor.node(editor.raw, cellPath);
             if (!tuple || !tuple[0]) continue;
             const targetNode = tuple[0] as BlockElement;
             const targetRowSpan = targetNode[CELL_ROW_SPAN] ?? 1;
             if (targetRowSpan <= 1) continue;
             // NOTE: 将单元格合并的单元格数据减小
-            Transforms.setNodes(editor, { [CELL_ROW_SPAN]: targetRowSpan - 1 }, { at: cellPath });
+            Transforms.setNodes(
+              editor.raw,
+              { [CELL_ROW_SPAN]: targetRowSpan - 1 },
+              { at: cellPath }
+            );
             break;
           }
         }
@@ -111,13 +119,13 @@ export const RowToolBar: FC<{
           const targetPath = path.concat([bottomIndex, i]);
           // NOTE: 将数据减小并带到下放单元格 并且需要恢复`COL_SPAN`状态
           Transforms.setNodes(
-            editor,
+            editor.raw,
             { [CELL_ROW_SPAN]: rowSpan - 1, [CELL_COL_SPAN]: 1 },
             { at: targetPath }
           );
         }
       }
-      Transforms.delete(editor, { at: targetPath });
+      Transforms.delete(editor.raw, { at: targetPath });
     });
     indexRef.current = -1;
     setVisible(Array(heights.length).fill(false));
@@ -138,7 +146,7 @@ export const RowToolBar: FC<{
 
   const onClick = (index: number) => {
     indexRef.current = index;
-    Transforms.deselect(props.editor);
+    Transforms.deselect(props.editor.raw);
     props.provider.setSelection(null);
   };
 

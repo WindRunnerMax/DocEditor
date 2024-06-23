@@ -1,6 +1,6 @@
 import { Button, Trigger } from "@arco-design/web-react";
 import { IconDelete, IconPlus } from "@arco-design/web-react/icon";
-import type { EditorSuite } from "doc-editor-core";
+import type { EditorKit } from "doc-editor-core";
 import type { BlockElement } from "doc-editor-delta";
 import { Editor, Transforms } from "doc-editor-delta";
 import { cs, findNodePath } from "doc-editor-utils";
@@ -19,7 +19,7 @@ import {
 export const ColToolBar: FC<{
   isFocusIn: boolean;
   provider: TableContext["ref"];
-  editor: EditorSuite;
+  editor: EditorKit;
 }> = props => {
   const editor = props.editor;
   const { widths, element, size } = props.provider;
@@ -29,7 +29,7 @@ export const ColToolBar: FC<{
   const onInsert = () => {
     if (indexRef.current < 0) return void 0;
     const targetCellIndex = indexRef.current + 1;
-    const path = findNodePath(editor, element);
+    const path = findNodePath(editor.raw, element);
     if (!path) return void 0;
     const colWidths = [...widths];
     colWidths.splice(targetCellIndex, 0, MIN_CELL_WIDTH);
@@ -38,10 +38,10 @@ export const ColToolBar: FC<{
         // NOTE: 获取到周围两个节点 判断其合并状态
         const leftIndex = cellIndex;
         const leftPath = path.concat([rowIndex, leftIndex]);
-        const leftTuple = leftIndex >= 0 && Editor.node(editor, leftPath);
+        const leftTuple = leftIndex >= 0 && Editor.node(editor.raw, leftPath);
         const rightIndex = cellIndex + 1;
         const rightPath = path.concat([rowIndex, rightIndex]);
-        const rightTuple = rightIndex < size.cols && Editor.node(editor, rightPath);
+        const rightTuple = rightIndex < size.cols && Editor.node(editor.raw, rightPath);
         if (!leftTuple || !rightTuple || !leftTuple[0] || !rightTuple[0]) return 1;
         const leftNode = leftTuple[0] as BlockElement;
         const rightNode = rightTuple[0] as BlockElement;
@@ -51,13 +51,17 @@ export const ColToolBar: FC<{
         if (leftColSpan !== 1 && rightColSpan !== 1) {
           for (let i = cellIndex; i >= 0; i--) {
             const cellPath = path.concat([rowIndex, i]);
-            const tuple = Editor.node(editor, cellPath);
+            const tuple = Editor.node(editor.raw, cellPath);
             if (!tuple || !tuple[0]) continue;
             const targetNode = tuple[0] as BlockElement;
             const targetColSpan = targetNode[CELL_COL_SPAN] ?? 1;
             if (targetColSpan <= 1) continue;
             // NOTE: 将单元格合并的单元格数据增加
-            Transforms.setNodes(editor, { [CELL_COL_SPAN]: targetColSpan + 1 }, { at: cellPath });
+            Transforms.setNodes(
+              editor.raw,
+              { [CELL_COL_SPAN]: targetColSpan + 1 },
+              { at: cellPath }
+            );
             break;
           }
           return 0;
@@ -68,7 +72,7 @@ export const ColToolBar: FC<{
         const cellPath = path.concat([index, targetCellIndex]);
         const colSpan = doCellMergeState(index, targetCellIndex - 1);
         Transforms.insertNodes(
-          editor,
+          editor.raw,
           {
             [TABLE_CELL_BLOCK_KEY]: true,
             [CELL_COL_SPAN]: colSpan,
@@ -77,7 +81,7 @@ export const ColToolBar: FC<{
           { at: cellPath }
         );
       });
-      Transforms.setNodes(props.editor, { [TABLE_COL_WIDTHS]: colWidths }, { at: path });
+      Transforms.setNodes(props.editor.raw, { [TABLE_COL_WIDTHS]: colWidths }, { at: path });
     });
     indexRef.current = -1;
     setVisible(Array(widths.length).fill(false));
@@ -86,14 +90,14 @@ export const ColToolBar: FC<{
   const onDelete = () => {
     if (indexRef.current < 0) return void 0;
     const cellIndex = indexRef.current;
-    const path = findNodePath(editor, element);
+    const path = findNodePath(editor.raw, element);
     if (!path) return void 0;
     const colWidths = [...widths];
     colWidths.splice(cellIndex, 1);
     editor.track.batch(() => {
       const doCellMergeState = (rowIndex: number, cellIndex: number, cellPath: number[]) => {
         // NOTE: 先获取到节点 判断其合并状态
-        const tuple = Editor.node(editor, cellPath);
+        const tuple = Editor.node(editor.raw, cellPath);
         if (!tuple || !tuple[0]) return void 0;
         const node = tuple[0] as BlockElement;
         const colSpan = node[CELL_COL_SPAN] ?? 1;
@@ -102,13 +106,17 @@ export const ColToolBar: FC<{
         if (colSpan === 0) {
           for (let i = cellIndex - 1; i >= 0; i--) {
             const cellPath = path.concat([rowIndex, i]);
-            const tuple = Editor.node(editor, cellPath);
+            const tuple = Editor.node(editor.raw, cellPath);
             if (!tuple || !tuple[0]) continue;
             const targetNode = tuple[0] as BlockElement;
             const targetColSpan = targetNode[CELL_COL_SPAN] ?? 1;
             if (targetColSpan <= 1) continue;
             // NOTE: 将单元格合并的单元格数据减小
-            Transforms.setNodes(editor, { [CELL_COL_SPAN]: targetColSpan - 1 }, { at: cellPath });
+            Transforms.setNodes(
+              editor.raw,
+              { [CELL_COL_SPAN]: targetColSpan - 1 },
+              { at: cellPath }
+            );
             break;
           }
         }
@@ -119,7 +127,7 @@ export const ColToolBar: FC<{
           const targetPath = path.concat([rowIndex, rightIndex]);
           // NOTE: 将数据减小并带到右侧单元格 并且需要恢复`ROW_SPAN`状态
           Transforms.setNodes(
-            editor,
+            editor.raw,
             { [CELL_COL_SPAN]: colSpan - 1, [CELL_ROW_SPAN]: 1 },
             { at: targetPath }
           );
@@ -129,9 +137,9 @@ export const ColToolBar: FC<{
         const cellPath = path.concat([rowIndex, cellIndex]);
         doCellMergeState(rowIndex, cellIndex, cellPath);
         // NOTE: 删除单元格
-        Transforms.delete(editor, { at: cellPath });
+        Transforms.delete(editor.raw, { at: cellPath });
       });
-      Transforms.setNodes(props.editor, { [TABLE_COL_WIDTHS]: colWidths }, { at: path });
+      Transforms.setNodes(props.editor.raw, { [TABLE_COL_WIDTHS]: colWidths }, { at: path });
     });
     indexRef.current = -1;
     setVisible(Array(widths.length).fill(false));
@@ -152,7 +160,7 @@ export const ColToolBar: FC<{
 
   const onClick = (index: number) => {
     indexRef.current = index;
-    Transforms.deselect(props.editor);
+    Transforms.deselect(props.editor.raw);
     props.provider.setSelection(null);
   };
 

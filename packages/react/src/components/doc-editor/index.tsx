@@ -81,7 +81,7 @@ export const SlateDocEditor: FC<{
 
   const updateText = useMemoizedFn(
     debounce(() => {
-      console.log("Text changes", editor.children);
+      console.log("Text changes", editor.raw.children);
     }, 500)
   );
 

@@ -1,4 +1,4 @@
-import type { CommandFn, EditorSuite, LeafContext } from "doc-editor-core";
+import type { CommandFn, EditorKit, LeafContext } from "doc-editor-core";
 import { LeafPlugin } from "doc-editor-core";
 import type { RenderLeafProps } from "doc-editor-delta";
 import { assertValue } from "doc-editor-utils";
@@ -14,7 +14,7 @@ export class HyperLinkPlugin extends LeafPlugin {
   public key: string = HYPER_LINK_KEY;
   private popupModel: Popup | null = null;
 
-  constructor(private editor: EditorSuite, private readonly: boolean) {
+  constructor(private editor: EditorKit, private readonly: boolean) {
     super();
   }
 
@@ -45,11 +45,11 @@ export class HyperLinkPlugin extends LeafPlugin {
             onConfirm={value => {
               config.href = value.href;
               config.blank = value.blank;
-              setTextNode(editor, { [key]: config });
+              setTextNode(editor.raw, { [key]: config });
               model.destroy();
             }}
             onCancel={() => {
-              setUnTextNode(editor, [key]);
+              setUnTextNode(editor.raw, [key]);
               model.destroy();
             }}
           />

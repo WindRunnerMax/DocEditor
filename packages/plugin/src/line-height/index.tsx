@@ -22,7 +22,7 @@ export class LineHeightPlugin extends BlockPlugin {
   public onCommand: CommandFn = (editor, key, data) => {
     if (data && data.position && !this.popupModel) {
       let config = 1.8;
-      const match = getBlockNode(editor, { key: LINE_HEIGHT_KEY });
+      const match = getBlockNode(editor.raw, { key: LINE_HEIGHT_KEY });
       if (match) config = assertValue(match.block["line-height"]);
       const position = data.position;
       return new Promise<void>(resolve => {
@@ -38,7 +38,7 @@ export class LineHeightPlugin extends BlockPlugin {
             left={position.left}
             top={position.top}
             onChange={value => {
-              setBlockNode(editor, { [key]: value });
+              setBlockNode(editor.raw, { [key]: value });
             }}
           />
         );

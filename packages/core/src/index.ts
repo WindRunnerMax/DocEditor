@@ -1,10 +1,10 @@
 export type { CommandFn, EditorCommands } from "./command/types";
-export { makeEditor } from "./editor";
-export type { EditorSuite } from "./editor/types";
+export type { EditorKit } from "./editor";
+export type { EditorRaw } from "./editor/types";
 export type { EventMap, EventType, Handler, Listener } from "./event/bus/action";
 export { EDITOR_EVENT } from "./event/bus/action";
 export type { ContentOperation } from "./event/types/bus";
-export { useMakeEditor } from "./hooks/use-make-editor";
+export { makeEditor, useMakeEditor } from "./hooks/use-make-editor";
 export { LOG_LEVEL } from "./log";
 export type { EditorPlugin } from "./plugin/modules/declare";
 export { BlockPlugin, LeafPlugin } from "./plugin/modules/declare";

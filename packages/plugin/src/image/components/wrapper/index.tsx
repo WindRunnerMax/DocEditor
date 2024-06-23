@@ -1,5 +1,5 @@
 import { Image } from "@arco-design/web-react";
-import type { EditorSuite } from "doc-editor-core";
+import type { EditorKit } from "doc-editor-core";
 import type { BlockElement } from "doc-editor-delta";
 import { findNodePath, setBlockNode } from "doc-editor-utils";
 import { cs } from "doc-editor-utils";
@@ -16,7 +16,7 @@ export const ImageWrapper: FC<{
   selected?: boolean;
   disable?: boolean;
   src: string;
-  editor: EditorSuite;
+  editor: EditorKit;
 }> = props => {
   const [src, setSrc] = useState("");
   const ref = useRef<HTMLDivElement>(null);
@@ -45,7 +45,7 @@ export const ImageWrapper: FC<{
       const startHeight = element.offsetHeight;
       const ratio = startWidth / startHeight;
       const type = resider.dataset.type;
-      const path = findNodePath(props.editor, props.element);
+      const path = findNodePath(props.editor.raw, props.element);
       if (!path) return;
       const onMouseMove = (e: MouseEvent) => {
         const currentX = e.clientX;
@@ -78,7 +78,7 @@ export const ImageWrapper: FC<{
           width = height * ratio;
         }
         setBlockNode(
-          props.editor,
+          props.editor.raw,
           {
             [IMAGE_KEY]: { ...config, width: Math.max(width, 50), height: Math.max(height, 50) },
           },

@@ -2,7 +2,7 @@ import { Editor, Point } from "doc-editor-delta";
 import { Range } from "doc-editor-delta";
 import { getNodeTupleByDepth, isBlock } from "doc-editor-utils";
 
-import type { EditorSuite } from "../editor/types";
+import type { EditorRaw } from "../editor/types";
 import { NormalizeRules } from "./rules";
 import type { EditorSchema } from "./types";
 
@@ -36,7 +36,7 @@ export class Schema extends NormalizeRules {
     }
   }
 
-  public with(editor: Editor): EditorSuite {
+  public with(editor: Editor): EditorRaw {
     const { isVoid, normalizeNode, isInline, deleteBackward } = editor;
 
     editor.isInline = element => {
@@ -89,6 +89,6 @@ export class Schema extends NormalizeRules {
       deleteBackward(unit);
     };
 
-    return editor as EditorSuite;
+    return editor as EditorRaw;
   }
 }

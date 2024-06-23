@@ -291,7 +291,10 @@ export const example: BaseNode[] = [
               {
                 "code-block": true,
                 "code-block-config": { language: "JavaScript" },
-                "children": [{ children: [{ text: 'console.log("Hello World");' }] }],
+                "children": [
+                  { children: [{ text: 'console.log("Hi~");' }] },
+                  { children: [{ text: 'console.log("Hello World");' }] },
+                ],
               },
             ],
             "cell-row-span": 2,
