@@ -4,7 +4,7 @@ import React, { useMemo } from "react";
 import type { TableSelection } from "../types/interface";
 
 export type TableContext = {
-  ref: {
+  readonly ref: {
     widths: number[];
     heights: number[];
     element: BlockElement;
@@ -49,7 +49,7 @@ export const useTableProvider = (
   Object.assign(current, ref);
   // COMPAT:  由`state`保持`mutable`
   // 此时需要依靠副作用严格控制`re-render`
-  const provider = useMemo(() => ({ ref: current, state }), [state.selection]);
+  const provider: TableContext = useMemo(() => ({ ref: current, state }), [state.selection]);
   return { provider };
 };
 

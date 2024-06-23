@@ -90,6 +90,7 @@ export const Cell: FC<{
     const isMouseDown = props.editor.state.get(EDITOR_STATE.IS_MOUSE_DOWN);
     if (
       !isMouseDown ||
+      props.readonly ||
       !ref.anchorCell ||
       isNil(colIndex) ||
       isNil(rowIndex) ||
@@ -113,7 +114,7 @@ export const Cell: FC<{
   };
 
   const onCellMouseDown = () => {
-    if (isNil(colIndex) || isNil(rowIndex)) return void 0;
+    if (isNil(colIndex) || isNil(rowIndex) || props.readonly) return void 0;
     ref.anchorCell = [rowIndex, colIndex, rowSpan, colSpan];
   };
 
