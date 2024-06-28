@@ -16,18 +16,31 @@ export class Track {
     this.editor.event.on(EDITOR_EVENT.CONTENT_CHANGE, this.onApply);
   }
 
-  public destroy = () => {
+  public destroy() {
     this.batchFlat = [];
     this.editor.event.off(EDITOR_EVENT.CONTENT_CHANGE, this.onApply);
-  };
+  }
 
-  private onApply = (e: ContentChangeEvent) => {
+  private onApply(e: ContentChangeEvent) {
     if (this.isBatching) {
       this.batchFlat.push(e.change);
     }
-  };
+  }
 
-  public batch = (fn: () => void) => {
+  public startup() {
+    this.isBatching = true;
+  }
+
+  public shutdown() {
+    this.isBatching = false;
+    if (this.batchFlat.length === 0) {
+      return void 0;
+    }
+    this.raw.history.undos.push([...this.batchFlat]);
+    this.batchFlat = [];
+  }
+
+  public batch(fn: () => void) {
     // NOTE: 暂时无嵌套的场景 在有需要时实现`Batch Op Stack`
     // Batch Start
     //   Batch Start
@@ -38,7 +51,31 @@ export class Track {
       HistoryEditor.withoutSaving(this.raw, fn);
     });
     this.isBatching = false;
+    if (this.batchFlat.length === 0) {
+      return void 0;
+    }
     this.raw.history.undos.push([...this.batchFlat]);
     this.batchFlat = [];
-  };
+  }
+
+  public undo() {
+    this.raw.undo();
+  }
+
+  public redo() {
+    this.raw.redo();
+  }
+
+  public canUndo() {
+    return this.raw.history.undos.length > 0;
+  }
+
+  public canRedo() {
+    return this.raw.history.redos.length > 0;
+  }
+
+  public clear() {
+    this.raw.history.undos.length = 0;
+    this.raw.history.redos.length = 0;
+  }
 }

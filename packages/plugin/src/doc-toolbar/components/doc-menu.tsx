@@ -124,6 +124,7 @@ export const DocMenu: React.FC<{
       position="left"
       mouseLeaveDelay={300}
       mouseEnterDelay={300}
+      autoFitPosition={false}
       {...HoverIconConfig.config}
     >
       <div data-doc-toolbar className={cs(menuVisible && "doc-line-hover")}>
