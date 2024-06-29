@@ -6,3 +6,13 @@ body {
   --icon-plus-z-index: $icon-plus-z-index;
   --box-shadow: $box-shadow;
 }
+
+.doc-line {
+  .language-css .token.string,
+  .style .token.string,
+  .token.entity,
+  .token.operator,
+  .token.url {
+    background-color: transparent;
+  }
+}

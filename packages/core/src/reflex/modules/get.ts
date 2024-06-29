@@ -38,8 +38,35 @@ export class Get extends Is {
     const path = [...Editor.path(this.raw, at)];
     while (path.length) {
       const tuple = this.getNodeTuple(path, 0);
+      if (!tuple) return null;
+      // NOTE: 理论上目标需要操作的节点不会是`Instance`节点
+      if (this.isInstanceNode(tuple.node)) return null;
       if (tuple && this.isBlock(tuple.node)) {
         return tuple as BlockNodeTuple;
+      }
+      path.pop();
+    }
+    return null;
+  }
+
+  /**
+   * 获取最近的符合条件的块级节点元组
+   * @description 用于检查当前`Path`到`Instance`的匹配节点
+   * @param key string
+   * @param at? Location
+   * @returns BlockNodeTuple | null
+   */
+  public getClosestMatchBlockTuple(key: string, at?: Location): BlockNodeTuple | null {
+    const location = at || this.raw.selection;
+    if (!location) return null;
+    const path = [...Editor.path(this.raw, location)];
+    while (path.length) {
+      const tuple = Editor.node(this.raw, path);
+      if (!tuple) return null;
+      const [node, tuplePath] = tuple;
+      if (this.isInstanceNode(node)) return null;
+      if (Editor.isBlock(this.raw, node) && node[key]) {
+        return { node, path: tuplePath };
       }
       path.pop();
     }

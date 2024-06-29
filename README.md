@@ -5,7 +5,7 @@
 <span>｜</span>
 <a href="https://windrunnermax.github.io/DocEditor/">DEMO</a>
 <span>｜</span>
-<a href="https://github.com/WindrunnerMax/EveryDay/blob/master/Plugin/基于slate构建文档编辑器.md">BLOG</a>
+<a href="https://github.com/WindrunnerMax/DocEditor/issues/11">BLOG</a>
 <span>｜</span>
 <a href="./NOTE.md">NOTE</a>
 <span>｜</span>

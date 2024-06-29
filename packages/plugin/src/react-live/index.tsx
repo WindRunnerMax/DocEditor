@@ -2,6 +2,7 @@ import "./index.scss";
 
 import type { BlockContext, CommandFn, LeafContext } from "doc-editor-core";
 import type { EditorKit } from "doc-editor-core";
+import type { EditorRaw } from "doc-editor-core";
 import { BlockPlugin, LeafPlugin } from "doc-editor-core";
 import type {
   BaseRange,
@@ -11,11 +12,11 @@ import type {
   RenderLeafProps,
 } from "doc-editor-delta";
 import { Transforms } from "doc-editor-delta";
-import { getClosestBlockPath, getParentNode, isBlock } from "doc-editor-utils";
+import { getClosestBlockPath, getParentNode, isBlock, isText } from "doc-editor-utils";
 
+import { parseCodeNodeRange } from "../codeblock/utils/parser";
 import { ReactLiveView } from "./components/viewer";
 import { REACT_LIVE_KEY, REACT_LIVE_TYPE } from "./types";
-import { codeTokenize, collectReactLiveText } from "./utils/parse";
 
 class ReactLiveLeafPlugin extends LeafPlugin {
   public readonly key: string = REACT_LIVE_TYPE;
@@ -34,9 +35,11 @@ class ReactLiveLeafPlugin extends LeafPlugin {
 
 export class ReactLivePlugin extends BlockPlugin {
   public key: string = REACT_LIVE_KEY;
+  private raw: EditorRaw;
 
   constructor(private editor: EditorKit) {
     super();
+    this.raw = editor.raw;
     this.WITH_LEAF_PLUGINS = [new ReactLiveLeafPlugin()];
   }
 
@@ -76,22 +79,17 @@ export class ReactLivePlugin extends BlockPlugin {
 
   public onDecorate(entry: NodeEntry): BaseRange[] {
     const [node, path] = entry;
+    const ranges: Range[] = [];
     const parent = getParentNode(this.editor.raw, path);
-    if (parent && isBlock(this.editor.raw, node) && parent.node[REACT_LIVE_KEY]) {
-      const str = collectReactLiveText(this.editor.raw, node, path);
-      if (!str) return [];
-      const textPath = [...path, 0];
-      const codeRange = codeTokenize(str);
-      // TODO: 采取双迭代的方式 取较小值作为`range`
-      const ranges: Range[] = codeRange.map(item => ({
-        anchor: { path: textPath, offset: item.start },
-        focus: { path: textPath, offset: item.end },
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        [REACT_LIVE_TYPE]: item.type,
-      }));
+    if (!isBlock(this.raw, node) || !parent || !parent.node[REACT_LIVE_KEY]) {
       return ranges;
     }
-    return [];
+    const textNode = node.children[0];
+    if (!isText(textNode)) {
+      return ranges;
+    }
+    const language = "JavaScript";
+    ranges.push(...parseCodeNodeRange(node, path, language, REACT_LIVE_TYPE));
+    return ranges;
   }
 }

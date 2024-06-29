@@ -5,12 +5,11 @@ import { useDebounceEffect } from "ahooks";
 import type { EditorKit } from "doc-editor-core";
 import { Void } from "doc-editor-core";
 import type { BlockElement } from "doc-editor-delta";
+import { isText } from "doc-editor-utils";
 import type { FC } from "react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 import { compileWithSucrase, renderWithDependency, withSandbox } from "react-live-runtime";
-
-import { collectText } from "../utils/parse";
 
 export const ReactLiveView: FC<{
   element: BlockElement;
@@ -18,7 +17,16 @@ export const ReactLiveView: FC<{
 }> = props => {
   const ref = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(true);
-  const code = collectText(props.editor.raw, props.element);
+
+  const code: string = useMemo(() => {
+    const element = props.element;
+    return element.children
+      .map(line => {
+        const children = line.children || [];
+        return children.map(it => (isText(it) ? it.text : ""));
+      })
+      .join("\n");
+  }, [props.element]);
 
   useDebounceEffect(
     () => {

@@ -64,6 +64,10 @@ export const isMatchedEvent = (event: React.KeyboardEvent<HTMLDivElement>, ...ar
   return args.indexOf(key) > -1;
 };
 
+export const isInlineBlock = (editor: Editor, node: Node): node is BlockElement => {
+  return editor.isInline(node as BlockElement);
+};
+
 export const isTextBlock = (editor: Editor, node: Node): node is TextBlockElement => {
   if (!isBlock(editor, node)) return false;
   const firstNode = node.children[0];

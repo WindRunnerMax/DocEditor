@@ -12,14 +12,19 @@ import type {
 } from "doc-editor-core";
 import { BlockPlugin, LeafPlugin } from "doc-editor-core";
 import type { BaseRange, BlockElement, NodeEntry, Range } from "doc-editor-delta";
-import { Editor, Transforms } from "doc-editor-delta";
+import { Transforms } from "doc-editor-delta";
 import { ReactEditor } from "doc-editor-delta";
-import { getBlockNode, getClosestBlockPath, getParentNode } from "doc-editor-utils";
+import { getClosestBlockPath, getParentNode } from "doc-editor-utils";
 import { isBlock, isText } from "doc-editor-utils";
 import { setBlockNode } from "doc-editor-utils";
 
 import { CODE_BLOCK_CONFIG, CODE_BLOCK_KEY, CODE_BLOCK_TYPE } from "./types";
-import { codeTokenize, DEFAULT_LANGUAGE, getLanguage, SUPPORTED_LANGUAGES } from "./utils/parser";
+import {
+  DEFAULT_LANGUAGE,
+  getLanguage,
+  parseCodeNodeRange,
+  SUPPORTED_LANGUAGES,
+} from "./utils/parser";
 
 class CodeBlockLeafPlugin extends LeafPlugin {
   public readonly key: string = CODE_BLOCK_TYPE;
@@ -113,23 +118,8 @@ export class CodeBlockPlugin extends BlockPlugin {
     if (!isText(textNode)) {
       return ranges;
     }
-    const codeblockNode = getBlockNode(this.raw, { at: path, key: CODE_BLOCK_KEY });
-    if (codeblockNode) {
-      const textPath = [...path, 0];
-      const str = Editor.string(this.raw, path);
-      const language = getLanguage(codeblockNode.block);
-      const codeRange = codeTokenize(str, language);
-      // TODO: 采取双迭代的方式 取较小值作为`range`
-      codeRange.forEach(item => {
-        ranges.push({
-          anchor: { path: textPath, offset: item.start },
-          focus: { path: textPath, offset: item.end },
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          [CODE_BLOCK_TYPE]: item.type,
-        });
-      });
-    }
+    const language = getLanguage(parent.node);
+    ranges.push(...parseCodeNodeRange(node, path, language, CODE_BLOCK_TYPE));
     return ranges;
   }
 }
