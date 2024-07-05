@@ -9,6 +9,7 @@ export const EVENT_ENUM = {
   MOUSE_UP: "mouseup",
   MOUSE_MOVE: "mousemove",
   MOUSE_DOWN: "mousedown",
+  COPY: "copy",
   SELECTION_CHANGE: "selectionchange",
 } as const;
 

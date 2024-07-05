@@ -10,6 +10,7 @@ export type { EditorPlugin } from "./plugin/modules/declare";
 export { BlockPlugin, LeafPlugin } from "./plugin/modules/declare";
 export { renderBlock as renderElement, renderLeaf } from "./plugin/modules/render";
 export type { ApplyPlugins } from "./plugin/types/apply";
+export type { ElementType } from "./plugin/types/constant";
 export { EDITOR_ELEMENT_TYPE, KEY_EVENT } from "./plugin/types/constant";
 export type { BlockContext, BlockProps, LeafContext, LeafProps } from "./plugin/types/context";
 export { Editable } from "./preset/editable";

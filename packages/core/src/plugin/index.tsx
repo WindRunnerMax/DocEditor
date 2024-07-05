@@ -1,3 +1,5 @@
+import { DEFAULT_PRIORITY } from "doc-editor-utils";
+
 import type { EditorKit } from "../editor/";
 import type { BlockPlugin, EditorPlugin, LeafPlugin } from "./modules/declare";
 import { decorate, renderBlock, renderLeaf } from "./modules/render";
@@ -6,27 +8,34 @@ import { EDITOR_ELEMENT_TYPE } from "./types/constant";
 import { KEY_EVENT } from "./types/constant";
 
 export class PluginController {
-  private plugins: Record<string, EditorPlugin>;
+  public blocks: BlockPlugin[];
+  public leaves: LeafPlugin[];
+  public current: EditorPlugin[];
+  private pluginMap: Record<string, EditorPlugin>;
 
   constructor(private editor: EditorKit) {
-    this.plugins = {};
+    this.pluginMap = {};
+    this.current = [];
+    this.blocks = [];
+    this.leaves = [];
   }
 
   public register = (...plugins: EditorPlugin[]) => {
     for (const plugin of plugins) {
       const key = plugin.key;
-      const exist = this.plugins[key];
+      const exist = this.pluginMap[key];
       exist && exist.destroy && exist.destroy();
-      this.plugins[key] = plugin;
+      this.pluginMap[key] = plugin;
     }
   };
 
   public apply = (): ApplyPlugins => {
-    const plugins = Object.values(this.plugins);
+    const plugins = Object.values(this.pluginMap);
     const blockPlugins: BlockPlugin[] = [];
     const leafPlugins: LeafPlugin[] = [];
     const keyDownPlugins: EditorPlugin[] = [];
     const decoratePlugins: EditorPlugin[] = [];
+    plugins.sort((a, b) => (b.priority || DEFAULT_PRIORITY) - (a.priority || DEFAULT_PRIORITY));
     plugins.forEach(item => {
       if (item.type === EDITOR_ELEMENT_TYPE.BLOCK) {
         blockPlugins.push(item);
@@ -36,12 +45,12 @@ export class PluginController {
       } else if (item.type === EDITOR_ELEMENT_TYPE.INLINE) {
         leafPlugins.push(item);
       }
-      blockPlugins.sort((a, b) => (b.priority || 0) - (a.priority || 0));
-      leafPlugins.sort((a, b) => (b.priority || 0) - (a.priority || 0));
       item.onCommand && this.editor.command.register(item.key, item.onCommand);
       item.onKeyDown && keyDownPlugins.push(item);
       item.onDecorate && decoratePlugins.push(item);
     });
+    this.blocks = blockPlugins;
+    this.leaves = leafPlugins;
 
     return {
       renderBlock: props => {
@@ -66,9 +75,9 @@ export class PluginController {
   };
 
   public reset = () => {
-    const plugins = Object.values(this.plugins);
+    const plugins = Object.values(this.pluginMap);
     plugins.forEach(node => node.destroy && node.destroy());
-    this.plugins = {};
+    this.pluginMap = {};
   };
 
   public destroy = () => {
