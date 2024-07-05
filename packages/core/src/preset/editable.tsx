@@ -60,6 +60,10 @@ export class Editable extends React.PureComponent<EditableProps, EditableState> 
     this.props.editor.event.trigger(EDITOR_EVENT.COPY, event);
   };
 
+  private onCut = (event: React.ClipboardEvent<HTMLDivElement>) => {
+    this.props.editor.event.trigger(EDITOR_EVENT.CUT, event);
+  };
+
   private onPaste = (event: React.ClipboardEvent<HTMLDivElement>) => {
     this.props.editor.event.trigger(EDITOR_EVENT.PASTE, event);
   };
@@ -82,6 +86,7 @@ export class Editable extends React.PureComponent<EditableProps, EditableState> 
           onMouseDown={this.onMouseDown}
           onMouseUp={this.onMouseUp}
           onCopy={this.onCopy}
+          onCut={this.onCut}
           onPaste={this.onPaste}
         />
       </EditorProvider>

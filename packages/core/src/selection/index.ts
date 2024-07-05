@@ -13,11 +13,14 @@ export class Selection {
   public get() {
     const selection = this.raw.selection;
     if (!selection) return null;
-    return {
-      ...this.raw.selection,
+    const prototype = {
       isCollapsed: () => Range.isCollapsed(selection),
       isBackward: () => Range.isBackward(selection),
     };
+    const sel: BaseRange & typeof prototype = Object.create(prototype);
+    sel.anchor = selection.anchor;
+    sel.focus = selection.focus;
+    return sel;
   }
 
   public set(range: BaseRange | null) {

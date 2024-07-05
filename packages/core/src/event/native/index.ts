@@ -9,6 +9,11 @@ export class NativeEvent {
     document.addEventListener(NATIVE_EVENTS.GLOBAL_MOUSE_UP, this.onMouseUp);
   }
 
+  destroy() {
+    document.removeEventListener(NATIVE_EVENTS.GLOBAL_MOUSE_UP, this.onMouseUp);
+    document.removeEventListener(NATIVE_EVENTS.GLOBAL_MOUSE_DOWN, this.onMouseDown);
+  }
+
   private onMouseDown = (e: MouseEvent) => {
     this.editor.state.set(EDITOR_STATE.IS_MOUSE_DOWN, true);
     this.bus.trigger(NATIVE_EVENTS.GLOBAL_MOUSE_DOWN, e);
@@ -17,10 +22,5 @@ export class NativeEvent {
   private onMouseUp = (e: MouseEvent) => {
     this.editor.state.set(EDITOR_STATE.IS_MOUSE_DOWN, false);
     this.bus.trigger(NATIVE_EVENTS.GLOBAL_MOUSE_UP, e);
-  };
-
-  destroy = () => {
-    document.removeEventListener(NATIVE_EVENTS.GLOBAL_MOUSE_DOWN, this.onMouseDown);
-    document.addEventListener(NATIVE_EVENTS.GLOBAL_MOUSE_UP, this.onMouseUp);
   };
 }

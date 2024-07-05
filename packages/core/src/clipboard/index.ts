@@ -1,32 +1,26 @@
-import type { BaseNode } from "doc-editor-delta";
-import { Node } from "doc-editor-delta";
-import { isBlock, isText, isTextBlock } from "doc-editor-utils";
-
 import type { EditorKit } from "../editor";
+import type { EditorRaw } from "../editor/types";
+import { EDITOR_EVENT } from "../event/bus/action";
 
 export class Clipboard {
-  constructor(private editor: EditorKit) {}
+  private raw: EditorRaw;
 
-  onCopy = (event: React.ClipboardEvent<HTMLDivElement>) => {
-    const fragments = this.editor.raw.getFragment();
-    // TODO: 暂时先只处理纯文本
-    const parseText = (fragment: BaseNode[]): string => {
-      return fragment
-        .map(item => {
-          if (isText(item)) {
-            return Node.string(item);
-          } else if (isTextBlock(this.editor.raw, item)) {
-            return parseText(item.children) + "\n";
-          } else if (isBlock(this.editor.raw, item)) {
-            return parseText(item.children);
-          } else {
-            return "";
-          }
-        })
-        .join("");
-    };
-    const text = parseText(fragments).replace(/\n$/, "");
-    event.clipboardData.setData("text/plain", text);
-    event.preventDefault();
-  };
+  constructor(private editor: EditorKit) {
+    this.raw = editor.raw;
+    editor.event.on(EDITOR_EVENT.COPY, this.onCopy);
+    editor.event.on(EDITOR_EVENT.CUT, this.onCut);
+    editor.event.on(EDITOR_EVENT.PASTE, this.onPaste);
+  }
+
+  destroy() {
+    this.editor.event.off(EDITOR_EVENT.COPY, this.onCopy);
+    this.editor.event.off(EDITOR_EVENT.CUT, this.onCut);
+    this.editor.event.off(EDITOR_EVENT.PASTE, this.onPaste);
+  }
+
+  public onCopy = (event: React.ClipboardEvent<HTMLDivElement>) => {};
+
+  public onCut = (event: React.ClipboardEvent<HTMLDivElement>) => {};
+
+  public onPaste = (event: React.ClipboardEvent<HTMLDivElement>) => {};
 }

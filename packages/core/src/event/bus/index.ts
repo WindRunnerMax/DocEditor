@@ -37,10 +37,10 @@ export class EventBus {
     const handler = this.listeners[key];
     if (!handler) return void 0;
     let stop = false;
-    const duplicate = {
-      ...payload,
-      stop: () => (stop = true),
-    } as WithStop<EventMap[T]>;
+    const duplicate = payload as WithStop<EventMap[T]>;
+    duplicate.stop = () => {
+      stop = true;
+    };
     for (const item of handler) {
       item.listener(duplicate);
       item.once && this.off(key, item.listener);

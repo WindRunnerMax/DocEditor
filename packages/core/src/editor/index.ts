@@ -58,23 +58,24 @@ export class EditorKit {
     this.raw = schema.with(raw);
     this.init = init;
     this.schema = schema;
+    this.logger = new Logger(LOG_LEVEL.ERROR);
     this.reflex = new Reflex(this);
     this.do = new Do(this);
-    this.command = new Command(this);
-    this.logger = new Logger(LOG_LEVEL.ERROR);
     this.state = new State(this);
     this.event = new Event(this);
     this.clipboard = new Clipboard(this);
-    this.plugin = new PluginController(this);
     this.track = new Track(this);
     this.selection = new Selection(this);
+    this.command = new Command(this);
+    this.plugin = new PluginController(this);
   }
 
   public destroy(): void {
     this.command.destroy();
-    this.event.destroy();
+    this.clipboard.destroy();
     this.plugin.destroy();
     this.track.destroy();
     this.state.destroy();
+    this.event.destroy();
   }
 }
