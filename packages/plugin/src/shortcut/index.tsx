@@ -1,7 +1,7 @@
 import type { EditorKit } from "doc-editor-core";
 import { BlockPlugin } from "doc-editor-core";
 import { Editor, Transforms } from "doc-editor-delta";
-import { getBlockNode } from "doc-editor-utils";
+import { DEFAULT_PRIORITY, getBlockNode } from "doc-editor-utils";
 import { isCollapsed, isMatchedEvent } from "doc-editor-utils";
 import { KEYBOARD } from "doc-editor-utils";
 import type { KeyboardEvent } from "react";
@@ -26,7 +26,7 @@ const SHORTCUTS: Record<string, string> = {
 
 export class ShortCutPlugin extends BlockPlugin {
   public key: string = SHORTCUT_KEY;
-  public priority: number = 50;
+  public priority: number = DEFAULT_PRIORITY + 50;
 
   constructor(private editor: EditorKit) {
     super();

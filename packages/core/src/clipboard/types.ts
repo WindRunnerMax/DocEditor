@@ -12,5 +12,6 @@ export type PasteContext = {
   type: ElementType;
   node: BaseNode;
   html: HTMLElement;
+  files?: File[];
   stop: () => void;
 };

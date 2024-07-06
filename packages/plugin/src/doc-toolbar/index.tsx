@@ -3,6 +3,7 @@ import "./index.scss";
 import type { BlockContext } from "doc-editor-core";
 import type { EditorKit } from "doc-editor-core";
 import { BlockPlugin } from "doc-editor-core";
+import { DEFAULT_PRIORITY } from "doc-editor-utils";
 
 import { DocMenu } from "./components/doc-menu";
 import { DOC_TOOLBAR_MODULES } from "./config";
@@ -10,7 +11,7 @@ import { DOC_TOOLBAR_KEY } from "./types";
 
 export class DocToolBarPlugin extends BlockPlugin {
   public readonly key = DOC_TOOLBAR_KEY;
-  public readonly priority: number = 13;
+  public readonly priority = DEFAULT_PRIORITY + 13;
 
   constructor(
     private editor: EditorKit,

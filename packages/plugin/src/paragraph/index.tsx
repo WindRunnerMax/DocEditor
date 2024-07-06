@@ -2,7 +2,7 @@ import "./index.scss";
 
 import type { BlockContext, CommandFn } from "doc-editor-core";
 import { BlockPlugin } from "doc-editor-core";
-import { getBlockAttributes } from "doc-editor-utils";
+import { DEFAULT_PRIORITY, getBlockAttributes } from "doc-editor-utils";
 import { isBlock } from "doc-editor-utils";
 import { setUnBlockNode } from "doc-editor-utils";
 
@@ -10,7 +10,7 @@ import { PARAGRAPH_KEY } from "./types";
 
 export class ParagraphPlugin extends BlockPlugin {
   public key: string = PARAGRAPH_KEY;
-  public priority?: number = 11;
+  public priority: number = DEFAULT_PRIORITY + 11;
 
   public destroy(): void {}
 

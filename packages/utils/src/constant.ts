@@ -13,4 +13,4 @@ export const EVENT_ENUM = {
   SELECTION_CHANGE: "selectionchange",
 } as const;
 
-export const DEFAULT_PRIORITY = 1000;
+export const DEFAULT_PRIORITY = 100;
