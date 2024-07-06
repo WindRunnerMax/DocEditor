@@ -1,6 +1,6 @@
 import type { EditorKit } from "./index";
 
-export class EditorModule {
+export abstract class EditorModule {
   constructor(protected editor: EditorKit) {
     // COMPAT: 如果在初始化时直接赋值 则会导致模块无法完全初始化
     // 由于实例化顺序问题会导致某些模块处于`undefined`状态并持久化

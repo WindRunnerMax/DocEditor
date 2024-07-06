@@ -68,6 +68,7 @@ export const HighlightBlockWrapper: FC<{
       {props.children}
     </div>
   );
+
   return readonly ? (
     wrapper
   ) : (

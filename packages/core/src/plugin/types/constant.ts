@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Object } from "doc-editor-utils";
 
 import type { EditorPlugin } from "../modules/declare";
@@ -12,13 +13,24 @@ export type PluginType = Object.Keys<typeof PLUGIN_TYPE>;
 export const CALLER_TYPE = {
   SERIALIZE: "serialize",
   DESERIALIZE: "deserialize",
+  NORMALIZE: "normalize",
+  WILL_SET_CLIPBOARD: "willSetToClipboard",
+  WILL_PASTE_NODES: "willApplyPasteNodes",
 } as const;
 
 export type CallerType = Object.Values<typeof CALLER_TYPE>;
 
+type AnyFn = (...args: any[]) => any;
+type PickPluginType<key extends keyof EditorPlugin> = Required<EditorPlugin>[key] extends AnyFn
+  ? Parameters<Required<EditorPlugin>[key]>["0"]
+  : null;
+
 export type CallerMap = {
-  [CALLER_TYPE.SERIALIZE]: Parameters<Required<EditorPlugin>["serialize"]>["0"];
-  [CALLER_TYPE.DESERIALIZE]: Parameters<Required<EditorPlugin>["deserialize"]>["0"];
+  [CALLER_TYPE.SERIALIZE]: PickPluginType<typeof CALLER_TYPE.SERIALIZE>;
+  [CALLER_TYPE.DESERIALIZE]: PickPluginType<typeof CALLER_TYPE.DESERIALIZE>;
+  [CALLER_TYPE.NORMALIZE]: PickPluginType<typeof CALLER_TYPE.NORMALIZE>;
+  [CALLER_TYPE.WILL_SET_CLIPBOARD]: PickPluginType<typeof CALLER_TYPE.WILL_SET_CLIPBOARD>;
+  [CALLER_TYPE.WILL_PASTE_NODES]: PickPluginType<typeof CALLER_TYPE.WILL_PASTE_NODES>;
 };
 
 export const KEY_EVENT = {

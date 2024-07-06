@@ -1,5 +1,5 @@
 import type { BaseRange } from "doc-editor-delta";
-import { Range, Transforms } from "doc-editor-delta";
+import { Range, ReactEditor, Transforms } from "doc-editor-delta";
 
 import type { EditorKit } from "../editor";
 import type { EditorRaw } from "../editor/types";
@@ -42,5 +42,9 @@ export class Selection {
     const selection = this.raw.selection;
     if (!selection) return null;
     return selection.focus.path;
+  }
+
+  public focus() {
+    ReactEditor.focus(this.raw);
   }
 }

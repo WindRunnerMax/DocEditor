@@ -1,6 +1,6 @@
 import type { NodeEntry, Range } from "doc-editor-delta";
 
-import type { CopyContext, PasteContext } from "../../clipboard/utils/types";
+import type { CopyContext, PasteContext, PasteNodesContext } from "../../clipboard/utils/types";
 import type { CommandFn } from "../../command/types";
 import type { PluginType } from "../types/constant";
 import { PLUGIN_TYPE } from "../types/constant";
@@ -30,6 +30,10 @@ abstract class BasePlugin {
   public deserialize?(context: PasteContext): void;
   /** 对节点进行`Normalize` */
   public normalize?(entry: NodeEntry): void;
+  /** 内容即将写入剪贴板 */
+  public willSetToClipboard?(context: CopyContext): void;
+  /** 粘贴的内容即将应用到编辑器 */
+  public willApplyPasteNodes?(context: PasteNodesContext): void;
 }
 
 export abstract class BlockPlugin extends BasePlugin {

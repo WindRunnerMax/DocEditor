@@ -3,14 +3,15 @@ import { isText } from "doc-editor-utils";
 
 import { EditorModule } from "../../editor/inject";
 import { CALLER_TYPE, PLUGIN_TYPE } from "../../plugin/types/constant";
-import { LINE_TAG, TEXT_EDITOR, TEXT_HTML, TEXT_PLAIN } from "../utils/constant";
-import { writeToClipboard } from "../utils/serialize";
+import { LINE_TAG, TEXT_DOC, TEXT_HTML, TEXT_PLAIN } from "../utils/constant";
+import { getFragmentText, serializeHTML, writeToClipboard } from "../utils/serialize";
 import type { CopyContext } from "../utils/types";
 
 export class Copy extends EditorModule {
   public onCopy = (event: React.ClipboardEvent<HTMLDivElement>) => {
     // https://github.com/ianstormtaylor/slate/blob/25be3b/packages/slate-react/src/plugin/with-react.ts#L115
     event.preventDefault();
+    event.stopPropagation();
     const sel = this.editor.selection.get();
     if (!sel) return void 0;
     const tuple = this.reflex.getClosestBlockTuple(sel);
@@ -33,11 +34,14 @@ export class Copy extends EditorModule {
     }
     if (!nodes.length) return void 0;
     this.copy(nodes);
+    this.selection.focus();
+    this.selection.set(sel);
   };
 
   public onCut = (event: React.ClipboardEvent<HTMLDivElement>) => {
     // https://github.com/ianstormtaylor/slate/blob/25be3b/packages/slate-react/src/components/editable.tsx#L951
     event.preventDefault();
+    event.stopPropagation();
     const sel = this.editor.selection.get();
     if (!sel) return void 0;
     this.onCopy(event);
@@ -47,21 +51,25 @@ export class Copy extends EditorModule {
     } else {
       this.do.delete(sel);
     }
+    this.selection.focus();
   };
 
   public copy(nodes: BaseNode[]) {
     const rootNode = document.createDocumentFragment();
     const root = { children: nodes };
     this.serialize(root, rootNode);
-    const plainText = rootNode.textContent || "";
-    const serialize = new XMLSerializer();
-    const htmlText = serialize.serializeToString(rootNode);
-    const editorText = JSON.stringify(nodes);
-    writeToClipboard({
+    const context: CopyContext = { node: root, html: rootNode };
+    this.plugin.call(CALLER_TYPE.WILL_SET_CLIPBOARD, context);
+    const plainText = getFragmentText(context.html);
+    const htmlText = serializeHTML(context.html);
+    const editorText = JSON.stringify(context.node.children);
+    const dataTransfer = {
       [TEXT_PLAIN]: plainText,
       [TEXT_HTML]: htmlText,
-      [TEXT_EDITOR]: editorText,
-    });
+      [TEXT_DOC]: editorText,
+    };
+    this.logger.info("Set Clipboard Data:", dataTransfer);
+    writeToClipboard(dataTransfer);
   }
 
   private serialize(current: BaseNode, root: Node) {
@@ -77,9 +85,8 @@ export class Copy extends EditorModule {
       const context: CopyContext = { node: current, html: lineFragment };
       this.plugin.call(CALLER_TYPE.SERIALIZE, context, PLUGIN_TYPE.BLOCK);
       const lineNode = document.createElement("div");
-      lineNode.style.whiteSpace = "pre-wrap";
       lineNode.setAttribute(LINE_TAG, "true");
-      lineNode.appendChild(lineFragment);
+      lineNode.appendChild(context.html);
       return root.appendChild(lineNode);
     }
     if (this.reflex.isBlock(current)) {
@@ -87,9 +94,7 @@ export class Copy extends EditorModule {
       current.children.forEach(child => this.serialize(child, lineFragment));
       const context: CopyContext = { node: current, html: lineFragment };
       this.plugin.call(CALLER_TYPE.SERIALIZE, context, PLUGIN_TYPE.BLOCK);
-      const lineNode = document.createElement("div");
-      lineNode.appendChild(lineFragment);
-      return root.appendChild(lineNode);
+      return root.appendChild(context.html);
     }
   }
 }

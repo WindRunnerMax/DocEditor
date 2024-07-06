@@ -2,15 +2,17 @@ import { Editor, Point } from "doc-editor-delta";
 import { Range } from "doc-editor-delta";
 import { getNodeTupleByDepth, isBlock } from "doc-editor-utils";
 
+import type { EditorKit } from "../editor";
 import type { EditorRaw } from "../editor/types";
+import { CALLER_TYPE, PLUGIN_TYPE } from "../plugin/types/constant";
 import { NormalizeRules } from "./rules";
 import type { EditorSchema } from "./types";
 
 export class Schema extends NormalizeRules {
-  public readonly editor: Editor;
+  public readonly editor: EditorKit;
   public readonly raw: EditorSchema;
 
-  constructor(schema: EditorSchema, editor: Editor) {
+  constructor(schema: EditorSchema, editor: EditorKit) {
     super();
     this.raw = schema;
     this.editor = editor;
@@ -57,6 +59,9 @@ export class Schema extends NormalizeRules {
         return void 0;
       }
       this.normalize(editor, entry);
+      if (this.editor.plugin) {
+        this.editor.plugin.call(CALLER_TYPE.NORMALIZE, entry, PLUGIN_TYPE.BLOCK);
+      }
       normalizeNode(entry);
     };
 

@@ -90,6 +90,7 @@ export class PluginController {
         this.editor.logger.warning(`Plugin ${plugin} Exec Error`, error);
       }
     }
+    return payload;
   }
 
   public reset = () => {

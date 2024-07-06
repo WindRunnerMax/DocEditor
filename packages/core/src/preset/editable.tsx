@@ -6,6 +6,7 @@ import type { EditorKit } from "../editor/";
 import { INIT_NODE } from "../editor/constant";
 import { EDITOR_EVENT } from "../event/bus/action";
 import type { ApplyPlugins } from "../plugin/types/apply";
+import { EDITOR_STATE } from "../state/types";
 
 type EditableProps = {
   readonly?: boolean;
@@ -22,6 +23,7 @@ type EditableState = {
 export class Editable extends React.PureComponent<EditableProps, EditableState> {
   constructor(props: EditableProps) {
     super(props);
+    props.editor.state.set(EDITOR_STATE.READ_ONLY, !!props.readonly);
     this.state = {
       renderModule: this.props.editor.plugin.apply(),
     };
@@ -29,6 +31,7 @@ export class Editable extends React.PureComponent<EditableProps, EditableState> 
 
   componentDidUpdate(prevProps: EditableProps): void {
     if (prevProps.readonly !== this.props.readonly) {
+      this.props.editor.state.set(EDITOR_STATE.READ_ONLY, !!this.props.readonly);
       this.setState({
         renderModule: this.props.editor.plugin.apply(),
       });

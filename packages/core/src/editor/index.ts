@@ -54,7 +54,7 @@ export class EditorKit {
 
   constructor(config: EditorSchema, init?: BaseNode[]) {
     const raw = withHistory(withReact(createEditor() as Editor & ReactEditor));
-    const schema = new Schema(config, raw);
+    const schema = new Schema(config, this);
     this.raw = schema.with(raw);
     this.init = init;
     this.schema = schema;
