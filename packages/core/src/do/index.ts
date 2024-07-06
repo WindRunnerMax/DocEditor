@@ -1,5 +1,14 @@
-import type { EditorKit } from "../editor";
+import type { Location } from "doc-editor-delta";
+import { Transforms } from "doc-editor-delta";
 
-export class Do {
-  constructor(private editor: EditorKit) {}
+import { EditorModule } from "../editor/inject";
+
+export class Do extends EditorModule {
+  /**
+   * 删除指定位置的节点内容
+   * @param at Location
+   */
+  public delete(at: Location) {
+    Transforms.delete(this.raw, { at });
+  }
 }

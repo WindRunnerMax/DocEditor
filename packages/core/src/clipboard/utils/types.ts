@@ -1,17 +1,15 @@
 import type { BaseNode } from "doc-editor-delta";
 
-import type { ElementType } from "../plugin/types/constant";
+import type { PluginType } from "../../plugin/types/constant";
 
 export type CopyContext = {
   node: BaseNode;
-  html: HTMLElement;
-  stop: () => void;
+  html: Node;
 };
 
 export type PasteContext = {
-  type: ElementType;
+  type: PluginType;
   node: BaseNode;
-  html: HTMLElement;
+  html: Node;
   files?: File[];
-  stop: () => void;
 };

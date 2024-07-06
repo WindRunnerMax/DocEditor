@@ -3,7 +3,7 @@ import type { BlockElement } from "doc-editor-delta";
 import type { TextElement } from "doc-editor-delta";
 import type { TextBlockElement } from "doc-editor-delta";
 import { Editor } from "doc-editor-delta";
-import { isBlock, isText } from "doc-editor-utils";
+import { isBlock, isText, isTextBlock } from "doc-editor-utils";
 
 import type { EditorKit } from "../../editor";
 import type { EditorRaw } from "../../editor/types";
@@ -43,16 +43,9 @@ export class Is {
    */
   public isTextBlock(node: BaseNode | undefined): node is TextBlockElement {
     if (!this.isBlock(node)) return false;
-    const firstNode = node.children[0];
-    const result = firstNode && this.isText(firstNode);
-    if (process.env.NODE_ENV === "development") {
-      const strictInspection = node.children.every(child => this.isText(child));
-      if (result !== strictInspection) {
-        console.error("Fatal Error: Text Block Check Fail", node);
-      }
-    }
-    return result;
+    return isTextBlock(this.raw, node);
   }
+
   /**
    * `Schema`所属块节点
    * @param node BaseNode

@@ -1,4 +1,4 @@
-import type { EditorKit } from ".";
+import type { EditorKit } from "./index";
 
 export class EditorModule {
   constructor(protected editor: EditorKit) {

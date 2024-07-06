@@ -1,17 +1,16 @@
 import type { NodeEntry, Range } from "doc-editor-delta";
-import type { BaseNode } from "doc-editor-delta";
 
-import type { CopyContext, PasteContext } from "../../clipboard/types";
+import type { CopyContext, PasteContext } from "../../clipboard/utils/types";
 import type { CommandFn } from "../../command/types";
-import type { ElementType } from "../types/constant";
-import { EDITOR_ELEMENT_TYPE } from "../types/constant";
+import type { PluginType } from "../types/constant";
+import { PLUGIN_TYPE } from "../types/constant";
 import type { BlockContext, BlockProps, LeafContext, LeafProps } from "../types/context";
 
 abstract class BasePlugin {
   /** 插件唯一标识 */
   public abstract readonly key: string;
   /** 插件类型 */
-  public abstract readonly type: ElementType;
+  public abstract readonly type: PluginType;
   /**
    * 插件调度优先级
    * 渲染层面 优先级越高`DOM`结构在越外层
@@ -26,16 +25,16 @@ abstract class BasePlugin {
   /** 对`Range[]`进行装饰 */
   public onDecorate?(entry: NodeEntry): Range[];
   /** 将`Fragment`序列化为`HTML` */
-  public serialize?(context: CopyContext): HTMLElement;
+  public serialize?(context: CopyContext): void;
   /** 将`HTML`反序列化为`Fragment` */
-  public deserialize?(context: PasteContext): BaseNode;
+  public deserialize?(context: PasteContext): void;
   /** 对节点进行`Normalize` */
   public normalize?(entry: NodeEntry): void;
 }
 
 export abstract class BlockPlugin extends BasePlugin {
   /** 块级节点类型 */
-  public readonly type = EDITOR_ELEMENT_TYPE.BLOCK;
+  public readonly type = PLUGIN_TYPE.BLOCK;
   /** 块节点匹配插件 */
   public abstract match(props: BlockProps): boolean;
   /** 渲染行节点 */
@@ -48,7 +47,7 @@ export abstract class BlockPlugin extends BasePlugin {
 
 export abstract class LeafPlugin extends BasePlugin {
   /** 块级节点类型 */
-  public readonly type = EDITOR_ELEMENT_TYPE.INLINE;
+  public readonly type = PLUGIN_TYPE.INLINE;
   /** 行内节点匹配插件 */
   public abstract match(props: LeafProps): boolean;
   /** 渲染行内节点 */

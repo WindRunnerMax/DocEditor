@@ -1,10 +1,11 @@
-import { DEFAULT_PRIORITY } from "doc-editor-utils";
+import { DEFAULT_PRIORITY, isFunction } from "doc-editor-utils";
 
 import type { EditorKit } from "../editor/";
 import type { BlockPlugin, EditorPlugin, LeafPlugin } from "./modules/declare";
 import { decorate, renderBlock, renderLeaf } from "./modules/render";
 import type { ApplyPlugins } from "./types/apply";
-import { EDITOR_ELEMENT_TYPE } from "./types/constant";
+import type { CallerMap, CallerType, PluginType } from "./types/constant";
+import { PLUGIN_TYPE } from "./types/constant";
 import { KEY_EVENT } from "./types/constant";
 
 export class PluginController {
@@ -37,12 +38,12 @@ export class PluginController {
     const decoratePlugins: EditorPlugin[] = [];
     plugins.sort((a, b) => (b.priority || DEFAULT_PRIORITY) - (a.priority || DEFAULT_PRIORITY));
     plugins.forEach(item => {
-      if (item.type === EDITOR_ELEMENT_TYPE.BLOCK) {
+      if (item.type === PLUGIN_TYPE.BLOCK) {
         blockPlugins.push(item);
         if (item.WITH_LEAF_PLUGINS) {
           leafPlugins.push(...item.WITH_LEAF_PLUGINS);
         }
-      } else if (item.type === EDITOR_ELEMENT_TYPE.INLINE) {
+      } else if (item.type === PLUGIN_TYPE.INLINE) {
         leafPlugins.push(item);
       }
       item.onCommand && this.editor.command.register(item.key, item.onCommand);
@@ -73,6 +74,23 @@ export class PluginController {
       },
     };
   };
+
+  public call<T extends CallerType>(key: T, payload: CallerMap[T], type?: PluginType) {
+    const plugins =
+      type === PLUGIN_TYPE.BLOCK
+        ? this.blocks
+        : type === PLUGIN_TYPE.INLINE
+        ? this.leaves
+        : this.current;
+    for (const plugin of plugins) {
+      try {
+        // @ts-expect-error payload match
+        plugin[key] && isFunction(plugin[key]) && plugin[key](payload);
+      } catch (error) {
+        this.editor.logger.warning(`Plugin ${plugin} Exec Error`, error);
+      }
+    }
+  }
 
   public reset = () => {
     const plugins = Object.values(this.pluginMap);
