@@ -4,6 +4,8 @@ export { AlignPlugin } from "./align";
 export { ALIGN_KEY } from "./align/types";
 export { BoldPlugin } from "./bold";
 export { BOLD_KEY } from "./bold/types";
+export { ClipboardPlugin } from "./clipboard";
+export { CLIPBOARD_KEY } from "./clipboard/types";
 export { CodeBlockPlugin } from "./codeblock";
 export { CODE_BLOCK_CONFIG, CODE_BLOCK_KEY, CODE_BLOCK_TYPE } from "./codeblock/types";
 export { DividingLinePlugin } from "./dividing-line";

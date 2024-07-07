@@ -52,6 +52,7 @@ export class PluginController {
     });
     this.blocks = blockPlugins;
     this.leaves = leafPlugins;
+    this.current = plugins;
 
     return {
       renderBlock: props => {

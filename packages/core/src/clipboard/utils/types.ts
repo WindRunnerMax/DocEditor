@@ -6,7 +6,7 @@ export type CopyContext = {
 };
 
 export type PasteContext = {
-  node: BaseNode;
+  nodes: BaseNode[];
   html: Node;
   files?: File[];
 };

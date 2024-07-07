@@ -7,6 +7,7 @@ import { Editor, Transforms } from "doc-editor-delta";
 import {
   AlignPlugin,
   BoldPlugin,
+  ClipboardPlugin,
   CodeBlockPlugin,
   DividingLinePlugin,
   DocToolBarPlugin,
@@ -53,6 +54,7 @@ export const SlateDocEditor: FC<{
     editor.logger.set(LOG_LEVEL.DEBUG);
     editor.plugin.register(
       new ParagraphPlugin(),
+      new ClipboardPlugin(editor),
       new HeadingPlugin(editor),
       new BoldPlugin(),
       new QuoteBlockPlugin(editor),

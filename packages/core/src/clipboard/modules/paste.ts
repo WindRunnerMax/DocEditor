@@ -5,7 +5,8 @@ import { EditorModule } from "../../editor/inject";
 import { CALLER_TYPE } from "../../plugin/types/constant";
 import { EDITOR_STATE } from "../../state/types";
 import { TEXT_DOC, TEXT_HTML, TEXT_PLAIN } from "../utils/constant";
-import type { PasteNodesContext } from "../utils/types";
+import { isDOMText } from "../utils/deserialize";
+import type { PasteContext, PasteNodesContext } from "../utils/types";
 
 export class Paste extends EditorModule {
   public onPaste = (event: React.ClipboardEvent<HTMLDivElement>) => {
@@ -30,24 +31,59 @@ export class Paste extends EditorModule {
       const nodes = TSON.parse<BaseNode[]>(textDoc);
       return nodes && this.applyNodes(nodes);
     }
-    if (textHTML || files.length) {
-      return this.deserialize(textHTML, files);
+    if (files.length) {
+      return this.processFiles(files);
+    }
+    if (textHTML) {
+      const parser = new DOMParser();
+      const html = parser.parseFromString(textHTML, "text/html");
+      if (!html.body || !html.body.hasChildNodes()) return void 0;
+      const rootNodes: BaseNode[] = this.deserialize(html.body);
+      return this.applyNodes(rootNodes);
     }
     if (textPlain) {
-      return this.handlePlainText(transfer);
+      return this.processPlainText(transfer);
     }
   };
 
-  private handlePlainText = (transfer: DataTransfer) => {
+  private processPlainText = (transfer: DataTransfer) => {
     // https://github.com/ianstormtaylor/slate/blob/25be3b/packages/slate-react/src/plugin/with-react.ts#L224
     this.raw.insertTextData(transfer);
   };
 
-  private deserialize(textHTML: string, files: File[]) {}
+  private processFiles = (files: File[]) => {
+    const context: PasteContext = { html: document.createDocumentFragment(), nodes: [], files };
+    this.plugin.call(CALLER_TYPE.DESERIALIZE, context);
+    this.applyNodes(context.nodes);
+  };
+
+  private deserialize(current: Node): BaseNode[] {
+    const root: BaseNode[] = [];
+    // NOTE: 结束条件 `Text`、`Image`等节点都会在此时处理
+    if (current.childNodes.length === 0) {
+      if (isDOMText(current)) {
+        const text = current.textContent || "";
+        root.push({ text });
+      } else {
+        const context: PasteContext = { nodes: root, html: current };
+        this.plugin.call(CALLER_TYPE.DESERIALIZE, context);
+      }
+      return root;
+    }
+    const children = Array.from(current.childNodes);
+    for (const child of children) {
+      const nodes = this.deserialize(child);
+      nodes.length && root.push(...nodes);
+    }
+    const context: PasteContext = { nodes: root, html: current };
+    this.plugin.call(CALLER_TYPE.DESERIALIZE, context);
+    return context.nodes;
+  }
 
   private applyNodes(nodes: BaseNode[]) {
     const context: PasteNodesContext = { nodes };
     this.plugin.call(CALLER_TYPE.WILL_PASTE_NODES, context);
+    this.logger.info("Editor Will Apply:", context.nodes);
     this.raw.insertFragment(context.nodes);
   }
 }

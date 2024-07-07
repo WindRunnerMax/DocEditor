@@ -9,6 +9,8 @@ declare module "doc-editor-delta/dist/interface" {
 
 export const HIGHLIGHT_BLOCK_KEY = "highlight-block";
 
+export const HL_DOM_TAG = "data-hl-block";
+
 export const COLOR_MAP: AssertT<BlockElement["highlight-block"]>[] = [
   { background: "var(--arcoblue-3)", border: "var(--arcoblue-6)" },
   { background: "var(--green-3)", border: "var(--green-6)" },

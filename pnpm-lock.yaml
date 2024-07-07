@@ -325,8 +325,8 @@ importers:
         specifier: 'workspace: *'
         version: link:../delta
       laser-utils:
-        specifier: 0.0.2-alpha.16
-        version: 0.0.2-alpha.16
+        specifier: 0.0.2-alpha.17
+        version: 0.0.2-alpha.17
       react:
         specifier: '>=16'
         version: 17.0.2
@@ -10064,8 +10064,8 @@ packages:
     resolution: {integrity: sha512-9Ke74rX3URh6V6XRI2E4sjQCohlZsgN4ELls8Uh/nOiTa5ko9hLXswjBeD70N1JXbmFdRlflzlsqtW1VKzlQEQ==}
     dev: false
 
-  /laser-utils@0.0.2-alpha.16:
-    resolution: {integrity: sha512-pJxg5cmkp2DKoJMdhdjF9ljB1AKg4WrzXpQN+9piyM+1osHuEca1HmKEsRmEI6qIYiGOICw1Z3UbD1uzBx5VJw==}
+  /laser-utils@0.0.2-alpha.17:
+    resolution: {integrity: sha512-/RwqLNjQ8iDwArA0jiaZIIMrIJitHVUEmwYkzlTVY1hH1+rxM1ISsZuuOtcnzLDBETVFs0GolDZJxD+K0VFf+Q==}
     dev: false
 
   /last-call-webpack-plugin@3.0.0:

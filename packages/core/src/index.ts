@@ -1,4 +1,6 @@
 export type { Clipboard } from "./clipboard";
+export { isDOMElement, isDOMNode, isDOMText, isHTMLElement } from "./clipboard/utils/deserialize";
+export { getFragmentText, getTextContent, serializeHTML } from "./clipboard/utils/serialize";
 export type { CopyContext, PasteContext } from "./clipboard/utils/types";
 export type { Command } from "./command";
 export type { CommandFn, EditorCommands } from "./command/types";

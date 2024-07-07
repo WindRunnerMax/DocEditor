@@ -55,9 +55,8 @@ export class Copy extends EditorModule {
   };
 
   public copy(nodes: BaseNode[]) {
-    const rootNode = document.createDocumentFragment();
     const root = { children: nodes };
-    this.serialize(root, rootNode);
+    const rootNode = this.serialize(root);
     const context: CopyContext = { node: root, html: rootNode };
     this.plugin.call(CALLER_TYPE.WILL_SET_CLIPBOARD, context);
     const plainText = getFragmentText(context.html);
@@ -72,7 +71,10 @@ export class Copy extends EditorModule {
     writeToClipboard(dataTransfer);
   }
 
-  private serialize(current: BaseNode, root: Node) {
+  private serialize(current: BaseNode): DocumentFragment;
+  private serialize<T extends Node>(current: BaseNode, rootNode?: T): T;
+  private serialize<T extends Node>(current: BaseNode, rootNode?: T): T {
+    const root = rootNode || document.createDocumentFragment();
     if (this.reflex.isTextBlock(current)) {
       const lineFragment = document.createDocumentFragment();
       current.children.forEach(child => {
@@ -87,14 +89,17 @@ export class Copy extends EditorModule {
       const lineNode = document.createElement("div");
       lineNode.setAttribute(LINE_TAG, "true");
       lineNode.appendChild(context.html);
-      return root.appendChild(lineNode);
+      root.appendChild(lineNode);
+      return root as T;
     }
     if (this.reflex.isBlock(current)) {
       const lineFragment = document.createDocumentFragment();
       current.children.forEach(child => this.serialize(child, lineFragment));
       const context: CopyContext = { node: current, html: lineFragment };
       this.plugin.call(CALLER_TYPE.SERIALIZE, context, PLUGIN_TYPE.BLOCK);
-      return root.appendChild(context.html);
+      root.appendChild(context.html);
+      return root as T;
     }
+    return root as T;
   }
 }

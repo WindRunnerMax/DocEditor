@@ -22,7 +22,7 @@ export type CallerType = Object.Values<typeof CALLER_TYPE>;
 
 type AnyFn = (...args: any[]) => any;
 type PickPluginType<key extends keyof EditorPlugin> = Required<EditorPlugin>[key] extends AnyFn
-  ? Parameters<Required<EditorPlugin>[key]>["0"]
+  ? Parameters<Required<EditorPlugin>[key]>[0]
   : null;
 
 export type CallerMap = {

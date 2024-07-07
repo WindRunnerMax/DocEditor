@@ -20,8 +20,8 @@
     "react": ">=16"
   },
   "dependencies": {
-    "laser-utils": "0.0.2-alpha.16",
-    "doc-editor-delta": "workspace: *"
+    "doc-editor-delta": "workspace: *",
+    "laser-utils": "0.0.2-alpha.17"
   },
   "devDependencies": {
     "@babel/core": "7.20.12",

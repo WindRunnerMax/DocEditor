@@ -56,6 +56,7 @@ export {
   isObject,
   isPlainNumber,
   isString,
+  RegExec,
   storage,
   TSON,
 } from "laser-utils";
