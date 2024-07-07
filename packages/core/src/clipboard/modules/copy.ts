@@ -2,7 +2,7 @@ import type { BaseNode } from "doc-editor-delta";
 import { isText } from "doc-editor-utils";
 
 import { EditorModule } from "../../editor/inject";
-import { CALLER_TYPE, PLUGIN_TYPE } from "../../plugin/types/constant";
+import { CALLER_TYPE, PLUGIN_TYPE } from "../../plugin/types/apply";
 import { LINE_TAG, TEXT_DOC, TEXT_HTML, TEXT_PLAIN } from "../utils/constant";
 import { getFragmentText, serializeHTML, writeToClipboard } from "../utils/serialize";
 import type { CopyContext } from "../utils/types";

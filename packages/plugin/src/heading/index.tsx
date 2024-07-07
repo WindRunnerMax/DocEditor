@@ -2,7 +2,8 @@ import "./index.scss";
 
 import type { BlockContext, CommandFn } from "doc-editor-core";
 import type { EditorKit } from "doc-editor-core";
-import { BlockPlugin, KEY_EVENT } from "doc-editor-core";
+import type { WithStop } from "doc-editor-core";
+import { BlockPlugin, EDITOR_EVENT } from "doc-editor-core";
 import type { RenderElementProps } from "doc-editor-delta";
 import { Transforms } from "doc-editor-delta";
 import { getUniqueId, KEYBOARD } from "doc-editor-utils";
@@ -27,9 +28,12 @@ export class HeadingPlugin extends BlockPlugin {
 
   constructor(private editor: EditorKit) {
     super();
+    this.editor.event.on(EDITOR_EVENT.KEY_DOWN, this.onKeyDown);
   }
 
-  public destroy(): void {}
+  public destroy(): void {
+    this.editor.event.off(EDITOR_EVENT.KEY_DOWN, this.onKeyDown);
+  }
 
   public match(props: RenderElementProps): boolean {
     return !!props.element[HEADING_KEY];
@@ -79,7 +83,7 @@ export class HeadingPlugin extends BlockPlugin {
     }
   }
 
-  public onKeyDown(event: KeyboardEvent<HTMLDivElement>): boolean | void {
+  public onKeyDown = (event: WithStop<KeyboardEvent<HTMLDivElement>>): void => {
     const editor = this.editor;
     if (
       isMatchedEvent(event, KEYBOARD.BACKSPACE, KEYBOARD.ENTER) &&
@@ -87,34 +91,33 @@ export class HeadingPlugin extends BlockPlugin {
     ) {
       const match = getBlockNode(editor.raw);
 
-      if (match) {
-        const { block, path } = match;
-        if (!block[HEADING_KEY]) return void 0;
+      if (!match) return event.stop();
+      const { block, path } = match;
+      if (!block[HEADING_KEY]) return void 0;
 
-        if (isBaseElement(block)) {
-          if (event.key === KEYBOARD.BACKSPACE && isFocusLineStart(editor.raw, path)) {
-            setUnBlockNode(editor.raw, [HEADING_KEY], { at: path });
-            event.preventDefault();
+      if (isBaseElement(block)) {
+        if (event.key === KEYBOARD.BACKSPACE && isFocusLineStart(editor.raw, path)) {
+          setUnBlockNode(editor.raw, [HEADING_KEY], { at: path });
+          event.preventDefault();
+        }
+        if (event.key === KEYBOARD.ENTER && isFocusLineEnd(editor.raw, path)) {
+          const attributes = getBlockAttributes(block, [HEADING_KEY]);
+          if (isWrappedNode(editor.raw)) {
+            // 在`wrap`的情况下插入节点会出现问题 先多插入一个空格再删除
+            Transforms.insertNodes(
+              editor.raw,
+              { ...attributes, children: [{ text: " " }] },
+              { at: editor.raw.selection.focus, select: false }
+            );
+            Transforms.move(editor.raw, { distance: 1 });
+            Promise.resolve().then(() => editor.raw.deleteForward("character"));
+          } else {
+            Transforms.insertNodes(editor.raw, { ...attributes, children: [{ text: "" }] });
           }
-          if (event.key === KEYBOARD.ENTER && isFocusLineEnd(editor.raw, path)) {
-            const attributes = getBlockAttributes(block, [HEADING_KEY]);
-            if (isWrappedNode(editor.raw)) {
-              // 在`wrap`的情况下插入节点会出现问题 先多插入一个空格再删除
-              Transforms.insertNodes(
-                editor.raw,
-                { ...attributes, children: [{ text: " " }] },
-                { at: editor.raw.selection.focus, select: false }
-              );
-              Transforms.move(editor.raw, { distance: 1 });
-              Promise.resolve().then(() => editor.raw.deleteForward("character"));
-            } else {
-              Transforms.insertNodes(editor.raw, { ...attributes, children: [{ text: "" }] });
-            }
-            event.preventDefault();
-          }
+          event.preventDefault();
         }
       }
-      return KEY_EVENT.STOP;
+      return event.stop();
     }
-  }
+  };
 }

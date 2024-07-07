@@ -4,7 +4,7 @@ import { getNodeTupleByDepth, isBlock } from "doc-editor-utils";
 
 import type { EditorKit } from "../editor";
 import type { EditorRaw } from "../editor/types";
-import { CALLER_TYPE, PLUGIN_TYPE } from "../plugin/types/constant";
+import { CALLER_TYPE, PLUGIN_TYPE } from "../plugin/types/apply";
 import { NormalizeRules } from "./rules";
 import type { EditorSchema } from "./types";
 

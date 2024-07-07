@@ -2,7 +2,7 @@ import type { BaseNode } from "doc-editor-delta";
 import { TSON } from "doc-editor-utils";
 
 import { EditorModule } from "../../editor/inject";
-import { CALLER_TYPE } from "../../plugin/types/constant";
+import { CALLER_TYPE } from "../../plugin/types/apply";
 import { EDITOR_STATE } from "../../state/types";
 import { TEXT_DOC, TEXT_HTML, TEXT_PLAIN } from "../utils/constant";
 import { isDOMText } from "../utils/deserialize";

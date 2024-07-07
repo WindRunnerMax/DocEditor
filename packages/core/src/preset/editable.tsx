@@ -43,8 +43,8 @@ export class Editable extends React.PureComponent<EditableProps, EditableState> 
   }
 
   private onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.nativeEvent.isComposing) return void 0;
     this.props.editor.event.trigger(EDITOR_EVENT.KEY_DOWN, event);
-    this.state.renderModule.onKeyDown(event);
   };
 
   private onKeyPress = (event: React.KeyboardEvent<HTMLDivElement>) => {

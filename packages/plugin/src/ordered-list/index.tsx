@@ -1,8 +1,8 @@
 import "./index.scss";
 
-import type { BlockContext, CommandFn } from "doc-editor-core";
+import type { BlockContext, CommandFn, WithStop } from "doc-editor-core";
 import type { EditorKit } from "doc-editor-core";
-import { BlockPlugin, KEY_EVENT } from "doc-editor-core";
+import { BlockPlugin, EDITOR_EVENT } from "doc-editor-core";
 import type { RenderElementProps } from "doc-editor-delta";
 import { Transforms } from "doc-editor-delta";
 import { assertValue, isMatchWrapNode } from "doc-editor-utils";
@@ -21,9 +21,12 @@ export class OrderedListPlugin extends BlockPlugin {
 
   constructor(private editor: EditorKit) {
     super();
+    this.editor.event.on(EDITOR_EVENT.KEY_DOWN, this.onKeyDown);
   }
 
-  public destroy(): void {}
+  public destroy(): void {
+    this.editor.event.off(EDITOR_EVENT.KEY_DOWN, this.onKeyDown);
+  }
 
   public match(props: RenderElementProps): boolean {
     return (
@@ -65,7 +68,7 @@ export class OrderedListPlugin extends BlockPlugin {
     }
   }
 
-  public onKeyDown(event: KeyboardEvent<HTMLDivElement>): boolean | void {
+  public onKeyDown = (event: WithStop<KeyboardEvent<HTMLDivElement>>) => {
     const editor = this.editor;
     if (
       isMatchedEvent(event, KEYBOARD.BACKSPACE, KEYBOARD.ENTER, KEYBOARD.TAB) &&
@@ -89,7 +92,7 @@ export class OrderedListPlugin extends BlockPlugin {
         }
         calcOrderListLevels(editor.raw);
         event.preventDefault();
-        return KEY_EVENT.STOP;
+        return event.stop();
       }
 
       // 相当于匹配`Enter`和`Backspace`的情况下
@@ -103,14 +106,14 @@ export class OrderedListPlugin extends BlockPlugin {
           );
           calcOrderListLevels(editor.raw);
           event.preventDefault();
-          return KEY_EVENT.STOP;
+          return event.stop();
         } else {
           if (!isWrappedEdgeNode(editor.raw, "or", { wrapNode: wrapMatch, itemNode: itemMatch })) {
             if (isMatchedEvent(event, KEYBOARD.BACKSPACE)) {
               editor.raw.deleteBackward("block");
               calcOrderListLevels(editor.raw);
               event.preventDefault();
-              return KEY_EVENT.STOP;
+              return event.stop();
             }
           } else {
             setUnWrapNodes(editor.raw, {
@@ -119,7 +122,7 @@ export class OrderedListPlugin extends BlockPlugin {
             });
             calcNextOrderListLevels(editor.raw);
             event.preventDefault();
-            return KEY_EVENT.STOP;
+            return event.stop();
           }
         }
       }
@@ -129,7 +132,7 @@ export class OrderedListPlugin extends BlockPlugin {
         calcOrderListLevels(editor.raw);
         event.preventDefault();
       }
-      return KEY_EVENT.STOP;
+      return event.stop();
     }
-  }
+  };
 }

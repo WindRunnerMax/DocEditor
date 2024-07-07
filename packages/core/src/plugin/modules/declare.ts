@@ -2,8 +2,8 @@ import type { NodeEntry, Range } from "doc-editor-delta";
 
 import type { CopyContext, PasteContext, PasteNodesContext } from "../../clipboard/utils/types";
 import type { CommandFn } from "../../command/types";
-import type { PluginType } from "../types/constant";
-import { PLUGIN_TYPE } from "../types/constant";
+import type { PluginType } from "../types/apply";
+import { PLUGIN_TYPE } from "../types/apply";
 import type { BlockContext, BlockProps, LeafContext, LeafProps } from "../types/context";
 
 abstract class BasePlugin {
@@ -20,8 +20,6 @@ abstract class BasePlugin {
   public abstract destroy(): void;
   /** 插件命令注册 */
   public onCommand?: CommandFn;
-  /** 按键事件注册 */
-  public onKeyDown?(event: React.KeyboardEvent<HTMLDivElement>): boolean | void;
   /** 对`Range[]`进行装饰 */
   public onDecorate?(entry: NodeEntry): Range[];
   /** 将`Fragment`序列化为`HTML` */

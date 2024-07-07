@@ -20,7 +20,7 @@ export type BlockContext = BaseContext & {
 
 export type LeafContext = BaseContext & {
   props: LeafProps;
-  // 需要配合`decorate`使用
+  /** 需要配合`decorate`使用  */
   // https://github.com/ianstormtaylor/slate/blob/25be3b/packages/slate-react/src/components/text.tsx#L39
   leaf: LeafProps["leaf"];
   element: LeafProps["text"];

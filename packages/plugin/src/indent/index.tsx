@@ -1,5 +1,5 @@
 import type { EditorKit } from "doc-editor-core";
-import { BlockPlugin } from "doc-editor-core";
+import { BlockPlugin, EDITOR_EVENT } from "doc-editor-core";
 import { Transforms } from "doc-editor-delta";
 import { DEFAULT_PRIORITY, isCollapsed, isMatchedEvent } from "doc-editor-utils";
 import { KEYBOARD } from "doc-editor-utils";
@@ -13,15 +13,18 @@ export class IndentPlugin extends BlockPlugin {
 
   constructor(private editor: EditorKit) {
     super();
+    this.editor.event.on(EDITOR_EVENT.KEY_DOWN, this.onKeyDown);
   }
 
-  public destroy(): void {}
+  public destroy(): void {
+    this.editor.event.off(EDITOR_EVENT.KEY_DOWN, this.onKeyDown);
+  }
 
   public match(): boolean {
     return false;
   }
 
-  public onKeyDown(event: KeyboardEvent<HTMLDivElement>): boolean | void {
+  public onKeyDown(event: KeyboardEvent<HTMLDivElement>) {
     if (
       isMatchedEvent(event, KEYBOARD.TAB) &&
       isCollapsed(this.editor.raw, this.editor.raw.selection)

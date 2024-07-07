@@ -4,9 +4,8 @@ import type { EditorKit } from "../editor/";
 import type { BlockPlugin, EditorPlugin, LeafPlugin } from "./modules/declare";
 import { decorate, renderBlock, renderLeaf } from "./modules/render";
 import type { ApplyPlugins } from "./types/apply";
-import type { CallerMap, CallerType, PluginType } from "./types/constant";
-import { PLUGIN_TYPE } from "./types/constant";
-import { KEY_EVENT } from "./types/constant";
+import type { CallerMap, CallerType, PluginType } from "./types/apply";
+import { PLUGIN_TYPE } from "./types/apply";
 
 export class PluginController {
   public blocks: BlockPlugin[];
@@ -34,7 +33,6 @@ export class PluginController {
     const plugins = Object.values(this.pluginMap);
     const blockPlugins: BlockPlugin[] = [];
     const leafPlugins: LeafPlugin[] = [];
-    const keyDownPlugins: EditorPlugin[] = [];
     const decoratePlugins: EditorPlugin[] = [];
     plugins.sort((a, b) => (b.priority || DEFAULT_PRIORITY) - (a.priority || DEFAULT_PRIORITY));
     plugins.forEach(item => {
@@ -47,7 +45,6 @@ export class PluginController {
         leafPlugins.push(item);
       }
       item.onCommand && this.editor.command.register(item.key, item.onCommand);
-      item.onKeyDown && keyDownPlugins.push(item);
       item.onDecorate && decoratePlugins.push(item);
     });
     this.blocks = blockPlugins;
@@ -60,15 +57,6 @@ export class PluginController {
       },
       renderLeaf: props => {
         return renderLeaf(props, leafPlugins);
-      },
-      onKeyDown: event => {
-        // TODO: 键盘事件由`Event`模块统一处理
-        if (event.nativeEvent.isComposing) return void 0;
-        for (const item of keyDownPlugins) {
-          // 返回`STOP`则停止继续执行
-          if (item.onKeyDown && item.onKeyDown(event) === KEY_EVENT.STOP) break;
-        }
-        return void 0;
       },
       decorate: entry => {
         return decorate(entry, decoratePlugins);

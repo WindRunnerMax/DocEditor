@@ -1,5 +1,5 @@
 import type { EditorKit } from "doc-editor-core";
-import { BlockPlugin } from "doc-editor-core";
+import { BlockPlugin, EDITOR_EVENT } from "doc-editor-core";
 import { Editor, Transforms } from "doc-editor-delta";
 import { DEFAULT_PRIORITY, getBlockNode } from "doc-editor-utils";
 import { isCollapsed, isMatchedEvent } from "doc-editor-utils";
@@ -30,15 +30,18 @@ export class ShortCutPlugin extends BlockPlugin {
 
   constructor(private editor: EditorKit) {
     super();
+    this.editor.event.on(EDITOR_EVENT.KEY_DOWN, this.onKeyDown);
   }
 
-  public destroy(): void {}
+  public destroy(): void {
+    this.editor.event.off(EDITOR_EVENT.KEY_DOWN, this.onKeyDown);
+  }
 
   public match(): boolean {
     return false;
   }
 
-  public onKeyDown(event: KeyboardEvent<HTMLDivElement>): boolean | void {
+  public onKeyDown(event: KeyboardEvent<HTMLDivElement>) {
     const editor = this.editor;
     if (isMatchedEvent(event, KEYBOARD.SPACE) && isCollapsed(editor.raw, editor.raw.selection)) {
       const match = getBlockNode(editor.raw);
