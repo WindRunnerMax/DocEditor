@@ -49,7 +49,8 @@ export class ReactLivePlugin extends BlockPlugin {
     return !!props.element[REACT_LIVE_KEY];
   }
 
-  public onCommand: CommandFn = (editor, _, { path }) => {
+  public onCommand: CommandFn = ({ path }) => {
+    const editor = this.editor;
     const blockPath = path && getClosestBlockPath(editor.raw, path);
     if (!blockPath) return void 0;
     // 删除当前行的块内容 等待节点的插入

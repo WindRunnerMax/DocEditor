@@ -23,9 +23,9 @@ export class FlowChartPlugin extends BlockPlugin {
     return existKey(props.element, FLOW_CHART_KEY);
   }
 
-  public onCommand: CommandFn = editor => {
+  public onCommand: CommandFn = () => {
     const uuid = getUniqueId();
-    setBlockNode(editor.raw, {
+    setBlockNode(this.editor.raw, {
       uuid,
       [FLOW_CHART_KEY]: { type: "xml" as const, content: "" },
       children: [{ text: "" }],

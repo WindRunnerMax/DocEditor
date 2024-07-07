@@ -6,10 +6,7 @@ import {
   IconRight,
   IconScissor,
 } from "@arco-design/web-react/icon";
-import type { BaseNode } from "doc-editor-delta";
 import { Transforms } from "doc-editor-delta";
-import { EditorNode } from "doc-editor-delta";
-import { isBlock, isText, isTextBlock } from "doc-editor-utils";
 import React from "react";
 
 import { TriggerMenu } from "../components/trigger-menu";
@@ -22,23 +19,9 @@ export const OperationDocToolBarPlugin: DocToolbarPlugin = {
   renderSignal: () => null,
   renderBanner: state => {
     if (state.status.isEmptyLine) return null;
-    // TODO: Editor Clipboard Module 覆盖`OnCopy`等事件
     // https://github.com/ianstormtaylor/slate/blob/25be3b/packages/slate-react/src/components/editable.tsx#L931
     const onCopy = () => {
-      const editor = state.editor;
-      const fragments = [state.element];
-      const parseText = (fragment: BaseNode[]): string => {
-        return fragment
-          .map(item => {
-            if (isText(item)) return EditorNode.string(item);
-            else if (isTextBlock(editor.raw, item)) return parseText(item.children) + "\n";
-            else if (isBlock(editor.raw, item)) return parseText(item.children);
-            else return "";
-          })
-          .join("");
-      };
-      const text = parseText(fragments).replace(/\n$/, "");
-      navigator.clipboard.writeText(text);
+      state.editor.clipboard.copyNode([state.element]);
       state.close();
     };
     const onDelete = () => {

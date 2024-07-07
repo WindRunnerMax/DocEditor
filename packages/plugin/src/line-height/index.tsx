@@ -1,4 +1,4 @@
-import type { BlockContext, CommandFn } from "doc-editor-core";
+import type { BlockContext, CommandFn, EditorKit } from "doc-editor-core";
 import { BlockPlugin } from "doc-editor-core";
 import type { RenderElementProps } from "doc-editor-delta";
 import { assertValue } from "doc-editor-utils";
@@ -13,13 +13,19 @@ export class LineHeightPlugin extends BlockPlugin {
   public key: string = LINE_HEIGHT_KEY;
   private popupModel: Popup | null = null;
 
+  constructor(private editor: EditorKit) {
+    super();
+  }
+
   public destroy(): void {}
 
   public match(props: RenderElementProps): boolean {
     return !!props.element[LINE_HEIGHT_KEY];
   }
 
-  public onCommand: CommandFn = (editor, key, data) => {
+  public onCommand: CommandFn = data => {
+    const key = this.key;
+    const editor = this.editor;
     if (data && data.position && !this.popupModel) {
       let config = 1.8;
       const match = getBlockNode(editor.raw, { key: LINE_HEIGHT_KEY });

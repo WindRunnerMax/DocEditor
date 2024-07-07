@@ -14,7 +14,7 @@ export class Command {
   };
 
   exec = (key: string, data: CommandPayload) => {
-    return this.commands[key] && this.commands[key](this.editor, key, data);
+    return this.commands[key] && this.commands[key](data);
   };
 
   destroy = () => {

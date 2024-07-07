@@ -1,6 +1,6 @@
 import "./index.scss";
 
-import type { CommandFn } from "doc-editor-core";
+import type { CommandFn, EditorKit } from "doc-editor-core";
 import type { BlockContext, BlockProps } from "doc-editor-core";
 import { BlockPlugin } from "doc-editor-core";
 import { isObject } from "doc-editor-utils";
@@ -12,11 +12,15 @@ import { ALIGN_KEY } from "./types";
 export class AlignPlugin extends BlockPlugin {
   public readonly key: string = ALIGN_KEY;
 
+  constructor(private editor: EditorKit) {
+    super();
+  }
+
   public destroy(): void {}
 
-  public onCommand: CommandFn = (editor, key, data) => {
-    if (isObject(data) && !isMatchedAttributeNode(editor.raw, ALIGN_KEY, data.extraKey)) {
-      setBlockNode(editor.raw, { [key]: data.extraKey });
+  public onCommand: CommandFn = data => {
+    if (isObject(data) && !isMatchedAttributeNode(this.editor.raw, ALIGN_KEY, data.extraKey)) {
+      setBlockNode(this.editor.raw, { [this.key]: data.extraKey });
     }
   };
 

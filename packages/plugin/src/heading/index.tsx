@@ -35,7 +35,9 @@ export class HeadingPlugin extends BlockPlugin {
     return !!props.element[HEADING_KEY];
   }
 
-  public onCommand?: CommandFn = (editor, key, data) => {
+  public onCommand: CommandFn = data => {
+    const key = this.key;
+    const editor = this.editor;
     if (isObject(data) && data.path) {
       if (!isMatchedAttributeNode(editor.raw, `${HEADING_KEY}.type`, data.extraKey)) {
         setBlockNode(

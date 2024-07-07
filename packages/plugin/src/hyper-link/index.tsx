@@ -24,7 +24,9 @@ export class HyperLinkPlugin extends LeafPlugin {
     return !!props.leaf[HYPER_LINK_KEY];
   }
 
-  public onCommand?: CommandFn = (editor, key, data) => {
+  public onCommand?: CommandFn = data => {
+    const key = this.key;
+    const editor = this.editor;
     if (data && data.position && data.marks && !this.popupModel) {
       const position = data.position;
       const config: HyperLinkConfig = {

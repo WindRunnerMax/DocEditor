@@ -58,7 +58,7 @@ export class CodeBlockPlugin extends BlockPlugin {
     return !!props.element[CODE_BLOCK_KEY];
   }
 
-  public onCommand: CommandFn = (_, __, { path }) => {
+  public onCommand: CommandFn = ({ path }) => {
     const blockPath = path && getClosestBlockPath(this.raw, path);
     if (!blockPath) return void 0;
     Transforms.delete(this.raw, { at: blockPath, unit: "block" });

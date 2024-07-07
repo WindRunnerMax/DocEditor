@@ -45,7 +45,7 @@ export class TablePlugin extends BlockPlugin {
     );
   }
 
-  public onCommand: CommandFn = (_, __, { path, origin }) => {
+  public onCommand: CommandFn = ({ path, origin }) => {
     const blockPath = path && getClosestBlockPath(this.raw, path);
     if (!blockPath) return void 0;
     const [, row, col] = origin?.split(".") || [];

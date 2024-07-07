@@ -32,7 +32,8 @@ export class HighlightBlockPlugin extends BlockPlugin {
     return !!props.element[HIGHLIGHT_BLOCK_KEY];
   }
 
-  public onCommand: CommandFn = (editor, _, { path }) => {
+  public onCommand: CommandFn = ({ path }) => {
+    const editor = this.editor;
     const blockPath = path && getClosestBlockPath(editor.raw, path);
     if (!blockPath) return void 0;
     Transforms.delete(editor.raw, { at: blockPath, unit: "block" });

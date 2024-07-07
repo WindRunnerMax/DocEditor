@@ -85,7 +85,8 @@ export class ImagePlugin extends BlockPlugin {
     });
   };
 
-  public onCommand: CommandFn = (editor, _, data) => {
+  public onCommand: CommandFn = data => {
+    const editor = this.editor;
     let imageInput = document.getElementById(this.IMAGE_INPUT_DOM_ID);
     if (!imageInput) {
       imageInput = document.createElement("input");

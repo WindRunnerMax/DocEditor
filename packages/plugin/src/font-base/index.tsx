@@ -1,4 +1,4 @@
-import type { CommandFn, LeafContext } from "doc-editor-core";
+import type { CommandFn, EditorKit, LeafContext } from "doc-editor-core";
 import { LeafPlugin } from "doc-editor-core";
 import type { RenderLeafProps } from "doc-editor-delta";
 import { assertValue } from "doc-editor-utils";
@@ -13,13 +13,17 @@ export class FontBasePlugin extends LeafPlugin {
   public key: string = FONT_BASE_KEY;
   private popupModel: Popup | null = null;
 
+  constructor(private editor: EditorKit) {
+    super();
+  }
+
   public destroy(): void {}
 
   public match(props: RenderLeafProps): boolean {
     return !!props.leaf[FONT_BASE_KEY];
   }
 
-  public onCommand?: CommandFn = (editor, key, data) => {
+  public onCommand: CommandFn = data => {
     if (data && data.position && data.marks && !this.popupModel) {
       const config: FontBaseConfig = data.marks[FONT_BASE_KEY] || {};
       const position = data.position;
@@ -36,7 +40,7 @@ export class FontBasePlugin extends LeafPlugin {
             left={position.left}
             top={position.top}
             onChange={value => {
-              setTextNode(editor.raw, { [key]: value });
+              setTextNode(this.editor.raw, { [this.key]: value });
             }}
           />
         );

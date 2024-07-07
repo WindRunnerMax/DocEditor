@@ -30,7 +30,8 @@ export class UnorderedListPlugin extends BlockPlugin {
     );
   }
 
-  public onCommand: CommandFn = (editor, key, data) => {
+  public onCommand: CommandFn = data => {
+    const editor = this.editor;
     if (isObject(data) && data.path) {
       if (!editor.reflex.isMatchAboveBlockNode(UNORDERED_LIST_KEY, data.path)) {
         setWrapNodes(
