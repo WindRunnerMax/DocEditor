@@ -47,4 +47,8 @@ export class Selection {
   public focus() {
     ReactEditor.focus(this.raw);
   }
+
+  public isFocused() {
+    return ReactEditor.isFocused(this.raw);
+  }
 }

@@ -38,9 +38,12 @@ export class EventBus {
     if (!handler) return void 0;
     let stop = false;
     const duplicate = payload as WithStop<EventMap[T]>;
-    duplicate.stop = () => {
-      stop = true;
-    };
+    // COMPAT: 兼容`Nil`的情况 不可写的对象静默失败
+    if (duplicate) {
+      duplicate.stop = () => {
+        stop = true;
+      };
+    }
     for (const item of handler) {
       item.listener(duplicate);
       item.once && this.off(key, item.listener);
