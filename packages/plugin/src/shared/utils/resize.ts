@@ -49,10 +49,11 @@ export const createResizeObserver = (dom: HTMLElement, callback: ResizeCallback)
         "user-select: none",
         "visibility: hidden",
         "pointer-events: none",
-        "translate(-999999px, -999999px)",
+        "transform: translate(-999999px, -999999px)",
       ].join(";")
     );
-    if (iframe.contentWindow) {
+    iframe.onload = () => {
+      if (!iframe.contentWindow) return void 0;
       iframe.contentWindow.onresize = () => {
         const { clientWidth: width, clientHeight: height } = dom;
         if (width !== prevWidth || height !== prevHeight) {
@@ -61,7 +62,7 @@ export const createResizeObserver = (dom: HTMLElement, callback: ResizeCallback)
           prevHeight = height;
         }
       };
-    }
+    };
     dom.appendChild(iframe);
     return () => {
       dom.removeChild(iframe);
