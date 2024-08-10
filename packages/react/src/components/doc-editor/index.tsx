@@ -42,7 +42,7 @@ import { schema } from "./schema";
 export const SlateDocEditor: FC<{
   readonly: boolean;
 }> = props => {
-  const editor = useMakeEditor(schema, example);
+  const editor = useMakeEditor(schema, { init: example });
 
   useMemo(() => {
     // @ts-expect-error example debug

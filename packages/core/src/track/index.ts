@@ -13,7 +13,9 @@ export class Track {
     this.raw = editor.raw;
     this.batchFlat = [];
     this.isBatching = false;
-    this.editor.event.on(EDITOR_EVENT.CONTENT_CHANGE, this.onApply);
+    if (this.editor.options.history) {
+      this.editor.event.on(EDITOR_EVENT.CONTENT_CHANGE, this.onApply);
+    }
   }
 
   public destroy() {
@@ -41,6 +43,7 @@ export class Track {
   }
 
   public batch(fn: () => void) {
+    if (!this.editor.options.history) return void 0;
     // NOTE: 暂时无嵌套的场景 在有需要时实现`Batch Op Stack`
     // Batch Start
     //   Batch Start
@@ -59,10 +62,12 @@ export class Track {
   }
 
   public undo() {
+    if (!this.editor.options.history) return void 0;
     this.raw.undo();
   }
 
   public redo() {
+    if (!this.editor.options.history) return void 0;
     this.raw.redo();
   }
 

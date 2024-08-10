@@ -1,4 +1,4 @@
-import type { BaseRange } from "doc-editor-delta";
+import type { BaseRange, Location } from "doc-editor-delta";
 import { Range, ReactEditor, Transforms } from "doc-editor-delta";
 
 import type { EditorKit } from "../editor";
@@ -23,7 +23,7 @@ export class Selection {
     return sel;
   }
 
-  public set(range: BaseRange | null) {
+  public set(range: Location | null) {
     if (!range) {
       // https://github.com/ianstormtaylor/slate/blob/25be3b/packages/slate/src/transforms/selection.ts#L60
       if (this.raw.selection) {
@@ -34,7 +34,7 @@ export class Selection {
         });
       }
     } else {
-      Transforms.setSelection(this.raw, range);
+      Transforms.select(this.raw, range);
     }
   }
 

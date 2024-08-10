@@ -1,4 +1,4 @@
-import type { BaseNode, Editor } from "doc-editor-delta";
+import type { Editor } from "doc-editor-delta";
 import type { ReactEditor } from "doc-editor-delta";
 import { createEditor } from "doc-editor-delta";
 import { withHistory } from "doc-editor-delta";
@@ -16,7 +16,8 @@ import type { EditorSchema } from "../schema/types";
 import { Selection } from "../selection";
 import { State } from "../state";
 import { Track } from "../track";
-import type { EditorRaw } from "./types";
+import { DEFAULT_OPTIONS } from "./constant";
+import type { EditorOptions, EditorRaw } from "./types";
 
 /**
  * 1. 完整封装组件 通过`Editor`重新分发事件
@@ -27,8 +28,8 @@ import type { EditorRaw } from "./types";
 export class EditorKit {
   /** 原始对象 */
   public readonly raw: EditorRaw;
-  /** 初始化渲染的内容 */
-  public readonly init?: BaseNode[];
+  /** 初始化参数 */
+  public readonly options: EditorOptions;
   /** 内容更新与选区变换 */
   public readonly do: Do;
   /** 事件监听与分发 */
@@ -52,11 +53,11 @@ export class EditorKit {
   /** 插件化控制器 */
   public readonly plugin: PluginController;
 
-  constructor(config: EditorSchema, init?: BaseNode[]) {
-    const raw = withHistory(withReact(createEditor() as Editor & ReactEditor));
+  constructor(config: EditorSchema, options?: Partial<EditorOptions>) {
+    const raw = withReact(createEditor() as Editor & ReactEditor);
     const schema = new Schema(config, this);
-    this.raw = schema.with(raw);
-    this.init = init;
+    this.options = { ...DEFAULT_OPTIONS, ...options };
+    this.raw = schema.with(this.options.history ? withHistory(raw) : raw);
     this.schema = schema;
     this.logger = new Logger(LOG_LEVEL.ERROR);
     this.reflex = new Reflex(this);

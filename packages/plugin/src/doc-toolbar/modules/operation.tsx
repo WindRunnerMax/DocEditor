@@ -25,8 +25,12 @@ export const OperationDocToolBarPlugin: DocToolbarPlugin = {
       state.close();
     };
     const onDelete = () => {
-      Transforms.delete(state.editor.raw, { at: state.path, unit: "block" });
-      state.close();
+      state.editor.selection.focus();
+      state.editor.selection.set(state.path);
+      Promise.resolve().then(() => {
+        Transforms.delete(state.editor.raw, { at: state.path, unit: "block" });
+        state.close();
+      });
     };
     const onCut = () => {
       onCopy();

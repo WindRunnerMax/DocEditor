@@ -75,7 +75,7 @@ export class Editable extends React.PureComponent<EditableProps, EditableState> 
     return (
       <EditorProvider
         editor={this.props.editor.raw}
-        value={this.props.init || this.props.editor.init || INIT_NODE}
+        value={this.props.init || this.props.editor.options.init || INIT_NODE}
         onChange={this.props.onChange}
       >
         <EditableFC
