@@ -80,6 +80,7 @@ export class Track {
   }
 
   public clear() {
+    if (!this.editor.options.history) return void 0;
     this.raw.history.undos.length = 0;
     this.raw.history.redos.length = 0;
   }

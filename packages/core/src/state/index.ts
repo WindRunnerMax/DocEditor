@@ -1,3 +1,6 @@
+import type { BaseNode } from "doc-editor-delta";
+import { Editor } from "doc-editor-delta";
+
 import type { EditorKit } from "../editor/";
 import type { EditorRaw } from "../editor/types";
 import type { ContentOperation } from "../event/types/bus";
@@ -25,5 +28,12 @@ export class State {
 
   public apply(operation: ContentOperation) {
     this.raw.apply(operation);
+  }
+
+  public setContent(nodes: BaseNode[]) {
+    this.editor.track.clear();
+    this.raw.children = nodes;
+    this.editor.selection.set(Editor.start(this.raw, []));
+    this.editor.selection.focus();
   }
 }

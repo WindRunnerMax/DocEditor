@@ -71,6 +71,14 @@ export class Editable extends React.PureComponent<EditableProps, EditableState> 
     this.props.editor.event.trigger(EDITOR_EVENT.PASTE, event);
   };
 
+  private onFocus = (event: React.FocusEvent<HTMLDivElement>) => {
+    this.props.editor.event.trigger(EDITOR_EVENT.FOCUS, event);
+  };
+
+  private onBlur = (event: React.FocusEvent<HTMLDivElement>) => {
+    this.props.editor.event.trigger(EDITOR_EVENT.BLUR, event);
+  };
+
   render() {
     return (
       <EditorProvider
@@ -91,6 +99,8 @@ export class Editable extends React.PureComponent<EditableProps, EditableState> 
           onCopy={this.onCopy}
           onCut={this.onCut}
           onPaste={this.onPaste}
+          onFocus={this.onFocus}
+          onBlur={this.onBlur}
         />
       </EditorProvider>
     );

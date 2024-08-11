@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "doc-editor-delta": "workspace: *",
-    "laser-utils": "0.0.3"
+    "laser-utils": "0.0.5-alpha.1"
   },
   "devDependencies": {
     "@babel/core": "7.20.12",

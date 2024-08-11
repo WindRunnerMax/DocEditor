@@ -19,7 +19,7 @@ export const TriggerMenu: React.FC<{ state: DocToolBarState; plugins: DocToolbar
     }, [state, props.plugins]);
 
     return (
-      <div className="doc-trigger-menu">
+      <div className="doc-trigger-menu" onMouseDown={e => e.preventDefault()}>
         {signalMenu.length > 0 && (
           <div className="doc-trigger-signal-menu">
             {signalMenu.map((item, index) => (

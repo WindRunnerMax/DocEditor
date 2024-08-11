@@ -1,18 +1,34 @@
-import { DEFAULT_PRIORITY } from "doc-editor-utils";
+import { DEFAULT_PRIORITY, isObject } from "doc-editor-utils";
 
 import type { EventMap, EventType, Handler, Listener, Listeners, WithStop } from "./action";
 
 export class EventBus {
   private listeners: Listeners = {};
 
+  /**
+   * @param key
+   * @param listener
+   * @param priority
+   */
   public on<T extends EventType>(key: T, listener: Listener<T>, priority = DEFAULT_PRIORITY) {
     this.addEventListener(key, listener, priority, false);
   }
 
+  /**
+   * @param key
+   * @param listener
+   * @param priority
+   */
   public once<T extends EventType>(key: T, listener: Listener<T>, priority = DEFAULT_PRIORITY) {
     this.addEventListener(key, listener, priority, true);
   }
 
+  /**
+   * @param key
+   * @param listener
+   * @param priority
+   * @param once
+   */
   private addEventListener<T extends EventType>(
     key: T,
     listener: Listener<T>,
@@ -25,6 +41,10 @@ export class EventBus {
     (this.listeners[key] as Handler<T>[]) = handler;
   }
 
+  /**
+   * @param key
+   * @param listener
+   */
   public off<T extends EventType>(key: T, listener: Listener<T>) {
     const handler = this.listeners[key];
     if (!handler) return void 0;
@@ -33,24 +53,41 @@ export class EventBus {
     (this.listeners[key] as Handler<T>[]) = next;
   }
 
+  /**
+   * @param key
+   * @param payload
+   * @returns isPrevented
+   */
   public trigger<T extends EventType>(key: T, payload: EventMap[T]) {
     const handler = this.listeners[key];
-    if (!handler) return void 0;
-    let stop = false;
-    const duplicate = payload as WithStop<EventMap[T]>;
-    // COMPAT: 兼容`Nil`的情况 不可写的对象静默失败
-    if (duplicate) {
-      duplicate.stop = () => {
-        stop = true;
+    if (!handler) return false;
+    let isStopped = false;
+    let isPrevented = false;
+    let duplicate = <WithStop<EventMap[T]>>payload;
+    // COMPAT: 兼容`Nil/Plain`的情况 仅传递对象时才有效
+    if (isObject(payload)) {
+      const wrap = <WithStop<EventMap[T]>>Object.create(payload);
+      wrap._key = key;
+      wrap._raw = payload;
+      wrap.stop = () => {
+        isStopped = true;
       };
+      wrap.prevent = () => {
+        isPrevented = true;
+      };
+      duplicate = <WithStop<EventMap[T]>>wrap;
     }
     for (const item of handler) {
       item.listener(duplicate);
       item.once && this.off(key, item.listener);
-      if (stop) break;
+      if (isStopped) break;
     }
+    return isPrevented;
   }
 
+  /**
+   * @description clear
+   */
   public clear() {
     this.listeners = {};
   }

@@ -42,7 +42,7 @@ export {
   setUnWrapNodesExactly,
   setWrapNodes,
 } from "./set";
-export type { Object, Reflex, String } from "laser-utils";
+export type { Func, Reflex } from "laser-utils";
 export {
   Clipboard,
   cs,
@@ -55,8 +55,11 @@ export {
   isNumber,
   isObject,
   isPlainNumber,
+  isPlainObject,
   isString,
+  Object,
   RegExec,
   Storage,
+  String,
   TSON,
 } from "laser-utils";
