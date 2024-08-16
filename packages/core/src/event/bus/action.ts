@@ -37,6 +37,8 @@ export type Handler<T extends EventType> = {
   priority: number;
   listener: Listener<T>;
 };
-export type WithStop<T> = T & { stop: () => void; prevent: () => void; _raw: T; _key: string };
 export type Listener<T extends EventType> = (value: WithStop<EventMap[T]>) => void;
 export type Listeners = { [T in EventType]?: Handler<T>[] };
+export type WithStop<T> = T extends Object.Any
+  ? T & { stop: () => void; prevent: () => void; _raw: T; _key: string }
+  : T;

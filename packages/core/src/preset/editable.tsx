@@ -7,6 +7,7 @@ import { INIT_NODE } from "../editor/constant";
 import { EDITOR_EVENT } from "../event/bus/action";
 import type { ApplyPlugins } from "../plugin/types/apply";
 import { EDITOR_STATE } from "../state/types";
+import { WithContext } from "./with-context";
 
 type EditableProps = {
   readonly?: boolean;
@@ -86,22 +87,24 @@ export class Editable extends React.PureComponent<EditableProps, EditableState> 
         value={this.props.init || this.props.editor.options.init || INIT_NODE}
         onChange={this.props.onChange}
       >
-        <EditableFC
-          decorate={this.state.renderModule.decorate}
-          renderElement={this.state.renderModule.renderBlock}
-          renderLeaf={this.state.renderModule.renderLeaf}
-          readOnly={this.props.readonly}
-          placeholder={this.props.placeholder}
-          onKeyDown={this.onKeyDown}
-          onKeyPress={this.onKeyPress}
-          onMouseDown={this.onMouseDown}
-          onMouseUp={this.onMouseUp}
-          onCopy={this.onCopy}
-          onCut={this.onCut}
-          onPaste={this.onPaste}
-          onFocus={this.onFocus}
-          onBlur={this.onBlur}
-        />
+        <WithContext editor={this.props.editor}>
+          <EditableFC
+            decorate={this.state.renderModule.decorate}
+            renderElement={this.state.renderModule.renderBlock}
+            renderLeaf={this.state.renderModule.renderLeaf}
+            readOnly={this.props.readonly}
+            placeholder={this.props.placeholder}
+            onKeyDown={this.onKeyDown}
+            onKeyPress={this.onKeyPress}
+            onMouseDown={this.onMouseDown}
+            onMouseUp={this.onMouseUp}
+            onCopy={this.onCopy}
+            onCut={this.onCut}
+            onPaste={this.onPaste}
+            onFocus={this.onFocus}
+            onBlur={this.onBlur}
+          />
+        </WithContext>
       </EditorProvider>
     );
   }

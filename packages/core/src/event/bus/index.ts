@@ -8,7 +8,7 @@ export class EventBus {
   /**
    * @param key
    * @param listener
-   * @param priority
+   * @param priority 默认 100
    */
   public on<T extends EventType>(key: T, listener: Listener<T>, priority = DEFAULT_PRIORITY) {
     this.addEventListener(key, listener, priority, false);
@@ -17,7 +17,7 @@ export class EventBus {
   /**
    * @param key
    * @param listener
-   * @param priority
+   * @param priority 默认 100
    */
   public once<T extends EventType>(key: T, listener: Listener<T>, priority = DEFAULT_PRIORITY) {
     this.addEventListener(key, listener, priority, true);
