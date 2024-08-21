@@ -1,3 +1,5 @@
+import "../styles/table.scss";
+
 import { IconApps } from "@arco-design/web-react/icon";
 import { cs } from "doc-editor-utils";
 import React from "react";

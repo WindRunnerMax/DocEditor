@@ -1,4 +1,4 @@
-import "./index.scss";
+import "../styles/index.scss";
 
 import { PARAGRAPH_KEY } from "../../paragraph/types";
 import { TextIcon } from "../icons/text";

@@ -1,0 +1,17 @@
+@import '../../styles/variable';
+
+/* Trigger-Menu */
+.doc-trigger-menu-cut {
+  background-color: var(--color-border-2);
+  height: 1px;
+  width: 100%;
+}
+
+.doc-trigger-banner-menu .toolbar-banner-menu.more-options {
+  justify-content: space-between;
+
+  .toolbar-banner-menu-left {
+    align-items: center;
+    display: flex;
+  }
+}

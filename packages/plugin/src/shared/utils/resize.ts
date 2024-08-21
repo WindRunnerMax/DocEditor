@@ -33,6 +33,7 @@ export const createResizeObserver = (dom: HTMLElement, callback: ResizeCallback)
     iframe.setAttribute("src", "//about:blank");
     iframe.setAttribute("frameborder", "0");
     iframe.setAttribute("contenteditable", "false");
+    // 不可以设置 iframe.hidden 属性为 true
     iframe.setAttribute(
       "style",
       [
