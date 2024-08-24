@@ -6,7 +6,7 @@ import { findNodePath } from "doc-editor-utils";
 import type { FC } from "react";
 import { useMemo } from "react";
 
-import { Trigger } from "../../shared/components/trigger";
+import { Trigger } from "../../shared/modules/trigger";
 import type { TableContext } from "../hooks/use-context";
 import { MergeIcon } from "../icon/merge";
 import { SplitIcon } from "../icon/split";

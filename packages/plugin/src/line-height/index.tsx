@@ -1,3 +1,5 @@
+import "./styles/index.scss";
+
 import type { BlockContext, CommandFn, EditorKit } from "doc-editor-core";
 import { BlockPlugin } from "doc-editor-core";
 import type { RenderElementProps } from "doc-editor-delta";
@@ -5,7 +7,7 @@ import { assertValue } from "doc-editor-utils";
 import { getBlockNode } from "doc-editor-utils";
 import { setBlockNode } from "doc-editor-utils";
 
-import { Popup } from "../shared/components/popup";
+import { Popup } from "../shared/modules/popup";
 import { LineHeightMenu } from "./components/menu";
 import { LINE_HEIGHT_KEY } from "./types";
 

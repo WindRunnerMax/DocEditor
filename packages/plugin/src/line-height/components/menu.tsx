@@ -1,5 +1,3 @@
-import "../index.scss";
-
 import { InputNumber } from "@arco-design/web-react";
 import type { FC } from "react";
 

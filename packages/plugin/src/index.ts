@@ -43,7 +43,7 @@ export { QuoteBlockPlugin } from "./quote-block";
 export { QUOTE_BLOCK_ITEM_KEY, QUOTE_BLOCK_KEY } from "./quote-block/types";
 export { ReactLivePlugin } from "./react-live";
 export { REACT_LIVE_KEY } from "./react-live/types";
-export { focusSelection } from "./shared/components/selection";
+export { focusSelection } from "./shared/modules/selection";
 export { ShortCutPlugin } from "./shortcut";
 export { SHORTCUT_KEY } from "./shortcut/types";
 export { StrikeThroughPlugin } from "./strike-through";

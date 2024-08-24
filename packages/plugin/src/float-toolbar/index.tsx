@@ -1,4 +1,4 @@
-import "./index.scss";
+import "./styles/index.scss";
 
 import { Menu } from "@arco-design/web-react";
 import { useMemoizedFn } from "ahooks";

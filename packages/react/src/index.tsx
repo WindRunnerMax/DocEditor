@@ -5,8 +5,8 @@ import { cs } from "doc-editor-utils";
 import { useState } from "react";
 import ReactDOM from "react-dom";
 
-import { SlateDocEditor } from "./components/doc-editor";
-import { ThemeAction } from "./components/theme-action";
+import { SlateDocEditor } from "./components/editor";
+import { ThemeAction } from "./components/theme";
 
 export const App: React.FC = () => {
   const [readonly, setRender] = useState(false);

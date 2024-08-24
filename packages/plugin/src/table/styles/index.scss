@@ -6,7 +6,7 @@
   cursor: default;
   max-width: 100%;
   // COMPAT: 总是存在占位 避免产生高度突变
-  // 配合`@min-scrollbar可以防止禁用的滚动条样式显示出来
+  // 配合 @min-scrollbar 可以防止禁用的滚动条样式显示出来
   overflow-x: scroll;
   padding-bottom: 3px;
   padding-top: 15px;

@@ -1,4 +1,4 @@
-import "./index.scss";
+import "./styles/index.scss";
 
 import { Select } from "@arco-design/web-react";
 import type {

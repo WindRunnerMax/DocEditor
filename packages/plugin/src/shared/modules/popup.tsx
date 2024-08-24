@@ -1,4 +1,4 @@
-import "./index.scss";
+import "../styles/popup.scss";
 
 import { getUniqueId } from "doc-editor-utils";
 import ReactDOM from "react-dom";

@@ -1,5 +1,3 @@
-import "../index.scss";
-
 import { Button, InputNumber } from "@arco-design/web-react";
 import { useMemoizedFn } from "ahooks";
 import type { FC } from "react";

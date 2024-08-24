@@ -1,4 +1,4 @@
-import "./index.scss";
+import "./styles/index.scss";
 
 import type { BlockContext, EditorKit } from "doc-editor-core";
 import type { CommandFn } from "doc-editor-core";
@@ -7,7 +7,7 @@ import type { RenderElementProps } from "doc-editor-delta";
 import { Editor, HistoryEditor, Range, Transforms } from "doc-editor-delta";
 import { existKey, getClosestBlockPath, getUniqueId } from "doc-editor-utils";
 
-import { focusSelection } from "../shared/components/selection";
+import { focusSelection } from "../shared/modules/selection";
 import { DocImage } from "./components/doc-image";
 import { IMAGE_KEY, IMAGE_STATUS } from "./types";
 import { uploadImageHandler } from "./utils/upload";

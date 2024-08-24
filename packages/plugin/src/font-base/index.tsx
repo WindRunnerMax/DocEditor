@@ -1,10 +1,12 @@
+import "./styles/index.scss";
+
 import type { CommandFn, EditorKit, LeafContext } from "doc-editor-core";
 import { LeafPlugin } from "doc-editor-core";
 import type { RenderLeafProps } from "doc-editor-delta";
 import { assertValue } from "doc-editor-utils";
 import { setTextNode } from "doc-editor-utils";
 
-import { Popup } from "../shared/components/popup";
+import { Popup } from "../shared/modules/popup";
 import { FontBaseMenu } from "./components/menu";
 import type { FontBaseConfig } from "./types";
 import { FONT_BASE_KEY } from "./types";

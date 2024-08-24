@@ -1,9 +1,9 @@
+import "../styles/preview.scss";
+
 import { Image } from "@arco-design/web-react";
 import { cs } from "doc-editor-utils";
 import type { FC } from "react";
 import { useState } from "react";
-
-import styles from "./index.module.scss";
 
 const Preview = Image.Preview;
 export const PreviewWrapper: FC<{
@@ -26,7 +26,7 @@ export const PreviewWrapper: FC<{
   return (
     <>
       {src && <Preview src={src} visible={!!src} onVisibleChange={v => !v && setSrc("")} />}
-      <div onClick={preview} className={cs(needPreview && styles.preview)}>
+      <div onClick={preview} className={cs(needPreview && "flow-chart-preview")}>
         {props.children}
       </div>
     </>

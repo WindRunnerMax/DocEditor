@@ -1,5 +1,3 @@
-import "../index.scss";
-
 import { Button, Space, Spin } from "@arco-design/web-react";
 import { useDebounceEffect } from "ahooks";
 import type { EditorKit } from "doc-editor-core";

@@ -1,5 +1,3 @@
-import "../index.scss";
-
 import { Button, Form, Input, Switch } from "@arco-design/web-react";
 import useForm from "@arco-design/web-react/es/Form/useForm";
 import { isEmptyValue } from "doc-editor-utils";

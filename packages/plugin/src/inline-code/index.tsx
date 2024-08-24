@@ -1,4 +1,4 @@
-import "./index.scss";
+import "./styles/index.scss";
 
 import type { CommandFn, EditorKit, LeafContext } from "doc-editor-core";
 import { LeafPlugin } from "doc-editor-core";

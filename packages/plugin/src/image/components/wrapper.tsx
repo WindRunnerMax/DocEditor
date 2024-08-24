@@ -1,3 +1,5 @@
+import "../styles/wrapper.scss";
+
 import { Image } from "@arco-design/web-react";
 import type { EditorKit } from "doc-editor-core";
 import type { BlockElement } from "doc-editor-delta";
@@ -6,8 +8,7 @@ import { cs } from "doc-editor-utils";
 import type { FC } from "react";
 import { useRef, useState } from "react";
 
-import { IMAGE_KEY } from "../../types";
-import styles from "./index.module.scss";
+import { IMAGE_KEY } from "../types";
 
 const Preview = Image.Preview;
 export const ImageWrapper: FC<{
@@ -100,28 +101,28 @@ export const ImageWrapper: FC<{
       {!props.readonly && (
         <>
           <div
-            className={cs(needPreview && styles.resider)}
+            className={cs(needPreview && "doc-image-resider")}
             data-type="lt"
             onMouseDown={onMouseDown}
           ></div>
           <div
-            className={cs(needPreview && styles.resider)}
+            className={cs(needPreview && "doc-image-resider")}
             data-type="rt"
             onMouseDown={onMouseDown}
           ></div>
           <div
-            className={cs(needPreview && styles.resider)}
+            className={cs(needPreview && "doc-image-resider")}
             data-type="lb"
             onMouseDown={onMouseDown}
           ></div>
           <div
-            className={cs(needPreview && styles.resider)}
+            className={cs(needPreview && "doc-image-resider")}
             data-type="rb"
             onMouseDown={onMouseDown}
           ></div>
         </>
       )}
-      <div ref={ref} onClick={preview} className={cs(needPreview && styles.preview)}>
+      <div ref={ref} onClick={preview} className={cs(needPreview && "doc-image-preview")}>
         {props.children}
       </div>
     </>

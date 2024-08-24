@@ -1,5 +1,3 @@
-import "../index.scss";
-
 import { Trigger } from "@arco-design/web-react";
 import type { EditorKit } from "doc-editor-core";
 import type { Path, RenderElementProps } from "doc-editor-delta";

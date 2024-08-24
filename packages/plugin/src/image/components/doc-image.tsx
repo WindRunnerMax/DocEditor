@@ -2,9 +2,9 @@ import { Spin } from "@arco-design/web-react";
 import type { EditorKit } from "doc-editor-core";
 import type { BlockElement } from "doc-editor-delta";
 
-import { SelectionWrapper } from "../../../shared/components/selection/wrapper";
-import { IMAGE_STATUS } from "../../types";
-import { ImageWrapper } from "../wrapper";
+import { SelectionWrapper } from "../../shared/modules/selection";
+import { IMAGE_STATUS } from "../types";
+import { ImageWrapper } from "./wrapper";
 
 export const DocImage: React.FC<{
   element: BlockElement;

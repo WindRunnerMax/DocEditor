@@ -7,7 +7,7 @@ import { setBlockNode } from "doc-editor-utils";
 import { cs } from "doc-editor-utils";
 import { useEffect, useRef, useState } from "react";
 
-import { SelectionWrapper } from "../../shared/components/selection/wrapper";
+import { SelectionWrapper } from "../../shared/modules/selection";
 import { FLOW_CHART_KEY } from "../types";
 import { diagramDownload, diagramEditor, diagramPreview, getSvg } from "../utils/diagram-loader";
 import { xmlToString } from "../utils/utils";

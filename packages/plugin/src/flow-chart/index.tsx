@@ -1,4 +1,4 @@
-import "./index.scss";
+import "./styles/index.scss";
 
 import type { BlockContext, EditorKit } from "doc-editor-core";
 import type { CommandFn } from "doc-editor-core";
