@@ -21,7 +21,7 @@ import {
 import { setBlockNode, setUnBlockNode } from "doc-editor-utils";
 import type { KeyboardEvent } from "react";
 
-import { HEADING_KEY } from "./types";
+import { H1, H2, H3, HEADING_KEY } from "./types";
 
 export class HeadingPlugin extends BlockPlugin {
   public key: string = HEADING_KEY;
@@ -46,7 +46,7 @@ export class HeadingPlugin extends BlockPlugin {
       if (!isMatchedAttributeNode(editor.raw, `${HEADING_KEY}.type`, data.extraKey)) {
         setBlockNode(
           editor.raw,
-          { [key]: { type: data.extraKey, id: getUniqueId().slice(0, 8) } },
+          { [key]: { type: data.extraKey, id: getUniqueId(8) } },
           { at: data.path }
         );
       } else {
@@ -60,19 +60,19 @@ export class HeadingPlugin extends BlockPlugin {
     if (!heading) return context.children;
     const id = heading.id;
     switch (heading.type) {
-      case "h1":
+      case H1:
         return (
           <h1 className="doc-heading" id={id}>
             {context.children}
           </h1>
         );
-      case "h2":
+      case H2:
         return (
           <h2 className="doc-heading" id={id}>
             {context.children}
           </h2>
         );
-      case "h3":
+      case H3:
         return (
           <h3 className="doc-heading" id={id}>
             {context.children}

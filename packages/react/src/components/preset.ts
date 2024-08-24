@@ -156,7 +156,7 @@ export const example: BaseNode[] = [
       },
     ],
   },
-  { children: [{ text: "分割线" }], heading: { type: "h3", id: "5ab77ffb" } },
+  { children: [{ text: "分割线" }], heading: { type: "h3", id: "5ab771ffb" } },
   {
     children: [
       { text: "支持分割线，快捷键" },
@@ -186,7 +186,7 @@ export const example: BaseNode[] = [
     image: { src: "./favicon.ico", status: 2, width: 256, height: 256 },
     uuid: "aab55qq1",
   },
-  { heading: { type: "h2", id: "82651426" }, children: [{ text: "代码块" }] },
+  { heading: { type: "h2", id: "8265142d" }, children: [{ text: "代码块" }] },
   {
     "code-block": true,
     "code-block-config": { language: "JavaScript" },
@@ -196,7 +196,7 @@ export const example: BaseNode[] = [
       { children: [{ text: "const b = 2;" }] },
     ],
   },
-  { heading: { type: "h2", id: "82651426" }, children: [{ text: "流程图" }] },
+  { heading: { type: "h2", id: "826512426" }, children: [{ text: "流程图" }] },
   { children: [{ text: "支持流程图在线编辑。" }] },
   {
     "uuid": "c751cd0d5ea",

@@ -7,7 +7,7 @@ import type { BaseNode, RenderElementProps } from "doc-editor-delta";
 import { Transforms } from "doc-editor-delta";
 import { getClosestBlockPath } from "doc-editor-utils";
 
-import type { EditorSelectChangeEvent } from "../shared/types/event";
+import type { SelectChangeEvent } from "../shared/types/event";
 import { Cell } from "./components/cell";
 import { Table } from "./components/table";
 import { Tr } from "./components/tr";
@@ -87,7 +87,7 @@ export class TablePlugin extends BlockPlugin {
     if (index !== -1) this.views.splice(index, 1);
   };
 
-  private onSelectionChange = (event: EditorSelectChangeEvent) => {
+  private onSelectionChange = (event: SelectChangeEvent) => {
     this.views.forEach(view => view.onEditorSelectionChange(event));
   };
 

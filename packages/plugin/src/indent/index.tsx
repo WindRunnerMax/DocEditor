@@ -24,7 +24,7 @@ export class IndentPlugin extends BlockPlugin {
     return false;
   }
 
-  public onKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+  public onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (
       isMatchedEvent(event, KEYBOARD.TAB) &&
       isCollapsed(this.editor.raw, this.editor.raw.selection)
@@ -33,5 +33,5 @@ export class IndentPlugin extends BlockPlugin {
       event.preventDefault();
       event.stopPropagation();
     }
-  }
+  };
 }

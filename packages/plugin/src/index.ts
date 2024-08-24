@@ -2,6 +2,8 @@ import "./styles/index";
 
 export { AlignPlugin } from "./align";
 export { ALIGN_KEY } from "./align/types";
+export { DocAnchor } from "./anchor";
+export type { Anchor } from "./anchor/utils/parse";
 export { BoldPlugin } from "./bold";
 export { BOLD_KEY } from "./bold/types";
 export { ClipboardPlugin } from "./clipboard";
@@ -43,7 +45,16 @@ export { QuoteBlockPlugin } from "./quote-block";
 export { QUOTE_BLOCK_ITEM_KEY, QUOTE_BLOCK_KEY } from "./quote-block/types";
 export { ReactLivePlugin } from "./react-live";
 export { REACT_LIVE_KEY } from "./react-live/types";
+export {
+  useIsMounted,
+  useMemoFn,
+  useMountState,
+  useSafeState,
+  useStateRef,
+  useUpdateEffect,
+} from "./shared/hooks/preset";
 export { focusSelection } from "./shared/modules/selection";
+export type { ContentChangeEvent, SelectChangeEvent } from "./shared/types/event";
 export { ShortCutPlugin } from "./shortcut";
 export { SHORTCUT_KEY } from "./shortcut/types";
 export { StrikeThroughPlugin } from "./strike-through";

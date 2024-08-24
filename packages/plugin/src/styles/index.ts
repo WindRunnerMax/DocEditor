@@ -1,6 +1,7 @@
 import "../styles/global.scss";
 import "../styles/iconfont.css";
 // 可以在打包的时候用`babel-plugin-import`处理
+import "@arco-design/web-react/es/Anchor/style";
 import "@arco-design/web-react/es/Trigger/style";
 import "@arco-design/web-react/es/Menu/style";
 import "@arco-design/web-react/es/Form/style";

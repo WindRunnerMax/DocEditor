@@ -1,6 +1,5 @@
 import "doc-editor-plugin/styles/index";
 
-import { useMemoizedFn } from "ahooks";
 import { Editable, EDITOR_EVENT, useMakeEditor } from "doc-editor-core";
 import { LOG_LEVEL } from "doc-editor-core";
 import { Editor, Transforms } from "doc-editor-delta";
@@ -10,6 +9,7 @@ import {
   ClipboardPlugin,
   CodeBlockPlugin,
   DividingLinePlugin,
+  DocAnchor,
   DocToolBarPlugin,
   FlowChartPlugin,
   FontBasePlugin,
@@ -32,9 +32,10 @@ import {
   UnderLinePlugin,
   UnorderedListPlugin,
 } from "doc-editor-plugin";
-import debounce from "lodash-es/debounce";
+import { debounce, IS_MOBILE } from "doc-editor-utils";
 import type { FC } from "react";
 import React, { useEffect, useMemo } from "react";
+import ReactDOM from "react-dom";
 
 import { example } from "./preset";
 import { schema } from "./schema";
@@ -81,10 +82,12 @@ export const SlateDocEditor: FC<{
     );
   }, [editor, props.readonly]);
 
-  const updateText = useMemoizedFn(
-    debounce(() => {
-      console.log("Text changes", editor.raw.children);
-    }, 500)
+  const updateText = useMemo(
+    () =>
+      debounce(() => {
+        console.log("Text changes", editor.raw.children);
+      }, 500),
+    [editor.raw]
   );
 
   useEffect(() => {
@@ -98,6 +101,8 @@ export const SlateDocEditor: FC<{
     <React.Fragment>
       <MenuToolBar readonly={props.readonly} editor={editor}></MenuToolBar>
       <Editable editor={editor} readonly={props.readonly} placeholder="Enter text ..."></Editable>
+      {!IS_MOBILE &&
+        ReactDOM.createPortal(<DocAnchor editor={editor} boundary={60}></DocAnchor>, document.body)}
     </React.Fragment>
   );
 };

@@ -1,6 +1,7 @@
 export type { AssertT } from "./common";
 export { assertValue } from "./common";
 export { DEFAULT_PRIORITY, EVENT_ENUM, KEYBOARD } from "./constant";
+export { debounce } from "./debounce";
 export { omit, pick } from "./filter";
 export {
   findNodePath,
@@ -48,6 +49,7 @@ export {
   cs,
   getUniqueId,
   IS_DEV,
+  IS_MOBILE,
   isArray,
   isEmptyValue,
   isFunction,

@@ -1,4 +1,4 @@
-import type { EDITOR_EVENT, EventMap } from "doc-editor-core";
+import type { SelectChangeEvent } from "../../shared/types/event";
 
 export type TableSelection = {
   start: [number, number];
@@ -6,5 +6,5 @@ export type TableSelection = {
 } | null;
 
 export type TableViewEvents = {
-  onEditorSelectionChange: (event: EventMap[typeof EDITOR_EVENT.SELECTION_CHANGE]) => void;
+  onEditorSelectionChange: (event: SelectChangeEvent) => void;
 };

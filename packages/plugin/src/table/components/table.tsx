@@ -5,7 +5,7 @@ import { EVENT_ENUM } from "doc-editor-utils";
 import type { FC } from "react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
-import type { EditorSelectChangeEvent } from "../../shared/types/event";
+import type { SelectChangeEvent } from "../../shared/types/event";
 import { createResizeObserver } from "../../shared/utils/resize";
 import { useCompose } from "../hooks/use-compose";
 import { TableContext, useTableProvider } from "../hooks/use-context";
@@ -85,7 +85,7 @@ export const Table: FC<{
     };
   }, [provider.ref, props.readonly]);
 
-  const onEditorSelectionChange = useMemoizedFn((e: EditorSelectChangeEvent) => {
+  const onEditorSelectionChange = useMemoizedFn((e: SelectChangeEvent) => {
     const { previous, current } = e;
     if (!previous && current && sel) {
       setSel(null);
