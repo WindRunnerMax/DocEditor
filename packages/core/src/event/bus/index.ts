@@ -1,6 +1,6 @@
-import { DEFAULT_PRIORITY, isObject, isPlainObject } from "doc-editor-utils";
+import { DEFAULT_PRIORITY } from "doc-editor-utils";
 
-import type { EventMap, EventType, Handler, Listener, Listeners, WithStop } from "./action";
+import type { EventContext, EventMap, EventType, Handler, Listener, Listeners } from "./action";
 
 export class EventBus {
   private listeners: Listeners = {};
@@ -56,34 +56,28 @@ export class EventBus {
   /**
    * @param key
    * @param payload
-   * @returns isPrevented
+   * @returns prevented
    */
   public trigger<T extends EventType>(key: T, payload: EventMap[T]) {
     const handler = this.listeners[key];
     if (!handler) return false;
-    let isStopped = false;
-    let isPrevented = false;
-    let duplicate = <WithStop<EventMap[T]>>payload;
-    // COMPAT: 兼容`Nil/Plain`的情况 仅传递对象时才有效
-    if (isObject(payload)) {
-      // COMPAT: 如果是普通对象则创建为原型链 否则直接写入原始值 不可写会静默失败
-      // 在 React SyntheticBaseEvent 的情况下 通过原型链的方式会导致 preventDefault 失效
-      const wrap = isPlainObject(payload) ? <WithStop<EventMap[T]>>Object.create(payload) : payload;
-      wrap.__key__ = key;
-      wrap.stop = () => {
-        isStopped = true;
-      };
-      wrap.prevent = () => {
-        isPrevented = true;
-      };
-      duplicate = <WithStop<EventMap[T]>>wrap;
-    }
+    const context: EventContext = {
+      key: key,
+      stopped: false,
+      prevented: false,
+      stop: () => {
+        context.stopped = true;
+      },
+      prevent: () => {
+        context.prevented = true;
+      },
+    };
     for (const item of handler) {
-      item.listener(duplicate);
+      item.listener(payload, context);
       item.once && this.off(key, item.listener);
-      if (isStopped) break;
+      if (context.stopped) break;
     }
-    return isPrevented;
+    return context.prevented;
   }
 
   /**

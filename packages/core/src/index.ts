@@ -9,7 +9,7 @@ export type { EditorKit } from "./editor";
 export { EditorModule } from "./editor/inject";
 export type { EditorRaw } from "./editor/types";
 export type { Event } from "./event";
-export type { EventMap, EventType, Handler, Listener, WithStop } from "./event/bus/action";
+export type { EventContext, EventMap, EventType, Handler, Listener } from "./event/bus/action";
 export { EDITOR_EVENT } from "./event/bus/action";
 export type { ContentOperation } from "./event/types/bus";
 export { makeEditor, useMakeEditor } from "./hooks/use-make-editor";

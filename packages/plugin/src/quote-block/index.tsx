@@ -1,6 +1,6 @@
 import "./styles/index.scss";
 
-import type { BlockContext, CommandFn, WithStop } from "doc-editor-core";
+import type { BlockContext, CommandFn, EventContext } from "doc-editor-core";
 import type { EditorKit } from "doc-editor-core";
 import { BlockPlugin, EDITOR_EVENT } from "doc-editor-core";
 import type { RenderElementProps } from "doc-editor-delta";
@@ -53,7 +53,7 @@ export class QuoteBlockPlugin extends BlockPlugin {
     return <blockquote className="doc-quote-block">{context.children}</blockquote>;
   }
 
-  public onKeyDown = (event: WithStop<KeyboardEvent<HTMLDivElement>>) => {
+  public onKeyDown = (event: KeyboardEvent<HTMLDivElement>, context: EventContext) => {
     const editor = this.editor;
     if (
       isMatchedEvent(event, KEYBOARD.BACKSPACE, KEYBOARD.ENTER) &&
@@ -72,7 +72,7 @@ export class QuoteBlockPlugin extends BlockPlugin {
         setUnWrapNodes(editor.raw, { wrapKey: QUOTE_BLOCK_KEY, pairKey: QUOTE_BLOCK_ITEM_KEY });
         event.preventDefault();
       }
-      return event.stop();
+      return context.stop();
     }
   };
 }

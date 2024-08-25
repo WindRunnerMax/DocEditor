@@ -51,4 +51,8 @@ export class Selection {
   public isFocused() {
     return ReactEditor.isFocused(this.raw);
   }
+
+  public move(distance: number) {
+    Transforms.move(this.raw, { unit: "character", distance });
+  }
 }

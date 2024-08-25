@@ -1,8 +1,7 @@
 import "./styles/index.scss";
 
-import type { BlockContext, CommandFn } from "doc-editor-core";
+import type { BlockContext, CommandFn, EventContext } from "doc-editor-core";
 import type { EditorKit } from "doc-editor-core";
-import type { WithStop } from "doc-editor-core";
 import { BlockPlugin, EDITOR_EVENT } from "doc-editor-core";
 import type { RenderElementProps } from "doc-editor-delta";
 import { Transforms } from "doc-editor-delta";
@@ -83,7 +82,7 @@ export class HeadingPlugin extends BlockPlugin {
     }
   }
 
-  public onKeyDown = (event: WithStop<KeyboardEvent<HTMLDivElement>>): void => {
+  public onKeyDown = (event: KeyboardEvent<HTMLDivElement>, context: EventContext): void => {
     const editor = this.editor;
     const selection = editor.raw.selection;
     if (
@@ -91,7 +90,7 @@ export class HeadingPlugin extends BlockPlugin {
       isCollapsed(editor.raw, selection)
     ) {
       const match = getBlockNode(editor.raw);
-      if (!match) return event.stop();
+      if (!match) return context.stop();
 
       const { block, path } = match;
       if (!block[HEADING_KEY] || !isBaseElement(block)) return void 0;
@@ -123,7 +122,7 @@ export class HeadingPlugin extends BlockPlugin {
         Transforms.move(editor.raw, { distance: 1 });
         event.preventDefault();
       }
-      return event.stop();
+      return context.stop();
     }
   };
 }

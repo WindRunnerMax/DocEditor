@@ -29,16 +29,21 @@ type EditorEventMap = {
   [EDITOR_EVENT.READONLY_CHANGE]: ReadonlyStateEvent;
 };
 
-export type EventMap = NativeEventMap & ReactEventMap & EditorEventMap;
-
-export type EventType = Object.Values<typeof EDITOR_EVENT>;
 export type Handler<T extends EventType> = {
   once: boolean;
   priority: number;
   listener: Listener<T>;
 };
-export type Listener<T extends EventType> = (value: WithStop<EventMap[T]>) => void;
+
+export type EventContext = {
+  key: string;
+  stopped: boolean;
+  prevented: boolean;
+  stop: () => void;
+  prevent: () => void;
+};
+
+export type EventType = Object.Values<typeof EDITOR_EVENT>;
 export type Listeners = { [T in EventType]?: Handler<T>[] };
-export type WithStop<T> = T extends Object.Any
-  ? T & { stop: () => void; prevent: () => void; __key__: string }
-  : T;
+export type EventMap = NativeEventMap & ReactEventMap & EditorEventMap;
+export type Listener<T extends EventType> = (value: EventMap[T], context: EventContext) => void;

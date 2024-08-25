@@ -1,6 +1,6 @@
 import "./styles/index.scss";
 
-import type { BlockContext, CommandFn, WithStop } from "doc-editor-core";
+import type { BlockContext, CommandFn, EventContext } from "doc-editor-core";
 import type { EditorKit } from "doc-editor-core";
 import { BlockPlugin, EDITOR_EVENT } from "doc-editor-core";
 import type { RenderElementProps } from "doc-editor-delta";
@@ -68,7 +68,7 @@ export class OrderedListPlugin extends BlockPlugin {
     }
   }
 
-  public onKeyDown = (event: WithStop<KeyboardEvent<HTMLDivElement>>) => {
+  public onKeyDown = (event: KeyboardEvent<HTMLDivElement>, context: EventContext) => {
     const editor = this.editor;
     if (
       isMatchedEvent(event, KEYBOARD.BACKSPACE, KEYBOARD.ENTER, KEYBOARD.TAB) &&
@@ -92,7 +92,7 @@ export class OrderedListPlugin extends BlockPlugin {
         }
         calcOrderListLevels(editor.raw);
         event.preventDefault();
-        return event.stop();
+        return context.stop();
       }
 
       // 相当于匹配`Enter`和`Backspace`的情况下
@@ -106,14 +106,14 @@ export class OrderedListPlugin extends BlockPlugin {
           );
           calcOrderListLevels(editor.raw);
           event.preventDefault();
-          return event.stop();
+          return context.stop();
         } else {
           if (!isWrappedEdgeNode(editor.raw, "or", { wrapNode: wrapMatch, itemNode: itemMatch })) {
             if (isMatchedEvent(event, KEYBOARD.BACKSPACE)) {
               editor.raw.deleteBackward("block");
               calcOrderListLevels(editor.raw);
               event.preventDefault();
-              return event.stop();
+              return context.stop();
             }
           } else {
             setUnWrapNodes(editor.raw, {
@@ -122,7 +122,7 @@ export class OrderedListPlugin extends BlockPlugin {
             });
             calcNextOrderListLevels(editor.raw);
             event.preventDefault();
-            return event.stop();
+            return context.stop();
           }
         }
       }
@@ -132,7 +132,7 @@ export class OrderedListPlugin extends BlockPlugin {
         calcOrderListLevels(editor.raw);
         event.preventDefault();
       }
-      return event.stop();
+      return context.stop();
     }
   };
 }

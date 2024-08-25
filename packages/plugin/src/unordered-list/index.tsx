@@ -1,6 +1,6 @@
 import "./styles/index.scss";
 
-import type { BlockContext, CommandFn, WithStop } from "doc-editor-core";
+import type { BlockContext, CommandFn, EventContext } from "doc-editor-core";
 import type { EditorKit } from "doc-editor-core";
 import { BlockPlugin, EDITOR_EVENT } from "doc-editor-core";
 import type { RenderElementProps } from "doc-editor-delta";
@@ -64,7 +64,7 @@ export class UnorderedListPlugin extends BlockPlugin {
     }
   }
 
-  public onKeyDown = (event: WithStop<KeyboardEvent<HTMLDivElement>>) => {
+  public onKeyDown = (event: KeyboardEvent<HTMLDivElement>, context: EventContext) => {
     const editor = this.editor;
     if (
       isMatchedEvent(event, KEYBOARD.BACKSPACE, KEYBOARD.ENTER, KEYBOARD.TAB) &&
@@ -106,7 +106,7 @@ export class UnorderedListPlugin extends BlockPlugin {
           }
         }
       }
-      return event.stop();
+      return context.stop();
     }
   };
 }
