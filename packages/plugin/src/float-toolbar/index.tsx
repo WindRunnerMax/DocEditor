@@ -1,19 +1,19 @@
 import "./styles/index.scss";
 
 import { Menu } from "@arco-design/web-react";
-import { useMemoizedFn } from "ahooks";
 import type { EditorKit } from "doc-editor-core";
 import type { TextElement } from "doc-editor-delta";
 import { Editor } from "doc-editor-delta";
 import { ReactEditor } from "doc-editor-delta";
 import { EVENT_ENUM } from "doc-editor-utils";
-import { omit } from "doc-editor-utils";
+import { Collection } from "doc-editor-utils";
 import type { FC } from "react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
 import { FONT_BASE_KEY } from "../font-base/types";
 import { HYPER_LINK_KEY } from "../hyper-link/types";
 import { LINE_HEIGHT_KEY } from "../line-height/types";
+import { useMemoFn } from "../shared/hooks/preset";
 import { MenuItems } from "./components/menu";
 import { execSelectMarks, getSelectionRect, maskMenuToolBar, Portal } from "./utils/selection";
 
@@ -32,11 +32,13 @@ export const MenuToolBar: FC<{
   const toolbarRef = useRef<HTMLDivElement>(null);
   const [selectedMarks, setSelectedMarks] = useState<string[]>([]);
 
-  const wakeUpToolbar = useMemoizedFn((wakeUp: boolean) => {
+  const wakeUpToolbar = useMemoFn((wakeUp: boolean) => {
     const toolbar = toolbarRef.current;
     if (!toolbar) return void 0;
     if (ReactEditor.isFocused(editor.raw) && wakeUp) {
-      setSelectedMarks(omit(Object.keys(Editor.marks(editor.raw) || []), NOT_INIT_SELECT));
+      setSelectedMarks(
+        Collection.omit(Object.keys(Editor.marks(editor.raw) || []), NOT_INIT_SELECT)
+      );
       const rect = getSelectionRect();
       if (rect) {
         toolbar.style.top = `${rect.top + window.pageYOffset - TOOLBAR_OFFSET_HEIGHT - 10}px`;
@@ -74,29 +76,27 @@ export const MenuToolBar: FC<{
     };
   }, [editor, wakeUpToolbar, props.readonly]);
 
-  const exec = useMemoizedFn(
-    (param: string, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-      const [key, extraKey] = param.split(".");
-      const marks = Editor.marks(editor.raw);
-      const position = { left: 0, top: 0 };
-      const toolbar = toolbarRef.current;
-      setSelectedMarks(execSelectMarks(key, selectedMarks, MUTEX_SELECT));
-      if (toolbar) {
-        position.top = toolbar.offsetTop + toolbar.offsetHeight / 2;
-        position.left = toolbar.offsetLeft + toolbar.offsetWidth / 2;
-      }
-      const result = props.editor.command.exec(key, {
-        extraKey,
-        event,
-        position,
-        marks: marks as TextElement,
-      });
-      if (result) {
-        keepStatus.current = true;
-        result.then(() => (keepStatus.current = false));
-      }
+  const exec = useMemoFn((param: string, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const [key, extraKey] = param.split(".");
+    const marks = Editor.marks(editor.raw);
+    const position = { left: 0, top: 0 };
+    const toolbar = toolbarRef.current;
+    setSelectedMarks(execSelectMarks(key, selectedMarks, MUTEX_SELECT));
+    if (toolbar) {
+      position.top = toolbar.offsetTop + toolbar.offsetHeight / 2;
+      position.left = toolbar.offsetLeft + toolbar.offsetWidth / 2;
     }
-  );
+    const result = props.editor.command.exec(key, {
+      extraKey,
+      event,
+      position,
+      marks: marks as TextElement,
+    });
+    if (result) {
+      keepStatus.current = true;
+      result.then(() => (keepStatus.current = false));
+    }
+  });
 
   const HoverMenu = useMemo(
     () => (

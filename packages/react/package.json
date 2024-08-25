@@ -25,7 +25,6 @@
   "dependencies": {
     "@arco-design/web-react": "2.60.3",
     "react": "17.0.2",
-    "ahooks": "^3.3.13",
     "lodash-es": "4.17.21",
     "react-dom": "17.0.2",
     "doc-editor-core": "workspace: *",

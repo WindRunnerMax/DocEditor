@@ -3,7 +3,7 @@ import { EDITOR_STATE } from "doc-editor-core";
 import type { SetNodeOperation } from "doc-editor-delta";
 import { HistoryEditor, Transforms } from "doc-editor-delta";
 import { cs, EVENT_ENUM, findNodePath, getNodeTupleByDepth, isNil } from "doc-editor-utils";
-import throttle from "lodash-es/throttle";
+import { throttle } from "doc-editor-utils";
 import type { FC } from "react";
 import { useMemo } from "react";
 

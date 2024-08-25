@@ -1,8 +1,9 @@
+export { Collection } from "./collection";
 export type { AssertT } from "./common";
 export { assertValue } from "./common";
 export { DEFAULT_PRIORITY, EVENT_ENUM, KEYBOARD } from "./constant";
 export { debounce } from "./debounce";
-export { omit, pick } from "./filter";
+export { Bind } from "./decorator";
 export {
   findNodePath,
   getBlockNode,
@@ -43,6 +44,7 @@ export {
   setUnWrapNodesExactly,
   setWrapNodes,
 } from "./set";
+export { throttle } from "./throttle";
 export type { Func, Reflex } from "laser-utils";
 export {
   Clipboard,

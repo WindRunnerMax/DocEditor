@@ -1,8 +1,8 @@
 import { Button, InputNumber } from "@arco-design/web-react";
-import { useMemoizedFn } from "ahooks";
 import type { FC } from "react";
 import { useMemo } from "react";
 
+import { useMemoFn } from "../../shared/hooks/preset";
 import type { FontBaseConfig } from "../types";
 
 interface Props {
@@ -29,14 +29,12 @@ export const FontBaseMenu: FC<Props> = props => {
   const left = props.left - 180;
   let changedConfig: FontBaseConfig = props.config;
 
-  const onChange = useMemoizedFn(
-    (key: keyof FontBaseConfig, value: string | number | undefined) => {
-      changedConfig = { ...changedConfig, [key]: value };
-      props.onChange(changedConfig);
-    }
-  );
+  const onChange = useMemoFn((key: keyof FontBaseConfig, value: string | number | undefined) => {
+    changedConfig = { ...changedConfig, [key]: value };
+    props.onChange(changedConfig);
+  });
 
-  const resetDefault = useMemoizedFn(() => {
+  const resetDefault = useMemoFn(() => {
     props.onChange({});
     changedConfig = {};
   });

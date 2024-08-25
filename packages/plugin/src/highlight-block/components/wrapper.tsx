@@ -1,6 +1,5 @@
 import { Button, Trigger } from "@arco-design/web-react";
 import { IconPalette } from "@arco-design/web-react/icon";
-import { useMemoizedFn } from "ahooks";
 import type { EditorKit } from "doc-editor-core";
 import type { BlockElement } from "doc-editor-delta";
 import { ReactEditor } from "doc-editor-delta";
@@ -9,6 +8,7 @@ import { setBlockNode } from "doc-editor-utils";
 import type { FC } from "react";
 import { useMemo } from "react";
 
+import { useMemoFn } from "../../shared/hooks/preset";
 import { HIGHLIGHT_BLOCK_KEY } from "../types";
 import { COLOR_MAP } from "../types";
 
@@ -20,7 +20,7 @@ export const HighlightBlockWrapper: FC<{
 }> = props => {
   const { editor, element, config, readonly } = props;
 
-  const switchAction = useMemoizedFn((index: number) => {
+  const switchAction = useMemoFn((index: number) => {
     const path = ReactEditor.findPath(editor.raw, element);
     setBlockNode(
       editor.raw,

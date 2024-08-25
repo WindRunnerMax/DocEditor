@@ -26,7 +26,6 @@
     "@arco-design/web-react": ">=2.60.3"
   },
   "dependencies": {
-    "ahooks": "3.3.13",
     "react-live-runtime": "0.0.3",
     "embed-drawio": "0.0.18",
     "lodash-es": "4.17.21",

@@ -1,8 +1,8 @@
 import { Button, Space, Spin } from "@arco-design/web-react";
-import { useDebounceEffect } from "ahooks";
 import type { EditorKit } from "doc-editor-core";
 import { Void } from "doc-editor-core";
 import type { BlockElement } from "doc-editor-delta";
+import { debounce } from "doc-editor-utils";
 import { isText } from "doc-editor-utils";
 import type { FC } from "react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
@@ -26,30 +26,32 @@ export const ReactLiveView: FC<{
       .join("\n");
   }, [props.element]);
 
-  useDebounceEffect(
-    () => {
-      const el = ref.current;
-      if (!el) return;
-      try {
-        const sandbox = withSandbox({ React, Button, console, Space });
-        // JS Plain Object -> ({...})
-        // React.FC -> React.Fragment / div
-        const compiledCode = compileWithSucrase("<div>" + code + "</div>");
-        const Component = renderWithDependency(compiledCode, sandbox) as JSX.Element;
-        const App = () => {
-          useEffect(() => {
-            setLoading(false);
-          }, []);
-          return Component;
-        };
-        ReactDOM.render(<App></App>, el);
-      } catch (error) {
-        console.log("Render Component Error", error);
-      }
-    },
-    [code],
-    { wait: 300 }
+  const onParseCode = useMemo(
+    () =>
+      debounce((code: string) => {
+        const el = ref.current;
+        if (!el) return;
+        try {
+          const sandbox = withSandbox({ React, Button, console, Space });
+          // JS Plain Object -> ({...})
+          // React.FC -> React.Fragment / div
+          const compiledCode = compileWithSucrase("<div>" + code + "</div>");
+          const Component = renderWithDependency(compiledCode, sandbox) as JSX.Element;
+          const App = () => {
+            useEffect(() => {
+              setLoading(false);
+            }, []);
+            return Component;
+          };
+          ReactDOM.render(<App></App>, el);
+        } catch (error) {
+          console.log("Render Component Error", error);
+        }
+      }, 300),
+    []
   );
+
+  useEffect(() => onParseCode(code), [code, onParseCode]);
 
   return (
     <div className="react-live-container">

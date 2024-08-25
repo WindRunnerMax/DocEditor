@@ -1,4 +1,4 @@
-import { omit } from "doc-editor-utils";
+import { Collection } from "doc-editor-utils";
 import ReactDOM from "react-dom";
 
 export const maskMenuToolBar = (element: HTMLDivElement) => {
@@ -24,8 +24,8 @@ export const execSelectMarks = (key: string, marks: string[], mutexKeys: string[
   const isKeyInMarks = marks.indexOf(key) > -1;
   const isKeyInMutexKeys = mutexKeys.indexOf(key) > -1;
   return isKeyInMarks
-    ? omit(marks, [key])
+    ? Collection.omit(marks, [key])
     : isKeyInMutexKeys
-    ? [...omit(marks, mutexKeys), key]
+    ? [...Collection.omit(marks, mutexKeys), key]
     : [...marks, key];
 };
