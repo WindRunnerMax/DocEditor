@@ -41,7 +41,7 @@ export class ShortCutPlugin extends BlockPlugin {
     return false;
   }
 
-  public onKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+  public onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     const editor = this.editor;
     if (isMatchedEvent(event, KEYBOARD.SPACE) && isCollapsed(editor.raw, editor.raw.selection)) {
       const match = getBlockNode(editor.raw);
@@ -61,5 +61,5 @@ export class ShortCutPlugin extends BlockPlugin {
         }
       }
     }
-  }
+  };
 }

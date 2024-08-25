@@ -84,6 +84,10 @@ export class Paste extends EditorModule {
     const context: PasteNodesContext = { nodes };
     this.plugin.call(CALLER_TYPE.WILL_PASTE_NODES, context);
     this.logger.info("Editor Will Apply:", context.nodes);
-    this.raw.insertFragment(context.nodes);
+    try {
+      this.raw.insertFragment(context.nodes);
+    } catch (error) {
+      this.logger.error("Editor InsertFragment Error:", error, context.nodes);
+    }
   }
 }

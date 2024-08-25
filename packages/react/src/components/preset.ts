@@ -55,7 +55,7 @@ export const example: BaseNode[] = [
         text: "超链接",
         link: { href: "https://github.com/WindrunnerMax/DocEditor", blank: true },
       },
-      { text: "、文字对齐、" },
+      { text: "、" },
       { "text": "字号", "font-base": { fontSize: 13 } },
       { text: "、" },
       { "text": "颜色", "font-base": { color: "rgb(var(--green-6))" } },
@@ -68,7 +68,7 @@ export const example: BaseNode[] = [
     ],
     align: "center",
   },
-  { children: [{ text: "块级元素" }], heading: { id: "4644b757", type: "h2" } },
+  { children: [{ text: "行级元素" }], heading: { id: "4644b757", type: "h2" } },
   { children: [{ text: "标题" }], heading: { type: "h3", id: "213e6703" } },
   {
     children: [
@@ -82,6 +82,19 @@ export const example: BaseNode[] = [
       { "text": "### ", "inline-code": true },
       { text: "。" },
     ],
+  },
+  { children: [{ text: "行高" }], heading: { type: "h3", id: "5ab77ffb" } },
+  { "children": [{ text: "支持独立设置行高。" }], "line-height": 2 },
+  {
+    "line-height": 2,
+    "children": [{ text: "文字对齐" }],
+    "heading": { type: "h3", id: "pi99bzVO" },
+  },
+  { "line-height": 2, "children": [{ text: "支持行级别的文字对齐。" }], "align": "left" },
+  {
+    "line-height": 2,
+    "children": [{ text: "嵌套元素" }],
+    "heading": { type: "h2", id: "QFwoE5fK" },
   },
   { children: [{ text: "引用块" }], heading: { type: "h3", id: "8426a51b" } },
   {
@@ -156,6 +169,25 @@ export const example: BaseNode[] = [
       },
     ],
   },
+  { children: [{ text: "嵌入元素" }], heading: { type: "h2", id: "cfSqPoYb" } },
+  { children: [{ text: "图片" }], heading: { type: "h3", id: "aab55qq1" } },
+  { children: [{ text: "支持图片上传。" }] },
+  {
+    children: [{ text: "" }],
+    image: { src: "./favicon.ico", status: 2, width: 256, height: 256 },
+    uuid: "aab55qq1",
+  },
+  { heading: { type: "h3", id: "WkDzhLLI" }, children: [{ text: "流程图" }] },
+  { children: [{ text: "支持流程图在线编辑。" }] },
+  {
+    "uuid": "c751cd0d5ea",
+    "flow-chart": {
+      type: "xml",
+      content:
+        '<mxGraphModel dx="506" dy="742" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0"><root><mxCell id="0"/><mxCell id="1" parent="0"/><mxCell id="4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;sketch=0;" parent="1" source="2" target="3" edge="1"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="2" value="Start" style="rounded=1;whiteSpace=wrap;html=1;sketch=0;glass=0;shadow=0;comic=1;" parent="1" vertex="1"><mxGeometry x="140" y="230" width="120" height="60" as="geometry"/></mxCell><mxCell id="3" value="End" style="rounded=1;whiteSpace=wrap;html=1;shadow=0;glass=0;comic=1;" parent="1" vertex="1"><mxGeometry x="420" y="230" width="120" height="60" as="geometry"/></mxCell></root></mxGraphModel>',
+    },
+    "children": [{ text: "" }],
+  },
   { children: [{ text: "分割线" }], heading: { type: "h3", id: "5ab771ffb" } },
   {
     children: [
@@ -165,6 +197,7 @@ export const example: BaseNode[] = [
     ],
   },
   { "dividing-line": true, "children": [{ text: "" }] },
+  { children: [{ text: "块级元素" }], heading: { type: "h2", id: "DEnfO0kv" } },
   { children: [{ text: "高亮块" }], heading: { type: "h3", id: "af869b51" } },
   {
     "highlight-block": { border: "var(--arcoblue-6)", background: "var(--arcoblue-3)" },
@@ -177,16 +210,7 @@ export const example: BaseNode[] = [
     "highlight-block": { background: "var(--green-3)", border: "var(--green-6)" },
     "children": [{ children: [{ text: "🏝 可以为高亮块更换主题。" }] }],
   },
-  { children: [{ text: "行高" }], heading: { type: "h3", id: "5ab77ffb" } },
-  { "children": [{ text: "支持独立设置行高。" }], "line-height": 2 },
-  { children: [{ text: "图片" }], heading: { type: "h3", id: "aab55qq1" } },
-  { children: [{ text: "支持图片上传。" }] },
-  {
-    children: [{ text: "" }],
-    image: { src: "./favicon.ico", status: 2, width: 256, height: 256 },
-    uuid: "aab55qq1",
-  },
-  { heading: { type: "h2", id: "8265142d" }, children: [{ text: "代码块" }] },
+  { heading: { type: "h3", id: "LkpBjz4O" }, children: [{ text: "代码块" }] },
   {
     "code-block": true,
     "code-block-config": { language: "JavaScript" },
@@ -196,18 +220,7 @@ export const example: BaseNode[] = [
       { children: [{ text: "const b = 2;" }] },
     ],
   },
-  { heading: { type: "h2", id: "826512426" }, children: [{ text: "流程图" }] },
-  { children: [{ text: "支持流程图在线编辑。" }] },
-  {
-    "uuid": "c751cd0d5ea",
-    "flow-chart": {
-      type: "xml",
-      content:
-        '<mxGraphModel dx="506" dy="742" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0"><root><mxCell id="0"/><mxCell id="1" parent="0"/><mxCell id="4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;sketch=0;" parent="1" source="2" target="3" edge="1"><mxGeometry relative="1" as="geometry"/></mxCell><mxCell id="2" value="Start" style="rounded=1;whiteSpace=wrap;html=1;sketch=0;glass=0;shadow=0;comic=1;" parent="1" vertex="1"><mxGeometry x="140" y="230" width="120" height="60" as="geometry"/></mxCell><mxCell id="3" value="End" style="rounded=1;whiteSpace=wrap;html=1;shadow=0;glass=0;comic=1;" parent="1" vertex="1"><mxGeometry x="420" y="230" width="120" height="60" as="geometry"/></mxCell></root></mxGraphModel>',
-    },
-    "children": [{ text: "" }],
-  },
-  { heading: { type: "h2", id: "82651426" }, children: [{ text: "React实时预览" }] },
+  { heading: { type: "h3", id: "MjpVOY70" }, children: [{ text: "React实时预览" }] },
   { children: [{ text: "支持React组件实时编辑及预览。" }] },
   {
     "react-live": true,
@@ -221,7 +234,7 @@ export const example: BaseNode[] = [
       { children: [{ text: "</Space>" }] },
     ],
   },
-  { children: [{ text: "表格" }], heading: { type: "h2", id: "xwGkjdiG" } },
+  { children: [{ text: "表格" }], heading: { type: "h3", id: "uhzr9fvh" } },
   {
     children: [
       { text: "表格功能处于" },
@@ -450,7 +463,12 @@ export const example: BaseNode[] = [
     ],
   },
   { children: [{ text: "工具栏" }], heading: { type: "h3", id: "0f8a5d9e" } },
-  { children: [{ text: "左侧工具栏可以唤起快捷操作，选中文字后可以弹出顶部工具栏。" }] },
+  {
+    children: [
+      { "text": "Hover", "inline-code": true },
+      { text: "到行可以唤起文档工具栏，选中文字后可以弹出浮动工具栏。" },
+    ],
+  },
   { children: [{ text: "其他" }], heading: { type: "h2", id: "3e92c207" } },
   { children: [{ text: "后续支持完善中..." }] },
 ];

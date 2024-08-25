@@ -74,7 +74,7 @@ export class HeadingPlugin extends BlockPlugin {
         );
       case H3:
         return (
-          <h3 className="doc-heading" id={id}>
+          <h3 className="doc-heading doc-heading-h3" id={id}>
             {context.children}
           </h3>
         );
@@ -85,37 +85,43 @@ export class HeadingPlugin extends BlockPlugin {
 
   public onKeyDown = (event: WithStop<KeyboardEvent<HTMLDivElement>>): void => {
     const editor = this.editor;
+    const selection = editor.raw.selection;
     if (
       isMatchedEvent(event, KEYBOARD.BACKSPACE, KEYBOARD.ENTER) &&
-      isCollapsed(editor.raw, editor.raw.selection)
+      isCollapsed(editor.raw, selection)
     ) {
       const match = getBlockNode(editor.raw);
-
       if (!match) return event.stop();
-      const { block, path } = match;
-      if (!block[HEADING_KEY]) return void 0;
 
-      if (isBaseElement(block)) {
-        if (event.key === KEYBOARD.BACKSPACE && isFocusLineStart(editor.raw, path)) {
-          setUnBlockNode(editor.raw, [HEADING_KEY], { at: path });
-          event.preventDefault();
+      const { block, path } = match;
+      if (!block[HEADING_KEY] || !isBaseElement(block)) return void 0;
+
+      if (event.key === KEYBOARD.BACKSPACE && isFocusLineStart(editor.raw, path)) {
+        setUnBlockNode(editor.raw, [HEADING_KEY], { at: path });
+        event.preventDefault();
+      }
+
+      if (event.key === KEYBOARD.ENTER && isFocusLineEnd(editor.raw, path)) {
+        const attributes = getBlockAttributes(block, [HEADING_KEY]);
+        if (isWrappedNode(editor.raw)) {
+          // 在`wrap`的情况下插入节点会出现问题 先多插入一个空格再删除
+          Transforms.insertNodes(
+            editor.raw,
+            { ...attributes, children: [{ text: " " }] },
+            { at: selection.focus, select: false }
+          );
+          Transforms.move(editor.raw, { distance: 1 });
+          Promise.resolve().then(() => editor.raw.deleteForward("character"));
+        } else {
+          Transforms.insertNodes(editor.raw, { ...attributes, children: [{ text: "" }] });
         }
-        if (event.key === KEYBOARD.ENTER && isFocusLineEnd(editor.raw, path)) {
-          const attributes = getBlockAttributes(block, [HEADING_KEY]);
-          if (isWrappedNode(editor.raw)) {
-            // 在`wrap`的情况下插入节点会出现问题 先多插入一个空格再删除
-            Transforms.insertNodes(
-              editor.raw,
-              { ...attributes, children: [{ text: " " }] },
-              { at: editor.raw.selection.focus, select: false }
-            );
-            Transforms.move(editor.raw, { distance: 1 });
-            Promise.resolve().then(() => editor.raw.deleteForward("character"));
-          } else {
-            Transforms.insertNodes(editor.raw, { ...attributes, children: [{ text: "" }] });
-          }
-          event.preventDefault();
-        }
+        event.preventDefault();
+      }
+
+      if (event.key === KEYBOARD.ENTER && isFocusLineStart(editor.raw, path)) {
+        editor.raw.insertNode({ children: [{ text: "" }] });
+        Transforms.move(editor.raw, { distance: 1 });
+        event.preventDefault();
       }
       return event.stop();
     }

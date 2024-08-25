@@ -57,14 +57,14 @@ export const getParentNode = (editor: Editor, at: Location) => {
 
 export const getBlockAttributes = (
   node?: BlockElement,
-  emit?: string[]
+  omit?: string[]
 ): Record<string, unknown> => {
   if (!node) return {};
-  const emits: string[] = emit ? emit : [];
-  emits.push("children");
+  const omits: string[] = omit ? omit : [];
+  omits.push("children");
   const result: Record<string, unknown> = {};
   Object.keys(node)
-    .filter(item => emits.indexOf(item) === -1)
+    .filter(item => omits.indexOf(item) === -1)
     .forEach(key => (result[key] = node[key]));
   return result;
 };

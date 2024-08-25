@@ -1,4 +1,4 @@
-import { DEFAULT_PRIORITY, isObject } from "doc-editor-utils";
+import { DEFAULT_PRIORITY, isObject, isPlainObject } from "doc-editor-utils";
 
 import type { EventMap, EventType, Handler, Listener, Listeners, WithStop } from "./action";
 
@@ -66,9 +66,10 @@ export class EventBus {
     let duplicate = <WithStop<EventMap[T]>>payload;
     // COMPAT: 兼容`Nil/Plain`的情况 仅传递对象时才有效
     if (isObject(payload)) {
-      const wrap = <WithStop<EventMap[T]>>Object.create(payload);
-      wrap._key = key;
-      wrap._raw = payload;
+      // COMPAT: 如果是普通对象则创建为原型链 否则直接写入原始值 不可写会静默失败
+      // 在 React SyntheticBaseEvent 的情况下 通过原型链的方式会导致 preventDefault 失效
+      const wrap = isPlainObject(payload) ? <WithStop<EventMap[T]>>Object.create(payload) : payload;
+      wrap.__key__ = key;
       wrap.stop = () => {
         isStopped = true;
       };
