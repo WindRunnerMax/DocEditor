@@ -35,11 +35,15 @@ export class ClipboardPlugin extends BlockPlugin {
     while (queue.length) {
       const node = queue.shift();
       if (!node) continue;
-      // fix: 处理粘贴时的 id 重复问题
+      // FIX: 处理粘贴时的 id 重复问题
       if (node && node[HEADING_KEY]) {
         node[HEADING_KEY] = { ...node[HEADING_KEY], id: getUniqueId(6) };
       }
       node.children && queue.push(...node.children);
+      // FIX: 兜底处理无文本节点的情况 例如 <div><div></div></div>
+      if (node.children && !node.children.length) {
+        node.children.push({ text: "" });
+      }
     }
   }
 }

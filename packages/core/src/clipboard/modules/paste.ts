@@ -36,7 +36,7 @@ export class Paste extends EditorModule {
     }
     if (textHTML) {
       const parser = new DOMParser();
-      const html = parser.parseFromString(textHTML, "text/html");
+      const html = parser.parseFromString(textHTML, TEXT_HTML);
       if (!html.body || !html.body.hasChildNodes()) return void 0;
       const rootNodes: BaseNode[] = this.deserialize(html.body);
       return this.applyNodes(rootNodes);

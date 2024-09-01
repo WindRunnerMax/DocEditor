@@ -23,14 +23,12 @@ export const DocAnchor: FC<{
   const ref = useRef<HTMLDivElement>(null);
   const [list, setList] = useState<Anchor[]>([]);
 
-  const onParse = useMemo(
-    () =>
-      debounce(() => {
-        const res = parseAnchor(props.editor);
-        setList(res);
-      }, 300),
-    [props.editor]
-  );
+  const onParse = useMemo(() => {
+    return debounce(() => {
+      const res = parseAnchor(props.editor);
+      setList(res);
+    }, 300);
+  }, [props.editor]);
 
   useEffect(() => {
     onParse();

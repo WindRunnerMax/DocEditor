@@ -6,7 +6,7 @@ export class Collection {
   /**
    * Pick
    * @param target Object.Any
-   * @param keys keyof Object.Any
+   * @param keys keyof target
    */
   public static pick<T extends Object.Any, K extends keyof T>(
     target: T,
@@ -24,7 +24,7 @@ export class Collection {
   /**
    * Omit
    * @param target Array.Any | Object.Any
-   * @param keys keys: Array.Any
+   * @param keys Array.Any
    */
   public static omit<T extends Array.Any>(target: T, keys: T): T;
   public static omit<T extends Object.Any, K extends keyof T>(target: T, keys: K | K[]): Omit<T, K>;
