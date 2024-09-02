@@ -37,7 +37,7 @@ export const example: BaseNode[] = [
       },
     ],
   },
-  { children: [{ text: "行内元素" }], heading: { type: "h2", id: "83ddface" } },
+  { children: [{ text: "行内结构" }], heading: { type: "h2", id: "83ddface" } },
   {
     children: [
       { text: "支持" },
@@ -68,7 +68,7 @@ export const example: BaseNode[] = [
     ],
     align: "center",
   },
-  { children: [{ text: "行级元素" }], heading: { id: "4644b757", type: "h2" } },
+  { children: [{ text: "段落结构" }], heading: { id: "4644b757", type: "h2" } },
   { children: [{ text: "标题" }], heading: { type: "h3", id: "213e6703" } },
   {
     children: [
@@ -93,7 +93,7 @@ export const example: BaseNode[] = [
   { "line-height": 2, "children": [{ text: "支持行级别的文字对齐。" }], "align": "left" },
   {
     "line-height": 2,
-    "children": [{ text: "嵌套元素" }],
+    "children": [{ text: "组合结构" }],
     "heading": { type: "h2", id: "QFwoE5fK" },
   },
   { children: [{ text: "引用块" }], heading: { type: "h3", id: "8426a51b" } },
@@ -169,7 +169,7 @@ export const example: BaseNode[] = [
       },
     ],
   },
-  { children: [{ text: "嵌入元素" }], heading: { type: "h2", id: "cfSqPoYb" } },
+  { children: [{ text: "嵌入结构" }], heading: { type: "h2", id: "cfSqPoYb" } },
   { children: [{ text: "图片" }], heading: { type: "h3", id: "aab55qq1" } },
   { children: [{ text: "支持图片上传。" }] },
   {
@@ -197,7 +197,7 @@ export const example: BaseNode[] = [
     ],
   },
   { "dividing-line": true, "children": [{ text: "" }] },
-  { children: [{ text: "块级元素" }], heading: { type: "h2", id: "DEnfO0kv" } },
+  { children: [{ text: "块级结构" }], heading: { type: "h2", id: "DEnfO0kv" } },
   { children: [{ text: "高亮块" }], heading: { type: "h3", id: "af869b51" } },
   {
     "highlight-block": { border: "var(--arcoblue-6)", background: "var(--arcoblue-3)" },

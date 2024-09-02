@@ -1,4 +1,5 @@
 import { Button } from "@arco-design/web-react";
+import { Trigger } from "@arco-design/web-react";
 import type { EditorKit } from "doc-editor-core";
 import type { BlockElement } from "doc-editor-delta";
 import { Editor, Transforms } from "doc-editor-delta";
@@ -6,7 +7,6 @@ import { findNodePath } from "doc-editor-utils";
 import type { FC } from "react";
 import { useMemo } from "react";
 
-import { Trigger } from "../../shared/modules/trigger";
 import type { TableContext } from "../hooks/use-context";
 import { MergeIcon } from "../icon/merge";
 import { SplitIcon } from "../icon/split";
