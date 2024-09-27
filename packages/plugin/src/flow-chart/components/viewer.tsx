@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { SelectionWrapper } from "../../shared/modules/selection";
 import { FLOW_CHART_KEY } from "../types";
-import { diagramDownload, diagramEditor, diagramPreview, getSvg } from "../utils/diagram-loader";
+import { diagramDownload, diagramPreview, getSvg, makeEditor } from "../utils/loader";
 import { xmlToString } from "../utils/utils";
 import { PreviewWrapper } from "./preview";
 
@@ -26,17 +26,15 @@ export const DocFLowChart: React.FC<{
   useEffect(() => {
     if (props.config.content) {
       const content = props.config.content;
-      const render = () => {
-        getSvg(content).then(svg => {
-          const div = container.current;
-          if (div && svg) {
-            div.childNodes.forEach(node => div.removeChild(node));
-            div.appendChild(svg);
-            setLoading(false);
-          }
-        });
-      };
-      render();
+      (async () => {
+        const svg = await getSvg(content);
+        const div = container.current;
+        if (div && svg) {
+          div.childNodes.forEach(node => div.removeChild(node));
+          div.appendChild(svg);
+          setLoading(false);
+        }
+      })();
     } else {
       setLoading(false);
     }
@@ -44,17 +42,17 @@ export const DocFLowChart: React.FC<{
 
   const startEdit = () => {
     setEditorLoading(true);
-    diagramEditor("zh", props.config.content, (xml: Node) => {
+    const onChange = (xml: Node) => {
       const str = xmlToString(xml);
-      if (str) {
-        const path = ReactEditor.findPath(props.editor.raw, props.element);
-        setBlockNode(
-          props.editor.raw,
-          { [FLOW_CHART_KEY]: { type: "xml", content: str } },
-          { at: path, key: FLOW_CHART_KEY }
-        );
-      }
-    }).then(r => {
+      if (!str) return void 0;
+      const path = ReactEditor.findPath(props.editor.raw, props.element);
+      setBlockNode(
+        props.editor.raw,
+        { [FLOW_CHART_KEY]: { type: "xml", content: str } },
+        { at: path, key: FLOW_CHART_KEY }
+      );
+    };
+    makeEditor("zh", props.config.content, onChange).then(r => {
       r.start();
       setEditorLoading(false);
     });

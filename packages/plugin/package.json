@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "react-live-runtime": "0.0.3",
-    "embed-drawio": "0.0.18",
+    "embed-drawio": "0.1.5",
     "lodash-es": "4.17.21",
     "prismjs": "1.29.0",
     "doc-editor-core": "workspace: *",

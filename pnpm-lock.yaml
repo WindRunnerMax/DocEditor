@@ -42,7 +42,7 @@ importers:
         specifier: 4.3.0
         version: 4.3.0(eslint@7.11.0)
       eslint-plugin-simple-import-sort:
-        specifier: ^10.0.0
+        specifier: 10.0.0
         version: 10.0.0(eslint@7.11.0)
       postcss:
         specifier: 8.3.3
@@ -155,8 +155,8 @@ importers:
         specifier: 'workspace: *'
         version: link:../utils
       embed-drawio:
-        specifier: 0.0.18
-        version: 0.0.18
+        specifier: 0.1.5
+        version: 0.1.5
       lodash-es:
         specifier: 4.17.21
         version: 4.17.21
@@ -6242,15 +6242,13 @@ packages:
       minimalistic-crypto-utils: 1.0.1
     dev: true
 
-  /embed-drawio@0.0.18:
-    resolution: {integrity: sha512-4yen+QO6k82Avkka0nOjFNEUpVicRxjOTlaEJMlwRNP1Nlc/tHChUW/vH001SHpIDDMLJttmN9vldB/6S/I8LQ==}
+  /embed-drawio@0.1.5:
+    resolution: {integrity: sha512-2pHEulVWx0G4xaLLPfwqdxzUptyszftFgT5h79kow1cHp9TsWv2fXT1ArI6taZiLMF9gXHjrV2pYtj7y3zBdpA==}
     dependencies:
-      laser-utils: 0.0.2-alpha.13
+      laser-utils: 0.0.5-alpha.10
       mxgraph: 4.2.2
       pako: 1.0.6
       sanitize-html: 2.7.3
-      sanitizer: 0.1.3
-      tslib: 2.4.0
     dev: false
 
   /emittery@0.13.1:
@@ -7569,7 +7567,7 @@ packages:
     resolution: {integrity: sha512-oWb1Z6mkHIskLzEJ/XWX0srkpkTQ7vaopMQkyaEIoq0fmtFVxOthb8cCxeT+p3ynTdkk/RZwbgG4brR5BeWECw==}
     engines: {node: '>= 4.0'}
     os: [darwin]
-    deprecated: The v1 package contains DANGEROUS / INSECURE binaries. Upgrade to safe fsevents v2
+    deprecated: Upgrade to fsevents v2 to mitigate potential security issues
     requiresBuild: true
     dependencies:
       bindings: 1.5.0
@@ -10004,12 +10002,12 @@ packages:
     resolution: {integrity: sha512-yRTyrZ3Jsl96jNI1pPKIENBL4wv6+WBlbt7OvJ4I6ocGW3BMWO6T0xWHPRXUvXdOe3o2ujKM6wUDcmDpeyWFRg==}
     dev: false
 
-  /laser-utils@0.0.2-alpha.13:
-    resolution: {integrity: sha512-9Ke74rX3URh6V6XRI2E4sjQCohlZsgN4ELls8Uh/nOiTa5ko9hLXswjBeD70N1JXbmFdRlflzlsqtW1VKzlQEQ==}
-    dev: false
-
   /laser-utils@0.0.5-alpha.1:
     resolution: {integrity: sha512-iu7i7AUfCaxn2lQuITqQWujGUxBI2xRBHu3gjV17SniCslzzZQ+VDizOMjB8X//XDfoX349tkWTTRaK4HZOUlw==}
+    dev: false
+
+  /laser-utils@0.0.5-alpha.10:
+    resolution: {integrity: sha512-nZmDTXC2AYyll+vSJV00a0NN8JsGHD48NTZeTx54lWAsnAx2Bj36h39Vj9q9kHKxvA9q3VQg8I4Y5E9xb8y+Zw==}
     dev: false
 
   /last-call-webpack-plugin@3.0.0:
@@ -13546,10 +13544,6 @@ packages:
   /sanitize.css@10.0.0:
     resolution: {integrity: sha512-vTxrZz4dX5W86M6oVWVdOVe72ZiPs41Oi7Z6Km4W5Turyz28mrXSJhhEBZoRtzJWIv3833WKVwLSDWWkEfupMg==}
     dev: true
-
-  /sanitizer@0.1.3:
-    resolution: {integrity: sha512-j05vL56tR90rsYqm9ZD05v6K4HI7t4yMDEvvU0x4f+IADXM9Jx1x9mzatxOs5drJq6dGhugxDW99mcPvXVLl+Q==}
-    dev: false
 
   /sass-loader@10.5.2(sass@1.52.3)(webpack@4.44.2):
     resolution: {integrity: sha512-vMUoSNOUKJILHpcNCCyD23X34gve1TS7Rjd9uXHeKqhvBG39x6XbswFDtpbTElj6XdMFezoWhkh5vtKudf2cgQ==}
