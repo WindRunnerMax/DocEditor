@@ -414,3 +414,29 @@ while (start !== -1) {
 ```
 
 此外，还有一个重要的问题，通过这种方式处理的`Wrap`类型的节点可能会丢失其`wrap-key`的值，因为我们在这种情况下选取的内容必然是内部元素而不是完整选取整个元素，这种情况下如果需要特殊处理的话就需要交给插件去做格式化了，需要实现`willSetToClipboard`的`Hook`，否则作为没有`wrap-key`的`pair-key`会被`Normalize`的规则处理掉。不过通常这种情况不会出现，在选区的情况下我们选择块级内容一般都是文本或者节点内的选区，而只有在工具栏的剪贴板操作时我们需要为其特殊处理。但是对于`Table`节点单元格的处理会是比较麻烦的问题，只不过暂时我们还没有将表格的选区融合到编辑器整个选区模块，这块暂时不用考虑。
+
+## 零宽字符 IME
+通常实现`Void/Embed`节点时，我们都需要在`Void`节点中实现一个零宽字符，用来处理选区的映射问题。通常我们都需要隐藏其本身显示的位置以隐藏光标，然而在特定条件下这里会存在吞`IME`输入的问题。
+
+```html
+<div contenteditable="true"><span contenteditable="false" style="background:#eee;">Void<span style="height: 0px; color: transparent; position: absolute;">&#xFEFF;</span></span><span>!</span></div>
+```
+
+处理这个问题的方式比较简单，我们只需要将零宽字符的标识放在`EmbedNode`之前即可，这样也不会影响到选区的查找。`https://github.com/ianstormtaylor/slate/pull/5685`。此外飞书文档的实现方式也是这样的，`ZeroNode`永远在`FakeNode`前。
+
+```html
+<div contenteditable="true"><span contenteditable="false" style="background:#eee;"><span style="height: 0px; color: transparent; position: absolute;">&#xFEFF;</span>Void</span><span>!</span></div>
+```
+
+## Void IME
+在这里我还发现了一个很有趣的事情，是关于`ContentEditable`以及`IME`的交互问题。在`slate`的`issue`中发现，如果最外层节点是`editable`的，然后子节点中某个节点是`not editable`的，然后其后续紧接着是`span`的文本节点，当前光标位于这两者中间，此时唤醒`IME`输入部分内容，如果按着键盘的左键将`IME`的编辑向左移动到最后，则会使整个编辑器失去焦点，`IME`以及输入的文本也会消失，此时如果在此唤醒`IME`则会重新出现之前的文本。这个现象只在`Chromium`中存在，在`Firefox/Safari`中则表现正常。
+
+```html
+<div contenteditable="true"><span contenteditable="false" style="background:#eee;">Void</span><span>!</span></div>
+```
+
+这个问题我在`https://github.com/ianstormtaylor/slate/pull/5736`中进行了修复，关键点是外层`span`标签有`display:inline-block`样式，子`div`标签有`contenteditable=false`属性。
+
+```html
+<div contenteditable="true"><span contenteditable="false" style="background: #eee; display: inline-block;"><div contenteditable="false">Void</div></span><span>!</span></div>
+```
