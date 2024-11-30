@@ -7,6 +7,7 @@ import {
   IconScissor,
 } from "@arco-design/web-react/icon";
 import { Transforms } from "doc-editor-delta";
+import { preventEvent } from "doc-editor-utils";
 import React from "react";
 
 import { TriggerMenu } from "../components/trigger-menu";
@@ -55,6 +56,7 @@ export const OperationDocToolBarPlugin: DocToolbarPlugin = {
           <React.Fragment>
             <div className="doc-trigger-menu-cut"></div>
             <Trigger
+              className="doc-toolbar-trigger"
               // COMPAT: 采取配置传递的方式解决循环引用
               popup={() => (
                 <TriggerMenu state={nextLineState} plugins={NEXT_DOC_TOOLBAR_MODULES}></TriggerMenu>
@@ -62,7 +64,7 @@ export const OperationDocToolBarPlugin: DocToolbarPlugin = {
               position="right"
               popupAlign={{ left: 10, right: 10 }}
             >
-              <div className="toolbar-banner-menu more-options">
+              <div className="toolbar-banner-menu more-options" onMouseDown={preventEvent}>
                 <div className="toolbar-banner-menu-left">
                   <span className="banner-menu-icon">{<IconPlus />}</span>
                   <span className="banner-menu-name">在下方添加</span>

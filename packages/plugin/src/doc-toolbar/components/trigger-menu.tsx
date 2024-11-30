@@ -1,3 +1,4 @@
+import { preventEvent } from "doc-editor-utils";
 import React, { useMemo } from "react";
 
 import type { DocToolbarPlugin, DocToolBarState } from "../types";
@@ -19,7 +20,7 @@ export const TriggerMenu: React.FC<{ state: DocToolBarState; plugins: DocToolbar
     }, [state, props.plugins]);
 
     return (
-      <div className="doc-trigger-menu" onMouseDown={e => e.preventDefault()}>
+      <div className="doc-trigger-menu" onMouseDown={preventEvent}>
         {signalMenu.length > 0 && (
           <div className="doc-trigger-signal-menu">
             {signalMenu.map((item, index) => (

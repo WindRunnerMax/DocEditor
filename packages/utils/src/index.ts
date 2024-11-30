@@ -4,6 +4,7 @@ export { assertValue } from "./common";
 export { DEFAULT_PRIORITY, EVENT_ENUM, KEYBOARD } from "./constant";
 export { debounce } from "./debounce";
 export { Bind } from "./decorator";
+export { preventEvent, stopEvent } from "./event";
 export {
   findNodePath,
   getBlockNode,

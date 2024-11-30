@@ -54,23 +54,36 @@ export class HighlightBlockPlugin extends BlockPlugin {
     const { node: node, html } = context;
     if (this.reflex.isBlock(node) && node[HIGHLIGHT_BLOCK_KEY]) {
       const colors = node[HIGHLIGHT_BLOCK_KEY]!;
-      const border = colors.border;
-      const background = colors.background;
-      const div = document.createElement("div");
-      div.setAttribute(HL_DOM_TAG, "true");
-      div.style.border = `1px solid rgb(${border})`;
-      div.style.background = `rgb(${background})`;
+      // 提取具体色值
+      const border = colors.border || "";
+      const background = colors.background || "";
+      const regexp = /rgb\((.+)\)/;
+      const borderVar = RegExec.exec(regexp, border);
+      const backgroundVar = RegExec.exec(regexp, background);
+      const style = window.getComputedStyle(document.body);
+      const borderValue = style.getPropertyValue(borderVar);
+      const backgroundValue = style.getPropertyValue(backgroundVar);
+      // 构建 HTML 容器节点
+      const container = document.createElement("div");
+      container.setAttribute(HL_DOM_TAG, "true");
+      container.classList.add("callout-container");
+      container.style.border = `1px solid rgb(${borderValue})`;
+      container.style.background = `rgb(${backgroundValue})`;
+      container.setAttribute("data-emoji-id", "balloon");
+      const block = document.createElement("div");
+      block.classList.add("callout-block");
       // NOTE: 采用`Wrap Base Node`加原地替换的方式
-      div.appendChild(html);
-      context.html = div;
+      container.appendChild(block);
+      block.appendChild(html);
+      context.html = container;
     }
   }
 
   public deserialize(context: PasteContext): void {
-    const { nodes, html } = context;
-    if (isHTMLElement(html) && html.getAttribute(HL_DOM_TAG)) {
-      const border = html.style.border;
-      const background = html.style.background;
+    const { nodes, html: node } = context;
+    if (isHTMLElement(node) && node.classList.contains("callout-block")) {
+      const border = node.style.borderColor;
+      const background = node.style.backgroundColor;
       const regexp = /rgb\((.+)\)/;
       const borderColor = border && RegExec.exec(regexp, border);
       const backgroundColor = background && RegExec.exec(regexp, background);

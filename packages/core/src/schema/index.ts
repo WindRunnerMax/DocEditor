@@ -54,6 +54,7 @@ export class Schema extends NormalizeRules {
 
     editor.normalizeNode = entry => {
       const [node] = entry;
+      this.normalizeEmptyEditor(editor, node);
       if (!isBlock(editor, node)) {
         normalizeNode(entry);
         return void 0;

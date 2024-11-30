@@ -5,7 +5,7 @@ import type { EditorKit } from "doc-editor-core";
 import type { TextElement } from "doc-editor-delta";
 import { Editor } from "doc-editor-delta";
 import { ReactEditor } from "doc-editor-delta";
-import { EVENT_ENUM } from "doc-editor-utils";
+import { EVENT_ENUM, preventEvent } from "doc-editor-utils";
 import { Collection } from "doc-editor-utils";
 import type { FC } from "react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
@@ -104,11 +104,8 @@ export const MenuToolBar: FC<{
         className="menu-toolbar-container"
         onClickMenuItem={exec}
         onMouseUp={e => e.stopPropagation()}
-        onMouseDown={e => {
-          // Prevent toolbar from taking focus away from editor
-          e.preventDefault();
-          e.stopPropagation();
-        }}
+        // Prevent toolbar from taking focus away from editor
+        onMouseDown={preventEvent}
         mode="vertical"
         selectedKeys={selectedMarks}
       >

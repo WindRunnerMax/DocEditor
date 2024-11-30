@@ -21,6 +21,7 @@ export class NormalizeRules {
   protected normalize(editor: Editor, entry: NodeEntry) {
     try {
       Editor.withoutNormalizing(editor, () => {
+        this.normalizeEmptyEditor(editor, entry[0]);
         this.normalizeBlockNode(editor, entry);
       });
     } catch (error) {
@@ -100,6 +101,18 @@ export class NormalizeRules {
           }
         });
       }
+    }
+  }
+
+  /**
+   * 处理编辑器全部清空的特殊 Case
+   * @param editor
+   * @param node
+   */
+  protected normalizeEmptyEditor(editor: Editor, node: unknown) {
+    // 1. 存在编辑器全部清空的情况 且无法触发内建的 Normalize 逻辑
+    if (node === editor && editor.children.length === 0) {
+      Transforms.insertNodes(editor, { children: [{ text: "" }] }, { at: [0], select: true });
     }
   }
 }
