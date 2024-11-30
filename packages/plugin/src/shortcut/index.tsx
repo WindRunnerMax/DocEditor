@@ -1,28 +1,13 @@
 import type { EditorKit } from "doc-editor-core";
 import { BlockPlugin, EDITOR_EVENT } from "doc-editor-core";
+import type { TextElement } from "doc-editor-delta";
 import { Editor, Transforms } from "doc-editor-delta";
-import { DEFAULT_PRIORITY, getBlockNode } from "doc-editor-utils";
-import { isCollapsed, isMatchedEvent } from "doc-editor-utils";
+import { Bind, DEFAULT_PRIORITY, getBlockNode } from "doc-editor-utils";
+import { isMatchedEvent } from "doc-editor-utils";
 import { KEYBOARD } from "doc-editor-utils";
 import type { KeyboardEvent } from "react";
 
-import { DIVIDING_LINE_KEY } from "../dividing-line/types";
-import { HEADING_KEY } from "../heading/types";
-import { ORDERED_LIST_KEY } from "../ordered-list/types";
-import { QUOTE_BLOCK_KEY } from "../quote-block/types";
-import { UNORDERED_LIST_KEY } from "../unordered-list/types";
-import { SHORTCUT_KEY } from "./types";
-
-const SHORTCUTS: Record<string, string> = {
-  "1.": ORDERED_LIST_KEY,
-  "-": UNORDERED_LIST_KEY,
-  "*": UNORDERED_LIST_KEY,
-  ">": QUOTE_BLOCK_KEY,
-  "#": `${HEADING_KEY}.h1`,
-  "##": `${HEADING_KEY}.h2`,
-  "###": `${HEADING_KEY}.h3`,
-  "---": DIVIDING_LINE_KEY,
-};
+import { COMMAND_SHORTCUTS, SHORTCUT_KEY, SHORTCUTS } from "./types";
 
 export class ShortCutPlugin extends BlockPlugin {
   public key: string = SHORTCUT_KEY;
@@ -41,25 +26,40 @@ export class ShortCutPlugin extends BlockPlugin {
     return false;
   }
 
-  public onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+  @Bind
+  public onKeyDown(event: KeyboardEvent<HTMLDivElement>) {
     const editor = this.editor;
-    if (isMatchedEvent(event, KEYBOARD.SPACE) && isCollapsed(editor.raw, editor.raw.selection)) {
+    const sel = editor.selection.get();
+    if (!sel) return null;
+    if (isMatchedEvent(event, KEYBOARD.SPACE) && sel.isCollapsed) {
       const match = getBlockNode(editor.raw);
-      if (match) {
-        const { anchor } = editor.raw.selection;
-        const { path } = match;
-        const start = Editor.start(editor.raw, path);
-        const range = { anchor, focus: start };
-        const beforeText = Editor.string(editor.raw, range);
-        const param = SHORTCUTS[beforeText.trim()];
-        if (param) {
-          Transforms.select(editor.raw, range);
-          Transforms.delete(editor.raw);
-          const [key, data] = param.split(".");
-          editor.command.exec(key, { extraKey: data, path });
-          event.preventDefault();
+      if (!match) return null;
+      const { anchor } = sel;
+      const { path } = match;
+      const start = Editor.start(editor.raw, path);
+      const range = { anchor, focus: start };
+      const beforeText = Editor.string(editor.raw, range);
+      const param = SHORTCUTS[beforeText.trim()];
+      if (!param) return null;
+      Transforms.select(editor.raw, range);
+      Transforms.delete(editor.raw);
+      const [key, data] = param.split(".");
+      editor.command.exec(key, { extraKey: data, path });
+      event.preventDefault();
+    }
+    if (!sel.isCollapsed) {
+      for (const [key, value] of Object.entries(COMMAND_SHORTCUTS)) {
+        const [code, ...keys] = key.split("-");
+        if (code === String(event.keyCode)) {
+          if (keys.every(k => event[k as "ctrlKey"])) {
+            event.preventDefault();
+            editor.command.exec(value, {
+              marks: Editor.marks(editor.raw) as TextElement,
+            });
+          }
+          break;
         }
       }
     }
-  };
+  }
 }

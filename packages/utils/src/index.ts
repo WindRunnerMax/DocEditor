@@ -1,7 +1,7 @@
 export { Collection } from "./collection";
 export type { AssertT } from "./common";
 export { assertValue } from "./common";
-export { DEFAULT_PRIORITY, EVENT_ENUM, KEYBOARD } from "./constant";
+export { DEFAULT_PRIORITY, EVENT_ENUM, KEY_CODE, KEYBOARD } from "./constant";
 export { debounce } from "./debounce";
 export { Bind } from "./decorator";
 export { preventEvent, stopEvent } from "./event";
@@ -52,6 +52,7 @@ export {
   cs,
   getUniqueId,
   IS_DEV,
+  IS_MAC,
   IS_MOBILE,
   isArray,
   isEmptyValue,

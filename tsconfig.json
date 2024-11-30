@@ -25,13 +25,8 @@
       "doc-editor-delta": ["./packages/delta/src"],
       "doc-editor-plugin": ["./packages/plugin/src"],
       "doc-editor-utils": ["./packages/utils/src"],
-      "doc-editor-core/dist/*": ["./packages/core/src/*"],
-      "doc-editor-delta/dist/*": ["./packages/delta/src/*"],
-      "doc-editor-plugin/dist/*": ["./packages/plugin/src/*"],
-      "doc-editor-utils/dist/*": ["./packages/utils/src/*"]
-    },
+      "doc-editor-delta/dist/*": ["./packages/delta/src/*"]
+    }
   },
-  "include": [
-    "packages/*/src"
-  ]
+  "include": ["packages/*/src"]
 }

@@ -1,4 +1,4 @@
-import type { BaseRange, Location } from "doc-editor-delta";
+import type { Location } from "doc-editor-delta";
 import { Range, ReactEditor, Transforms } from "doc-editor-delta";
 
 import type { EditorKit } from "../editor";
@@ -13,13 +13,12 @@ export class Selection {
   public get() {
     const selection = this.raw.selection;
     if (!selection) return null;
-    const prototype = {
-      isCollapsed: () => Range.isCollapsed(selection),
-      isBackward: () => Range.isBackward(selection),
+    const sel = {
+      anchor: selection.anchor,
+      focus: selection.focus,
+      isCollapsed: Range.isCollapsed(selection),
+      isBackward: Range.isBackward(selection),
     };
-    const sel: BaseRange & typeof prototype = Object.create(prototype);
-    sel.anchor = selection.anchor;
-    sel.focus = selection.focus;
     return sel;
   }
 

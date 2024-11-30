@@ -8,6 +8,7 @@
   max-height: 600px;
   overflow-x: visible;
   overflow-y: auto;
+  overscroll-behavior: contain;
   padding: 5px 3px;
   position: fixed;
   right: 0;

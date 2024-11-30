@@ -16,7 +16,7 @@ export class Copy extends EditorModule {
     if (!sel) return void 0;
     const tuple = this.reflex.getClosestBlockTuple(sel);
     const nodes: BaseNode[] = [];
-    if (sel.isCollapsed()) {
+    if (sel.isCollapsed) {
       // NOTE: 在选区折叠的情况下需要特判`Void`节点类型
       if (tuple && this.reflex.isVoidNode(tuple.node)) {
         nodes.push(tuple.node);
@@ -45,7 +45,7 @@ export class Copy extends EditorModule {
     const sel = this.editor.selection.get();
     if (!sel) return void 0;
     this.onCopy(event);
-    if (sel.isCollapsed()) {
+    if (sel.isCollapsed) {
       const tuple = this.reflex.getClosestBlockTuple(sel);
       tuple && this.reflex.isVoidNode(tuple.node) && this.do.delete(tuple.path);
     } else {
