@@ -1,7 +1,7 @@
 import { Button } from "@arco-design/web-react";
 import { Trigger } from "@arco-design/web-react";
 import type { EditorKit } from "doc-editor-core";
-import type { BlockElement } from "doc-editor-delta";
+import type { BlockElement, Node } from "doc-editor-delta";
 import { Editor, Transforms } from "doc-editor-delta";
 import { findNodePath } from "doc-editor-utils";
 import type { FC } from "react";
@@ -53,35 +53,62 @@ export const PinToolbar: FC<{
   const onMerge = () => {
     const path = findNodePath(editor.raw, element);
     if (!path) return void 0;
+    provider.setSelection(null);
     editor.track.batch(() => {
       const rowSpan = endRow - startRow + 1;
       const colSpan = endCol - startCol + 1;
+      const content: Node[] = [];
       for (let i = startRow; i <= endRow; i++) {
         for (let k = startCol; k <= endCol; k++) {
           if (i === startRow && k === startCol) {
-            const target = path.concat(i, k);
-            Transforms.setNodes(
-              editor.raw,
-              { [CELL_ROW_SPAN]: rowSpan, [CELL_COL_SPAN]: colSpan },
-              { at: target }
-            );
             continue;
           }
           const target = path.concat(i, k);
+          // 目标单元格
+          const td = editor.reflex.getNodeTuple(target, 0);
+          // 隐藏目标单元格
           Transforms.setNodes(
             editor.raw,
             { [CELL_ROW_SPAN]: 0, [CELL_COL_SPAN]: 0 },
             { at: target }
           );
+          if (
+            td &&
+            td.node.children &&
+            td.node[CELL_ROW_SPAN] !== 0 &&
+            td.node[CELL_COL_SPAN] !== 0
+          ) {
+            // 获取将要合并的单元格内容
+            content.push(...td.node.children);
+            // 删除当前单元格内容
+            td.node.children.forEach((_, i) => {
+              Transforms.delete(editor.raw, { at: target.concat(i) });
+            });
+          }
         }
       }
+      const target = path.concat(startRow, startCol);
+      // 设置合并 span 值
+      Transforms.setNodes(
+        editor.raw,
+        { [CELL_ROW_SPAN]: rowSpan, [CELL_COL_SPAN]: colSpan },
+        { at: target }
+      );
+      const td = editor.reflex.getNodeTuple(target, 0);
+      if (td && td.node.children) {
+        // 将单元格内容合并到目标单元格
+        Transforms.insertNodes(editor.raw, content, {
+          at: target.concat(td.node.children.length),
+          select: true,
+        });
+      }
     });
-    provider.setSelection(null);
   };
 
   const onSplit = () => {
     const path = findNodePath(editor.raw, element);
     if (!path) return void 0;
+    provider.setSelection(null);
     editor.track.batch(() => {
       for (let i = startRow; i <= endRow; i++) {
         for (let k = startCol; k <= endCol; k++) {
@@ -94,7 +121,6 @@ export const PinToolbar: FC<{
         }
       }
     });
-    provider.setSelection(null);
   };
 
   const Popup = (

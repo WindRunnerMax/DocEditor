@@ -12,7 +12,7 @@
     "dist"
   ],
   "scripts": {
-    "dev": "react-app-rewired start",
+    "dev": "react-app-rewired --openssl-legacy-provider start",
     "build": "react-app-rewired build",
     "lint-es": "eslint --fix --ext .js,.jsx,.ts,.tsx --ignore-path .gitignore .",
     "lint-style": "stylelint \"**/*.{css,scss,sass}\" --fix --ignore-path .gitignore",

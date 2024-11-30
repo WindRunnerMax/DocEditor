@@ -319,8 +319,8 @@ importers:
         specifier: 'workspace: *'
         version: link:../delta
       laser-utils:
-        specifier: 0.0.5-alpha.1
-        version: 0.0.5-alpha.1
+        specifier: 0.0.5-alpha.14
+        version: 0.0.5-alpha.14
       react:
         specifier: '>=16'
         version: 17.0.2
@@ -3745,6 +3745,7 @@ packages:
 
   /acorn-import-assertions@1.9.0(acorn@8.11.3):
     resolution: {integrity: sha512-cmMwop9x+8KFhxvKrKfPYmN6/pKTYYHBqLa0DfvVZcKMJWNyWLnaqND7dx/qn66R7ewM1UX5XMaDVP5wlVTaVA==}
+    deprecated: package has been renamed to acorn-import-attributes
     peerDependencies:
       acorn: ^8
     dependencies:
@@ -10002,12 +10003,12 @@ packages:
     resolution: {integrity: sha512-yRTyrZ3Jsl96jNI1pPKIENBL4wv6+WBlbt7OvJ4I6ocGW3BMWO6T0xWHPRXUvXdOe3o2ujKM6wUDcmDpeyWFRg==}
     dev: false
 
-  /laser-utils@0.0.5-alpha.1:
-    resolution: {integrity: sha512-iu7i7AUfCaxn2lQuITqQWujGUxBI2xRBHu3gjV17SniCslzzZQ+VDizOMjB8X//XDfoX349tkWTTRaK4HZOUlw==}
-    dev: false
-
   /laser-utils@0.0.5-alpha.10:
     resolution: {integrity: sha512-nZmDTXC2AYyll+vSJV00a0NN8JsGHD48NTZeTx54lWAsnAx2Bj36h39Vj9q9kHKxvA9q3VQg8I4Y5E9xb8y+Zw==}
+    dev: false
+
+  /laser-utils@0.0.5-alpha.14:
+    resolution: {integrity: sha512-vL/p6RKI4Ov9Lh9HMXiVGSX9Vxml9zyRue37/X4VSx23yyL8Tyrivm4a0ZBQPD0MvPGDqtpwosz/A/c/Y37SEQ==}
     dev: false
 
   /last-call-webpack-plugin@3.0.0:
