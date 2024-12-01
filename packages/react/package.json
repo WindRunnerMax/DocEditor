@@ -13,7 +13,8 @@
   ],
   "scripts": {
     "dev": "react-app-rewired --openssl-legacy-provider start",
-    "build": "react-app-rewired --openssl-legacy-provider build",
+    "build": "react-app-rewired build",
+    "build:local": "react-app-rewired --openssl-legacy-provider build",
     "lint-es": "eslint --fix --ext .js,.jsx,.ts,.tsx --ignore-path .gitignore .",
     "lint-style": "stylelint \"**/*.{css,scss,sass}\" --fix --ignore-path .gitignore",
     "lint": "npm run lint-es && npm run lint-style",
