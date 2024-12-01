@@ -1,9 +1,15 @@
 import "./styles/index.scss";
 
-import type { BlockContext, CommandFn, EventContext } from "doc-editor-core";
+import type {
+  BlockContext,
+  CommandFn,
+  CopyContext,
+  EventContext,
+  PasteContext,
+} from "doc-editor-core";
 import type { EditorKit } from "doc-editor-core";
-import { BlockPlugin, EDITOR_EVENT } from "doc-editor-core";
-import type { RenderElementProps } from "doc-editor-delta";
+import { BlockPlugin, EDITOR_EVENT, isHTMLElement } from "doc-editor-core";
+import type { BlockElement, RenderElementProps } from "doc-editor-delta";
 import { isMatchWrapNode, isObject } from "doc-editor-utils";
 import { getBlockNode } from "doc-editor-utils";
 import { isCollapsed, isFocusLineStart, isMatchedEvent, isWrappedEdgeNode } from "doc-editor-utils";
@@ -11,6 +17,8 @@ import { setUnWrapNodes, setWrapNodes } from "doc-editor-utils";
 import { KEYBOARD } from "doc-editor-utils";
 import type { KeyboardEvent } from "react";
 
+import { applyLineMarker } from "../clipboard/utils/apply";
+import { isMatchTag } from "../clipboard/utils/is";
 import { QUOTE_BLOCK_ITEM_KEY, QUOTE_BLOCK_KEY } from "./types";
 
 export class QuoteBlockPlugin extends BlockPlugin {
@@ -75,4 +83,25 @@ export class QuoteBlockPlugin extends BlockPlugin {
       return context.stop();
     }
   };
+
+  public serialize(context: CopyContext): void {
+    const element = context.node as BlockElement;
+    const quote = element[QUOTE_BLOCK_KEY];
+    if (!quote) return void 0;
+    const node = document.createElement("blockquote");
+    node.setAttribute("data-type", QUOTE_BLOCK_KEY);
+    node.appendChild(context.html);
+    context.html = node;
+  }
+
+  public deserialize(context: PasteContext): void {
+    const { nodes, html } = context;
+    if (!isHTMLElement(html)) return void 0;
+    if (isMatchTag(html, "blockquote")) {
+      const current = applyLineMarker(this.editor, nodes, {
+        [QUOTE_BLOCK_ITEM_KEY]: true,
+      });
+      context.nodes = [{ children: current, [QUOTE_BLOCK_KEY]: true }];
+    }
+  }
 }

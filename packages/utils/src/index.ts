@@ -50,6 +50,7 @@ export type { Func, Reflex } from "laser-utils";
 export {
   Clipboard,
   cs,
+  getId,
   getUniqueId,
   IS_DEV,
   IS_MAC,

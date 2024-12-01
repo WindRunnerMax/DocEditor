@@ -1,11 +1,18 @@
 import "./styles/index.scss";
 
-import type { BlockContext, CommandFn, EventContext } from "doc-editor-core";
+import type {
+  BlockContext,
+  CommandFn,
+  CopyContext,
+  EventContext,
+  PasteContext,
+} from "doc-editor-core";
 import type { EditorKit } from "doc-editor-core";
-import { BlockPlugin, EDITOR_EVENT } from "doc-editor-core";
+import { BlockPlugin, EDITOR_EVENT, isHTMLElement } from "doc-editor-core";
 import type { RenderElementProps } from "doc-editor-delta";
+import type { BlockElement } from "doc-editor-delta";
 import { Transforms } from "doc-editor-delta";
-import { getUniqueId, KEYBOARD } from "doc-editor-utils";
+import { getId, getUniqueId, KEYBOARD } from "doc-editor-utils";
 import { isObject } from "doc-editor-utils";
 import { getBlockAttributes, getBlockNode } from "doc-editor-utils";
 import {
@@ -20,6 +27,7 @@ import {
 import { setBlockNode, setUnBlockNode } from "doc-editor-utils";
 import type { KeyboardEvent } from "react";
 
+import { applyLineMarker } from "../clipboard/utils/apply";
 import { H1, H2, H3, HEADING_KEY } from "./types";
 
 export class HeadingPlugin extends BlockPlugin {
@@ -125,4 +133,30 @@ export class HeadingPlugin extends BlockPlugin {
       return context.stop();
     }
   };
+
+  public serialize(context: CopyContext): void {
+    const element = context.node as BlockElement;
+    const heading = element[HEADING_KEY];
+    if (!heading) return void 0;
+    const id = heading.id;
+    const type = heading.type;
+    const node = document.createElement(type);
+    node.id = id;
+    node.setAttribute("data-type", HEADING_KEY);
+    node.appendChild(context.html);
+    context.html = node;
+  }
+
+  public deserialize(context: PasteContext): void {
+    const { nodes, html } = context;
+    if (!isHTMLElement(html)) return void 0;
+    const tagName = html.tagName.toLocaleLowerCase();
+    if (tagName.startsWith("h") && tagName.length === 2) {
+      let level = Number(tagName.replace("h", ""));
+      if (level <= 0 || level > 3) level = 3;
+      context.nodes = applyLineMarker(this.editor, nodes, {
+        [HEADING_KEY]: { type: `h${level}`, id: getId() },
+      });
+    }
+  }
 }

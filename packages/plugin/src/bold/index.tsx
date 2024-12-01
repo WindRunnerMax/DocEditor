@@ -46,7 +46,7 @@ export class BoldPlugin extends LeafPlugin {
     const { nodes, html } = context;
     if (!isHTMLElement(html)) return void 0;
     if (isMatchTag(html, "strong") || isMatchTag(html, "b") || html.style.fontWeight === "bold") {
-      applyMarker(nodes, BOLD_KEY);
+      context.nodes = applyMarker(nodes, { [BOLD_KEY]: true });
     }
   }
 
