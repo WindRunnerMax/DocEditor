@@ -93,9 +93,9 @@ export class Copy extends EditorModule {
       return root as T;
     }
     if (this.reflex.isBlock(current)) {
-      const lineFragment = document.createDocumentFragment();
-      current.children.forEach(child => this.serialize(child, lineFragment));
-      const context: CopyContext = { node: current, html: lineFragment };
+      const blockFragment = document.createDocumentFragment();
+      current.children.forEach(child => this.serialize(child, blockFragment));
+      const context: CopyContext = { node: current, html: blockFragment };
       this.plugin.call(CALLER_TYPE.SERIALIZE, context, PLUGIN_TYPE.BLOCK);
       root.appendChild(context.html);
       return root as T;

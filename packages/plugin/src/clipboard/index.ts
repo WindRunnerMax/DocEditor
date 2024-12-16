@@ -1,7 +1,7 @@
 import type { PasteContext } from "doc-editor-core";
 import type { EditorKit } from "doc-editor-core";
+import type { PasteNodesContext } from "doc-editor-core";
 import { BlockPlugin } from "doc-editor-core";
-import type { PasteNodesContext } from "doc-editor-core/dist/clipboard/utils/types";
 import type { BaseNode } from "doc-editor-delta";
 import { getUniqueId, isText } from "doc-editor-utils";
 

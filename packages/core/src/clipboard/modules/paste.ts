@@ -67,6 +67,7 @@ export class Paste extends EditorModule {
       } else {
         const context: PasteContext = { nodes: root, html: current };
         this.plugin.call(CALLER_TYPE.DESERIALIZE, context);
+        return context.nodes;
       }
       return root;
     }

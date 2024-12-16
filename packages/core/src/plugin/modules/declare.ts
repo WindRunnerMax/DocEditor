@@ -13,20 +13,20 @@ abstract class BasePlugin {
   public abstract readonly type: PluginType;
   /**
    * 插件调度优先级
-   * 渲染层面 优先级越高`DOM`结构在越外层
+   * 渲染层面 优先级越高 DOM 结构在越外层
    * */
   public readonly priority?: number;
   /** 插件销毁时调度 */
   public abstract destroy(): void;
   /** 插件命令注册 */
   public onCommand?: CommandFn;
-  /** 对`Range[]`进行装饰 */
+  /** 对 Range[] 进行装饰 */
   public onDecorate?(entry: NodeEntry): Range[];
-  /** 将`Fragment`序列化为`HTML` */
+  /** 将 Fragment 序列化为 HTML  */
   public serialize?(context: CopyContext): void;
-  /** 将`HTML`反序列化为`Fragment` */
+  /** 将 HTML 反序列化为 Fragment  */
   public deserialize?(context: PasteContext): void;
-  /** 对节点进行`Normalize` */
+  /** 对节点进行 Normalize  */
   public normalize?(entry: NodeEntry): void;
   /** 内容即将写入剪贴板 */
   public willSetToClipboard?(context: CopyContext): void;

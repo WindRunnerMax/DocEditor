@@ -1,12 +1,13 @@
 import "./styles/index.scss";
 
-import type { BlockContext, EditorKit } from "doc-editor-core";
+import type { BlockContext, CopyContext, EditorKit, PasteContext } from "doc-editor-core";
 import type { CommandFn } from "doc-editor-core";
-import { BlockPlugin } from "doc-editor-core";
-import type { RenderElementProps } from "doc-editor-delta";
+import { BlockPlugin, isHTMLElement } from "doc-editor-core";
+import type { BlockElement, RenderElementProps } from "doc-editor-delta";
 import { Editor, HistoryEditor, Range, Transforms } from "doc-editor-delta";
-import { existKey, getClosestBlockPath, getUniqueId } from "doc-editor-utils";
+import { existKey, getClosestBlockPath, getId, getUniqueId } from "doc-editor-utils";
 
+import { isMatchTag } from "../clipboard/utils/is";
 import { focusSelection } from "../shared/modules/selection";
 import { DocImage } from "./components/doc-image";
 import { IMAGE_KEY, IMAGE_STATUS } from "./types";
@@ -104,6 +105,39 @@ export class ImagePlugin extends BlockPlugin {
     };
     imageInput.click();
   };
+
+  public serialize(context: CopyContext): void {
+    const element = context.node as BlockElement;
+    const img = element[IMAGE_KEY];
+    if (!img) return void 0;
+    const node = document.createElement("img");
+    node.src = img.src;
+    node.setAttribute("data-type", IMAGE_KEY);
+    node.appendChild(context.html);
+    context.html = node;
+  }
+
+  public deserialize(context: PasteContext): void {
+    const { html } = context;
+    if (!isHTMLElement(html)) return void 0;
+    if (isMatchTag(html, "img")) {
+      const src = html.getAttribute("src") || "";
+      const width = html.getAttribute("data-width") || 100;
+      const height = html.getAttribute("data-height") || 100;
+      context.nodes = [
+        {
+          [IMAGE_KEY]: {
+            src: src,
+            status: IMAGE_STATUS.SUCCESS,
+            width: Number(width),
+            height: Number(height),
+          },
+          uuid: getId(),
+          children: [{ text: "" }],
+        },
+      ];
+    }
+  }
 
   public render(context: BlockContext): JSX.Element {
     return (
