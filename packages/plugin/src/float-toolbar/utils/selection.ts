@@ -1,11 +1,6 @@
 import { Collection } from "doc-editor-utils";
 import ReactDOM from "react-dom";
 
-export const maskMenuToolBar = (element: HTMLDivElement) => {
-  element.style.left = "-1000px";
-  element.style.top = "-1000px";
-};
-
 export const getSelectionRect = () => {
   const domSelection = window.getSelection();
   if (domSelection && domSelection.rangeCount > 0) {

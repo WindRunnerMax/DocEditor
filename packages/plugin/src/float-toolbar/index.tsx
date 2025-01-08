@@ -15,7 +15,7 @@ import { HYPER_LINK_KEY } from "../hyper-link/types";
 import { LINE_HEIGHT_KEY } from "../line-height/types";
 import { useMemoFn } from "../shared/hooks/preset";
 import { MenuItems } from "./components/menu";
-import { execSelectMarks, getSelectionRect, maskMenuToolBar, Portal } from "./utils/selection";
+import { execSelectMarks, getSelectionRect, Portal } from "./utils/selection";
 
 const TOOLBAR_OFFSET_HEIGHT = 40;
 const TOOLBAR_OFFSET_WIDTH = 340;
@@ -29,36 +29,38 @@ export const MenuToolBar: FC<{
 }> = props => {
   const editor = props.editor;
   const keepStatus = useRef(false);
+  const [top, setTop] = useState(0);
+  const [left, setLeft] = useState(0);
+  const [visible, setVisible] = useState(false);
   const toolbarRef = useRef<HTMLDivElement>(null);
+  const [isMouseDown, setIsMouseDown] = useState(false);
   const [selectedMarks, setSelectedMarks] = useState<string[]>([]);
 
   const wakeUpToolbar = useMemoFn((wakeUp: boolean) => {
-    const toolbar = toolbarRef.current;
-    if (!toolbar) return void 0;
     if (ReactEditor.isFocused(editor.raw) && wakeUp) {
       setSelectedMarks(
         Collection.omit(Object.keys(Editor.marks(editor.raw) || []), NOT_INIT_SELECT)
       );
       const rect = getSelectionRect();
       if (rect) {
-        toolbar.style.top = `${rect.top + window.pageYOffset - TOOLBAR_OFFSET_HEIGHT - 10}px`;
-        toolbar.style.left = `${
-          rect.left + window.pageXOffset - TOOLBAR_OFFSET_WIDTH / 2 + rect.width / 2
-        }px`;
+        const t = rect.top + window.scrollY - TOOLBAR_OFFSET_HEIGHT - 10;
+        const l = rect.left + window.scrollX - TOOLBAR_OFFSET_WIDTH / 2 + rect.width / 2;
+        setTop(t);
+        setLeft(l);
       }
+      setVisible(true);
     } else {
-      maskMenuToolBar(toolbar);
+      setVisible(false);
     }
   });
 
   useEffect(() => {
-    const toolbar = toolbarRef.current;
-    if (!toolbar || props.readonly) return void 0;
+    if (props.readonly) return void 0;
     const mouseUpHandler = () => {
-      !keepStatus.current && (toolbar.style.display = "");
+      !keepStatus.current && setIsMouseDown(false);
     };
     const mouseDownHandler = () => {
-      !keepStatus.current && (toolbar.style.display = "none");
+      !keepStatus.current && setIsMouseDown(true);
     };
     const selectionChangeHandler = () => {
       if (keepStatus.current) return void 0;
@@ -72,7 +74,7 @@ export const MenuToolBar: FC<{
     return () => {
       document.removeEventListener(EVENT_ENUM.MOUSE_UP, mouseUpHandler);
       document.removeEventListener(EVENT_ENUM.MOUSE_DOWN, mouseDownHandler);
-      document.addEventListener(EVENT_ENUM.SELECTION_CHANGE, selectionChangeHandler);
+      document.removeEventListener(EVENT_ENUM.SELECTION_CHANGE, selectionChangeHandler);
     };
   }, [editor, wakeUpToolbar, props.readonly]);
 
@@ -115,9 +117,10 @@ export const MenuToolBar: FC<{
     [exec, selectedMarks]
   );
 
-  return props.readonly ? null : (
+  // 只读状态 / 不可见 / 鼠标按下 时隐藏
+  return props.readonly || !visible || isMouseDown ? null : (
     <Portal>
-      <div ref={toolbarRef} className="hover-menu-container">
+      <div ref={toolbarRef} style={{ left, top }} className="hover-menu-container">
         {HoverMenu}
       </div>
     </Portal>
