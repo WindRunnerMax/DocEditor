@@ -92,6 +92,7 @@ export class ImagePlugin extends BlockPlugin {
     if (!imageInput) {
       imageInput = document.createElement("input");
       imageInput.setAttribute("type", "file");
+      imageInput.setAttribute("id", this.IMAGE_INPUT_DOM_ID);
       imageInput.setAttribute("class", this.IMAGE_INPUT_DOM_ID);
       imageInput.setAttribute("accept", "image/png, image/jpeg, image/svg+xml");
       document.body.append(imageInput);

@@ -18,6 +18,7 @@ export const HyperLinkMenu: FC<Props> = props => {
   const top = isEmptyValue(props.top) ? 0 : props.top + 30;
   const left = isEmptyValue(props.left) ? 0 : props.left - 150;
   const position = props.top || props.left ? "absolute" : void 0;
+
   return (
     <div className="hyper-link-menu" style={{ left, top, position }}>
       <Form

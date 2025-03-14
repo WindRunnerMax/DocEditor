@@ -19,7 +19,7 @@ jobs:
       - name: install node-v16
         uses: actions/setup-node@v3
         with:
-          node-version: '16.16.0'
+          node-version: "16.16.0"
 
       - name: install dependencies
         run: |
