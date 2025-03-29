@@ -6,18 +6,26 @@ import { useEffect, useState } from "react";
 const storageKey = "theme-index";
 const darkThemeMatch = window.matchMedia("(prefers-color-scheme: dark)");
 const list = [<IconDesktop />, <IconSun />, <IconMoon />];
+
 const handler = (e: MediaQueryListEvent) => {
-  if (e.matches) document.body.setAttribute("arco-theme", "dark");
-  else document.body.removeAttribute("arco-theme");
+  if (e.matches) {
+    document.body.setAttribute("arco-theme", "dark");
+  } else {
+    document.body.removeAttribute("arco-theme");
+  }
 };
+
 export const ThemeAction: FC = () => {
-  const [index, setIndex] = useState(Storage.local.get<number>(storageKey) || 0);
+  const [index, setIndex] = useState(() => Storage.local.get<number>(storageKey) || 0);
 
   useEffect(() => {
     switch (index) {
       case 0: {
-        if (darkThemeMatch.matches) document.body.setAttribute("arco-theme", "dark");
-        else document.body.removeAttribute("arco-theme");
+        if (darkThemeMatch.matches) {
+          document.body.setAttribute("arco-theme", "dark");
+        } else {
+          document.body.removeAttribute("arco-theme");
+        }
         darkThemeMatch.onchange = handler;
         break;
       }
@@ -34,11 +42,11 @@ export const ThemeAction: FC = () => {
     }
   }, [index]);
 
-  const changeTheme = () => {
+  const onChangeTheme = () => {
     const nextIndex = (index + 1) % list.length;
     setIndex(nextIndex);
     Storage.local.set(storageKey, nextIndex);
   };
 
-  return <div onClick={changeTheme}>{list[index]}</div>;
+  return <div onClick={onChangeTheme}>{list[index]}</div>;
 };
