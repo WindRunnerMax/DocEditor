@@ -155,8 +155,8 @@ importers:
         specifier: 'workspace: *'
         version: link:../utils
       embed-drawio:
-        specifier: 0.1.5
-        version: 0.1.5
+        specifier: 0.1.10
+        version: 0.1.10
       lodash-es:
         specifier: 4.17.21
         version: 4.17.21
@@ -6243,9 +6243,10 @@ packages:
       minimalistic-crypto-utils: 1.0.1
     dev: true
 
-  /embed-drawio@0.1.5:
-    resolution: {integrity: sha512-2pHEulVWx0G4xaLLPfwqdxzUptyszftFgT5h79kow1cHp9TsWv2fXT1ArI6taZiLMF9gXHjrV2pYtj7y3zBdpA==}
+  /embed-drawio@0.1.10:
+    resolution: {integrity: sha512-giqmujtk4feqOZv8JKrcD1e50nH7OE9muJJGE2gfqK/Xx5aey60BzRCj5xgdqbj064bRjnD4+9ajnBCYvg2VXQ==}
     dependencies:
+      js-base64: 3.7.7
       laser-utils: 0.0.5-alpha.10
       mxgraph: 4.2.2
       pako: 1.0.6
@@ -9811,6 +9812,10 @@ packages:
       - supports-color
       - ts-node
     dev: true
+
+  /js-base64@3.7.7:
+    resolution: {integrity: sha512-7rCnleh0z2CkXhH67J8K1Ytz0b2Y+yxTPL+/KOJoa20hfnVQ/3/T6W/KflYI4bRHRagNeXeU2bkNGI3v1oS/lw==}
+    dev: false
 
   /js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
