@@ -14,7 +14,7 @@ export const App: React.FC = () => {
   return (
     <div className="doc-editor-container">
       <div className="header">
-        <span className="left">Slogan</span>
+        <span className="left">Editor</span>
         <div className="right">
           <div onClick={() => setRender(!readonly)}>{readonly ? <IconEdit /> : <IconFile />}</div>
           <ThemeAction />
